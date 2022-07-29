@@ -8,6 +8,8 @@
 
 public/*.css binary
 public/*.js binary
+/.yarn/releases/** binary
+/.yarn/plugins/** binary
 
 /.github export-ignore
 /tests export-ignore
