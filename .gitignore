@@ -1,0 +1,12 @@
+/vendor
+/node_modules
+/.yarn
+/.idea
+/public/hot
+/phpstan.neon
+/phpunit.xml
+composer.phar
+composer.lock
+.phpunit.result.cache
+.DS_Store
+*.local

@@ -1,0 +1,13 @@
+[
+    {
+        "factor": "category",
+        "snapshot": {
+            "initial_weight": 100,
+            "weight_increment": 100
+        },
+        "diff": {
+            "initial_weight": 100,
+            "weight_increment": 100
+        }
+    }
+]
