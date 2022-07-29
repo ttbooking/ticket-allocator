@@ -17,11 +17,5 @@ class HomeController extends Controller
     public function index()
     {
         return Inertia::render('Dashboard');
-
-        /*return view('ticket-allocator::layout', [
-            'ticketAllocatorScriptVariables' => [
-                'path' => config('ticket-allocator.path'),
-            ],
-        ]);*/
     }
 }

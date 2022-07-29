@@ -72,19 +72,19 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../config/ticket-allocator.php' => $this->app->configPath('ticket-allocator.php'),
-        ], 'config');
+        ], 'ticket-allocator-config');
 
         $this->publishes([
             __DIR__.'/../database/migrations' => $this->app->databasePath('migrations'),
-        ], 'migrations');
+        ], 'ticket-allocator-migrations');
 
         $this->publishes([
             __DIR__.'/../resources/views' => $this->app->resourcePath('views/vendor/ticket-allocator'),
-        ], 'views');
+        ], 'ticket-allocator-views');
 
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/ticket-allocator'),
-        ], 'assets');
+        ], 'ticket-allocator-assets');
     }
 
     protected function registerMigrations(): void
