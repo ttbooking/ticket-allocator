@@ -1,6 +1,6 @@
 {
   "resources/js/app.js": {
-    "file": "assets/app.edee5483.js",
+    "file": "assets/app.710ecd83.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -11,15 +11,15 @@
     ]
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.8ed866e4.js",
+    "file": "assets/Dashboard.a995b8d3.js",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "resources/js\\app.css": {
+  "resources/js/app.css": {
     "file": "assets/app.aa42d7f2.css",
-    "src": "resources/js\\app.css"
+    "src": "resources/js/app.css"
   }
 }
