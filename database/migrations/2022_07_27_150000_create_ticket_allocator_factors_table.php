@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ticket_allocator_factors', function (Blueprint $table) {
-            $table->uuid();
+            $table->uuid()->primary();
             $table->string('aggregate')->index();
             $table->string('class')->index();
             $table->string('description');
