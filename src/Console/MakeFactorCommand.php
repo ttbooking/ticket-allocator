@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'make:factor')]
 class MakeFactorCommand extends GeneratorCommand
 {
     protected $name = 'make:factor';
+
+    protected static $defaultName = 'make:factor';
 
     protected $description = 'Create a new factor';
 
