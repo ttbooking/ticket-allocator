@@ -43,7 +43,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["axios", "npm:0.27.2"],\
             ["laravel-vite-plugin", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:0.5.2"],\
             ["lodash", "npm:4.17.21"],\
-            ["picocolors", "npm:1.0.0"],\
             ["postcss", "npm:8.4.14"],\
             ["roboto-fontface", "npm:0.10.0"],\
             ["tailwindcss", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:3.1.6"],\
@@ -1765,6 +1764,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["laravel-vite-plugin", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:0.5.2"],\
             ["@types/vite", null],\
+            ["picocolors", "npm:1.0.0"],\
             ["vite", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:3.0.4"],\
             ["vite-plugin-full-reload", "virtual:47552f473652fc797c291a5bd47edfb75360ebee89036fcaef7905b87573df18dce5eb13a64ce3a034d365960d196784d8f5250bb8b91d46bdeb1ed28bc5c20a#npm:1.0.3"]\
           ],\
@@ -2637,7 +2637,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["axios", "npm:0.27.2"],\
             ["laravel-vite-plugin", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:0.5.2"],\
             ["lodash", "npm:4.17.21"],\
-            ["picocolors", "npm:1.0.0"],\
             ["postcss", "npm:8.4.14"],\
             ["roboto-fontface", "npm:0.10.0"],\
             ["tailwindcss", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:3.1.6"],\
