@@ -73,10 +73,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdi/font@npm:5.9.55":
-  version: 5.9.55
-  resolution: "@mdi/font@npm:5.9.55"
-  checksum: 05d8e30d5c5bd0992bde4827ddcde0e4e00882ae70d4355c69d4db93d9b69c75d3bde6b414bea90f5f8ad46336837b082d64a26761a12b1548e28cfe765b0e4f
+"@mdi/font@npm:7.0.96":
+  version: 7.0.96
+  resolution: "@mdi/font@npm:7.0.96"
+  checksum: 3bc71dc45e784af98fc41ff58eedd77b7ec93fdd5ad2ea599914efd7eff0412db97e4d1766ae3abb55d90a39e5e6dbc550ffe36c72fa504d5b2b021b5aa16f8e
   languageName: node
   linkType: hard
 
@@ -152,13 +152,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "@vitejs/plugin-vue@npm:3.0.1"
+"@vitejs/plugin-vue@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@vitejs/plugin-vue@npm:3.0.2"
   peerDependencies:
     vite: ^3.0.0
     vue: ^3.2.25
-  checksum: 8a48888f0e97bb9f0a7c59ca55546f4fcc316609850630ae27e9702ca7030b19d3c023e8a52de8631c243bc32825bf1a88b7ddd2b0f802916d47171465959159
+  checksum: cc48a91b5070c0455ce8f40e71c18dab56b3bfbef0519c4245eea6301142fa02eb225128e134fcab1a6e52e2e97bce88119156e31c6c3dacdc6bf537e7e7c6a4
   languageName: node
   linkType: hard
 
@@ -420,7 +420,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.7":
+"autoprefixer@npm:^10.4.8":
   version: 10.4.8
   resolution: "autoprefixer@npm:10.4.8"
   dependencies:
@@ -1422,18 +1422,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"laravel-vite-plugin@npm:^0.5.0":
-  version: 0.5.2
-  resolution: "laravel-vite-plugin@npm:0.5.2"
+"laravel-vite-plugin@npm:^0.5.3":
+  version: 0.5.3
+  resolution: "laravel-vite-plugin@npm:0.5.3"
   dependencies:
     vite-plugin-full-reload: ^1.0.1
   peerDependencies:
     vite: ^3.0.0
-  checksum: 72510d33b654a2ca3773d9e9a8f4942b395e3c75071275c4c20b41decf22c73df447f891270a4164bbcedec73366ce2f9f7a115df1dc4a039eb82ee9e372297f
+  checksum: 3b596d91c113ffeb2f2ebfa8b92b49baaf15ddfa62721cdeabb6049bc199b3ff2ff75f0c414e5d6dc672076716fdbf27f37061138111452bfce81d8e030fbdb9
   languageName: node
   linkType: hard
 
-"lilconfig@npm:^2.0.5":
+"lilconfig@npm:^2.0.5, lilconfig@npm:^2.0.6":
   version: 2.0.6
   resolution: "lilconfig@npm:2.0.6"
   checksum: 40a3cd72f103b1be5975f2ac1850810b61d4053e20ab09be8d3aeddfe042187e1ba70b4651a7e70f95efa1642e7dc8b2ae395b317b7d7753b241b43cef7c0f7d
@@ -1987,6 +1987,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss@npm:^8.4.16":
+  version: 8.4.16
+  resolution: "postcss@npm:8.4.16"
+  dependencies:
+    nanoid: ^3.3.4
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 10eee25efd77868036403858577da0cefaf2e0905feeaba5770d5438ccdddba3d01cba8063e96b8aac4c6daa0ed413dd5ae0554a433a3c4db38df1d134cffc1f
+  languageName: node
+  linkType: hard
+
 "promise-inflight@npm:^1.0.1":
   version: 1.0.1
   resolution: "promise-inflight@npm:1.0.1"
@@ -2130,9 +2141,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^2.75.6":
-  version: 2.77.2
-  resolution: "rollup@npm:2.77.2"
+"rollup@npm:>=2.75.6 <2.77.0 || ~2.77.0":
+  version: 2.77.3
+  resolution: "rollup@npm:2.77.3"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -2140,7 +2151,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: 5a84fb98a6f858906bceba091430442f6c1f362b07c5fa9123b708f87e39f52640e34a189cd9a1776ceae61300055c78ba648205fa03188451539ebeb19797df
+  checksum: b179c68249584565ddb5664a241e8e48c293b2207718d885b08ee25797d98857a383f06b544bb89819407da5a71557f4713309a278f61c4778bb32b1d3321a1c
   languageName: node
   linkType: hard
 
@@ -2151,22 +2162,22 @@ __metadata:
     "@inertiajs/inertia": ^0.11.0
     "@inertiajs/inertia-vue3": ^0.6.0
     "@inertiajs/progress": ^0.2.7
-    "@mdi/font": 5.9.55
+    "@mdi/font": 7.0.96
     "@tailwindcss/forms": ^0.5.2
-    "@vitejs/plugin-vue": ^3.0.1
-    autoprefixer: ^10.4.7
+    "@vitejs/plugin-vue": ^3.0.2
+    autoprefixer: ^10.4.8
     axios: ^0.27
-    laravel-vite-plugin: ^0.5.0
+    laravel-vite-plugin: ^0.5.3
     lodash: ^4.17.21
-    postcss: ^8.4.14
+    postcss: ^8.4.16
     roboto-fontface: "*"
-    tailwindcss: ^3.1.6
-    vite: ^3.0.0
-    vite-plugin-vuetify: ^1.0.0-alpha.0
+    tailwindcss: ^3.1.8
+    vite: ^3.0.6
+    vite-plugin-vuetify: ^1.0.0-alpha.14
     vue: ^3.2.37
     vue-cli-plugin-vuetify: ~2.5.1
     vuetify: ^3.0.0-beta.0
-    webfontloader: ^1.0.0
+    webfontloader: ^1.6.28
   languageName: unknown
   linkType: soft
 
@@ -2356,9 +2367,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:^3.1.6":
-  version: 3.1.6
-  resolution: "tailwindcss@npm:3.1.6"
+"tailwindcss@npm:^3.1.8":
+  version: 3.1.8
+  resolution: "tailwindcss@npm:3.1.8"
   dependencies:
     arg: ^5.0.2
     chokidar: ^3.5.3
@@ -2369,7 +2380,7 @@ __metadata:
     fast-glob: ^3.2.11
     glob-parent: ^6.0.2
     is-glob: ^4.0.3
-    lilconfig: ^2.0.5
+    lilconfig: ^2.0.6
     normalize-path: ^3.0.0
     object-hash: ^3.0.0
     picocolors: ^1.0.0
@@ -2387,7 +2398,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 90719c6fd0dcdda5c8e2882ad421048c9dd90890e0c118d12ff3ec31adba53eb2df8fed1ed203e728e5b32297e1cc207df463a6b196d37344a63fde9f67c52b6
+  checksum: 86480301fc6ae1e392c2aba8264ab425bd919078176b010fda724518a7c265e950da5f4120c69c9041509c318207985fa9d680b6f5021e23f8214135a61a54b6
   languageName: node
   linkType: hard
 
@@ -2488,7 +2499,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vuetify@npm:^1.0.0-alpha.0":
+"vite-plugin-vuetify@npm:^1.0.0-alpha.14":
   version: 1.0.0-alpha.14
   resolution: "vite-plugin-vuetify@npm:1.0.0-alpha.14"
   dependencies:
@@ -2502,15 +2513,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.0.0":
-  version: 3.0.4
-  resolution: "vite@npm:3.0.4"
+"vite@npm:^3.0.6":
+  version: 3.0.6
+  resolution: "vite@npm:3.0.6"
   dependencies:
     esbuild: ^0.14.47
     fsevents: ~2.3.2
-    postcss: ^8.4.14
+    postcss: ^8.4.16
     resolve: ^1.22.1
-    rollup: ^2.75.6
+    rollup: ">=2.75.6 <2.77.0 || ~2.77.0"
   peerDependencies:
     less: "*"
     sass: "*"
@@ -2530,7 +2541,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: f13eceb94f7b399942ce5e7c10df73314f7b073171d6594228b078cc1203042c4cdb9e8356fe64ad444c3533c31437abb3c64ac56478f0865fab598e924cf68b
+  checksum: 73e9015e9432b81093da1d00a4086afc5e8f1da415e4b15277c4c6a6997990983b94a5021f7e39e3204731ee1f526e4b71bd7cd0476d0d38f7da63e116cd6448
   languageName: node
   linkType: hard
 
@@ -2587,7 +2598,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webfontloader@npm:^1.0.0":
+"webfontloader@npm:^1.6.28":
   version: 1.6.28
   resolution: "webfontloader@npm:1.6.28"
   checksum: cbebbe593cb0d27dbb4d418f7f96bd9893024f1f2062e858af76209b6524e25d766964b6e2a724f3b694fadef661dd3a01065455a96df05337b3281ca09ab656
