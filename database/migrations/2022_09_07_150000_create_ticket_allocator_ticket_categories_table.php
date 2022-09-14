@@ -17,6 +17,10 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->string('name');
             $table->string('short', 32);
+            $table->unsignedInteger('initial_weight')->default(0);
+            $table->unsignedInteger('weight_increment')->default(0);
+            $table->unsignedInteger('complexity')->default(0);
+            $table->unsignedInteger('delay')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

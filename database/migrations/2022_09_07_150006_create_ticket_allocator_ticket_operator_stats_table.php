@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_allocator_operator_ticket_stats');
+        Schema::dropIfExists('ticket_allocator_ticket_operator_stats');
     }
 };

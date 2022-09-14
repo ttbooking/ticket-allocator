@@ -19,8 +19,8 @@ return new class extends Migration
             $table->uuid()->primary();
 
             // FK
-            $table->foreignUuid('category_uuid');
-            $table->foreignUuid('handler_uuid')->nullable()->constrained()->nullOnDelete();
+            $table->foreignUuid('category_uuid')->constrained('ticket_allocator_ticket_categories', 'uuid');
+            $table->foreignUuid('handler_uuid')->nullable()->constrained('ticket_allocator_operators', 'uuid')->nullOnDelete();
 
             // inherited properties
             //$table->json('tags')->nullable();
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->unsignedInteger('delay')->default(0);
 
             // virtual fields
-            $table->unsignedInteger('weight')->virtualAs('initial_weight + TIMESTAMPDIFF(SECOND, created_at, NOW()) * weight_increment')->index();
+            //$table->unsignedInteger('weight')->virtualAs('initial_weight + TIMESTAMPDIFF(SECOND, created_at, NOW()) * weight_increment')->index();
             $table->timestamp('delayed_until')->virtualAs('DATE_ADD(created_at, INTERVAL delay SECOND)');
 
             // timestamps

@@ -15,16 +15,16 @@ class TicketAllocatorSeeder extends Seeder
      */
     public function run(): void
     {
-        $count = $this->askNumber('Enter the number of ticket categories:', 10);
+        $count = $this->askNumber('Enter the number of ticket categories', 10);
         $this->callWith(TicketCategorySeeder::class, compact('count'));
 
-        $count = $this->askNumber('Enter the number of operator teams:', 3);
+        $count = $this->askNumber('Enter the number of operator teams', 3);
         $this->callWith(OperatorTeamSeeder::class, compact('count'));
 
-        $count = $this->askNumber('Enter the number of operators:', 10);
+        $count = $this->askNumber('Enter the number of operators', 10);
         $this->callWith(OperatorSeeder::class, compact('count'));
 
-        $count = $this->askNumber('Enter the number of tickets:', 50);
+        $count = $this->askNumber('Enter the number of tickets', 50);
         $this->callWith(TicketSeeder::class, compact('count'));
     }
 

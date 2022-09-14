@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
+use TTBooking\TicketAllocator\Database\Factories\TicketCategoryFactory;
 
 /**
  * @property non-empty-string $uuid
@@ -60,11 +61,16 @@ class TicketCategory extends Model
         });
     }
 
+    protected static function newFactory(): TicketCategoryFactory
+    {
+        return TicketCategoryFactory::new();
+    }
+
     /**
      * @return BelongsToMany<OperatorTeam>
      */
     public function operatorTeams(): BelongsToMany
     {
-        return $this->belongsToMany(OperatorTeam::class);
+        return $this->belongsToMany(OperatorTeam::class, 'ticket_allocator_team_category', 'category_uuid', 'team_uuid');
     }
 }

@@ -41,4 +41,9 @@ class TicketFactory extends Factory
             'delay' => fake()->optional(.1, 0)->numberBetween(1, 10) * 60,
         ];
     }
+
+    public function newModel(array $attributes = [])
+    {
+        return parent::newModel($attributes)->writeable();
+    }
 }

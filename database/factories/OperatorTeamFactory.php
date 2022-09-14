@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
@@ -31,7 +32,7 @@ class OperatorTeamFactory extends Factory
 
         return [
             'uuid' => fake()->uuid(),
-            'name' => fake()->words(3, true),
+            'name' => Str::ucfirst(fake()->words(3, true)),
             'description' => fake()->sentence(),
             /*'matching' => [
                 'categories' => fake()

@@ -59,4 +59,9 @@ class OperatorFactory extends Factory
             ));
         });
     }
+
+    public function newModel(array $attributes = [])
+    {
+        return parent::newModel($attributes)->writeable();
+    }
 }

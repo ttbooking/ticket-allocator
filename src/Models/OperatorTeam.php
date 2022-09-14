@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use TTBooking\TicketAllocator\Database\Factories\OperatorTeamFactory;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 
 /**
@@ -45,12 +46,17 @@ class OperatorTeam extends Model
         });
     }
 
+    protected static function newFactory(): OperatorTeamFactory
+    {
+        return OperatorTeamFactory::new();
+    }
+
     /**
      * @return BelongsToMany<Operator>
      */
     public function operators(): BelongsToMany
     {
-        return $this->belongsToMany(Operator::class);
+        return $this->belongsToMany(Operator::class, 'ticket_allocator_team_operator', 'team_uuid', 'operator_uuid');
     }
 
     /**
@@ -58,6 +64,6 @@ class OperatorTeam extends Model
      */
     public function ticketCategories(): BelongsToMany
     {
-        return $this->belongsToMany(TicketCategory::class);
+        return $this->belongsToMany(TicketCategory::class, 'ticket_allocator_team_category', 'team_uuid', 'category_uuid');
     }
 }

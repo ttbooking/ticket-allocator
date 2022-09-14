@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EventSourcing\Projections\Projection;
+use TTBooking\TicketAllocator\Database\Factories\TicketFactory;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
 /**
@@ -34,11 +35,13 @@ class Ticket extends Projection
 {
     use SoftDeletes, HasFactory;
 
+    protected $table = 'ticket_allocator_tickets';
+
     protected $guarded = [];
 
     /** @var array<string, mixed> */
     protected $attributes = [
-        'meta' => [],
+        //'meta' => [],
         'initial_weight' => 0,
         'weight_increment' => 0,
         'complexity' => 0,
@@ -47,12 +50,17 @@ class Ticket extends Projection
 
     /** @var array<string, string> */
     protected $casts = [
-        'meta' => 'array',
+        //'meta' => 'array',
         'initial_weight' => 'integer',
         'weight_increment' => 'integer',
         'complexity' => 'integer',
         'delay' => 'integer',
     ];
+
+    protected static function newFactory(): TicketFactory
+    {
+        return TicketFactory::new();
+    }
 
     /**
      * @return BelongsTo<TicketCategory, self>
