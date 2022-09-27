@@ -6,7 +6,7 @@ namespace TTBooking\TicketAllocator\Domain\Operator\Events;
 
 use TTBooking\TicketAllocator\Domain\Support\Event;
 
-class OperatorNotReady extends Event
+class OperatorOnline extends Event
 {
     public function __construct(public readonly string $uuid)
     {

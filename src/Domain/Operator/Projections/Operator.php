@@ -12,6 +12,12 @@ use TTBooking\TicketAllocator\Database\Factories\OperatorFactory;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
 
 /**
+ * @property string $name
+ * @property bool $online
+ * @property bool $ready
+ * @property int $ticket_limit
+ * @property int $complexity_limit
+ *
  * @property Collection<int, OperatorTeam> $teams
  */
 class Operator extends Projection

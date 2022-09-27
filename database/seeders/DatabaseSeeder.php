@@ -6,7 +6,7 @@ namespace TTBooking\TicketAllocator\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class TicketAllocatorSeeder extends Seeder
+class DatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
