@@ -8,15 +8,17 @@ use Illuminate\Support\Str;
 use TTBooking\TicketAllocator\Domain\Support\Action;
 use TTBooking\TicketAllocator\Domain\Ticket\Commands\CreateTicket;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
+use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class CreateTicketAction extends Action
 {
-    public function __invoke(object $ticketOrigin): ?Ticket
+    public function __invoke(TicketCategory $category, object $ticketOrigin): ?Ticket
     {
         $uuid = (string) Str::orderedUuid();
 
         $this->dispatch(new CreateTicket(
             uuid: $uuid,
+            categoryUuid: $category->getKey(),
             origin: $ticketOrigin,
         ));
 

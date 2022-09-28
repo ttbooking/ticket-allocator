@@ -24,6 +24,8 @@ class EsOperatorSeeder extends Seeder
      */
     public function run(int $count = 10): void
     {
+        $operatorTeams = OperatorTeam::all()->all();
+
         for ($i = 0; $i < $count; $i++) {
 
             $operator = app(EnrollOperatorAction::class)(new \stdClass);
@@ -36,7 +38,6 @@ class EsOperatorSeeder extends Seeder
             app(AdjustOperatorTicketLimitAction::class)($operator, fake()->numberBetween(1, 4));
             app(AdjustOperatorComplexityLimitAction::class)($operator, 100);
 
-            $operatorTeams = OperatorTeam::all()->all();
             foreach (fake()->randomElements($operatorTeams,
                 fake()->optional(.9, 0)->numberBetween(1, count($operatorTeams))
             ) as $team) {

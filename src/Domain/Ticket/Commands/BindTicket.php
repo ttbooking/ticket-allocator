@@ -9,12 +9,11 @@ use Spatie\EventSourcing\Commands\HandledBy;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 
 #[HandledBy(TicketAggregateRoot::class)]
-class CreateTicket
+class BindTicket
 {
     public function __construct(
         #[AggregateUuid] public readonly string $uuid,
-        public readonly string $categoryUuid,
-        public readonly object $origin,
+        public readonly string $operatorUuid,
     ) {
     }
 }

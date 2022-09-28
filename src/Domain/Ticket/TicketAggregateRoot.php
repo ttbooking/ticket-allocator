@@ -13,6 +13,10 @@ class TicketAggregateRoot extends AggregateRoot
 
     // TODO: group by factors? Return magic sum?
 
+    public string $categoryUuid;
+
+    public ?string $operatorUuid;
+
     #[Incrementable]
     public int $initialWeight = 0;
 
@@ -32,12 +36,14 @@ class TicketAggregateRoot extends AggregateRoot
     {
         return $this->recordThat(new Events\TicketCreated(
             uuid: $this->uuid(),
+            categoryUuid: $command->categoryUuid,
             origin: $command->origin,
         ));
     }
 
     protected function applyTicketCreated(Events\TicketCreated $event): void
     {
+        $this->categoryUuid = $event->categoryUuid;
         $this->origin = $event->origin;
     }
 
@@ -50,6 +56,44 @@ class TicketAggregateRoot extends AggregateRoot
 
     protected function applyTicketClosed(Events\TicketClosed $event): void
     {
+    }
+
+    public function changeCategory(Commands\ChangeTicketCategory $command): static
+    {
+        return $this->recordThat(new Events\TicketCategoryChanged(
+            uuid: $this->uuid(),
+            categoryUuid: $command->categoryUuid,
+        ));
+    }
+
+    protected function applyTicketCategoryChanged(Events\TicketCategoryChanged $event): void
+    {
+        $this->categoryUuid = $event->categoryUuid;
+    }
+
+    public function bind(Commands\BindTicket $command): static
+    {
+        return $this->recordThat(new Events\TicketBound(
+            uuid: $this->uuid(),
+            operatorUuid: $command->operatorUuid,
+        ));
+    }
+
+    protected function applyTicketBound(Events\TicketBound $event): void
+    {
+        $this->operatorUuid = $event->operatorUuid;
+    }
+
+    public function unbind(Commands\UnbindTicket $command): static
+    {
+        return $this->recordThat(new Events\TicketUnbound(
+            uuid: $this->uuid(),
+        ));
+    }
+
+    protected function applyTicketUnbound(Events\TicketUnbound $event): void
+    {
+        $this->operatorUuid = null;
     }
 
     public function incrementInitialWeight(Commands\IncrementTicketInitialWeight $command): static

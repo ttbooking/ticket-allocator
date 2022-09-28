@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->callWith(EsOperatorSeeder::class, compact('count'));
 
         $count = $this->askNumber('Enter the number of tickets', 50);
-        $this->callWith(TicketSeeder::class, compact('count'));
+        $this->callWith(EsTicketSeeder::class, compact('count'));
     }
 
     /**
