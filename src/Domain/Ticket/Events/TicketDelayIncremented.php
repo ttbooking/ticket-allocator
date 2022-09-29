@@ -9,8 +9,8 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 class TicketDelayIncremented extends Event
 {
     public function __construct(
-        public readonly string $uuid,
-        public readonly int $delaySeconds,
+        public string $uuid,
+        public int $delaySeconds,
     ) {
     }
 }

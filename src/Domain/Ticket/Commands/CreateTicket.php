@@ -12,9 +12,9 @@ use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 class CreateTicket
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
-        public readonly string $categoryUuid,
-        public readonly object $origin,
+        #[AggregateUuid] public string $uuid,
+        public string $categoryUuid,
+        public ?object $origin = null,
     ) {
     }
 }

@@ -12,8 +12,8 @@ use TTBooking\TicketAllocator\Domain\Operator\OperatorAggregateRoot;
 class AdjustOperatorTicketLimit
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
-        public readonly int $ticketLimit,
+        #[AggregateUuid] public string $uuid,
+        public int $ticketLimit,
     ) {
     }
 }

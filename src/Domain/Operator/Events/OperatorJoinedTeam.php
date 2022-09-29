@@ -9,8 +9,8 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 class OperatorJoinedTeam extends Event
 {
     public function __construct(
-        public readonly string $uuid,
-        public readonly string $operatorTeamUuid,
+        public string $uuid,
+        public string $operatorTeamUuid,
     ) {
     }
 }

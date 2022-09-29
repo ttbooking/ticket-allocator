@@ -12,8 +12,8 @@ use TTBooking\TicketAllocator\Domain\Operator\OperatorAggregateRoot;
 class AdjustOperatorComplexityLimit
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
-        public readonly int $complexityLimit,
+        #[AggregateUuid] public string $uuid,
+        public int $complexityLimit,
     ) {
     }
 }

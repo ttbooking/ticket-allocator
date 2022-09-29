@@ -9,7 +9,7 @@ use TTBooking\TicketAllocator\Domain\Attributes\Incrementable;
 
 class TicketAggregateRoot extends AggregateRoot
 {
-    public object $origin;
+    public ?object $origin = null;
 
     // TODO: group by factors? Return magic sum?
 

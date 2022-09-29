@@ -9,8 +9,8 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 class OperatorNameChanged extends Event
 {
     public function __construct(
-        public readonly string $uuid,
-        public readonly string $name,
+        public string $uuid,
+        public string $name,
     ) {
     }
 }

@@ -9,8 +9,8 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 class OperatorCommented extends Event
 {
     public function __construct(
-        public readonly string $uuid,
-        public readonly int $orderId,
+        public string $uuid,
+        public int $orderId,
     ) {
     }
 }

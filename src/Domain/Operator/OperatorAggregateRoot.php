@@ -8,7 +8,7 @@ use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class OperatorAggregateRoot extends AggregateRoot
 {
-    public object $origin;
+    public ?object $origin = null;
 
     public string $name;
 

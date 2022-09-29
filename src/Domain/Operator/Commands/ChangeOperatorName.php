@@ -12,8 +12,8 @@ use TTBooking\TicketAllocator\Domain\Operator\OperatorAggregateRoot;
 class ChangeOperatorName
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
-        public readonly string $name,
+        #[AggregateUuid] public string $uuid,
+        public string $name,
     ) {
     }
 }

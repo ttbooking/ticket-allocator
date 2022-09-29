@@ -28,7 +28,7 @@ class EsOperatorSeeder extends Seeder
 
         for ($i = 0; $i < $count; $i++) {
 
-            $operator = app(EnrollOperatorAction::class)(new \stdClass);
+            $operator = app(EnrollOperatorAction::class)();
 
             app(ChangeOperatorNameAction::class)($operator, fake()->name());
 

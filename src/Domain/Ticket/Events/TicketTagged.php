@@ -9,8 +9,8 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 class TicketTagged extends Event
 {
     public function __construct(
-        public readonly string $uuid,
-        public readonly array $tags,
+        public string $uuid,
+        public array $tags,
     ) {
     }
 }

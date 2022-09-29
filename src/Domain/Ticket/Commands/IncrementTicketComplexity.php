@@ -12,8 +12,8 @@ use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 class IncrementTicketComplexity
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
-        public readonly int $complexityPoints,
+        #[AggregateUuid] public string $uuid,
+        public int $complexityPoints,
     ) {
     }
 }

@@ -9,8 +9,8 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 class TicketInitialWeightDecremented extends Event
 {
     public function __construct(
-        public readonly string $uuid,
-        public readonly int $weightPoints,
+        public string $uuid,
+        public int $weightPoints,
     ) {
     }
 }

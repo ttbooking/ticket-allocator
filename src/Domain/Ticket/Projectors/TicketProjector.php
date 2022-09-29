@@ -14,12 +14,28 @@ class TicketProjector extends Projector
     {
         (new Ticket)->writeable()->create([
             'uuid' => $event->uuid,
+            'category_uuid' => $event->categoryUuid,
         ]);
     }
 
     public function onTicketClosed(Events\TicketClosed $event): void
     {
         Ticket::find($event->uuid)?->writeable()->delete();
+    }
+
+    public function onTicketCategoryChanged(Events\TicketCategoryChanged $event): void
+    {
+        Ticket::find($event->uuid)?->writeable()->update(['category_uuid' => $event->categoryUuid]);
+    }
+
+    public function onTicketBound(Events\TicketBound $event): void
+    {
+        Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => $event->operatorUuid]);
+    }
+
+    public function onTicketUnbound(Events\TicketUnbound $event): void
+    {
+        Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => null]);
     }
 
     public function onTicketInitialWeightIncremented(Events\TicketInitialWeightIncremented $event): void

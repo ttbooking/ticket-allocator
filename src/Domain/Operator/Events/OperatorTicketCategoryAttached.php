@@ -9,8 +9,8 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 class OperatorTicketCategoryAttached extends Event
 {
     public function __construct(
-        public readonly string $uuid,
-        public readonly string $ticketCategoryUuid,
+        public string $uuid,
+        public string $ticketCategoryUuid,
     ) {
     }
 }

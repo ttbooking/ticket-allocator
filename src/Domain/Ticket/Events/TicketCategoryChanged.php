@@ -9,8 +9,8 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 class TicketCategoryChanged extends Event
 {
     public function __construct(
-        public readonly string $uuid,
-        public readonly string $categoryUuid,
+        public string $uuid,
+        public string $categoryUuid,
     ) {
     }
 }

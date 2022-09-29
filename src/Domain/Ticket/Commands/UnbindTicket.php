@@ -12,7 +12,7 @@ use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 class UnbindTicket
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
+        #[AggregateUuid] public string $uuid,
     ) {
     }
 }

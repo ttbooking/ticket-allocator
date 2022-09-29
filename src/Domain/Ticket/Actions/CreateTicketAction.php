@@ -12,7 +12,7 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class CreateTicketAction extends Action
 {
-    public function __invoke(TicketCategory $category, object $ticketOrigin): ?Ticket
+    public function __invoke(TicketCategory $category, object $ticketOrigin = null): ?Ticket
     {
         $uuid = (string) Str::orderedUuid();
 

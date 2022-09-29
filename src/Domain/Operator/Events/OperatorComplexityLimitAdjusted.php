@@ -9,8 +9,8 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 class OperatorComplexityLimitAdjusted extends Event
 {
     public function __construct(
-        public readonly string $uuid,
-        public readonly int $complexityLimit,
+        public string $uuid,
+        public int $complexityLimit,
     ) {
     }
 }

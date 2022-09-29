@@ -12,8 +12,8 @@ use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 class ChangeTicketCategory
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
-        public readonly string $categoryUuid,
+        #[AggregateUuid] public string $uuid,
+        public string $categoryUuid,
     ) {
     }
 }

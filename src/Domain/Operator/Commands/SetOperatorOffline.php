@@ -12,7 +12,7 @@ use TTBooking\TicketAllocator\Domain\Operator\OperatorAggregateRoot;
 class SetOperatorOffline
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
+        #[AggregateUuid] public string $uuid,
     ) {
     }
 }

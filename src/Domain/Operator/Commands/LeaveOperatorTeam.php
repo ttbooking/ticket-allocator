@@ -12,8 +12,8 @@ use TTBooking\TicketAllocator\Domain\Operator\OperatorAggregateRoot;
 class LeaveOperatorTeam
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
-        public readonly string $operatorTeamUuid,
+        #[AggregateUuid] public string $uuid,
+        public string $operatorTeamUuid,
     ) {
     }
 }

@@ -12,8 +12,8 @@ use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 class IncrementTicketDelay
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
-        public readonly int $delaySeconds,
+        #[AggregateUuid] public string $uuid,
+        public int $delaySeconds,
     ) {
     }
 }

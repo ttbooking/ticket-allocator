@@ -9,8 +9,8 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 class OperatorEnrolled extends Event
 {
     public function __construct(
-        public readonly string $uuid,
-        public readonly object $origin,
+        public string $uuid,
+        public ?object $origin = null,
     ) {
     }
 }

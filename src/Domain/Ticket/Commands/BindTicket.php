@@ -12,8 +12,8 @@ use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 class BindTicket
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
-        public readonly string $operatorUuid,
+        #[AggregateUuid] public string $uuid,
+        public string $operatorUuid,
     ) {
     }
 }

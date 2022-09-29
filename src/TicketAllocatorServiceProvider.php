@@ -6,11 +6,14 @@ namespace TTBooking\TicketAllocator;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Spatie\EventSourcing\Facades\Projectionist;
 use TTBooking\TicketAllocator\Contracts\Factor;
 use TTBooking\TicketAllocator\Contracts\FactorRepository as FactorRepositoryContract;
+use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorProjector;
 use TTBooking\TicketAllocator\Domain\Support\FactorRepository;
 use TTBooking\TicketAllocator\Domain\Ticket\Factors\Category;
 use TTBooking\TicketAllocator\Domain\Ticket\Factors\ExpressiveFactor;
+use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
 
 class TicketAllocatorServiceProvider extends ServiceProvider
 {
@@ -24,6 +27,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         $this->registerRoutes();
         $this->registerResources();
         $this->registerCommands();
+        $this->registerEventHandlers();
 
         if ($this->app->runningInConsole()) {
             $this->offerPublishing();
@@ -66,6 +70,14 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->commands([
             Console\MakeFactorCommand::class,
+        ]);
+    }
+
+    protected function registerEventHandlers(): void
+    {
+        Projectionist::addEventHandlers([
+            OperatorProjector::class,
+            TicketProjector::class,
         ]);
     }
 

@@ -8,7 +8,7 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 
 class OperatorOnline extends Event
 {
-    public function __construct(public readonly string $uuid)
+    public function __construct(public string $uuid)
     {
     }
 }

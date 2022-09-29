@@ -29,7 +29,7 @@ class EsTicketSeeder extends Seeder
 
         for ($i = 0; $i < $count; $i++) {
 
-            $ticket = app(CreateTicketAction::class)(fake()->randomElement($ticketCategories), new \stdClass);
+            $ticket = app(CreateTicketAction::class)(fake()->randomElement($ticketCategories));
 
             fake()->boolean(30) && app(BindTicketAction::class)($ticket, fake()->randomElement($operators));
 

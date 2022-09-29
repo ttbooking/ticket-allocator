@@ -12,8 +12,8 @@ use TTBooking\TicketAllocator\Domain\Operator\OperatorAggregateRoot;
 class EnrollOperator
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
-        public readonly object $origin,
+        #[AggregateUuid] public string $uuid,
+        public ?object $origin = null,
     ) {
     }
 }

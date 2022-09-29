@@ -12,8 +12,8 @@ use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 class IncrementTicketInitialWeight
 {
     public function __construct(
-        #[AggregateUuid] public readonly string $uuid,
-        public readonly int $weightPoints,
+        #[AggregateUuid] public string $uuid,
+        public int $weightPoints,
     ) {
     }
 }

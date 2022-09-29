@@ -11,7 +11,7 @@ use TTBooking\TicketAllocator\Domain\Support\Action;
 
 class EnrollOperatorAction extends Action
 {
-    public function __invoke(object $operatorOrigin): ?Operator
+    public function __invoke(object $operatorOrigin = null): ?Operator
     {
         $uuid = (string) Str::orderedUuid();
 
