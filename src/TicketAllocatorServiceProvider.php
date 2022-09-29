@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Spatie\EventSourcing\Facades\Projectionist;
@@ -70,6 +71,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->commands([
             Console\MakeFactorCommand::class,
+            Console\SnapshotOperatorCommand::class,
         ]);
     }
 
@@ -114,6 +116,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->configure();
         $this->registerServices();
+        $this->scheduleOperatorSnapshot();
     }
 
     protected function configure(): void
@@ -129,5 +132,12 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         $this->app->bind('factor.expressive', ExpressiveFactor::class);
 
         $this->app->singleton(FactorRepositoryContract::class, FactorRepository::class);
+    }
+
+    protected function scheduleOperatorSnapshot(): void
+    {
+        $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+            $schedule->command('ticket-allocator:snapshot-operator')->daily();
+        });
     }
 }
