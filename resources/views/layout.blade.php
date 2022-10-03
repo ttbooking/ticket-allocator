@@ -11,7 +11,11 @@
 
         <!-- Scripts -->
         @routes
-        @vite('resources/js/app.js', 'vendor/ticket-allocator/build')
+        {{
+            Vite::useHotFile('vendor/ticket-allocator/hot')
+                ->useBuildDirectory('vendor/ticket-allocator/build')
+                ->withEntryPoints(['resources/js/app.js'])
+        }}
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
