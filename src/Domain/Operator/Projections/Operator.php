@@ -7,8 +7,10 @@ namespace TTBooking\TicketAllocator\Domain\Operator\Projections;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\EventSourcing\Projections\Projection;
 use TTBooking\TicketAllocator\Database\Factories\OperatorFactory;
+use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
 
 /**
@@ -19,6 +21,7 @@ use TTBooking\TicketAllocator\Models\OperatorTeam;
  * @property int $complexity_limit
  *
  * @property Collection<int, OperatorTeam> $teams
+ * @property Collection<int, Ticket> $tickets
  */
 class Operator extends Projection
 {
@@ -39,5 +42,13 @@ class Operator extends Projection
     public function teams(): BelongsToMany
     {
         return $this->belongsToMany(OperatorTeam::class, 'ticket_allocator_team_operator', 'operator_uuid', 'team_uuid');
+    }
+
+    /**
+     * @return HasMany<Ticket>
+     */
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class, 'handler_uuid');
     }
 }

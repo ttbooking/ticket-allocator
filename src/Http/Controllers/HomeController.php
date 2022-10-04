@@ -6,6 +6,8 @@ namespace TTBooking\TicketAllocator\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
+use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
+use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 
 class HomeController extends Controller
 {
@@ -16,6 +18,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Dashboard');
+        $unboundTickets = Ticket::unbound()->get()->toArray();
+        $operatorsWithTickets = Operator::with('tickets')->get()->toArray();
+
+        return Inertia::render('Dashboard', [
+            'tickets' => $unboundTickets,
+            'operators' => $operatorsWithTickets,
+        ]);
     }
 }
