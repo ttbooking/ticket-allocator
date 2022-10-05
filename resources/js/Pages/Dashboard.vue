@@ -20,16 +20,16 @@ defineProps(['tickets', 'operators'])
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <v-table>
-                            <tbody>
+                            <tbody class="align-text-top">
                                 <tr>
                                     <td></td>
                                     <td class="font-weight-bold">Очередь заявок</td>
                                     <td class="text-center">{{ tickets.length }}/&infin;</td>
                                     <td class="text-center">{{ tickets.reduce((n, {complexity}) => n + complexity, 0) }}/&infin;</td>
                                     <td class="pt-1">
-                                        <v-btn v-for="ticket in tickets" :key="ticket.uuid" size="small" color="blue" class="mr-1 mb-1" flat="flat" width="100">
+                                        <v-btn v-for="ticket in tickets" :key="ticket.uuid" size="small" class="ticket overflow mr-1 mb-1" flat="flat" width="100">
                                             <v-icon color="white" icon="mdi-airplane" start></v-icon>
-                                            <span class="text-white">{{ ticket.initial_weight }}</span>
+                                            <span class="text-white">{{ ticket.weight }}</span>
                                             <v-overlay open-on-click activator="parent" location-strategy="connected" location="bottom center" origin="auto">
                                                 <v-card
                                                     width="400"
@@ -48,9 +48,9 @@ defineProps(['tickets', 'operators'])
                                     <td class="text-center">{{ operator.tickets.length }}/{{ operator.ticket_limit ?? '&infin;' }}</td>
                                     <td class="text-center">{{ operator.tickets.reduce((n, {complexity}) => n + complexity, 0) }}/{{ operator.complexity_limit ?? '&infin;' }}</td>
                                     <td class="pt-1">
-                                        <v-btn v-for="ticket in operator.tickets" :key="ticket.uuid" size="small" color="blue" class="mr-1 mb-1" flat="flat" width="100">
+                                        <v-btn v-for="ticket in operator.tickets" :key="ticket.uuid" size="small" class="ticket overflow mr-1 mb-1" flat="flat" width="100">
                                             <v-icon color="white" icon="mdi-airplane" start></v-icon>
-                                            <span class="text-white">{{ ticket.initial_weight }}</span>
+                                            <span class="text-white">{{ ticket.weight }}</span>
                                             <v-overlay open-on-click activator="parent" location-strategy="connected" location="bottom center" origin="auto">
                                                 <v-card
                                                     width="400"

@@ -6,6 +6,7 @@ namespace TTBooking\TicketAllocator\Domain\Ticket\Projections;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,17 +24,19 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
  * @property int $weight_increment
  * @property int $complexity
  * @property int $delay
- * @property-read int $weight
  * @property-read Carbon $delayed_until
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon|null $deleted_at
  *
+ * @property-read int $duration
+ * @property-read int $weight
+ *
  * @property TicketCategory $category
  * @property Operator|null $operator
  *
- * @method static Builder<static> bound()
- * @method static Builder<static> unbound()
+ * @method static Builder<self> bound()
+ * @method static Builder<self> unbound()
  *
  * @method int increment(string $column, float|int $amount = 1, array $extra = [])
  * @method int decrement(string $column, float|int $amount = 1, array $extra = [])
@@ -64,9 +67,36 @@ class Ticket extends Projection
         'delay' => 'integer',
     ];
 
+    /** @var list<string> */
+    protected $appends = ['duration', 'weight'];
+
     protected static function newFactory(): TicketFactory
     {
         return TicketFactory::new();
+    }
+
+    /**
+     * Retrieve ticket duration in seconds.
+     *
+     * @return Attribute<int, never>
+     */
+    protected function duration(): Attribute
+    {
+        return Attribute::get(static function ($value, $attributes = []): int {
+            return now()->diffInSeconds($attributes[static::CREATED_AT]);
+        });
+    }
+
+    /**
+     * Retrieve current ticket weight.
+     *
+     * @return Attribute<int, never>
+     */
+    protected function weight(): Attribute
+    {
+        return Attribute::get(function ($value, $attributes = []): int {
+            return $attributes['initial_weight'] + $attributes['weight_increment'] * $this->duration;
+        });
     }
 
     /**
@@ -88,10 +118,10 @@ class Ticket extends Projection
     /**
      * Scope a query to only include bound tickets.
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<self>  $query
+     * @return Builder<self>
      */
-    public function scopeBound(Builder $query)
+    public function scopeBound(Builder $query): Builder
     {
         return $query->whereNotNull('handler_uuid');
     }
@@ -99,10 +129,10 @@ class Ticket extends Projection
     /**
      * Scope a query to only include unbound tickets.
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @param  Builder<self>  $query
+     * @return Builder<self>
      */
-    public function scopeUnbound(Builder $query)
+    public function scopeUnbound(Builder $query): Builder
     {
         return $query->whereNull('handler_uuid');
     }
