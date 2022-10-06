@@ -1,5 +1,5 @@
 <template>
-    <v-btn size="small" class="ticket mr-1 mb-1" flat="flat" width="100">
+    <v-btn size="small" class="ticket mr-1 mb-1" :class="{ overflow }" flat="flat" width="100">
         <v-icon color="white" icon="mdi-airplane" start></v-icon>
         <span class="text-white">{{ ticket.weight }}</span>
         <v-overlay open-on-click activator="parent" location-strategy="connected" location="bottom center" origin="auto">
@@ -20,9 +20,13 @@ import { usePage } from '@inertiajs/inertia-vue3'
 
 const props = defineProps(['ticket'])
 
+const position = computed(() => Math.round(props.ticket.weight / 1000))
+const threshold = computed(() => usePage().props.value.weightThreshold)
+const overflow = computed(() => position.value > threshold.value)
+
 const animation = computed(() => ({
-    delay: -Math.round(props.ticket.weight / 1000) + 's',
-    duration: usePage().props.value.weightThreshold + 's',
+    delay: -position.value + 's',
+    duration: threshold.value + 's',
 }))
 </script>
 
