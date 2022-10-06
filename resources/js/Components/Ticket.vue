@@ -16,12 +16,13 @@
 
 <script setup>
 import { computed } from 'vue'
+import { usePage } from '@inertiajs/inertia-vue3'
 
 const props = defineProps(['ticket'])
 
 const animation = computed(() => ({
-    delay: -Math.round(props.ticket.weight / 100000) + 's',
-    duration: '3600s',
+    delay: -Math.round(props.ticket.weight / 1000) + 's',
+    duration: usePage().props.value.weightThreshold + 's',
 }))
 </script>
 

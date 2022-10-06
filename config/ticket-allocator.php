@@ -35,4 +35,14 @@ return [
         'ticket.category' => \TTBooking\TicketAllocator\Domain\Ticket\Factors\Category::class,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Ticket Allocator Monitoring Options
+    |--------------------------------------------------------------------------
+    */
+
+    'duration_threshold' => env('TA_DURATION_THRESHOLD', 1800),
+
+    'weight_threshold' => env('TA_WEIGHT_THRESHOLD', 360_000),
+
 ];

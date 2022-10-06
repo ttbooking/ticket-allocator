@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TTBooking\TicketAllocator\Http\Middleware;
 
 use Illuminate\Http\Request;
@@ -18,10 +20,10 @@ class HandleInertiaRequests extends Middleware
     /**
      * Determine the current asset version.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return string|null
      */
-    public function version(Request $request)
+    public function version(Request $request): ?string
     {
         return parent::version($request);
     }
@@ -29,10 +31,10 @@ class HandleInertiaRequests extends Middleware
     /**
      * Define the props that are shared by default.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @param  Request  $request
+     * @return array<string, mixed>
      */
-    public function share(Request $request)
+    public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
             'auth' => [
@@ -43,6 +45,8 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'durationThreshold' => config('ticket-allocator.duration_threshold'),
+            'weightThreshold' => config('ticket-allocator.weight_threshold'),
         ]);
     }
 }
