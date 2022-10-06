@@ -1,5 +1,6 @@
 <script setup>
 import DefaultLayout from '@/Layouts/Default.vue'
+import TicketRow from '@/Components/TicketRow.vue'
 import { Head } from '@inertiajs/inertia-vue3'
 
 defineProps(['tickets', 'operators'])
@@ -27,19 +28,7 @@ defineProps(['tickets', 'operators'])
                                     <td class="text-center">{{ tickets.length }}/&infin;</td>
                                     <td class="text-center">{{ tickets.reduce((n, {complexity}) => n + complexity, 0) }}/&infin;</td>
                                     <td class="pt-1">
-                                        <v-btn v-for="ticket in tickets" :key="ticket.uuid" size="small" class="ticket overflow mr-1 mb-1" flat="flat" width="100">
-                                            <v-icon color="white" icon="mdi-airplane" start></v-icon>
-                                            <span class="text-white">{{ ticket.weight }}</span>
-                                            <v-overlay open-on-click activator="parent" location-strategy="connected" location="bottom center" origin="auto">
-                                                <v-card
-                                                    width="400"
-                                                    title="aaa"
-                                                    subtitle="bbb"
-                                                    text="zzz"
-                                                >
-                                                </v-card>
-                                            </v-overlay>
-                                        </v-btn>
+                                        <ticket-row :tickets="tickets" sort-by="weight"></ticket-row>
                                     </td>
                                 </tr>
                                 <tr v-for="operator in operators" :key="operator.uuid">
@@ -48,19 +37,7 @@ defineProps(['tickets', 'operators'])
                                     <td class="text-center">{{ operator.tickets.length }}/{{ operator.ticket_limit ?? '&infin;' }}</td>
                                     <td class="text-center">{{ operator.tickets.reduce((n, {complexity}) => n + complexity, 0) }}/{{ operator.complexity_limit ?? '&infin;' }}</td>
                                     <td class="pt-1">
-                                        <v-btn v-for="ticket in operator.tickets" :key="ticket.uuid" size="small" class="ticket overflow mr-1 mb-1" flat="flat" width="100">
-                                            <v-icon color="white" icon="mdi-airplane" start></v-icon>
-                                            <span class="text-white">{{ ticket.weight }}</span>
-                                            <v-overlay open-on-click activator="parent" location-strategy="connected" location="bottom center" origin="auto">
-                                                <v-card
-                                                    width="400"
-                                                    title="aaa"
-                                                    subtitle="bbb"
-                                                    text="zzz"
-                                                >
-                                                </v-card>
-                                            </v-overlay>
-                                        </v-btn>
+                                        <ticket-row :tickets="operator.tickets" sort-by="weight"></ticket-row>
                                     </td>
                                 </tr>
                             </tbody>
