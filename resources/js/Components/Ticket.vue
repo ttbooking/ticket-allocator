@@ -18,10 +18,16 @@
 import { computed } from 'vue'
 import { usePage } from '@inertiajs/inertia-vue3'
 
-const props = defineProps(['ticket'])
+const props = defineProps(['ticket', 'mode'])
 
-const position = computed(() => Math.round(props.ticket.weight / 1000))
-const threshold = computed(() => usePage().props.value.weightThreshold)
+const position = computed(() => {
+    return Math.round(props.ticket[props.mode] / 1000)
+})
+
+const threshold = computed(() => {
+    return usePage().props.value[props.mode + 'Threshold']
+})
+
 const overflow = computed(() => position.value > threshold.value)
 
 const animation = computed(() => ({

@@ -461,14 +461,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.0":
-  version: 1.0.0
-  resolution: "axios@npm:1.0.0"
+"axios@npm:^1.1":
+  version: 1.1.0
+  resolution: "axios@npm:1.1.0"
   dependencies:
     follow-redirects: ^1.15.0
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
-  checksum: 6270712ec3259d0603932edbd5f9da18f941e905a128585d4e9caf8e5ccaff988f2318f45c451ab43d0d52a40dc0f63cfb53c86073e5c689a017930e1b0e6227
+  checksum: e26df8edaf953640b331638886725335ad57a3b786a13aa93c5ac33f7edfa691026c31d42e88defef5709196978c7a449a4c556937a63037b21216ab7b169b1e
   languageName: node
   linkType: hard
 
@@ -2222,7 +2222,7 @@ __metadata:
     "@tailwindcss/forms": ^0.5.3
     "@vitejs/plugin-vue": ^3.1.2
     autoprefixer: ^10.4.12
-    axios: ^1.0
+    axios: ^1.1
     laravel-vite-plugin: ^0.6.1
     lodash: ^4.17.21
     moment: ^2.29.4
@@ -2233,7 +2233,7 @@ __metadata:
     vite-plugin-vuetify: ^1.0.0-alpha.17
     vue: ^3.2.40
     vue-cli-plugin-vuetify: ~2.5.8
-    vuetify: ^3.0.0-beta.12
+    vuetify: ^3.0.0-beta.13
     webfontloader: ^1.6.28
   languageName: unknown
   linkType: soft
@@ -2633,9 +2633,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuetify@npm:^3.0.0-beta.12":
-  version: 3.0.0-beta.12
-  resolution: "vuetify@npm:3.0.0-beta.12"
+"vuetify@npm:^3.0.0-beta.13":
+  version: 3.0.0-beta.13
+  resolution: "vuetify@npm:3.0.0-beta.13"
   peerDependencies:
     "@formatjs/intl": ^1.0.0 || ^2.0.0
     vite-plugin-vuetify: ^1.0.0-alpha.12
@@ -2651,7 +2651,7 @@ __metadata:
       optional: true
     webpack-plugin-vuetify:
       optional: true
-  checksum: bbe78b97e04f877999ae175c73da5978a363685a60951111a85ef596b183b9afc6a7b927fb68a8444abea97709b5b4c9ffab64182623d08a6a01994d189a3eab
+  checksum: 89c5d71dd0daecfb59ce9cab3f3028f6614bf87d87668f5fd954ea8bdd088c2d1fbc4eca353c9ed8a68e7dd0545ff9c277eee2abaf7289aa348677315adb2a1d
   languageName: node
   linkType: hard
 

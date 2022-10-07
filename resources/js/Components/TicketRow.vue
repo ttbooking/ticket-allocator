@@ -1,5 +1,5 @@
 <template>
-    <ticket v-for="ticket in sortedTickets" :key="ticket.uuid" :ticket="ticket"></ticket>
+    <ticket v-for="ticket in sortedTickets" :key="ticket.uuid" :ticket="ticket" :mode="sortBy"></ticket>
 </template>
 
 <script setup>
