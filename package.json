@@ -20,7 +20,7 @@
         "postcss": "^8.4.17",
         "roboto-fontface": "*",
         "tailwindcss": "^3.1.8",
-        "vite": "^3.1.6",
+        "vite": "^3.1.7",
         "vite-plugin-vuetify": "^1.0.0-alpha.17",
         "vue": "^3.2.40",
         "vue-cli-plugin-vuetify": "~2.5.8",
