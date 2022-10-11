@@ -1,16 +1,10 @@
 <template>
     <div class="d-inline-block">
         <v-btn size="small" class="ticket" :class="{ overflow }" flat="flat" width="100">
-            <v-icon color="white" icon="mdi-airplane" start></v-icon>
+            <v-icon color="white" icon="mdi-airplane" start />
             <span class="text-white">{{ ticket.weight }}</span>
             <v-overlay open-on-click activator="parent" location-strategy="connected" location="bottom center" origin="auto">
-                <v-card
-                    width="400"
-                    title="aaa"
-                    subtitle="bbb"
-                    text="zzz"
-                >
-                </v-card>
+                <v-card width="400" title="aaa" subtitle="bbb" text="zzz" />
             </v-overlay>
         </v-btn>
     </div>

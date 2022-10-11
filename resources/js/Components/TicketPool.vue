@@ -1,6 +1,6 @@
 <template>
     <TransitionGroup name="ticket-pool">
-        <ticket v-for="ticket in sortedTickets" :key="ticket.uuid" :ticket="ticket" :mode="sortBy" class="mr-1 mb-1"></ticket>
+        <Ticket v-for="ticket in sortedTickets" :key="ticket.uuid" :ticket="ticket" :mode="sortBy" class="mr-1 mb-1" />
     </TransitionGroup>
 </template>
 
