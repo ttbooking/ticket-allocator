@@ -1,5 +1,5 @@
 <template>
-    <TransitionGroup name="ticket-row">
+    <TransitionGroup name="ticket-pool">
         <ticket v-for="ticket in sortedTickets" :key="ticket.uuid" :ticket="ticket" :mode="sortBy" class="mr-1 mb-1"></ticket>
     </TransitionGroup>
 </template>
@@ -14,7 +14,7 @@ const sortedTickets = computed(() => _.orderBy(props.tickets, props.sortBy ?? 'w
 </script>
 
 <style scoped>
-.ticket-row-move {
+.ticket-pool-move {
     transition: all 0.5s ease;
 }
 </style>
