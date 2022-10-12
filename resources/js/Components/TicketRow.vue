@@ -10,11 +10,11 @@
         </td>
 
         <td class="load text-center">
-            <slot name="load">{{ tickets.length }}/&infin;</slot>
+            <slot name="load">{{ tickets.length }}</slot>/<slot name="load-max">&infin;</slot>
         </td>
 
         <td class="complexity text-center">
-            <slot name="complexity">{{ tickets.reduce((n, {complexity}) => n + complexity, 0) }}/&infin;</slot>
+            <slot name="complexity">{{ tickets.reduce((n, {complexity}) => n + complexity, 0) }}</slot>/<slot name="complexity-max">&infin;</slot>
         </td>
 
         <td class="tickets pt-1" :class="{ collapsed }">
@@ -46,9 +46,9 @@ const moreIcon = computed(() => collapsed.value ? 'mdi-chevron-down' : 'mdi-chev
 .ticket-row .complexity { width: 5em }
 .ticket-row .more { width: 4.8em }
 
-.tickets {
-    overflow: hidden;
+.tickets { overflow: hidden }
+.tickets.collapsed {
+    white-space: nowrap;
     mask-image: linear-gradient(to right, black 85%, transparent);
 }
-.tickets.collapsed { white-space: nowrap }
 </style>

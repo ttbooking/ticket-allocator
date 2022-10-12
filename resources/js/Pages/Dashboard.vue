@@ -1,6 +1,7 @@
 <script setup>
 import DefaultLayout from '@/Layouts/Default.vue'
 import TicketRow from '@/Components/TicketRow.vue'
+import OperatorRow from '@/Components/OperatorRow.vue'
 import { Head } from '@inertiajs/inertia-vue3'
 import { ref } from 'vue'
 
@@ -23,13 +24,8 @@ let mode = ref('weight')
             <v-switch v-model="mode" false-value="weight" true-value="duration" prepend-icon="mdi-weight" append-icon="mdi-clock" class="d-flex justify-end"></v-switch>
             <v-table class="ticket-monitor">
                 <tbody class="align-text-top">
-                    <TicketRow :tickets="tickets" :sort-by="mode">
-                        <template #name>Очередь заявок</template>
-                    </TicketRow>
-                    <TicketRow v-for="operator in operators" :key="operator.uuid" :tickets="operator.tickets" :sort-by="mode">
-                        <template #status><v-icon color="#4f4" icon="mdi-account" /></template>
-                        <template #name>{{ operator.name }}</template>
-                    </TicketRow>
+                    <TicketRow :tickets="tickets" :sort-by="mode"><template #name>Очередь заявок</template></TicketRow>
+                    <OperatorRow v-for="operator in operators" :key="operator.uuid" :operator="operator" :sort-by="mode" />
                 </tbody>
             </v-table>
         </div>
