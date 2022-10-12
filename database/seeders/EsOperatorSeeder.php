@@ -35,7 +35,7 @@ class EsOperatorSeeder extends Seeder
             fake()->boolean(90) && app(SetOperatorOnlineAction::class)($operator);
             fake()->boolean(70) && app(SetOperatorReadyAction::class)($operator);
 
-            app(AdjustOperatorTicketLimitAction::class)($operator, fake()->numberBetween(1, 4));
+            fake()->boolean(70) && app(AdjustOperatorTicketLimitAction::class)($operator, fake()->numberBetween(1, 4));
             app(AdjustOperatorComplexityLimitAction::class)($operator, 100);
 
             foreach (fake()->randomElements($operatorTeams,

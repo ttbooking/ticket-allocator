@@ -13,7 +13,7 @@ class AdjustOperatorTicketLimit
 {
     public function __construct(
         #[AggregateUuid] public string $uuid,
-        public int $ticketLimit,
+        public ?int $ticketLimit,
     ) {
     }
 }

@@ -10,7 +10,7 @@ use TTBooking\TicketAllocator\Domain\Support\Action;
 
 class AdjustOperatorTicketLimitAction extends Action
 {
-    public function __invoke(Operator $operator, int $ticketLimit): void
+    public function __invoke(Operator $operator, ?int $ticketLimit): void
     {
         $this->dispatch(new AdjustOperatorTicketLimit(
             uuid: $operator->getKey(),

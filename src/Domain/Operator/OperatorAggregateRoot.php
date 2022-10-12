@@ -16,9 +16,9 @@ class OperatorAggregateRoot extends AggregateRoot
 
     public bool $ready = false;
 
-    public int $ticketLimit = 0;
+    public ?int $ticketLimit = null;
 
-    public int $complexityLimit = 0;
+    public ?int $complexityLimit = null;
 
     public function enroll(Commands\EnrollOperator $command): static
     {

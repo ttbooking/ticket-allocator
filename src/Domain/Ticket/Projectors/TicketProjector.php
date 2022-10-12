@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Domain\Ticket\Projectors;
 
 use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
+use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Events;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 
@@ -30,12 +31,34 @@ class TicketProjector extends Projector
 
     public function onTicketBound(Events\TicketBound $event): void
     {
-        Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => $event->operatorUuid]);
+        //Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => $event->operatorUuid]);
+
+        $ticket = Ticket::find($event->uuid)?->writeable();
+
+        if ($operator = $ticket?->operator?->writeable()) {
+            $operator->decrement('bound_tickets');
+            $operator->decrement('total_complexity', $ticket->complexity);
+        }
+
+        $ticket?->update(['handler_uuid' => $event->operatorUuid]);
+
+        if ($operator = Operator::find($event->operatorUuid)?->writeable()) {
+            $operator->increment('bound_tickets');
+            $operator->increment('total_complexity', $ticket->complexity);
+        }
     }
 
     public function onTicketUnbound(Events\TicketUnbound $event): void
     {
-        Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => null]);
+        //Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => null]);
+
+        $ticket = Ticket::find($event->uuid)?->writeable();
+
+        if ($operator = $ticket?->operator?->writeable()) {
+            $operator->decrement('bound_tickets');
+            $operator->decrement('total_complexity', $ticket->complexity);
+            $ticket->update(['handler_uuid' => null]);
+        }
     }
 
     public function onTicketInitialWeightIncremented(Events\TicketInitialWeightIncremented $event): void

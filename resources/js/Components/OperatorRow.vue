@@ -1,8 +1,8 @@
 <template>
     <TicketRow :tickets="operator.tickets" :sort-by="sortBy" class="operator" :class="status">
         <template #status><v-icon icon="mdi-account" /></template>
-        <template #load-max>{{ operator.ticket_limit }}</template>
-        <template #complexity-max>{{ operator.complexity_limit }}</template>
+        <template #load-max>{{ operator.ticket_limit ?? '&infin;' }}</template>
+        <template #complexity-max>{{ operator.complexity_limit ?? '&infin;' }}</template>
         <template #name>{{ operator.name }}</template>
     </TicketRow>
 </template>

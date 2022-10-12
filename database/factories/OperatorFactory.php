@@ -36,7 +36,7 @@ class OperatorFactory extends Factory
             'name' => fake()->name(),
             'online' => fake()->boolean(90),
             'ready' => fake()->boolean(70),
-            'ticket_limit' => fake()->numberBetween(1, 4),
+            'ticket_limit' => fake()->optional(.7)->numberBetween(1, 4),
             'complexity_limit' => 100,
             /*'matching' => [
                 'categories' => fake()

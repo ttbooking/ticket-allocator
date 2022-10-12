@@ -10,7 +10,7 @@ class OperatorTicketLimitAdjusted extends Event
 {
     public function __construct(
         public string $uuid,
-        public int $ticketLimit,
+        public ?int $ticketLimit,
     ) {
     }
 }

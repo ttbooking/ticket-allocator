@@ -7,7 +7,7 @@ namespace TTBooking\TicketAllocator\Domain\Operator\Projectors;
 use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
 use TTBooking\TicketAllocator\Domain\Operator\Events;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
-use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
+//use TTBooking\TicketAllocator\Domain\Ticket\Events as TicketEvents;
 
 class OperatorProjector extends Projector
 {
@@ -72,4 +72,14 @@ class OperatorProjector extends Projector
     {
         Operator::find($event->uuid)?->writeable()->teams()->detach($event->operatorTeamUuid);
     }
+
+    /*public function onTicketBound(TicketEvents\TicketBound $event): void
+    {
+        Operator::find($event->operatorUuid)?->writeable()->increment('bound_tickets');
+    }
+
+    public function onTicketUnbound(TicketEvents\TicketUnbound $event): void
+    {
+        // ???
+    }*/
 }

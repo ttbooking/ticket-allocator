@@ -10,7 +10,7 @@ use TTBooking\TicketAllocator\Domain\Support\Action;
 
 class AdjustOperatorComplexityLimitAction extends Action
 {
-    public function __invoke(Operator $operator, int $complexityLimit): void
+    public function __invoke(Operator $operator, ?int $complexityLimit): void
     {
         $this->dispatch(new AdjustOperatorComplexityLimit(
             uuid: $operator->getKey(),

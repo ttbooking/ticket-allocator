@@ -10,7 +10,7 @@ class OperatorComplexityLimitAdjusted extends Event
 {
     public function __construct(
         public string $uuid,
-        public int $complexityLimit,
+        public ?int $complexityLimit,
     ) {
     }
 }

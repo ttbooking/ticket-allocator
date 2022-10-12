@@ -32,8 +32,8 @@ return new class extends Migration
             $table->unsignedInteger('total_complexity')->default(0);
 
             // virtual fields
-            $table->unsignedInteger('free_slots')->virtualAs('ticket_limit - bound_tickets');
-            $table->unsignedInteger('free_complexity')->virtualAs('complexity_limit - total_complexity');
+            $table->unsignedInteger('free_slots')->virtualAs('GREATEST(ticket_limit, bound_tickets) - bound_tickets');
+            $table->unsignedInteger('free_complexity')->virtualAs('GREATEST(complexity_limit, total_complexity) - total_complexity');
 
             // timestamps
             $table->timestamp('created_at')->useCurrent();
