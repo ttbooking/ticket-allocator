@@ -39,7 +39,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["laravel-vite-plugin", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:0.6.1"],\
             ["lodash", "npm:4.17.21"],\
             ["moment", "npm:2.29.4"],\
-            ["postcss", "npm:8.4.17"],\
+            ["postcss", "npm:8.4.18"],\
             ["roboto-fontface", "npm:0.10.0"],\
             ["tailwindcss", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:3.1.8"],\
             ["vite", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:3.1.7"],\
@@ -646,7 +646,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fraction.js", "npm:4.2.0"],\
             ["normalize-range", "npm:0.1.2"],\
             ["picocolors", "npm:1.0.0"],\
-            ["postcss", "npm:8.4.17"],\
+            ["postcss", "npm:8.4.18"],\
             ["postcss-value-parser", "npm:4.2.0"]\
           ],\
           "packagePeers": [\
@@ -2387,10 +2387,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:8.4.17", {\
-          "packageLocation": "./.yarn/cache/postcss-npm-8.4.17-301c0fb6cf-a6d9096dd7.zip/node_modules/postcss/",\
+        ["npm:8.4.18", {\
+          "packageLocation": "./.yarn/cache/postcss-npm-8.4.18-f1d73c0a84-9349fd9984.zip/node_modules/postcss/",\
           "packageDependencies": [\
-            ["postcss", "npm:8.4.17"],\
+            ["postcss", "npm:8.4.18"],\
             ["nanoid", "npm:3.3.4"],\
             ["picocolors", "npm:1.0.0"],\
             ["source-map-js", "npm:1.0.2"]\
@@ -2411,7 +2411,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["postcss-import", "virtual:49c21599366b1039b91080501b6f226807a58b66f0ef536d5554a0711947a12df03ec66ff9ba613863315c53a17db52deb92c603551cf72de4bc764f3ff79120#npm:14.1.0"],\
             ["@types/postcss", null],\
-            ["postcss", "npm:8.4.17"],\
+            ["postcss", "npm:8.4.18"],\
             ["postcss-value-parser", "npm:4.2.0"],\
             ["read-cache", "npm:1.0.0"],\
             ["resolve", "patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"]\
@@ -2437,7 +2437,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postcss-js", "virtual:49c21599366b1039b91080501b6f226807a58b66f0ef536d5554a0711947a12df03ec66ff9ba613863315c53a17db52deb92c603551cf72de4bc764f3ff79120#npm:4.0.0"],\
             ["@types/postcss", null],\
             ["camelcase-css", "npm:2.0.1"],\
-            ["postcss", "npm:8.4.17"]\
+            ["postcss", "npm:8.4.18"]\
           ],\
           "packagePeers": [\
             "@types/postcss",\
@@ -2461,7 +2461,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/postcss", null],\
             ["@types/ts-node", null],\
             ["lilconfig", "npm:2.0.6"],\
-            ["postcss", "npm:8.4.17"],\
+            ["postcss", "npm:8.4.18"],\
             ["ts-node", null],\
             ["yaml", "npm:1.10.2"]\
           ],\
@@ -2487,7 +2487,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["postcss-nested", "virtual:49c21599366b1039b91080501b6f226807a58b66f0ef536d5554a0711947a12df03ec66ff9ba613863315c53a17db52deb92c603551cf72de4bc764f3ff79120#npm:5.0.6"],\
             ["@types/postcss", null],\
-            ["postcss", "npm:8.4.17"],\
+            ["postcss", "npm:8.4.18"],\
             ["postcss-selector-parser", "npm:6.0.10"]\
           ],\
           "packagePeers": [\
@@ -2713,7 +2713,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["laravel-vite-plugin", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:0.6.1"],\
             ["lodash", "npm:4.17.21"],\
             ["moment", "npm:2.29.4"],\
-            ["postcss", "npm:8.4.17"],\
+            ["postcss", "npm:8.4.18"],\
             ["roboto-fontface", "npm:0.10.0"],\
             ["tailwindcss", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:3.1.8"],\
             ["vite", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:3.1.7"],\
@@ -2961,7 +2961,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["normalize-path", "npm:3.0.0"],\
             ["object-hash", "npm:3.0.0"],\
             ["picocolors", "npm:1.0.0"],\
-            ["postcss", "npm:8.4.17"],\
+            ["postcss", "npm:8.4.18"],\
             ["postcss-import", "virtual:49c21599366b1039b91080501b6f226807a58b66f0ef536d5554a0711947a12df03ec66ff9ba613863315c53a17db52deb92c603551cf72de4bc764f3ff79120#npm:14.1.0"],\
             ["postcss-js", "virtual:49c21599366b1039b91080501b6f226807a58b66f0ef536d5554a0711947a12df03ec66ff9ba613863315c53a17db52deb92c603551cf72de4bc764f3ff79120#npm:4.0.0"],\
             ["postcss-load-config", "virtual:49c21599366b1039b91080501b6f226807a58b66f0ef536d5554a0711947a12df03ec66ff9ba613863315c53a17db52deb92c603551cf72de4bc764f3ff79120#npm:3.1.4"],\
