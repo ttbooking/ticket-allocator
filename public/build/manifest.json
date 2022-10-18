@@ -16,7 +16,7 @@
     "src": ".yarn/cache/@mdi-font-npm-7.0.96-a7b8101819-3bc71dc45e.zip/node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf"
   },
   "resources/js/app.js": {
-    "file": "assets/app.057260ab.js",
+    "file": "assets/app.a8c79d8b.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -34,7 +34,7 @@
     ]
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.3ce8289c.js",
+    "file": "assets/Dashboard.b63fe0e6.js",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
