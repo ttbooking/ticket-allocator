@@ -16,7 +16,7 @@
     "src": ".yarn/cache/@mdi-font-npm-7.0.96-a7b8101819-3bc71dc45e.zip/node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf"
   },
   "resources/js/app.js": {
-    "file": "assets/app.a8c79d8b.js",
+    "file": "assets/app.16fc5d9f.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -24,7 +24,7 @@
       "resources/js/Pages/Dashboard.vue"
     ],
     "css": [
-      "assets/app.9bcb51bb.css"
+      "assets/app.92140754.css"
     ],
     "assets": [
       "assets/materialdesignicons-webfont.861aea05.eot",
@@ -34,14 +34,14 @@
     ]
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.b63fe0e6.js",
+    "file": "assets/Dashboard.d08df096.js",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js"
     ],
     "css": [
-      "assets/Dashboard.70d7a8fc.css"
+      "assets/Dashboard.d85d4ef2.css"
     ]
   },
   "_webfontloader.04920deb.js": {
@@ -49,11 +49,11 @@
     "isDynamicEntry": true
   },
   "resources/js/Pages/Dashboard.css": {
-    "file": "assets/Dashboard.70d7a8fc.css",
+    "file": "assets/Dashboard.d85d4ef2.css",
     "src": "resources/js/Pages/Dashboard.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app.9bcb51bb.css",
+    "file": "assets/app.92140754.css",
     "src": "resources/js/app.css"
   }
 }

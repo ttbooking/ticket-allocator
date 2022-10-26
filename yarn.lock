@@ -166,13 +166,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-vue@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "@vitejs/plugin-vue@npm:3.1.2"
+"@vitejs/plugin-vue@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@vitejs/plugin-vue@npm:3.2.0"
   peerDependencies:
     vite: ^3.0.0
     vue: ^3.2.25
-  checksum: 1da84ccfc8f31b612ad51dfbbbc39816900346168c1b66a0870ddeddc622d227ac9a1d571a94d9bc63c75e50320fb8b2f7c986a115e0b87140100b0ac35b9fd6
+  checksum: 64774f770e0e21ce7eb36743d614e3f197a35f5b67b2d3800c61766e649f43dc497bb037738ffafd607eb488064ab132c23766190e7ab557a0b88c0051f7a794
   languageName: node
   linkType: hard
 
@@ -1036,16 +1036,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-glob@npm:^3.2.11":
-  version: 3.2.11
-  resolution: "fast-glob@npm:3.2.11"
+"fast-glob@npm:^3.2.12":
+  version: 3.2.12
+  resolution: "fast-glob@npm:3.2.12"
   dependencies:
     "@nodelib/fs.stat": ^2.0.2
     "@nodelib/fs.walk": ^1.2.3
     glob-parent: ^5.1.2
     merge2: ^1.3.0
     micromatch: ^4.0.4
-  checksum: f473105324a7780a20c06de842e15ddbb41d3cb7e71d1e4fe6e8373204f22245d54f5ab9e2061e6a1c613047345954d29b022e0e76f5c28b1df9858179a0e6d7
+  checksum: 0b1990f6ce831c7e28c4d505edcdaad8e27e88ab9fa65eedadb730438cfc7cde4910d6c975d6b7b8dc8a73da4773702ebcfcd6e3518e73938bb1383badfe01c2
   languageName: node
   linkType: hard
 
@@ -1453,14 +1453,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"laravel-vite-plugin@npm:^0.6.1":
-  version: 0.6.1
-  resolution: "laravel-vite-plugin@npm:0.6.1"
+"laravel-vite-plugin@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "laravel-vite-plugin@npm:0.7.0"
   dependencies:
     vite-plugin-full-reload: ^1.0.1
   peerDependencies:
     vite: ^3.0.0
-  checksum: 79822379caba24185fba3a3c5b8464aa2809d356196bb68d8520f7f7da51161be7bada9e4e12ed5ef1a10d60302c7b6732f5b41bed9bdb7e84e273f1caa952dc
+  checksum: 634bdfde2ca63b2655e915668f66ee7e8091ea75e874c6f83422d9a421945903515fb4aeee17667fd3a8722be9f5f606af094b77c6cfa7b8a57008b280355075
   languageName: node
   linkType: hard
 
@@ -1577,7 +1577,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromatch@npm:^4.0.4":
+"micromatch@npm:^4.0.4, micromatch@npm:^4.0.5":
   version: 4.0.5
   resolution: "micromatch@npm:4.0.5"
   dependencies:
@@ -1986,18 +1986,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-nested@npm:5.0.6":
-  version: 5.0.6
-  resolution: "postcss-nested@npm:5.0.6"
+"postcss-nested@npm:6.0.0":
+  version: 6.0.0
+  resolution: "postcss-nested@npm:6.0.0"
   dependencies:
-    postcss-selector-parser: ^6.0.6
+    postcss-selector-parser: ^6.0.10
   peerDependencies:
     postcss: ^8.2.14
-  checksum: dbcbfd11e514f485ac0d2b649b32bcbd855665a88a76f697f8be6c5017aa0260954ecccd2475bbd5865a5d248eae9a4e6e10d2d51927621d05430381aa37e43b
+  checksum: 2105dc52cd19747058f1a46862c9e454b5a365ac2e7135fc1015d67a8fe98ada2a8d9ee578e90f7a093bd55d3994dd913ba5ff1d5e945b4ed9a8a2992ecc8f10
   languageName: node
   linkType: hard
 
-"postcss-selector-parser@npm:^6.0.10, postcss-selector-parser@npm:^6.0.6":
+"postcss-selector-parser@npm:^6.0.10":
   version: 6.0.10
   resolution: "postcss-selector-parser@npm:6.0.10"
   dependencies:
@@ -2014,7 +2014,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.1.10, postcss@npm:^8.4.14":
+"postcss@npm:^8.1.10":
   version: 8.4.14
   resolution: "postcss@npm:8.4.14"
   dependencies:
@@ -2025,18 +2025,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.16":
-  version: 8.4.16
-  resolution: "postcss@npm:8.4.16"
-  dependencies:
-    nanoid: ^3.3.4
-    picocolors: ^1.0.0
-    source-map-js: ^1.0.2
-  checksum: 10eee25efd77868036403858577da0cefaf2e0905feeaba5770d5438ccdddba3d01cba8063e96b8aac4c6daa0ed413dd5ae0554a433a3c4db38df1d134cffc1f
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.4.18":
+"postcss@npm:^8.4.17, postcss@npm:^8.4.18":
   version: 8.4.18
   resolution: "postcss@npm:8.4.18"
   dependencies:
@@ -2197,9 +2186,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:~2.78.0":
-  version: 2.78.1
-  resolution: "rollup@npm:2.78.1"
+"rollup@npm:^2.79.1":
+  version: 2.79.1
+  resolution: "rollup@npm:2.79.1"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -2207,7 +2196,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: 9034814383ca5bdb4bea6d499270aeb31cdb0bb884f81b0c6a1d19c63cc973f040e6ee09b7af8a7169dd231c090f4b44ef8b99c4bfdf884aceeb3dcefb8cfa14
+  checksum: 6a2bf167b3587d4df709b37d149ad0300692cc5deb510f89ac7bdc77c8738c9546ae3de9322b0968e1ed2b0e984571f5f55aae28fa7de4cfcb1bc5402a4e2be6
   languageName: node
   linkType: hard
 
@@ -2220,20 +2209,20 @@ __metadata:
     "@inertiajs/progress": ^0.2.7
     "@mdi/font": 7.0.96
     "@tailwindcss/forms": ^0.5.3
-    "@vitejs/plugin-vue": ^3.1.2
+    "@vitejs/plugin-vue": ^3.2.0
     autoprefixer: ^10.4.12
     axios: ^1.1
-    laravel-vite-plugin: ^0.6.1
+    laravel-vite-plugin: ^0.7.0
     lodash: ^4.17.21
     moment: ^2.29.4
     postcss: ^8.4.18
     roboto-fontface: "*"
-    tailwindcss: ^3.1.8
-    vite: ^3.1.8
+    tailwindcss: ^3.2.1
+    vite: ^3.2.0
     vite-plugin-vuetify: ^1.0.0
     vue: ^3.2.41
     vue-cli-plugin-vuetify: ~2.5.8
-    vuetify: ^3.0.0-beta.13
+    vuetify: ^3.0.0-beta.15
     webfontloader: ^1.6.28
   languageName: unknown
   linkType: soft
@@ -2424,9 +2413,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:^3.1.8":
-  version: 3.1.8
-  resolution: "tailwindcss@npm:3.1.8"
+"tailwindcss@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "tailwindcss@npm:3.2.1"
   dependencies:
     arg: ^5.0.2
     chokidar: ^3.5.3
@@ -2434,18 +2423,19 @@ __metadata:
     detective: ^5.2.1
     didyoumean: ^1.2.2
     dlv: ^1.1.3
-    fast-glob: ^3.2.11
+    fast-glob: ^3.2.12
     glob-parent: ^6.0.2
     is-glob: ^4.0.3
     lilconfig: ^2.0.6
+    micromatch: ^4.0.5
     normalize-path: ^3.0.0
     object-hash: ^3.0.0
     picocolors: ^1.0.0
-    postcss: ^8.4.14
+    postcss: ^8.4.17
     postcss-import: ^14.1.0
     postcss-js: ^4.0.0
     postcss-load-config: ^3.1.4
-    postcss-nested: 5.0.6
+    postcss-nested: 6.0.0
     postcss-selector-parser: ^6.0.10
     postcss-value-parser: ^4.2.0
     quick-lru: ^5.1.1
@@ -2455,7 +2445,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 86480301fc6ae1e392c2aba8264ab425bd919078176b010fda724518a7c265e950da5f4120c69c9041509c318207985fa9d680b6f5021e23f8214135a61a54b6
+  checksum: 8479f6e469b3ac3146fec5bf4b5ec411f24f481087d9db9a9e16bd5169cfe5f6af082b8fe656bbb8829faa8805765104843f549b08b4ba34e972d0743d0c7e94
   languageName: node
   linkType: hard
 
@@ -2570,19 +2560,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.1.8":
-  version: 3.1.8
-  resolution: "vite@npm:3.1.8"
+"vite@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "vite@npm:3.2.0"
   dependencies:
     esbuild: ^0.15.9
     fsevents: ~2.3.2
-    postcss: ^8.4.16
+    postcss: ^8.4.18
     resolve: ^1.22.1
-    rollup: ~2.78.0
+    rollup: ^2.79.1
   peerDependencies:
     less: "*"
     sass: "*"
     stylus: "*"
+    sugarss: "*"
     terser: ^5.4.0
   dependenciesMeta:
     fsevents:
@@ -2594,11 +2585,13 @@ __metadata:
       optional: true
     stylus:
       optional: true
+    sugarss:
+      optional: true
     terser:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 982696ad134577dd9915c4c3548ad36ddcf5dc6d341058548a670a13d860e4cdaaf2b320a59221f178018df089d148b9980e9a344316bef12b698a1c1abc7390
+  checksum: 2b3acfe74549c4be2d35786b40f253fa8ba53d8a7b29d1b7397f0536ab6a831e9cdbd27c628265fc2ddcf5c616254022d2c9cbd2a0e2b0443cf0c14455e101d6
   languageName: node
   linkType: hard
 
@@ -2633,25 +2626,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuetify@npm:^3.0.0-beta.13":
-  version: 3.0.0-beta.13
-  resolution: "vuetify@npm:3.0.0-beta.13"
+"vuetify@npm:^3.0.0-beta.15":
+  version: 3.0.0-beta.15
+  resolution: "vuetify@npm:3.0.0-beta.15"
   peerDependencies:
-    "@formatjs/intl": ^1.0.0 || ^2.0.0
     vite-plugin-vuetify: ^1.0.0-alpha.12
     vue: ^3.2.0
     vue-i18n: ^9.0.0
     webpack-plugin-vuetify: ^2.0.0-alpha.11
   peerDependenciesMeta:
-    "@formatjs/intl":
-      optional: true
     vite-plugin-vuetify:
       optional: true
     vue-i18n:
       optional: true
     webpack-plugin-vuetify:
       optional: true
-  checksum: 89c5d71dd0daecfb59ce9cab3f3028f6614bf87d87668f5fd954ea8bdd088c2d1fbc4eca353c9ed8a68e7dd0545ff9c277eee2abaf7289aa348677315adb2a1d
+  checksum: d9d956305b56be1828f451628afb4ac52efbd028be15b065ec28f0dba3172b0752454a2760787f8cc9c1a29080d4702cbe3b589f9b88be850f592fc43062237a
   languageName: node
   linkType: hard
 
