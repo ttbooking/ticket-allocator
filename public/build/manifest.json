@@ -24,7 +24,7 @@
       "resources/js/Pages/Dashboard.vue"
     ],
     "css": [
-      "assets/app.92140754.css"
+      "assets/app.03e8823c.css"
     ],
     "assets": [
       "assets/materialdesignicons-webfont.861aea05.eot",
@@ -41,7 +41,7 @@
       "resources/js/app.js"
     ],
     "css": [
-      "assets/Dashboard.d85d4ef2.css"
+      "assets/Dashboard.0a84df65.css"
     ]
   },
   "_webfontloader.04920deb.js": {
@@ -49,11 +49,11 @@
     "isDynamicEntry": true
   },
   "resources/js/Pages/Dashboard.css": {
-    "file": "assets/Dashboard.d85d4ef2.css",
+    "file": "assets/Dashboard.0a84df65.css",
     "src": "resources/js/Pages/Dashboard.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app.92140754.css",
+    "file": "assets/app.03e8823c.css",
     "src": "resources/js/app.css"
   }
 }

@@ -434,12 +434,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.12":
-  version: 10.4.12
-  resolution: "autoprefixer@npm:10.4.12"
+"autoprefixer@npm:^10.4.13":
+  version: 10.4.13
+  resolution: "autoprefixer@npm:10.4.13"
   dependencies:
     browserslist: ^4.21.4
-    caniuse-lite: ^1.0.30001407
+    caniuse-lite: ^1.0.30001426
     fraction.js: ^4.2.0
     normalize-range: ^0.1.2
     picocolors: ^1.0.0
@@ -448,7 +448,7 @@ __metadata:
     postcss: ^8.1.0
   bin:
     autoprefixer: bin/autoprefixer
-  checksum: 6ae79cbacd31fb3d464ec64eb6ad2600f4f689c3080bbe62c5536d539b41b472083a2e941ef99d14aa11142370d6c16e8b05a62f077374933ed991aceb5943d2
+  checksum: dcb1cb7ae96a3363d65d82e52f9a0a7d8c982256f6fd032d7e1ec311f099c23acfebfd517ff8e96bf93f716a66c4ea2b80c60aa19efd2f474ce434bd75ef7b79
   languageName: node
   linkType: hard
 
@@ -578,10 +578,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001400, caniuse-lite@npm:^1.0.30001407":
+"caniuse-lite@npm:^1.0.30001400":
   version: 1.0.30001410
   resolution: "caniuse-lite@npm:1.0.30001410"
   checksum: 0b1479dc13a736d244afe0f941bdd4d1ce26a73023f017b653f101d6e9398dee527b60bc6abfcd002e873240923cc766687ed9739dc233c47bcbf2a7673c3864
+  languageName: node
+  linkType: hard
+
+"caniuse-lite@npm:^1.0.30001426":
+  version: 1.0.30001427
+  resolution: "caniuse-lite@npm:1.0.30001427"
+  checksum: 7b21a7d1f10c07130cecb7e7c7c38fd031f3dbd49afaee53fa4bb07355f9765686cad14f6296fbb49838f525c35292278b2c5ee9109c363edea5e134514ab6bb
   languageName: node
   linkType: hard
 
@@ -2210,7 +2217,7 @@ __metadata:
     "@mdi/font": 7.0.96
     "@tailwindcss/forms": ^0.5.3
     "@vitejs/plugin-vue": ^3.2.0
-    autoprefixer: ^10.4.12
+    autoprefixer: ^10.4.13
     axios: ^1.1
     laravel-vite-plugin: ^0.7.0
     lodash: ^4.17.21
@@ -2218,7 +2225,7 @@ __metadata:
     postcss: ^8.4.18
     roboto-fontface: "*"
     tailwindcss: ^3.2.1
-    vite: ^3.2.0
+    vite: ^3.2.2
     vite-plugin-vuetify: ^1.0.0
     vue: ^3.2.41
     vue-cli-plugin-vuetify: ~2.5.8
@@ -2560,9 +2567,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "vite@npm:3.2.0"
+"vite@npm:^3.2.2":
+  version: 3.2.2
+  resolution: "vite@npm:3.2.2"
   dependencies:
     esbuild: ^0.15.9
     fsevents: ~2.3.2
@@ -2591,7 +2598,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 2b3acfe74549c4be2d35786b40f253fa8ba53d8a7b29d1b7397f0536ab6a831e9cdbd27c628265fc2ddcf5c616254022d2c9cbd2a0e2b0443cf0c14455e101d6
+  checksum: 7197ac91c612dda922367a95afa1b210353d6168d41845c186e2217bda1328d17b021b93d8089e336f9533b94645ae5dca18bb10937759f559c87006dd957fcd
   languageName: node
   linkType: hard
 
