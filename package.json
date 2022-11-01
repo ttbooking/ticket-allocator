@@ -24,7 +24,7 @@
         "vite-plugin-vuetify": "^1.0.0",
         "vue": "^3.2.41",
         "vue-cli-plugin-vuetify": "~2.5.8",
-        "vuetify": "^3.0.0-beta.15",
+        "vuetify": "^3.0.0",
         "webfontloader": "^1.6.28"
     },
     "packageManager": "yarn@3.2.4"
