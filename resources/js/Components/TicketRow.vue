@@ -28,7 +28,7 @@
     </tr>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TicketPool from '@/Components/TicketPool.vue'
 import { computed, ref } from 'vue'
 

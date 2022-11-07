@@ -7,7 +7,7 @@
     </TicketRow>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import TicketRow from '@/Components/TicketRow.vue'
 import { computed } from 'vue'
 

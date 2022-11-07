@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import DefaultLayout from '@/Layouts/Default.vue'
 import TicketRow from '@/Components/TicketRow.vue'
 import OperatorRow from '@/Components/OperatorRow.vue'

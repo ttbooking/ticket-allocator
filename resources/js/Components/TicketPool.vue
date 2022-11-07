@@ -4,8 +4,9 @@
     </TransitionGroup>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Ticket from '@/Components/Ticket.vue'
+import _ from 'lodash'
 import { computed } from 'vue'
 
 const props = defineProps(['tickets', 'sortBy', 'sortDirection'])
