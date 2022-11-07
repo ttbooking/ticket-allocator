@@ -11,6 +11,7 @@
 
         <!-- Scripts -->
         @routes
+        @vite('resources/js/app.js')
         {{
             Vite::useHotFile('vendor/ticket-allocator/hot')
                 ->useBuildDirectory('vendor/ticket-allocator/build')
