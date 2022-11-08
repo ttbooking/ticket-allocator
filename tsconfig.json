@@ -2,7 +2,8 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@/*": ["resources/js/*"]
+            "@/*": ["resources/js/*"],
+            "ziggy-js": ["vendor/tightenco/ziggy/dist/vue.m"]
         },
         "target": "ESNext",
         "useDefineForClassFields": true,
@@ -16,6 +17,7 @@
         "lib": ["ESNext", "DOM"],
         "skipLibCheck": true,
         "noEmit": true,
+        "typeRoots": ["./resources/js/types"],
         "types": ["vite/client"]
     },
     "exclude": ["node_modules", "public"]
