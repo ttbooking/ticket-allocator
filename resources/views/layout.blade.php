@@ -15,7 +15,7 @@
         {{
             Vite::useHotFile('vendor/ticket-allocator/hot')
                 ->useBuildDirectory('vendor/ticket-allocator/build')
-                ->withEntryPoints(['resources/js/app.js'])
+                ->withEntryPoints(['resources/js/app.ts'])
         }}
         @inertiaHead
     </head>

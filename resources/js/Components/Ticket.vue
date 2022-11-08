@@ -1,6 +1,6 @@
 <template>
     <div class="d-inline-block">
-        <v-btn size="small" class="ticket" :class="{ overflow }" flat="flat" width="100">
+        <v-btn size="small" class="ticket" :class="{ overflow }" flat width="100">
             <v-icon color="white" icon="mdi-airplane" start />
             <span class="text-white">{{ ticket.weight }}</span>
             <v-overlay open-on-click activator="parent" location-strategy="connected" location="bottom center" origin="auto">
@@ -13,18 +13,25 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { usePage } from '@inertiajs/inertia-vue3'
+import { Ticket, TicketSortBy } from '@/types'
 
-const props = defineProps(['ticket', 'mode'])
+const props = defineProps<{
+    ticket: Ticket
+    mode: TicketSortBy
+}>()
 
 const position = computed(() => {
     return Math.round(props.ticket[props.mode] / 1000)
 })
 
-const threshold = computed(() => {
-    return usePage().props.value[props.mode + 'Threshold']
+const threshold = computed<number>((): number => {
+    return usePage<{
+        durationThreshold: number
+        weightThreshold: number
+    }>().props.value[`${props.mode}Threshold`]
 })
 
-const overflow = computed(() => position.value > threshold.value)
+const overflow = computed<boolean>(() => position.value > threshold.value)
 
 const animation = computed(() => ({
     delay: -position.value + 's',

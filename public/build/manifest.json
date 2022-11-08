@@ -1,26 +1,26 @@
 {
-  ".yarn/cache/@mdi-font-npm-7.0.96-a7b8101819-3bc71dc45e.zip/node_modules/@mdi/font/fonts/materialdesignicons-webfont.eot": {
+  "node_modules/@mdi/font/fonts/materialdesignicons-webfont.eot": {
     "file": "assets/materialdesignicons-webfont.861aea05.eot",
-    "src": ".yarn/cache/@mdi-font-npm-7.0.96-a7b8101819-3bc71dc45e.zip/node_modules/@mdi/font/fonts/materialdesignicons-webfont.eot"
+    "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.eot"
   },
-  ".yarn/cache/@mdi-font-npm-7.0.96-a7b8101819-3bc71dc45e.zip/node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2": {
+  "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2": {
     "file": "assets/materialdesignicons-webfont.e52d60f6.woff2",
-    "src": ".yarn/cache/@mdi-font-npm-7.0.96-a7b8101819-3bc71dc45e.zip/node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2"
+    "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2"
   },
-  ".yarn/cache/@mdi-font-npm-7.0.96-a7b8101819-3bc71dc45e.zip/node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff": {
+  "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff": {
     "file": "assets/materialdesignicons-webfont.48d3eec6.woff",
-    "src": ".yarn/cache/@mdi-font-npm-7.0.96-a7b8101819-3bc71dc45e.zip/node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff"
+    "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff"
   },
-  ".yarn/cache/@mdi-font-npm-7.0.96-a7b8101819-3bc71dc45e.zip/node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf": {
+  "node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf": {
     "file": "assets/materialdesignicons-webfont.bd725a7a.ttf",
-    "src": ".yarn/cache/@mdi-font-npm-7.0.96-a7b8101819-3bc71dc45e.zip/node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf"
+    "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf"
   },
-  "resources/js/app.js": {
-    "file": "assets/app.0a1e1e6f.js",
-    "src": "resources/js/app.js",
+  "resources/js/app.ts": {
+    "file": "assets/app.38895481.js",
+    "src": "resources/js/app.ts",
     "isEntry": true,
     "dynamicImports": [
-      "_webfontloader.04920deb.js",
+      "_webfontloader.b777d690.js",
       "resources/js/Pages/Dashboard.vue"
     ],
     "css": [
@@ -34,22 +34,22 @@
     ]
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.59a31303.js",
+    "file": "assets/Dashboard.0c2fc3d6.js",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.js"
+      "resources/js/app.ts"
     ],
     "css": [
-      "assets/Dashboard.c63e4b30.css"
+      "assets/Dashboard.0a717172.css"
     ]
   },
-  "_webfontloader.04920deb.js": {
-    "file": "assets/webfontloader.04920deb.js",
+  "_webfontloader.b777d690.js": {
+    "file": "assets/webfontloader.b777d690.js",
     "isDynamicEntry": true
   },
   "resources/js/Pages/Dashboard.css": {
-    "file": "assets/Dashboard.c63e4b30.css",
+    "file": "assets/Dashboard.0a717172.css",
     "src": "resources/js/Pages/Dashboard.css"
   },
   "resources/js/app.css": {

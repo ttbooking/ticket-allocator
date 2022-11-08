@@ -4,16 +4,20 @@ import TicketRow from '@/Components/TicketRow.vue'
 import OperatorRow from '@/Components/OperatorRow.vue'
 import { Head } from '@inertiajs/inertia-vue3'
 import { ref, onMounted } from 'vue'
+import { Operator, Ticket, TicketSortBy, SortDirection } from '@/types'
 import { useOperatorsStore } from '@/stores/operators'
 //import { useTicketsStore } from '@/stores/tickets'
 
-const props = defineProps(['tickets', 'operators'])
+const props = defineProps<{
+    operators: Operator[]
+    tickets: Ticket[]
+}>()
 
 const oprStore = useOperatorsStore()
 //const tckStore = useTicketsStore()
 
-let oprSort = ref('asc')
-let mode = ref('weight')
+let oprSort = ref<SortDirection>('asc')
+let mode = ref<TicketSortBy>('weight')
 
 onMounted(() => {
     for (let operator of props.operators) {

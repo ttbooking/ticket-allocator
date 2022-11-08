@@ -10,8 +10,13 @@
 <script setup lang="ts">
 import TicketRow from '@/Components/TicketRow.vue'
 import { computed } from 'vue'
+import {Operator, TicketSortBy, SortDirection} from '@/types'
 
-const props = defineProps(['operator', 'sortBy', 'sortDirection'])
+const props = defineProps<{
+    operator: Operator
+    sortBy: TicketSortBy
+    sortDirection?: SortDirection
+}>()
 
 const status = computed(() => ({
     online: props.operator.online,
