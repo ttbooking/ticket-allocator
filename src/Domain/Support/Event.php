@@ -16,9 +16,7 @@ use TTBooking\TicketAllocator\Contracts\ShouldAffect;
 
 abstract class Event extends ShouldBeStored implements ShouldAffect, ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels {
-        __sleep as __modelSleep;
-    }
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public string $queue = 'event-sourcing';
 
@@ -30,12 +28,10 @@ abstract class Event extends ShouldBeStored implements ShouldAffect, ShouldBroad
 
     public function __sleep()
     {
-        $properties = $this->__modelSleep();
-
         unset($this->queue);
         unset($this->socket);
 
-        return $properties;
+        return array_keys($this->broadcastWith());
     }
 
     /**
