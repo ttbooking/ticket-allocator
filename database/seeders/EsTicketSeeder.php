@@ -28,7 +28,6 @@ class EsTicketSeeder extends Seeder
         $operators = Operator::all()->all();
 
         for ($i = 0; $i < $count; $i++) {
-
             $ticket = app(CreateTicketAction::class)(fake()->randomElement($ticketCategories));
 
             fake()->boolean(30) && app(BindTicketAction::class)($ticket, fake()->randomElement($operators));
@@ -37,7 +36,6 @@ class EsTicketSeeder extends Seeder
             app(IncrementTicketWeightIncrementAction::class)($ticket, fake()->numberBetween(0, 1000));
             app(IncrementTicketComplexityAction::class)($ticket, fake()->randomElement([10, 25, 50, 75, 100]));
             fake()->boolean(10) && app(IncrementTicketDelayAction::class)($ticket, fake()->numberBetween(1, 10) * 60);
-
         }
     }
 }

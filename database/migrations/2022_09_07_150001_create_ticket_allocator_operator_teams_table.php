@@ -14,7 +14,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ticket_allocator_operator_teams', function (Blueprint $table) {
-
             $table->uuid()->primary();
             $table->string('name');
             $table->text('description');
@@ -27,7 +26,6 @@ return new class extends Migration
                 '(CAST(matching->"$.categories" AS CHAR(36) ARRAY))',
                 'ticket_allocator_operator_teams_matching_categories_index'
             );
-
         });
     }
 

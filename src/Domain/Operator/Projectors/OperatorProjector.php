@@ -7,6 +7,7 @@ namespace TTBooking\TicketAllocator\Domain\Operator\Projectors;
 use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
 use TTBooking\TicketAllocator\Domain\Operator\Events;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
+
 //use TTBooking\TicketAllocator\Domain\Ticket\Events as TicketEvents;
 
 class OperatorProjector extends Projector

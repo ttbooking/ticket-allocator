@@ -32,6 +32,7 @@ class FactorRepository implements FactorRepositoryContract
     /**
      * @param  class-string<Event>  $event
      * @return list<Factor>
+     *
      * @throws FactorResolutionException
      */
     public function getForEvent(string $event): array
@@ -50,6 +51,7 @@ class FactorRepository implements FactorRepositoryContract
      *
      * @param  class-string  $factor
      * @return Factor
+     *
      * @throws FactorResolutionException
      */
     protected function newInstance(string $factor): Factor
@@ -70,6 +72,7 @@ class FactorRepository implements FactorRepositoryContract
     /**
      * @param  non-empty-string  $uuid
      * @return Factor
+     *
      * @throws FactorResolutionException
      */
     public function get(string $uuid): Factor
@@ -86,6 +89,7 @@ class FactorRepository implements FactorRepositoryContract
      * @param  mixed[]  $config
      * @param  string|null  $description
      * @return non-empty-string
+     *
      * @throws FactorResolutionException
      */
     public function add(string $factor, array $config = [], string $description = null): string

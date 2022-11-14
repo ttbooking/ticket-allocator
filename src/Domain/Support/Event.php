@@ -10,7 +10,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
-use ReflectionClass, ReflectionProperty;
+use ReflectionClass;
+use ReflectionProperty;
 use Spatie\EventSourcing\StoredEvents\ShouldBeStored;
 use TTBooking\TicketAllocator\Contracts\ShouldAffect;
 
@@ -78,6 +79,7 @@ abstract class Event extends ShouldBeStored implements ShouldAffect, ShouldBroad
     private static function parseClassName(): array
     {
         static $components;
+
         return $components ??= explode('-', Str::kebab(class_basename(static::class)), 2);
     }
 }

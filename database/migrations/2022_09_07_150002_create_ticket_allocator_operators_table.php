@@ -14,7 +14,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ticket_allocator_operators', function (Blueprint $table) {
-
             // PK
             $table->uuid()->primary();
 
@@ -43,7 +42,6 @@ return new class extends Migration
                 '(CAST(matching->"$.categories" AS CHAR(36) ARRAY))',
                 'ticket_allocator_operators_matching_categories_index'
             );
-
         });
     }
 

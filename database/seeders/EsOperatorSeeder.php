@@ -27,7 +27,6 @@ class EsOperatorSeeder extends Seeder
         $operatorTeams = OperatorTeam::all()->all();
 
         for ($i = 0; $i < $count; $i++) {
-
             $operator = app(EnrollOperatorAction::class)();
 
             app(ChangeOperatorNameAction::class)($operator, fake()->name());
@@ -43,7 +42,6 @@ class EsOperatorSeeder extends Seeder
             ) as $team) {
                 app(JoinOperatorTeamAction::class)($operator, $team);
             }
-
         }
     }
 }

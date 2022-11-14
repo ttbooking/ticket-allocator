@@ -28,16 +28,13 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon|null $deleted_at
- *
  * @property-read int $duration
  * @property-read int $weight
- *
  * @property TicketCategory $category
  * @property Operator|null $operator
  *
  * @method static Builder<self> bound()
  * @method static Builder<self> unbound()
- *
  * @method int increment(string $column, float|int $amount = 1, array $extra = [])
  * @method int decrement(string $column, float|int $amount = 1, array $extra = [])
  */

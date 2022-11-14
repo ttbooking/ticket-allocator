@@ -14,7 +14,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ticket_allocator_tickets', function (Blueprint $table) {
-
             // PK
             $table->uuid()->primary();
 
@@ -43,7 +42,6 @@ return new class extends Migration
 
             //$table->rawIndex('(CAST(tags AS CHAR(255) ARRAY))', 'ticket_allocator_tickets_tags_index');
             $table->rawIndex('(CAST(meta->"$.order" AS UNSIGNED))', 'ticket_allocator_tickets_meta_order_index');
-
         });
     }
 

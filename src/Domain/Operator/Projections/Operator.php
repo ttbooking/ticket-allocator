@@ -27,7 +27,6 @@ use TTBooking\TicketAllocator\Models\OperatorTeam;
  * @property-read int|null $free_complexity
  * @property Carbon $created_at
  * @property Carbon $updated_at
- *
  * @property Collection<int, OperatorTeam> $teams
  * @property Collection<int, Ticket> $tickets
  *
