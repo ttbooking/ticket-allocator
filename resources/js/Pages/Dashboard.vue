@@ -3,10 +3,11 @@ import DefaultLayout from "@/Layouts/Default.vue";
 import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import { Operator, Ticket, TicketSortBy, SortDirection } from "@/types";
 import { useOperatorsStore } from "@/stores/operators";
-//import { useTicketsStore } from '@/stores/tickets'
+import { useLocalStorage } from "@vueuse/core";
+//import { useTicketsStore } from "@/stores/tickets";
 
 const props = defineProps<{
     operators: Operator[];
@@ -14,10 +15,10 @@ const props = defineProps<{
 }>();
 
 const oprStore = useOperatorsStore();
-//const tckStore = useTicketsStore()
+//const tckStore = useTicketsStore();
 
-let oprSort = ref<SortDirection>("asc");
-let mode = ref<TicketSortBy>("weight");
+const oprSort = useLocalStorage<SortDirection>("ticket-allocator.opr-sort", "asc");
+const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
 
 onMounted(() => {
     for (let operator of props.operators) {
@@ -57,9 +58,9 @@ onMounted(() => {
             </div>
             <v-table class="ticket-monitor">
                 <tbody class="align-text-top">
-                    <TicketRow :tickets="tickets" :sort-by="mode"
-                        ><template #name>Очередь заявок</template></TicketRow
-                    >
+                    <TicketRow :tickets="tickets" :sort-by="mode">
+                        <template #name>Очередь заявок</template>
+                    </TicketRow>
                     <TransitionGroup name="operator-pool">
                         <OperatorRow
                             v-for="operator in oprStore.sorted(oprSort)"
