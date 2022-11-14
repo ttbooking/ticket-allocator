@@ -1,7 +1,5 @@
-declare module 'ziggy-js' {
+declare module "ziggy-js" {
+    import { Plugin } from "vue";
 
-    import { Plugin } from 'vue'
-
-    export const ZiggyVue: Plugin
-
+    export const ZiggyVue: Plugin;
 }

@@ -1,6 +1,5 @@
 <template>
     <tr class="ticket-row">
-
         <td class="status">
             <slot name="status" />
         </td>
@@ -10,11 +9,13 @@
         </td>
 
         <td class="load text-center">
-            <slot name="load">{{ tickets.length }}</slot>/<slot name="load-max">&infin;</slot>
+            <slot name="load">{{ tickets.length }}</slot
+            >/<slot name="load-max">&infin;</slot>
         </td>
 
         <td class="complexity text-center">
-            <slot name="complexity">{{ complexity }}</slot>/<slot name="complexity-max">&infin;</slot>
+            <slot name="complexity">{{ complexity }}</slot
+            >/<slot name="complexity-max">&infin;</slot>
         </td>
 
         <td class="tickets pt-1" :class="{ collapsed }">
@@ -22,38 +23,58 @@
         </td>
 
         <td class="more text-center">
-            <v-btn @click="collapsed = !collapsed" size="x-small" variant="tonal" :icon="moreIcon" />
+            <v-btn
+                @click="collapsed = !collapsed"
+                size="x-small"
+                variant="tonal"
+                :icon="moreIcon"
+            />
         </td>
-
     </tr>
 </template>
 
 <script setup lang="ts">
-import TicketPool from '@/Components/TicketPool.vue'
-import { computed, ref } from 'vue'
-import { Ticket, TicketSortBy, SortDirection } from '@/types'
+import TicketPool from "@/Components/TicketPool.vue";
+import { computed, ref } from "vue";
+import { Ticket, TicketSortBy, SortDirection } from "@/types";
 
 const props = defineProps<{
-    tickets: Ticket[]
-    sortBy: TicketSortBy
-    sortDirection?: SortDirection
-}>()
+    tickets: Ticket[];
+    sortBy: TicketSortBy;
+    sortDirection?: SortDirection;
+}>();
 
-let collapsed = ref<boolean>(false)
+let collapsed = ref<boolean>(false);
 
-const complexity = computed<number>(() => props.tickets.reduce((n, {complexity}) => n + complexity, 0))
+const complexity = computed<number>(() =>
+    props.tickets.reduce((n, { complexity }) => n + complexity, 0)
+);
 
-const moreIcon = computed<string>(() => collapsed.value ? 'mdi-chevron-down' : 'mdi-chevron-up')
+const moreIcon = computed<string>(() =>
+    collapsed.value ? "mdi-chevron-down" : "mdi-chevron-up"
+);
 </script>
 
 <style scoped>
-.ticket-row .status { width: 2.2em }
-.ticket-row .name { width: 14em }
-.ticket-row .load { width: 3.9em }
-.ticket-row .complexity { width: 5em }
-.ticket-row .more { width: 4.8em }
+.ticket-row .status {
+    width: 2.2em;
+}
+.ticket-row .name {
+    width: 14em;
+}
+.ticket-row .load {
+    width: 3.9em;
+}
+.ticket-row .complexity {
+    width: 5em;
+}
+.ticket-row .more {
+    width: 4.8em;
+}
 
-.tickets { overflow: hidden }
+.tickets {
+    overflow: hidden;
+}
 .tickets.collapsed {
     white-space: nowrap;
     mask-image: linear-gradient(to right, black 85%, transparent);

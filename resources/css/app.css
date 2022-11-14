@@ -3,17 +3,33 @@
 @tailwind utilities;
 
 @keyframes ticketWeight {
-    0% { background-color: green }
-    33% { background-color: orange }
-    50% { background-color: orangered }
-    67% { background-color: red }
-    83% { background-color: darkred }
-    100% { background-color: black }
+    0% {
+        background-color: green;
+    }
+    33% {
+        background-color: orange;
+    }
+    50% {
+        background-color: orangered;
+    }
+    67% {
+        background-color: red;
+    }
+    83% {
+        background-color: darkred;
+    }
+    100% {
+        background-color: black;
+    }
 }
 
 @keyframes ticketWeightOverflow {
-    from { background-color: black }
-    to   { background-color: red }
+    from {
+        background-color: black;
+    }
+    to {
+        background-color: red;
+    }
 }
 
 .ticket {
@@ -21,5 +37,5 @@
 }
 
 .ticket.overflow {
-    animation: ticketWeightOverflow .5s ease-in infinite alternate running !important;
+    animation: ticketWeightOverflow 0.5s ease-in infinite alternate running !important;
 }

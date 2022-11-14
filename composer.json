@@ -2,7 +2,11 @@
     "name": "ttbooking/ticket-allocator",
     "description": "Ticket Allocator service.",
     "type": "library",
-    "keywords": ["helpdesk", "support", "ticket"],
+    "keywords": [
+        "helpdesk",
+        "support",
+        "ticket"
+    ],
     "license": "MIT",
     "support": {
         "issues": "https://github.com/ttbooking/ticket-allocator/issues",
