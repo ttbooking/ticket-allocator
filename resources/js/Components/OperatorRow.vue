@@ -22,7 +22,7 @@ const status = computed(() => ({
     online: props.operator.online,
     ready: props.operator.ready,
     busy: !!props.operator.tickets.length,
-    full: props.operator.tickets.length >= props.operator.ticket_limit,
+    full: props.operator.ticket_limit !== undefined && props.operator.tickets.length >= props.operator.ticket_limit,
 }));
 </script>
 

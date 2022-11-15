@@ -23,26 +23,26 @@ const oprSort = useLocalStorage<SortDirection>("ticket-allocator.opr-sort", "asc
 const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
 
 onMounted(() => {
-    for (let operator of props.operators) {
-        oprStore.enroll(operator);
+    for (const operator of props.operators) {
+        oprStore.all.set(operator.uuid, operator);
     }
 
     window.ticketAllocatorChannel = <PusherChannel>window.Echo.channel(Events.Channel);
+
     window.ticketAllocatorChannel.listenToAll((event: string, data: any) => {
         console.log(event, data);
     });
-    /*.listen(Events.Operator.Commented, (payload: Events.Operator.CommentedPayload) => {
-            console.log(Events.Operator.Commented);
-            console.log(payload);
-        })
-        .listen(Events.Operator.ComplexityLimitAdjusted, (payload: Events.Operator.ComplexityLimitAdjustedPayload) => {
-            console.log(Events.Operator.ComplexityLimitAdjusted);
-            console.log(payload);
-        })
-        .listen(Events.Operator.Enrolled, (payload: Events.Operator.EnrolledPayload) => {
-            console.log(Events.Operator.Enrolled);
-            console.log(payload);
-        });*/
+
+    window.ticketAllocatorChannel
+        .listen(Events.Operator.Enrolled, oprStore.enroll)
+        .listen(Events.Operator.Resigned, oprStore.resign)
+        .listen(Events.Operator.NameChanged, oprStore.changeName)
+        .listen(Events.Operator.Online, oprStore.setOnline)
+        .listen(Events.Operator.Offline, oprStore.setOffline)
+        .listen(Events.Operator.Ready, oprStore.setReady)
+        .listen(Events.Operator.NotReady, oprStore.setNotReady)
+        .listen(Events.Operator.TicketLimitAdjusted, oprStore.adjustTicketLimit)
+        .listen(Events.Operator.ComplexityLimitAdjusted, oprStore.adjustComplexityLimit);
 });
 </script>
 

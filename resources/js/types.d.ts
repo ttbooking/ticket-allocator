@@ -8,10 +8,10 @@ export interface Operator {
     online: boolean;
     ready: boolean;
     tickets: Ticket[];
-    ticket_limit: number;
-    complexity_limit: number;
-    free_slots: number;
-    free_complexity: number;
+    ticket_limit?: number;
+    complexity_limit?: number;
+    free_slots?: number;
+    free_complexity?: number;
 }
 
 export interface Ticket {
