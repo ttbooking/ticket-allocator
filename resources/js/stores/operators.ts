@@ -20,7 +20,17 @@ export const useOperatorsStore = defineStore("operators", () => {
     }
 
     function enroll({ uuid }: Events.Operator.EnrolledPayload) {
-        all.set(uuid, { uuid, name: "", online: false, ready: false, tickets: [] });
+        all.set(uuid, {
+            uuid,
+            name: "",
+            online: false,
+            ready: false,
+            tickets: [],
+            ticket_limit: null,
+            complexity_limit: null,
+            free_slots: null,
+            free_complexity: null,
+        });
     }
 
     function resign({ uuid }: Events.Operator.ResignedPayload) {

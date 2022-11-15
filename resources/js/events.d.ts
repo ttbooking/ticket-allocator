@@ -34,139 +34,139 @@ export enum Ticket {
     WeightIncrementIncremented = ".ticket.weight-increment-incremented",
 }
 
-export namespace Operator {
-    interface CommentedPayload {
+namespace Operator {
+    export interface CommentedPayload {
         uuid: string;
         orderId: number;
     }
 
-    interface ComplexityLimitAdjustedPayload {
+    export interface ComplexityLimitAdjustedPayload {
         uuid: string;
-        complexityLimit?: number;
+        complexityLimit: number | null;
     }
 
-    interface EnrolledPayload {
+    export interface EnrolledPayload {
         uuid: string;
         origin?: any;
     }
 
-    interface JoinedTeamPayload {
+    export interface JoinedTeamPayload {
         uuid: string;
         operatorTeamUuid: string;
     }
 
-    interface LeftTeamPayload {
+    export interface LeftTeamPayload {
         uuid: string;
         operatorTeamUuid: string;
     }
 
-    interface NameChangedPayload {
+    export interface NameChangedPayload {
         uuid: string;
         name: string;
     }
 
-    interface NotReadyPayload {
+    export interface NotReadyPayload {
         uuid: string;
     }
 
-    interface OfflinePayload {
+    export interface OfflinePayload {
         uuid: string;
     }
 
-    interface OnlinePayload {
+    export interface OnlinePayload {
         uuid: string;
     }
 
-    interface ReadyPayload {
+    export interface ReadyPayload {
         uuid: string;
     }
 
-    interface ResignedPayload {
+    export interface ResignedPayload {
         uuid: string;
     }
 
-    interface TicketCategoryAttachedPayload {
+    export interface TicketCategoryAttachedPayload {
         uuid: string;
         ticketCategoryUuid: string;
     }
 
-    interface TicketCategoryDetachedPayload {
+    export interface TicketCategoryDetachedPayload {
         uuid: string;
         ticketCategoryUuid: string;
     }
 
-    interface TicketLimitAdjustedPayload {
+    export interface TicketLimitAdjustedPayload {
         uuid: string;
-        ticketLimit?: number;
+        ticketLimit: number | null;
     }
 }
 
-export namespace Ticket {
-    interface BoundPayload {
+namespace Ticket {
+    export interface BoundPayload {
         uuid: string;
         operatorUuid: string;
     }
 
-    interface CategoryChangedPayload {
+    export interface CategoryChangedPayload {
         uuid: string;
         categoryUuid: string;
     }
 
-    interface ClosedPayload {
+    export interface ClosedPayload {
         uuid: string;
     }
 
-    interface ComplexityDecrementedPayload {
-        uuid: string;
-        complexityPoints: number;
-    }
-
-    interface ComplexityIncrementedPayload {
+    export interface ComplexityDecrementedPayload {
         uuid: string;
         complexityPoints: number;
     }
 
-    interface CreatedPayload {
+    export interface ComplexityIncrementedPayload {
+        uuid: string;
+        complexityPoints: number;
+    }
+
+    export interface CreatedPayload {
         uuid: string;
         categoryUuid: string;
         origin?: any;
     }
 
-    interface DelayDecrementedPayload {
+    export interface DelayDecrementedPayload {
         uuid: string;
         delaySeconds: number;
     }
 
-    interface DelayIncrementedPayload {
+    export interface DelayIncrementedPayload {
         uuid: string;
         delaySeconds: number;
     }
 
-    interface InitialWeightDecrementedPayload {
+    export interface InitialWeightDecrementedPayload {
         uuid: string;
         weightPoints: number;
     }
 
-    interface InitialWeightIncrementedPayload {
+    export interface InitialWeightIncrementedPayload {
         uuid: string;
         weightPoints: number;
     }
 
-    interface TaggedPayload {
+    export interface TaggedPayload {
         uuid: string;
         tags: string[];
     }
 
-    interface UnboundPayload {
+    export interface UnboundPayload {
         uuid: string;
     }
 
-    interface WeightIncrementDecremented {
+    export interface WeightIncrementDecrementedPayload {
         uuid: string;
         weightPoints: number;
     }
 
-    interface WeightIncrementIncremented {
+    export interface WeightIncrementIncrementedPayload {
         uuid: string;
         weightPoints: number;
     }

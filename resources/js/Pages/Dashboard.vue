@@ -6,10 +6,10 @@ import { Head } from "@inertiajs/inertia-vue3";
 import { onMounted } from "vue";
 import { Operator, Ticket, TicketSortBy, SortDirection } from "@/types";
 import { useOperatorsStore } from "@/stores/operators";
+import { useTicketsStore } from "@/stores/tickets";
 import { useLocalStorage } from "@vueuse/core";
 import * as Events from "@/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
-//import { useTicketsStore } from "@/stores/tickets";
 
 const props = defineProps<{
     operators: Operator[];
@@ -17,7 +17,7 @@ const props = defineProps<{
 }>();
 
 const oprStore = useOperatorsStore();
-//const tckStore = useTicketsStore();
+const tckStore = useTicketsStore();
 
 const oprSort = useLocalStorage<SortDirection>("ticket-allocator.opr-sort", "asc");
 const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
@@ -42,7 +42,12 @@ onMounted(() => {
         .listen(Events.Operator.Ready, oprStore.setReady)
         .listen(Events.Operator.NotReady, oprStore.setNotReady)
         .listen(Events.Operator.TicketLimitAdjusted, oprStore.adjustTicketLimit)
-        .listen(Events.Operator.ComplexityLimitAdjusted, oprStore.adjustComplexityLimit);
+        .listen(Events.Operator.ComplexityLimitAdjusted, oprStore.adjustComplexityLimit)
+        .listen(Events.Ticket.Created, tckStore.create)
+        .listen(Events.Ticket.Closed, tckStore.close)
+        .listen(Events.Ticket.Bound, tckStore.bind)
+        .listen(Events.Ticket.Unbound, tckStore.unbind)
+        .listen(Events.Ticket.CategoryChanged, tckStore.changeCategory);
 });
 </script>
 
