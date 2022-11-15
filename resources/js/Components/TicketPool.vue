@@ -23,11 +23,7 @@ const props = defineProps<{
 }>();
 
 const sortedTickets = computed<Ticket[]>(() =>
-    _.orderBy(
-        props.tickets,
-        props.sortBy ?? "weight",
-        props.sortDirection ?? "desc"
-    )
+    _.orderBy(props.tickets, props.sortBy ?? "weight", props.sortDirection ?? "desc")
 );
 </script>
 

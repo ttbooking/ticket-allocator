@@ -7,6 +7,8 @@ import { onMounted } from "vue";
 import { Operator, Ticket, TicketSortBy, SortDirection } from "@/types";
 import { useOperatorsStore } from "@/stores/operators";
 import { useLocalStorage } from "@vueuse/core";
+import * as Events from "@/events.d";
+import { PusherChannel } from "laravel-echo/dist/channel";
 //import { useTicketsStore } from "@/stores/tickets";
 
 const props = defineProps<{
@@ -24,6 +26,23 @@ onMounted(() => {
     for (let operator of props.operators) {
         oprStore.enroll(operator);
     }
+
+    window.ticketAllocatorChannel = <PusherChannel>window.Echo.channel(Events.Channel);
+    window.ticketAllocatorChannel.listenToAll((event: string, data: any) => {
+        console.log(event, data);
+    });
+    /*.listen(Events.Operator.Commented, (payload: Events.Operator.CommentedPayload) => {
+            console.log(Events.Operator.Commented);
+            console.log(payload);
+        })
+        .listen(Events.Operator.ComplexityLimitAdjusted, (payload: Events.Operator.ComplexityLimitAdjustedPayload) => {
+            console.log(Events.Operator.ComplexityLimitAdjusted);
+            console.log(payload);
+        })
+        .listen(Events.Operator.Enrolled, (payload: Events.Operator.EnrolledPayload) => {
+            console.log(Events.Operator.Enrolled);
+            console.log(payload);
+        });*/
 });
 </script>
 
@@ -32,9 +51,7 @@ onMounted(() => {
 
     <DefaultLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dashboard
-            </h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
         </template>
 
         <div>

@@ -1,12 +1,6 @@
 <template>
     <div class="d-inline-block">
-        <v-btn
-            size="small"
-            class="ticket"
-            :class="{ overflow }"
-            flat
-            width="100"
-        >
+        <v-btn size="small" class="ticket" :class="{ overflow }" flat width="100">
             <v-icon color="white" icon="mdi-airplane" start />
             <span class="text-white">{{ ticket.weight }}</span>
             <v-overlay

@@ -9,24 +9,21 @@ interface SS {
     enroll(operator: Operator): void;
 }
 
-export const useOperatorsStore = defineStore<"operators", SS>(
-    "operators",
-    () => {
-        const all = ref<Operator[]>([]);
+export const useOperatorsStore = defineStore<"operators", SS>("operators", () => {
+    const all = ref<Operator[]>([]);
 
-        const sorted = computed(
-            () =>
-                (order: SortDirection = "asc"): Operator[] =>
-                    _.orderBy(all.value, "free_slots", order)
-        );
+    const sorted = computed(
+        () =>
+            (order: SortDirection = "asc"): Operator[] =>
+                _.orderBy(all.value, "free_slots", order)
+    );
 
-        function enroll(operator: Operator): void {
-            all.value.push(operator);
-        }
-
-        return { all, sorted, enroll };
+    function enroll(operator: Operator): void {
+        all.value.push(operator);
     }
-);
+
+    return { all, sorted, enroll };
+});
 
 if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(useOperatorsStore, import.meta.hot));

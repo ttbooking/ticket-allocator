@@ -65,12 +65,12 @@ abstract class Event extends ShouldBeStored implements ShouldAffect, ShouldBroad
 
     protected function aggregateRootName(): string
     {
-        return $this->aggregateRootName ?? self::parseClassName()[0];
+        return $this->aggregateRootName ??= self::parseClassName()[0];
     }
 
     protected function eventName(): string
     {
-        return $this->eventName ?? self::parseClassName()[1];
+        return $this->eventName ??= self::parseClassName()[1];
     }
 
     /**
@@ -78,8 +78,6 @@ abstract class Event extends ShouldBeStored implements ShouldAffect, ShouldBroad
      */
     private static function parseClassName(): array
     {
-        static $components;
-
-        return $components ??= explode('-', Str::kebab(class_basename(static::class)), 2);
+        return explode('-', Str::kebab(class_basename(static::class)), 2);
     }
 }
