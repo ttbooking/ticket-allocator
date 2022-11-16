@@ -1,10 +1,13 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { reactive, computed } from "vue";
+import { useTicketsStore } from "@/stores/tickets";
 import { Operator, SortDirection } from "@/types";
 import _ from "lodash";
 import * as Events from "@/events";
 
 export const useOperatorsStore = defineStore("operators", () => {
+    const tckStore = useTicketsStore();
+
     const all = reactive<Map<string, Operator>>(new Map());
 
     const sorted = computed(
@@ -25,7 +28,7 @@ export const useOperatorsStore = defineStore("operators", () => {
             name: "",
             online: false,
             ready: false,
-            tickets: [],
+            tickets: tckStore.bound(uuid),
             ticket_limit: null,
             complexity_limit: null,
             free_slots: null,

@@ -23,6 +23,10 @@ const oprSort = useLocalStorage<SortDirection>("ticket-allocator.opr-sort", "asc
 const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
 
 onMounted(() => {
+    for (const ticket of props.tickets) {
+        tckStore.all.set(ticket.uuid, ticket);
+    }
+
     for (const operator of props.operators) {
         oprStore.all.set(operator.uuid, operator);
     }
@@ -47,7 +51,15 @@ onMounted(() => {
         .listen(Events.Ticket.Closed, tckStore.close)
         .listen(Events.Ticket.Bound, tckStore.bind)
         .listen(Events.Ticket.Unbound, tckStore.unbind)
-        .listen(Events.Ticket.CategoryChanged, tckStore.changeCategory);
+        .listen(Events.Ticket.CategoryChanged, tckStore.changeCategory)
+        .listen(Events.Ticket.InitialWeightIncremented, tckStore.incrementInitialWeight)
+        .listen(Events.Ticket.InitialWeightDecremented, tckStore.decrementInitialWeight)
+        .listen(Events.Ticket.WeightIncrementIncremented, tckStore.incrementWeightIncrement)
+        .listen(Events.Ticket.WeightIncrementDecremented, tckStore.decrementWeightIncrement)
+        .listen(Events.Ticket.ComplexityIncremented, tckStore.incrementComplexity)
+        .listen(Events.Ticket.ComplexityDecremented, tckStore.decrementComplexity)
+        .listen(Events.Ticket.DelayIncremented, tckStore.incrementDelay)
+        .listen(Events.Ticket.DelayDecremented, tckStore.decrementDelay);
 });
 </script>
 
@@ -80,7 +92,7 @@ onMounted(() => {
             </div>
             <v-table class="ticket-monitor">
                 <tbody class="align-text-top">
-                    <TicketRow :tickets="tickets" :sort-by="mode">
+                    <TicketRow :tickets="tckStore.unbound" :sort-by="mode">
                         <template #name>Очередь заявок</template>
                     </TicketRow>
                     <TransitionGroup name="operator-pool">

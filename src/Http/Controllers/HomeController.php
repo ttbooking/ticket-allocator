@@ -18,12 +18,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $unboundTickets = Ticket::unbound()->get()->toArray();
-        $operatorsWithTickets = Operator::with('tickets')->get()->toArray();
+        //$unboundTickets = Ticket::unbound()->get()->toArray();
+        //$operatorsWithTickets = Operator::with('tickets')->get()->toArray();
+
+        $tickets = Ticket::all()->toArray();
+        $operators = Operator::all()->toArray();
 
         return Inertia::render('Dashboard', [
-            'tickets' => $unboundTickets,
-            'operators' => $operatorsWithTickets,
+            'tickets' => $tickets, //$unboundTickets,
+            'operators' => $operators, //$operatorsWithTickets,
         ]);
     }
 }

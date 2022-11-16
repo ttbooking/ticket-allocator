@@ -23,7 +23,7 @@
         </td>
 
         <td class="more text-center">
-            <v-btn @click="collapsed = !collapsed" size="x-small" variant="tonal" :icon="moreIcon" />
+            <v-btn size="x-small" variant="tonal" :icon="moreIcon" @click="collapsed = !collapsed" />
         </td>
     </tr>
 </template>

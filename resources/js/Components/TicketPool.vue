@@ -22,13 +22,28 @@ const props = defineProps<{
     sortDirection?: SortDirection;
 }>();
 
-const sortedTickets = computed<Ticket[]>(() =>
-    _.orderBy(props.tickets, props.sortBy ?? "weight", props.sortDirection ?? "desc")
-);
+const sortedTickets = computed(() => _.orderBy(props.tickets, props.sortBy ?? "weight", props.sortDirection ?? "desc"));
 </script>
 
 <style scoped>
-.ticket-pool-move {
+.ticket-pool-move,
+.ticket-pool-enter-active {
     transition: all 0.5s ease;
+}
+
+.ticket-pool-enter-active {
+    position: absolute;
+}
+
+.ticket-pool-enter-from {
+    transform: translateX(300px);
+}
+
+.ticket-pool-leave-active {
+    transition: opacity 0.5s;
+}
+
+.ticket-pool-leave-to {
+    opacity: 0;
 }
 </style>

@@ -65,7 +65,7 @@ class Ticket extends Projection
     ];
 
     /** @var list<string> */
-    protected $appends = ['duration', 'weight'];
+    //protected $appends = ['duration', 'weight'];
 
     protected static function newFactory(): TicketFactory
     {

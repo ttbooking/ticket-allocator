@@ -2,7 +2,7 @@
     <div class="d-inline-block">
         <v-btn size="small" class="ticket" :class="{ overflow }" flat width="100">
             <v-icon color="white" icon="mdi-airplane" start />
-            <span class="text-white">{{ ticket.weight }}</span>
+            <span class="text-white">{{ position }}</span>
             <v-overlay
                 open-on-click
                 activator="parent"
@@ -26,18 +26,22 @@ const props = defineProps<{
     mode: TicketSortBy;
 }>();
 
-const position = computed(() => {
-    return Math.round(props.ticket[props.mode] / 1000);
-});
-
-const threshold = computed<number>((): number => {
+const threshold = computed(() => {
     return usePage<{
         durationThreshold: number;
         weightThreshold: number;
     }>().props.value[`${props.mode}Threshold`];
 });
 
-const overflow = computed<boolean>(() => position.value > threshold.value);
+/*const duration = computed(() =>
+    Math.round((new Date().getTime() - new Date(props.ticket.created_at).getTime()) / 1000)
+);*/
+
+//const weight = computed(() => props.ticket.initial_weight + props.ticket.weight_increment * duration.value);
+
+const position = computed(() => props.ticket[props.mode]);
+
+const overflow = computed(() => position.value > threshold.value);
 
 const animation = computed(() => ({
     delay: -position.value + "s",

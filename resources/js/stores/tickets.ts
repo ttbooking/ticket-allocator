@@ -7,6 +7,14 @@ import * as Events from "@/events";
 export const useTicketsStore = defineStore("tickets", () => {
     const all = reactive<Map<string, Ticket>>(new Map());
 
+    const unbound = computed(() => {
+        return Array.from(all.values()).filter((ticket) => ticket.handler_uuid === null);
+    });
+
+    const bound = computed(() => (handlerUuid: string) => {
+        return Array.from(all.values()).filter((ticket) => ticket.handler_uuid === handlerUuid);
+    });
+
     const sorted = computed(
         () =>
             (sortBy: TicketSortBy = "weight", sortDirection: SortDirection = "asc") =>
@@ -20,16 +28,7 @@ export const useTicketsStore = defineStore("tickets", () => {
     }
 
     function create({ uuid, categoryUuid }: Events.Ticket.CreatedPayload) {
-        all.set(uuid, {
-            uuid,
-            category_uuid: categoryUuid,
-            handler_uuid: null,
-            initial_weight: 0,
-            weight_increment: 0,
-            weight: 0,
-            complexity: 0,
-            duration: 0,
-        });
+        all.set(uuid, new Ticket(uuid, categoryUuid));
     }
 
     function close({ uuid }: Events.Ticket.ClosedPayload) {
@@ -73,15 +72,17 @@ export const useTicketsStore = defineStore("tickets", () => {
     }
 
     function incrementDelay({ uuid, delaySeconds }: Events.Ticket.DelayIncrementedPayload) {
-        ticket(uuid).duration += delaySeconds;
+        ticket(uuid).delay += delaySeconds;
     }
 
     function decrementDelay({ uuid, delaySeconds }: Events.Ticket.DelayDecrementedPayload) {
-        ticket(uuid).duration -= delaySeconds;
+        ticket(uuid).delay -= delaySeconds;
     }
 
     return {
         all,
+        unbound,
+        bound,
         sorted,
         create,
         close,
