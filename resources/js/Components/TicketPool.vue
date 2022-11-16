@@ -14,10 +14,10 @@
 import { default as TicketComponent } from "@/Components/Ticket.vue";
 import _ from "lodash";
 import { computed } from "vue";
-import { Ticket, TicketSortBy, SortDirection } from "@/types";
+import { ITicket, TicketSortBy, SortDirection } from "@/types";
 
 const props = defineProps<{
-    tickets: Ticket[];
+    tickets: ITicket[];
     sortBy: TicketSortBy;
     sortDirection?: SortDirection;
 }>();

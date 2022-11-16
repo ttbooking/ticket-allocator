@@ -31,10 +31,10 @@
 <script setup lang="ts">
 import TicketPool from "@/Components/TicketPool.vue";
 import { computed, ref } from "vue";
-import { Ticket, TicketSortBy, SortDirection } from "@/types";
+import { ITicket, TicketSortBy, SortDirection } from "@/types";
 
 const props = defineProps<{
-    tickets: Ticket[];
+    tickets: ITicket[];
     sortBy: TicketSortBy;
     sortDirection?: SortDirection;
 }>();

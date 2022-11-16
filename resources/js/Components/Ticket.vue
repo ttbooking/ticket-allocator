@@ -19,10 +19,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
-import { Ticket, TicketSortBy } from "@/types";
+import { ITicket, TicketSortBy } from "@/types";
 
 const props = defineProps<{
-    ticket: Ticket;
+    ticket: ITicket;
     mode: TicketSortBy;
 }>();
 

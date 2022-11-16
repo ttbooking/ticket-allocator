@@ -4,16 +4,17 @@ import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { onMounted } from "vue";
-import { Operator, Ticket, TicketSortBy, SortDirection } from "@/types";
+import { Operator, ITicket, TicketSortBy, SortDirection } from "@/types";
 import { useOperatorsStore } from "@/stores/operators";
 import { useTicketsStore } from "@/stores/tickets";
 import { useLocalStorage } from "@vueuse/core";
 import * as Events from "@/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
+import { Ticket } from "@/base";
 
 const props = defineProps<{
     operators: Operator[];
-    tickets: Ticket[];
+    tickets: ITicket[];
 }>();
 
 const oprStore = useOperatorsStore();
@@ -24,7 +25,7 @@ const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
 
 onMounted(() => {
     for (const ticket of props.tickets) {
-        tckStore.all.set(ticket.uuid, ticket);
+        tckStore.all.set(ticket.uuid, new Ticket(ticket));
     }
 
     for (const operator of props.operators) {

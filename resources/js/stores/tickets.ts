@@ -1,11 +1,12 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { reactive, computed } from "vue";
-import { Ticket, TicketSortBy, SortDirection } from "@/types";
+import { ITicket, TicketSortBy, SortDirection } from "@/types";
 import _ from "lodash";
 import * as Events from "@/events";
+import { Ticket } from "@/base";
 
 export const useTicketsStore = defineStore("tickets", () => {
-    const all = reactive<Map<string, Ticket>>(new Map());
+    const all = reactive<Map<string, ITicket>>(new Map());
 
     const unbound = computed(() => {
         return Array.from(all.values()).filter((ticket) => ticket.handler_uuid === null);
@@ -28,7 +29,7 @@ export const useTicketsStore = defineStore("tickets", () => {
     }
 
     function create({ uuid, categoryUuid }: Events.Ticket.CreatedPayload) {
-        all.set(uuid, new Ticket(uuid, categoryUuid));
+        all.set(uuid, new Ticket({ uuid, category_uuid: categoryUuid }));
     }
 
     function close({ uuid }: Events.Ticket.ClosedPayload) {

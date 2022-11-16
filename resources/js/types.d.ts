@@ -7,34 +7,22 @@ export interface Operator {
     name: string;
     online: boolean;
     ready: boolean;
-    tickets: Ticket[];
+    tickets: ITicket[];
     ticket_limit: ?number;
     complexity_limit: ?number;
     free_slots: ?number;
     free_complexity: ?number;
 }
 
-export class Ticket {
+export interface ITicket {
     uuid: string;
     category_uuid: string;
-    handler_uuid: ?string = null;
-    initial_weight = 0;
-    weight_increment = 0;
-    complexity = 0;
-    delay = 0;
+    handler_uuid: ?string;
+    initial_weight: number;
+    weight_increment: number;
+    complexity: number;
+    delay: number;
     created_at: string;
-
-    constructor(uuid, category_uuid) {
-        this.uuid = uuid;
-        this.category_uuid = category_uuid;
-        this.created_at = new Date().toString();
-    }
-
-    get duration() {
-        return Math.round((new Date().getTime() - new Date(this.created_at).getTime()) / 1000);
-    }
-
-    get weight() {
-        return this.initial_weight + this.weight_increment * this.duration;
-    }
+    get duration();
+    get weight();
 }
