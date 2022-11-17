@@ -1,14 +1,15 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { reactive, computed } from "vue";
 import { useTicketsStore } from "@/stores/tickets";
-import { Operator, SortDirection } from "@/types";
+import { IOperator, SortDirection } from "@/types";
 import _ from "lodash";
 import * as Events from "@/events";
+import { Operator } from "@/base";
 
 export const useOperatorsStore = defineStore("operators", () => {
     const tckStore = useTicketsStore();
 
-    const all = reactive<Map<string, Operator>>(new Map());
+    const all = reactive<Map<string, IOperator>>(new Map());
 
     const sorted = computed(
         () =>
@@ -23,17 +24,7 @@ export const useOperatorsStore = defineStore("operators", () => {
     }
 
     function enroll({ uuid }: Events.Operator.EnrolledPayload) {
-        all.set(uuid, {
-            uuid,
-            name: "",
-            online: false,
-            ready: false,
-            tickets: tckStore.bound(uuid),
-            ticket_limit: null,
-            complexity_limit: null,
-            free_slots: null,
-            free_complexity: null,
-        });
+        all.set(uuid, new Operator({ uuid, name: "", tickets: tckStore.bound(uuid) }));
     }
 
     function resign({ uuid }: Events.Operator.ResignedPayload) {

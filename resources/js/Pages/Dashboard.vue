@@ -4,7 +4,7 @@ import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { onMounted } from "vue";
-import { Operator, ITicket, TicketSortBy, SortDirection } from "@/types";
+import { IOperator, ITicket, TicketSortBy, SortDirection } from "@/types";
 import { useOperatorsStore } from "@/stores/operators";
 import { useTicketsStore } from "@/stores/tickets";
 import { useLocalStorage } from "@vueuse/core";
@@ -13,7 +13,7 @@ import { PusherChannel } from "laravel-echo/dist/channel";
 import { Ticket } from "@/base";
 
 const props = defineProps<{
-    operators: Operator[];
+    operators: IOperator[];
     tickets: ITicket[];
 }>();
 

@@ -10,13 +10,13 @@
 <script setup lang="ts">
 import TicketRow from "@/Components/TicketRow.vue";
 import { computed } from "vue";
-import { Operator, TicketSortBy, SortDirection } from "@/types";
+import { IOperator, TicketSortBy, SortDirection } from "@/types";
 import { useTicketsStore } from "@/stores/tickets";
 
 const tckStore = useTicketsStore();
 
 const props = defineProps<{
-    operator: Operator;
+    operator: IOperator;
     sortBy: TicketSortBy;
     sortDirection?: SortDirection;
 }>();
@@ -24,8 +24,8 @@ const props = defineProps<{
 const status = computed(() => ({
     online: props.operator.online,
     ready: props.operator.ready,
-    busy: false, //!!props.operator.tickets.length,
-    full: false, //props.operator.ticket_limit !== null && props.operator.tickets.length >= props.operator.ticket_limit,
+    busy: !!props.operator.tickets.length,
+    full: props.operator.ticket_limit !== null && props.operator.tickets.length >= props.operator.ticket_limit,
 }));
 </script>
 

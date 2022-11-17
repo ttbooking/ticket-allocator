@@ -1,9 +1,31 @@
-import { ITicket } from "@/types";
+import { IOperator, ITicket } from "@/types";
+
+export class Operator implements IOperator {
+    uuid!: string;
+    name!: string;
+    online = false;
+    ready = false;
+    tickets = [];
+    ticket_limit = null;
+    complexity_limit = null;
+
+    constructor(data: Partial<IOperator>) {
+        Object.assign(this, data);
+    }
+
+    get free_slots() {
+        return 0;
+    }
+
+    get free_complexity() {
+        return 0;
+    }
+}
 
 export class Ticket implements ITicket {
     uuid!: string;
     category_uuid!: string;
-    handler_uuid: string | null = null;
+    handler_uuid = null;
     initial_weight = 0;
     weight_increment = 0;
     complexity = 0;

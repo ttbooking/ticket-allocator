@@ -2,7 +2,7 @@ export type TicketSortBy = "weight" | "duration";
 
 export type SortDirection = "asc" | "desc";
 
-export interface Operator {
+export interface IOperator {
     uuid: string;
     name: string;
     online: boolean;
@@ -10,8 +10,8 @@ export interface Operator {
     tickets: ITicket[];
     ticket_limit: ?number;
     complexity_limit: ?number;
-    free_slots: ?number;
-    free_complexity: ?number;
+    get free_slots(): ?number;
+    get free_complexity(): ?number;
 }
 
 export interface ITicket {
@@ -23,6 +23,6 @@ export interface ITicket {
     complexity: number;
     delay: number;
     created_at: string;
-    get duration();
-    get weight();
+    get duration(): number;
+    get weight(): number;
 }
