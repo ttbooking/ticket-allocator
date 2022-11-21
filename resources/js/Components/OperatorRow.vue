@@ -24,8 +24,8 @@ const props = defineProps<{
 const status = computed(() => ({
     online: props.operator.online,
     ready: props.operator.ready,
-    busy: !!props.operator.tickets.length,
-    full: props.operator.ticket_limit !== null && props.operator.tickets.length >= props.operator.ticket_limit,
+    busy: !!props.operator.tickets?.length,
+    full: props.operator.ticket_limit !== null && props.operator.tickets?.length >= props.operator.ticket_limit,
 }));
 </script>
 
