@@ -54,7 +54,7 @@ let intervalId: number;
 onMounted(() => {
     intervalId = window.setInterval(() => {
         position.value = props.ticket[props.mode];
-    });
+    }, 1000);
 });
 
 onUnmounted(() => {

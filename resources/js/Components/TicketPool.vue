@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { default as TicketComponent } from "@/Components/Ticket.vue";
 import _ from "lodash";
-import { computed } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { ITicket, TicketSortBy, SortDirection } from "@/types";
 
 const props = defineProps<{
@@ -22,7 +22,21 @@ const props = defineProps<{
     sortDirection?: SortDirection;
 }>();
 
-const sortedTickets = computed(() => _.orderBy(props.tickets, props.sortBy ?? "weight", props.sortDirection ?? "desc"));
+const sortedTickets = ref<ITicket[]>([]);
+
+const sortTickets = () =>
+    (sortedTickets.value = _.orderBy(props.tickets, props.sortBy ?? "weight", props.sortDirection ?? "desc"));
+
+let intervalId: number;
+
+onMounted(() => {
+    sortTickets();
+    intervalId = window.setInterval(sortTickets, 1000);
+});
+
+onUnmounted(() => {
+    window.clearInterval(intervalId);
+});
 </script>
 
 <style scoped>
