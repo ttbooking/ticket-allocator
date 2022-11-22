@@ -7,6 +7,7 @@
         },
         "target": "ESNext",
         "useDefineForClassFields": true,
+        "experimentalDecorators": true,
         "module": "ESNext",
         "moduleResolution": "Node",
         "strict": true,

@@ -10,7 +10,12 @@ import { useTicketsStore } from "@/stores/tickets";
 import { useLocalStorage } from "@vueuse/core";
 import * as Events from "@/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
-import { Ticket } from "@/base";
+import { Ticket as TicketClass } from "@/base";
+
+import { useRepo } from "pinia-orm";
+import { useCollect } from "pinia-orm/dist/helpers";
+import Operator from "@/models/Operator";
+import Ticket from "@/models/Ticket";
 
 const props = defineProps<{
     operators: IOperator[];
@@ -23,9 +28,18 @@ const tckStore = useTicketsStore();
 const oprSort = useLocalStorage<SortDirection>("ticket-allocator.opr-sort", "asc");
 const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
 
+const operatorRepo = useRepo(Operator);
+const ticketRepo = useRepo(Ticket);
+
+const _operators = operatorRepo.all();
+const _tickets = ticketRepo.all();
+
+const sortedOperators = useCollect(_operators).sortBy("freeSlots");
+const sortedTickets = useCollect(_tickets).sortBy(mode.value);
+
 onMounted(() => {
     for (const ticket of props.tickets) {
-        tckStore.all.set(ticket.uuid, new Ticket(ticket));
+        tckStore.all.set(ticket.uuid, new TicketClass(ticket));
     }
 
     for (const operator of props.operators) {
