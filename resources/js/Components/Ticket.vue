@@ -19,10 +19,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
-import { ITicket, TicketSortBy } from "@/types";
+import Ticket from "@/models/Ticket";
+import { TicketSortBy } from "@/types";
 
 const props = defineProps<{
-    ticket: ITicket;
+    ticket: Ticket;
     mode: TicketSortBy;
 }>();
 
@@ -33,13 +34,6 @@ const threshold = computed(() => {
     }>().props.value[`${props.mode}Threshold`];
 });
 
-/*const duration = computed(() =>
-    Math.round((new Date().getTime() - new Date(props.ticket.created_at).getTime()) / 1000)
-);*/
-
-//const weight = computed(() => props.ticket.initial_weight + props.ticket.weight_increment * duration.value);
-
-//const position = computed(() => props.ticket[props.mode]);
 const position = ref(props.ticket[props.mode]);
 
 const overflow = computed(() => position.value > threshold.value);
