@@ -11,20 +11,20 @@ export default class Operator extends Model {
     @Str("") declare name: string;
     @Bool(false) declare online: boolean;
     @Bool(false) declare ready: boolean;
-    @Num(null) declare ticketLimit: number | null;
-    @Num(null) declare complexityLimit: number | null;
+    @Num(null) declare ticket_limit: number | null;
+    @Num(null) declare complexity_limit: number | null;
 
-    @HasMany(() => Ticket, "handlerUuid") @OnDelete("set null") declare tickets: Ticket[];
+    @HasMany(() => Ticket, "handler_uuid") @OnDelete("set null") declare tickets: Ticket[];
 
-    get freeSlots() {
-        return this.ticketLimit !== null ? Math.max(0, this.ticketLimit - this.tickets.length) : null;
+    get free_slots() {
+        return this.ticket_limit !== null ? Math.max(0, this.ticket_limit - this.tickets?.length) : null;
     }
 
-    get totalComplexity() {
+    get total_complexity() {
         return this.tickets.reduce((n, { complexity }) => n + complexity, 0);
     }
 
-    get freeComplexity() {
-        return this.complexityLimit !== null ? Math.max(0, this.complexityLimit - this.totalComplexity) : null;
+    get free_complexity() {
+        return this.complexity_limit !== null ? Math.max(0, this.complexity_limit - this.total_complexity) : null;
     }
 }

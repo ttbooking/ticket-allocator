@@ -3,14 +3,13 @@ import DefaultLayout from "@/Layouts/Default.vue";
 import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { IOperator, ITicket, TicketSortBy, SortDirection } from "@/types";
 import { useLocalStorage } from "@vueuse/core";
 import * as Events from "@/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
 
 import { useRepo } from "pinia-orm";
-import { useCollect } from "pinia-orm/dist/helpers";
 import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
 
@@ -22,15 +21,15 @@ const props = defineProps<{
 const oprSort = useLocalStorage<SortDirection>("ticket-allocator.opr-sort", "asc");
 const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
 
-const operatorRepo = useRepo(OperatorRepository);
-const ticketRepo = useRepo(TicketRepository);
+const operatorRepo = computed(() => useRepo(OperatorRepository));
+const ticketRepo = computed(() => useRepo(TicketRepository));
 
-const sortedOperators = useCollect(operatorRepo.with("tickets").all()).sortBy([["freeSlots", oprSort.value]]);
-const sortedTickets = useCollect(ticketRepo.unbound().get()).sortBy([[mode.value, "desc"]]);
+const sortedOperators = computed(() => operatorRepo.value.with("tickets").orderBy("free_slots", oprSort.value).get());
+const sortedTickets = computed(() => ticketRepo.value.unbound().orderBy(mode.value, "desc").get());
 
 onMounted(() => {
-    operatorRepo.fresh(props.operators);
-    ticketRepo.fresh(props.tickets);
+    operatorRepo.value.fresh(props.operators);
+    ticketRepo.value.fresh(props.tickets);
 
     window.ticketAllocatorChannel = <PusherChannel>window.Echo.channel(Events.Channel);
 
@@ -39,28 +38,28 @@ onMounted(() => {
     });
 
     window.ticketAllocatorChannel
-        .listen(Events.Operator.Enrolled, operatorRepo.enroll)
-        .listen(Events.Operator.Resigned, operatorRepo.resign)
-        .listen(Events.Operator.NameChanged, operatorRepo.changeName)
-        .listen(Events.Operator.Online, operatorRepo.setOnline)
-        .listen(Events.Operator.Offline, operatorRepo.setOffline)
-        .listen(Events.Operator.Ready, operatorRepo.setReady)
-        .listen(Events.Operator.NotReady, operatorRepo.setNotReady)
-        .listen(Events.Operator.TicketLimitAdjusted, operatorRepo.adjustTicketLimit)
-        .listen(Events.Operator.ComplexityLimitAdjusted, operatorRepo.adjustComplexityLimit)
-        .listen(Events.Ticket.Created, ticketRepo.create)
-        .listen(Events.Ticket.Closed, ticketRepo.close)
-        .listen(Events.Ticket.Bound, ticketRepo.bind)
-        .listen(Events.Ticket.Unbound, ticketRepo.unbind)
-        .listen(Events.Ticket.CategoryChanged, ticketRepo.changeCategory)
-        .listen(Events.Ticket.InitialWeightIncremented, ticketRepo.incrementInitialWeight)
-        .listen(Events.Ticket.InitialWeightDecremented, ticketRepo.decrementInitialWeight)
-        .listen(Events.Ticket.WeightIncrementIncremented, ticketRepo.incrementWeightIncrement)
-        .listen(Events.Ticket.WeightIncrementDecremented, ticketRepo.decrementWeightIncrement)
-        .listen(Events.Ticket.ComplexityIncremented, ticketRepo.incrementComplexity)
-        .listen(Events.Ticket.ComplexityDecremented, ticketRepo.decrementComplexity)
-        .listen(Events.Ticket.DelayIncremented, ticketRepo.incrementDelay)
-        .listen(Events.Ticket.DelayDecremented, ticketRepo.decrementDelay);
+        .listen(Events.Operator.Enrolled, operatorRepo.value.enroll)
+        .listen(Events.Operator.Resigned, operatorRepo.value.resign)
+        .listen(Events.Operator.NameChanged, operatorRepo.value.changeName)
+        .listen(Events.Operator.Online, operatorRepo.value.setOnline)
+        .listen(Events.Operator.Offline, operatorRepo.value.setOffline)
+        .listen(Events.Operator.Ready, operatorRepo.value.setReady)
+        .listen(Events.Operator.NotReady, operatorRepo.value.setNotReady)
+        .listen(Events.Operator.TicketLimitAdjusted, operatorRepo.value.adjustTicketLimit)
+        .listen(Events.Operator.ComplexityLimitAdjusted, operatorRepo.value.adjustComplexityLimit)
+        .listen(Events.Ticket.Created, ticketRepo.value.create)
+        .listen(Events.Ticket.Closed, ticketRepo.value.close)
+        .listen(Events.Ticket.Bound, ticketRepo.value.bind)
+        .listen(Events.Ticket.Unbound, ticketRepo.value.unbind)
+        .listen(Events.Ticket.CategoryChanged, ticketRepo.value.changeCategory)
+        .listen(Events.Ticket.InitialWeightIncremented, ticketRepo.value.incrementInitialWeight)
+        .listen(Events.Ticket.InitialWeightDecremented, ticketRepo.value.decrementInitialWeight)
+        .listen(Events.Ticket.WeightIncrementIncremented, ticketRepo.value.incrementWeightIncrement)
+        .listen(Events.Ticket.WeightIncrementDecremented, ticketRepo.value.decrementWeightIncrement)
+        .listen(Events.Ticket.ComplexityIncremented, ticketRepo.value.incrementComplexity)
+        .listen(Events.Ticket.ComplexityDecremented, ticketRepo.value.decrementComplexity)
+        .listen(Events.Ticket.DelayIncremented, ticketRepo.value.incrementDelay)
+        .listen(Events.Ticket.DelayDecremented, ticketRepo.value.decrementDelay);
 });
 </script>
 

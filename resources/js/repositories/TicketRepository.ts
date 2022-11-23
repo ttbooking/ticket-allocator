@@ -6,7 +6,7 @@ export default class TicketRepository extends Repository<Ticket> {
     use = Ticket;
 
     create({ uuid, categoryUuid }: Events.Ticket.CreatedPayload) {
-        this.save({ uuid, categoryUuid });
+        this.save({ uuid, category_uuid: categoryUuid });
     }
 
     close({ uuid }: Events.Ticket.ClosedPayload) {
@@ -14,31 +14,31 @@ export default class TicketRepository extends Repository<Ticket> {
     }
 
     bind({ uuid, operatorUuid }: Events.Ticket.BoundPayload) {
-        this.where("uuid", uuid).update({ handlerUuid: operatorUuid });
+        this.where("uuid", uuid).update({ handler_uuid: operatorUuid });
     }
 
     unbind({ uuid }: Events.Ticket.UnboundPayload) {
-        this.where("uuid", uuid).update({ handlerUuid: null });
+        this.where("uuid", uuid).update({ handler_uuid: null });
     }
 
     changeCategory({ uuid, categoryUuid }: Events.Ticket.CategoryChangedPayload) {
-        this.where("uuid", uuid).update({ categoryUuid });
+        this.where("uuid", uuid).update({ category_uuid: categoryUuid });
     }
 
     incrementInitialWeight({ uuid, weightPoints }: Events.Ticket.InitialWeightIncrementedPayload) {
-        this.find(uuid)!.initialWeight += weightPoints;
+        this.find(uuid)!.initial_weight += weightPoints;
     }
 
     decrementInitialWeight({ uuid, weightPoints }: Events.Ticket.InitialWeightDecrementedPayload) {
-        this.find(uuid)!.initialWeight -= weightPoints;
+        this.find(uuid)!.initial_weight -= weightPoints;
     }
 
     incrementWeightIncrement({ uuid, weightPoints }: Events.Ticket.WeightIncrementIncrementedPayload) {
-        this.find(uuid)!.weightIncrement += weightPoints;
+        this.find(uuid)!.weight_increment += weightPoints;
     }
 
     decrementWeightIncrement({ uuid, weightPoints }: Events.Ticket.WeightIncrementDecrementedPayload) {
-        this.find(uuid)!.weightIncrement -= weightPoints;
+        this.find(uuid)!.weight_increment -= weightPoints;
     }
 
     incrementComplexity({ uuid, complexityPoints }: Events.Ticket.ComplexityIncrementedPayload) {
@@ -58,10 +58,10 @@ export default class TicketRepository extends Repository<Ticket> {
     }
 
     unbound() {
-        return this.where("handlerUuid", null);
+        return this.where("handler_uuid", null);
     }
 
     bound(handlerUuid: string) {
-        return this.where("handlerUuid", handlerUuid);
+        return this.where("handler_uuid", handlerUuid);
     }
 }

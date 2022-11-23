@@ -34,10 +34,10 @@ export default class OperatorRepository extends Repository<Operator> {
     }
 
     adjustTicketLimit({ uuid, ticketLimit }: Events.Operator.TicketLimitAdjustedPayload) {
-        this.where("uuid", uuid).update({ ticketLimit });
+        this.where("uuid", uuid).update({ ticket_limit: ticketLimit });
     }
 
     adjustComplexityLimit({ uuid, complexityLimit }: Events.Operator.ComplexityLimitAdjustedPayload) {
-        this.where("uuid", uuid).update({ complexityLimit });
+        this.where("uuid", uuid).update({ complexity_limit: complexityLimit });
     }
 }
