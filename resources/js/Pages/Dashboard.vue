@@ -14,8 +14,8 @@ import { Ticket as TicketClass } from "@/base";
 
 import { useRepo } from "pinia-orm";
 import { useCollect } from "pinia-orm/dist/helpers";
-import Operator from "@/models/Operator";
-import Ticket from "@/models/Ticket";
+import OperatorRepository from "@/repositories/OperatorRepository";
+import TicketRepository from "@/repositories/TicketRepository";
 
 const props = defineProps<{
     operators: IOperator[];
@@ -28,14 +28,14 @@ const tckStore = useTicketsStore();
 const oprSort = useLocalStorage<SortDirection>("ticket-allocator.opr-sort", "asc");
 const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
 
-const operatorRepo = useRepo(Operator);
-const ticketRepo = useRepo(Ticket);
+const operatorRepo = useRepo(OperatorRepository);
+const ticketRepo = useRepo(TicketRepository);
 
-const _operators = operatorRepo.all();
-const _tickets = ticketRepo.all();
+const allOperators = operatorRepo.all();
+const allTickets = ticketRepo.all();
 
-const sortedOperators = useCollect(_operators).sortBy("freeSlots");
-const sortedTickets = useCollect(_tickets).sortBy(mode.value);
+const sortedOperators = useCollect(allOperators).sortBy("freeSlots");
+const sortedTickets = useCollect(allTickets).sortBy(mode.value);
 
 onMounted(() => {
     for (const ticket of props.tickets) {

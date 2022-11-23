@@ -16,6 +16,7 @@ export default class Ticket extends Model {
     @Num(0) declare complexity: number;
     @Num(0) declare delay: number;
     @Attr(new Date()) declare createdAt: Date;
+
     @BelongsTo(() => Operator, "handlerUuid") declare handler: Operator | null;
 
     get duration() {
