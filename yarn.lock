@@ -976,14 +976,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "axios@npm:1.1.3"
+"axios@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "axios@npm:1.2.0"
   dependencies:
     follow-redirects: ^1.15.0
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
-  checksum: cab3b17bf6092c9387f7023d699db093cfa23650b56c4422cd474d124b78b2e3b5a520f932c330664a58ab85b867b1c25a95cace475ef72d236888c852b84e6d
+  checksum: f08ce214e957dfde45b837f8d3c7861424608fb7df32faa638835e338782a9f4c0b05074e92e0e8dcca3a1e6250112fbbe1b15a6b21104da633d84745bbb79cc
   languageName: node
   linkType: hard
 
@@ -2533,10 +2533,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"laravel-echo@npm:^1.14.1":
-  version: 1.14.1
-  resolution: "laravel-echo@npm:1.14.1"
-  checksum: b77a479e27aca59ff06eedb4822bf2e38a1b19565c4176c5829ad94c7799833cca571da33e560c5be181b41b9ae7b51a73200ca28c14c0ae7e2231367b985920
+"laravel-echo@npm:^1.14.2":
+  version: 1.14.2
+  resolution: "laravel-echo@npm:1.14.2"
+  checksum: af6b5f6cbfa1c63125d21df9238fc4c71c80c4ab46c50284204195f719e1812420142adb204019fddb6891a13632978339feb09f356d5da3f0160eafaacd926d
   languageName: node
   linkType: hard
 
@@ -3290,12 +3290,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.7.1":
-  version: 2.7.1
-  resolution: "prettier@npm:2.7.1"
+"prettier@npm:^2.8.0":
+  version: 2.8.0
+  resolution: "prettier@npm:2.8.0"
   bin:
     prettier: bin-prettier.js
-  checksum: 55a4409182260866ab31284d929b3cb961e5fdb91fe0d2e099dac92eaecec890f36e524b4c19e6ceae839c99c6d7195817579cdffc8e2c80da0cb794463a748b
+  checksum: 72004ce0cc9bb097daf3e3833f62495768724392c1d5b178dd47372337616e9e50ecbb0804f236596223f7b5eb1bbe69cefc8957dca21112c5777e77ef73a564
   languageName: node
   linkType: hard
 
@@ -3554,19 +3554,19 @@ __metadata:
     "@vitejs/plugin-vue": ^3.2.0
     "@vueuse/core": ^9.6.0
     autoprefixer: ^10.4.13
-    axios: ^1.1.3
+    axios: ^1.2.0
     colada-plugin: ^0.1.0
     eslint: ^8.28.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-vue: ^9.7.0
-    laravel-echo: ^1.14.1
+    laravel-echo: ^1.14.2
     laravel-vite-plugin: ^0.7.1
     lodash: ^4.17.21
     moment: ^2.29.4
     pinia: ^2.0.25
     pinia-orm: ^1.2.2
     postcss: ^8.4.19
-    prettier: ^2.7.1
+    prettier: ^2.8.0
     roboto-fontface: "*"
     tailwindcss: ^3.2.4
     typescript: ^4.9.3
