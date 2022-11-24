@@ -1,18 +1,12 @@
-import { Repository } from "pinia-orm";
+import { Repository } from ".";
 import Ticket from "@/models/Ticket";
 import * as Events from "@/events";
 
 export default class TicketRepository extends Repository<Ticket> {
     use = Ticket;
 
-    private ticket(uuid: string) {
-        const ticket = this.find(uuid);
-        if (!ticket) throw new Error(`Ticket with UUID {${uuid}} has not been found!`);
-        return ticket;
-    }
-
     create = ({ uuid, categoryUuid }: Events.Ticket.CreatedPayload) => {
-        this.save({ uuid, category_uuid: categoryUuid });
+        this.save({ uuid, category_uuid: categoryUuid, created_at: new Date().toISOString() });
     };
 
     close = ({ uuid }: Events.Ticket.ClosedPayload) => {
@@ -32,35 +26,35 @@ export default class TicketRepository extends Repository<Ticket> {
     };
 
     incrementInitialWeight = ({ uuid, weightPoints }: Events.Ticket.InitialWeightIncrementedPayload) => {
-        this.ticket(uuid).initial_weight += weightPoints;
+        this.query().where("uuid", uuid).increment({ initial_weight: weightPoints });
     };
 
     decrementInitialWeight = ({ uuid, weightPoints }: Events.Ticket.InitialWeightDecrementedPayload) => {
-        this.ticket(uuid).initial_weight -= weightPoints;
+        this.query().where("uuid", uuid).decrement({ initial_weight: weightPoints });
     };
 
     incrementWeightIncrement = ({ uuid, weightPoints }: Events.Ticket.WeightIncrementIncrementedPayload) => {
-        this.ticket(uuid).weight_increment += weightPoints;
+        this.query().where("uuid", uuid).increment({ weight_increment: weightPoints });
     };
 
     decrementWeightIncrement = ({ uuid, weightPoints }: Events.Ticket.WeightIncrementDecrementedPayload) => {
-        this.ticket(uuid).weight_increment -= weightPoints;
+        this.query().where("uuid", uuid).decrement({ weight_increment: weightPoints });
     };
 
     incrementComplexity = ({ uuid, complexityPoints }: Events.Ticket.ComplexityIncrementedPayload) => {
-        this.ticket(uuid).complexity += complexityPoints;
+        this.query().where("uuid", uuid).increment({ complexity: complexityPoints });
     };
 
     decrementComplexity = ({ uuid, complexityPoints }: Events.Ticket.ComplexityDecrementedPayload) => {
-        this.ticket(uuid).complexity -= complexityPoints;
+        this.query().where("uuid", uuid).decrement({ complexity: complexityPoints });
     };
 
     incrementDelay = ({ uuid, delaySeconds }: Events.Ticket.DelayIncrementedPayload) => {
-        this.ticket(uuid).delay += delaySeconds;
+        this.query().where("uuid", uuid).increment({ delay: delaySeconds });
     };
 
     decrementDelay = ({ uuid, delaySeconds }: Events.Ticket.DelayDecrementedPayload) => {
-        this.ticket(uuid).delay -= delaySeconds;
+        this.query().where("uuid", uuid).decrement({ delay: delaySeconds });
     };
 
     unbound() {
