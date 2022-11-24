@@ -16,7 +16,7 @@
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf"
   },
   "resources/js/app.ts": {
-    "file": "assets/app.215aec2c.js",
+    "file": "assets/app.1caea053.js",
     "src": "resources/js/app.ts",
     "isEntry": true,
     "dynamicImports": [
@@ -24,7 +24,7 @@
       "resources/js/Pages/Dashboard.vue"
     ],
     "css": [
-      "assets/app.ceb31455.css"
+      "assets/app.3a47c643.css"
     ],
     "assets": [
       "assets/materialdesignicons-webfont.861aea05.eot",
@@ -34,7 +34,7 @@
     ]
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.c618edfd.js",
+    "file": "assets/Dashboard.2670b177.js",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -53,7 +53,7 @@
     "src": "resources/js/Pages/Dashboard.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app.ceb31455.css",
+    "file": "assets/app.3a47c643.css",
     "src": "resources/js/app.css"
   }
 }
