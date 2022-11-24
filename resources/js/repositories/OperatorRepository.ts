@@ -5,39 +5,39 @@ import * as Events from "@/events";
 export default class OperatorRepository extends Repository<Operator> {
     use = Operator;
 
-    enroll({ uuid }: Events.Operator.EnrolledPayload) {
+    enroll = ({ uuid }: Events.Operator.EnrolledPayload) => {
         this.save({ uuid });
-    }
+    };
 
-    resign({ uuid }: Events.Operator.ResignedPayload) {
+    resign = ({ uuid }: Events.Operator.ResignedPayload) => {
         this.destroy(uuid);
-    }
+    };
 
-    changeName({ uuid, name }: Events.Operator.NameChangedPayload) {
+    changeName = ({ uuid, name }: Events.Operator.NameChangedPayload) => {
         this.where("uuid", uuid).update({ name });
-    }
+    };
 
-    setOnline({ uuid }: Events.Operator.OnlinePayload) {
+    setOnline = ({ uuid }: Events.Operator.OnlinePayload) => {
         this.where("uuid", uuid).update({ online: true });
-    }
+    };
 
-    setOffline({ uuid }: Events.Operator.OfflinePayload) {
+    setOffline = ({ uuid }: Events.Operator.OfflinePayload) => {
         this.where("uuid", uuid).update({ online: false });
-    }
+    };
 
-    setReady({ uuid }: Events.Operator.ReadyPayload) {
+    setReady = ({ uuid }: Events.Operator.ReadyPayload) => {
         this.where("uuid", uuid).update({ ready: true });
-    }
+    };
 
-    setNotReady({ uuid }: Events.Operator.NotReadyPayload) {
+    setNotReady = ({ uuid }: Events.Operator.NotReadyPayload) => {
         this.where("uuid", uuid).update({ ready: false });
-    }
+    };
 
-    adjustTicketLimit({ uuid, ticketLimit }: Events.Operator.TicketLimitAdjustedPayload) {
+    adjustTicketLimit = ({ uuid, ticketLimit }: Events.Operator.TicketLimitAdjustedPayload) => {
         this.where("uuid", uuid).update({ ticket_limit: ticketLimit });
-    }
+    };
 
-    adjustComplexityLimit({ uuid, complexityLimit }: Events.Operator.ComplexityLimitAdjustedPayload) {
+    adjustComplexityLimit = ({ uuid, complexityLimit }: Events.Operator.ComplexityLimitAdjustedPayload) => {
         this.where("uuid", uuid).update({ complexity_limit: complexityLimit });
-    }
+    };
 }
