@@ -1,4 +1,4 @@
-import { Model, Query as BaseQuery, Repository as BaseRepository } from "pinia-orm";
+import { Query as BaseQuery, Repository as BaseRepository, Model } from "pinia-orm";
 
 export class Query<M extends Model = Model> extends BaseQuery<M> {
     increment(record: Record<keyof M, number>) {

@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { computed } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import Ticket from "@/models/Ticket";
 import { TicketSortBy } from "@/types";
@@ -34,7 +34,7 @@ const threshold = computed(() => {
     }>().props.value[`${props.mode}Threshold`];
 });
 
-const position = ref(props.ticket[props.mode]);
+const position = computed(() => props.ticket[props.mode]);
 
 const overflow = computed(() => position.value > threshold.value);
 
@@ -42,18 +42,6 @@ const animation = computed(() => ({
     delay: -position.value + "s",
     duration: threshold.value + "s",
 }));
-
-let intervalId: number;
-
-onMounted(() => {
-    intervalId = window.setInterval(() => {
-        position.value = props.ticket[props.mode];
-    }, 1000);
-});
-
-onUnmounted(() => {
-    window.clearInterval(intervalId);
-});
 </script>
 
 <style scoped>

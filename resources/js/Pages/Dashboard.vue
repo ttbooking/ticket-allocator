@@ -4,7 +4,7 @@ import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { computed, onMounted } from "vue";
-import { IOperator, ITicket, TicketSortBy, SortDirection } from "@/types";
+import { Operator, Ticket, TicketSortBy, SortDirection } from "@/types";
 import { useLocalStorage } from "@vueuse/core";
 import * as Events from "@/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
@@ -14,8 +14,8 @@ import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
 
 const props = defineProps<{
-    operators: IOperator[];
-    tickets: ITicket[];
+    operators: Operator[];
+    tickets: Ticket[];
 }>();
 
 const oprSort = useLocalStorage<SortDirection>("ticket-allocator.opr-sort", "asc");
