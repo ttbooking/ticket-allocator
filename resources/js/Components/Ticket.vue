@@ -2,7 +2,7 @@
     <div class="d-inline-block">
         <v-btn size="small" class="ticket" :class="{ overflow }" flat width="100">
             <v-icon color="white" icon="mdi-airplane" start />
-            <span class="text-white">{{ position }}</span>
+            <span class="text-white">{{ compactPosition }}</span>
             <v-overlay
                 open-on-click
                 activator="parent"
@@ -35,6 +35,8 @@ const threshold = computed(() => {
 });
 
 const position = computed(() => props.ticket[props.mode]);
+
+const compactPosition = computed(() => (position.value < 100000 ? position.value : position.value.toExponential(1)));
 
 const overflow = computed(() => position.value > threshold.value);
 
