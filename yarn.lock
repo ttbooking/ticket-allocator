@@ -2823,11 +2823,11 @@ __metadata:
   linkType: hard
 
 "minipass@npm:^3.0.0, minipass@npm:^3.1.1, minipass@npm:^3.1.6":
-  version: 3.3.5
-  resolution: "minipass@npm:3.3.5"
+  version: 3.3.6
+  resolution: "minipass@npm:3.3.6"
   dependencies:
     yallist: ^4.0.0
-  checksum: f89f02bcaa0e0e4bb4c44ec796008e69fbca62db0aba6ead1bc57d25bdaefdf42102130f4f9ecb7d9c6b6cd35ff7b0c7b97d001d3435da8e629fb68af3aea57e
+  checksum: a30d083c8054cee83cdcdc97f97e4641a3f58ae743970457b1489ce38ee1167b3aaf7d815cd39ec7a99b9c40397fd4f686e83750e73e652b21cb516f6d845e48
   languageName: node
   linkType: hard
 
@@ -3174,9 +3174,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia@npm:^2.0.22, pinia@npm:^2.0.26":
-  version: 2.0.26
-  resolution: "pinia@npm:2.0.26"
+"pinia@npm:^2.0.22, pinia@npm:^2.0.27":
+  version: 2.0.27
+  resolution: "pinia@npm:2.0.27"
   dependencies:
     "@vue/devtools-api": ^6.4.5
     vue-demi: "*"
@@ -3189,7 +3189,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 0d38cc0efc6572436c439491491df0e989182bad342fc3828d8865a42db6c6580c8f86663fcc47955bfeca5baf6e7f95e61b9b3f795ba161c19ef86fdc9b2841
+  checksum: 29c862ea4304cdfeae385cbd2ab08100809aa9a79c147c4cb4085215601c0323e0ca664cea6abcaa0298e7ea53865117b6950ebb59224347fbc1683dbe956ac8
   languageName: node
   linkType: hard
 
@@ -3563,7 +3563,7 @@ __metadata:
     laravel-vite-plugin: ^0.7.1
     lodash: ^4.17.21
     moment: ^2.29.4
-    pinia: ^2.0.26
+    pinia: ^2.0.27
     pinia-orm: ^1.2.2
     postcss: ^8.4.19
     prettier: ^2.8.0
