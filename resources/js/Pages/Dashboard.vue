@@ -24,7 +24,15 @@ const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
 const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
 
-const sortedOperators = computed(() => operatorRepo.value.with("tickets").orderBy("free_slots", oprSort.value).get());
+const sortedOperators = computed(() =>
+    operatorRepo.value
+        .with("tickets", (query) => {
+            query.orderBy(mode.value, "desc");
+        })
+        .orderBy("free_slots", oprSort.value)
+        .get()
+);
+
 const sortedTickets = computed(() => ticketRepo.value.unbound().orderBy(mode.value, "desc").get());
 
 onMounted(() => {
