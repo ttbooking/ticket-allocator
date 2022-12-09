@@ -1,59 +1,59 @@
 {
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.eot": {
-    "file": "assets/materialdesignicons-webfont.861aea05.eot",
+    "file": "assets/materialdesignicons-webfont-861aea05.eot",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.eot"
   },
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2": {
-    "file": "assets/materialdesignicons-webfont.e52d60f6.woff2",
+    "file": "assets/materialdesignicons-webfont-e52d60f6.woff2",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2"
   },
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff": {
-    "file": "assets/materialdesignicons-webfont.48d3eec6.woff",
+    "file": "assets/materialdesignicons-webfont-48d3eec6.woff",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff"
   },
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf": {
-    "file": "assets/materialdesignicons-webfont.bd725a7a.ttf",
+    "file": "assets/materialdesignicons-webfont-bd725a7a.ttf",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf"
   },
-  "resources/js/app.ts": {
-    "file": "assets/app.36073249.js",
-    "src": "resources/js/app.ts",
-    "isEntry": true,
-    "dynamicImports": [
-      "_webfontloader.b777d690.js",
-      "resources/js/Pages/Dashboard.vue"
-    ],
-    "css": [
-      "assets/app.3a47c643.css"
-    ],
-    "assets": [
-      "assets/materialdesignicons-webfont.861aea05.eot",
-      "assets/materialdesignicons-webfont.e52d60f6.woff2",
-      "assets/materialdesignicons-webfont.48d3eec6.woff",
-      "assets/materialdesignicons-webfont.bd725a7a.ttf"
-    ]
+  "resources/js/Pages/Dashboard.css": {
+    "file": "assets/Dashboard-0d0b3757.css",
+    "src": "resources/js/Pages/Dashboard.css"
+  },
+  "resources/js/app.css": {
+    "file": "assets/app-1229bf42.css",
+    "src": "resources/js/app.css"
+  },
+  "_webfontloader-7ad0f352.js": {
+    "file": "assets/webfontloader-7ad0f352.js",
+    "isDynamicEntry": true
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.2c8a978a.js",
+    "file": "assets/Dashboard-45e7fe13.js",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.ts"
     ],
     "css": [
-      "assets/Dashboard.0d0b3757.css"
+      "assets/Dashboard-0d0b3757.css"
     ]
   },
-  "_webfontloader.b777d690.js": {
-    "file": "assets/webfontloader.b777d690.js",
-    "isDynamicEntry": true
-  },
-  "resources/js/Pages/Dashboard.css": {
-    "file": "assets/Dashboard.0d0b3757.css",
-    "src": "resources/js/Pages/Dashboard.css"
-  },
-  "resources/js/app.css": {
-    "file": "assets/app.3a47c643.css",
-    "src": "resources/js/app.css"
+  "resources/js/app.ts": {
+    "file": "assets/app-f266f263.js",
+    "src": "resources/js/app.ts",
+    "isEntry": true,
+    "dynamicImports": [
+      "_webfontloader-7ad0f352.js",
+      "resources/js/Pages/Dashboard.vue"
+    ],
+    "css": [
+      "assets/app-1229bf42.css"
+    ],
+    "assets": [
+      "assets/materialdesignicons-webfont-861aea05.eot",
+      "assets/materialdesignicons-webfont-e52d60f6.woff2",
+      "assets/materialdesignicons-webfont-48d3eec6.woff",
+      "assets/materialdesignicons-webfont-bd725a7a.ttf"
+    ]
   }
 }
