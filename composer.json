@@ -63,8 +63,8 @@
                 "TTBooking\\TicketAllocator\\TicketAllocatorServiceProvider"
             ],
             "aliases": {
-                "FactorRepository": "TTBooking\\FiscalRegistrar\\Facades\\FactorRepository",
-                "TicketAllocator": "TTBooking\\FiscalRegistrar\\Facades\\TicketAllocator"
+                "FactorRepository": "TTBooking\\TicketAllocator\\Facades\\FactorRepository",
+                "TicketAllocator": "TTBooking\\TicketAllocator\\Facades\\TicketAllocator"
             }
         }
     },
