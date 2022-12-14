@@ -1,18 +1,18 @@
 {
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.eot": {
-    "file": "assets/materialdesignicons-webfont-861aea05.eot",
+    "file": "assets/materialdesignicons-webfont-f5966bae.eot",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.eot"
   },
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2": {
-    "file": "assets/materialdesignicons-webfont-e52d60f6.woff2",
+    "file": "assets/materialdesignicons-webfont-739dc70d.woff2",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2"
   },
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff": {
-    "file": "assets/materialdesignicons-webfont-48d3eec6.woff",
+    "file": "assets/materialdesignicons-webfont-6d5e4be4.woff",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff"
   },
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf": {
-    "file": "assets/materialdesignicons-webfont-bd725a7a.ttf",
+    "file": "assets/materialdesignicons-webfont-c02d41ce.ttf",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf"
   },
   "resources/js/Pages/Dashboard.css": {
@@ -20,7 +20,7 @@
     "src": "resources/js/Pages/Dashboard.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-1229bf42.css",
+    "file": "assets/app-7f8d9339.css",
     "src": "resources/js/app.css"
   },
   "_webfontloader-7ad0f352.js": {
@@ -47,13 +47,13 @@
       "resources/js/Pages/Dashboard.vue"
     ],
     "css": [
-      "assets/app-1229bf42.css"
+      "assets/app-7f8d9339.css"
     ],
     "assets": [
-      "assets/materialdesignicons-webfont-861aea05.eot",
-      "assets/materialdesignicons-webfont-e52d60f6.woff2",
-      "assets/materialdesignicons-webfont-48d3eec6.woff",
-      "assets/materialdesignicons-webfont-bd725a7a.ttf"
+      "assets/materialdesignicons-webfont-f5966bae.eot",
+      "assets/materialdesignicons-webfont-739dc70d.woff2",
+      "assets/materialdesignicons-webfont-6d5e4be4.woff",
+      "assets/materialdesignicons-webfont-c02d41ce.ttf"
     ]
   }
 }
