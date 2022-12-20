@@ -1,7 +1,7 @@
 import { Model } from "pinia-orm";
 import { Attr, Num, Str, Uid, Cast, BelongsTo } from "pinia-orm/dist/decorators";
 import { DateCast } from "pinia-orm/dist/casts";
-import { useTimestamp } from "@vueuse/core";
+import { useSharedTimestamp } from "@/timestamp";
 import Operator from "./Operator";
 
 export default class Ticket extends Model {
@@ -21,7 +21,7 @@ export default class Ticket extends Model {
     @BelongsTo(() => Operator, "handler_uuid") declare handler: Operator | null;
 
     get duration() {
-        return Math.round((useTimestamp({ interval: 1000 }).value - new Date(this.created_at).getTime()) / 1000);
+        return Math.round((useSharedTimestamp().value - new Date(this.created_at).getTime()) / 1000);
     }
 
     get weight() {
