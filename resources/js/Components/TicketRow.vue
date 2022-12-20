@@ -19,7 +19,7 @@
         </td>
 
         <td class="tickets pt-1" :class="{ collapsed }">
-            <TicketPool :tickets="tickets" :sort-by="sortBy" />
+            <TicketPool :tickets="tickets" />
         </td>
 
         <td class="more text-center">
@@ -32,12 +32,9 @@
 import TicketPool from "@/Components/TicketPool.vue";
 import { computed, ref } from "vue";
 import Ticket from "@/models/Ticket";
-import { TicketSortBy, SortDirection } from "@/types";
 
 const props = defineProps<{
     tickets: Ticket[];
-    sortBy: TicketSortBy;
-    sortDirection?: SortDirection;
 }>();
 
 let collapsed = ref<boolean>(false);

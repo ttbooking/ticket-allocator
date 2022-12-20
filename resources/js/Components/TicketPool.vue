@@ -1,24 +1,15 @@
 <template>
     <TransitionGroup name="ticket-pool">
-        <TicketComponent
-            v-for="ticket in tickets"
-            :key="ticket.uuid"
-            :ticket="ticket"
-            :mode="sortBy"
-            class="mr-1 mb-1"
-        />
+        <TicketComponent v-for="ticket in tickets" :key="ticket.uuid" :ticket="ticket" class="mr-1 mb-1" />
     </TransitionGroup>
 </template>
 
 <script setup lang="ts">
 import { default as TicketComponent } from "@/Components/Ticket.vue";
 import Ticket from "@/models/Ticket";
-import { TicketSortBy, SortDirection } from "@/types";
 
 defineProps<{
     tickets: Ticket[];
-    sortBy: TicketSortBy;
-    sortDirection?: SortDirection;
 }>();
 </script>
 

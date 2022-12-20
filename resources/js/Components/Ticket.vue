@@ -18,23 +18,25 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useLocalStorage } from "@vueuse/core";
 import { usePage } from "@inertiajs/inertia-vue3";
 import Ticket from "@/models/Ticket";
 import { TicketSortBy } from "@/types";
 
 const props = defineProps<{
     ticket: Ticket;
-    mode: TicketSortBy;
 }>();
+
+const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
 
 const threshold = computed(() => {
     return usePage<{
         durationThreshold: number;
         weightThreshold: number;
-    }>().props.value[`${props.mode}Threshold`];
+    }>().props.value[`${mode.value}Threshold`];
 });
 
-const position = computed(() => props.ticket[props.mode]);
+const position = computed(() => props.ticket[mode.value]);
 
 const compactPosition = computed(() => (position.value < 100000 ? position.value : position.value.toExponential(1)));
 

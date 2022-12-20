@@ -100,16 +100,11 @@ onMounted(() => {
             </div>
             <v-table class="ticket-monitor">
                 <tbody class="align-text-top">
-                    <TicketRow :tickets="sortedTickets" :sort-by="mode">
+                    <TicketRow :tickets="sortedTickets">
                         <template #name>Очередь заявок</template>
                     </TicketRow>
                     <TransitionGroup name="operator-pool">
-                        <OperatorRow
-                            v-for="operator in sortedOperators"
-                            :key="operator.uuid"
-                            :operator="operator"
-                            :sort-by="mode"
-                        />
+                        <OperatorRow v-for="operator in sortedOperators" :key="operator.uuid" :operator="operator" />
                     </TransitionGroup>
                 </tbody>
             </v-table>

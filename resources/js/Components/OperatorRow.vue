@@ -1,5 +1,5 @@
 <template>
-    <TicketRow :tickets="operator.tickets" :sort-by="sortBy" class="operator" :class="status">
+    <TicketRow :tickets="operator.tickets" class="operator" :class="status">
         <template #status><v-icon icon="mdi-account" /></template>
         <template #load-max>{{ operator.ticket_limit ?? "&infin;" }}</template>
         <template #complexity-max>{{ operator.complexity_limit ?? "&infin;" }}</template>
@@ -11,12 +11,9 @@
 import TicketRow from "@/Components/TicketRow.vue";
 import { computed } from "vue";
 import Operator from "@/models/Operator";
-import { TicketSortBy, SortDirection } from "@/types";
 
 const props = defineProps<{
     operator: Operator;
-    sortBy: TicketSortBy;
-    sortDirection?: SortDirection;
 }>();
 
 const status = computed(() => ({
