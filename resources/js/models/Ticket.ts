@@ -1,7 +1,7 @@
 import { Model } from "pinia-orm";
 import { Attr, Num, Str, Uid, Cast, BelongsTo } from "pinia-orm/dist/decorators";
 import { DateCast } from "pinia-orm/dist/casts";
-import { useSharedTimestamp } from "@/timestamp";
+import { useSharedTimestamp } from "@/shared";
 import Operator from "./Operator";
 
 export default class Ticket extends Model {

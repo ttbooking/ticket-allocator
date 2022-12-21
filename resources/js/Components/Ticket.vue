@@ -18,16 +18,15 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useLocalStorage } from "@vueuse/core";
 import { usePage } from "@inertiajs/inertia-vue3";
 import Ticket from "@/models/Ticket";
-import { TicketSortBy } from "@/types";
+import { useSharedDisplayMode } from "@/shared";
 
 const props = defineProps<{
     ticket: Ticket;
 }>();
 
-const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
+const mode = useSharedDisplayMode();
 
 const threshold = computed(() => {
     return usePage<{

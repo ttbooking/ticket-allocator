@@ -4,8 +4,8 @@ import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { computed, onMounted } from "vue";
-import { Operator, Ticket, TicketSortBy, SortDirection } from "@/types";
-import { useLocalStorage } from "@vueuse/core";
+import { Operator, Ticket } from "@/types";
+import { useSharedDisplayMode, useSharedOperatorSorting } from "@/shared";
 import * as Events from "@/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
 
@@ -18,8 +18,8 @@ const props = defineProps<{
     tickets: Ticket[];
 }>();
 
-const oprSort = useLocalStorage<SortDirection>("ticket-allocator.opr-sort", "asc");
-const mode = useLocalStorage<TicketSortBy>("ticket-allocator.mode", "weight");
+const mode = useSharedDisplayMode();
+const oprSort = useSharedOperatorSorting();
 
 const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
