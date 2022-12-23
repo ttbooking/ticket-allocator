@@ -1,26 +1,29 @@
 <template>
-    <TransitionGroup name="ticket-pool">
+    <TransitionGroup name="ticket-pool" :css="animationEnabled">
         <TicketComponent v-for="ticket in tickets" :key="ticket.uuid" :ticket="ticket" class="mr-1 mb-1" />
     </TransitionGroup>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from "vue";
 import { default as TicketComponent } from "@/Components/Ticket.vue";
 import Ticket from "@/models/Ticket";
 
 defineProps<{
     tickets: Ticket[];
 }>();
+
+const animationEnabled = ref(false);
+
+onMounted(() => {
+    setTimeout(() => (animationEnabled.value = true), 500);
+});
 </script>
 
 <style scoped>
 .ticket-pool-move,
 .ticket-pool-enter-active {
     transition: all 0.5s ease;
-}
-
-.ticket-pool-enter-active {
-    position: absolute;
 }
 
 .ticket-pool-enter-from {

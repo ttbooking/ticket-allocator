@@ -4,6 +4,7 @@ import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import { computed, onMounted } from "vue";
+import { refThrottled } from "@vueuse/core";
 import { Operator, Ticket } from "@/types";
 import { useSharedDisplayMode, useSharedOperatorSorting } from "@/shared";
 import * as Events from "@/events.d";
@@ -24,16 +25,22 @@ const oprSort = useSharedOperatorSorting();
 const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
 
-const sortedOperators = computed(() =>
-    operatorRepo.value
-        .with("tickets", (query) => {
-            query.orderBy(mode.value, "desc");
-        })
-        .orderBy("free_slots", oprSort.value)
-        .get()
+const sortedOperators = refThrottled(
+    computed(() =>
+        operatorRepo.value
+            .with("tickets", (query) => {
+                query.orderBy(mode.value, "desc");
+            })
+            .orderBy("free_slots", oprSort.value)
+            .get()
+    ),
+    750
 );
 
-const sortedTickets = computed(() => ticketRepo.value.unbound().orderBy(mode.value, "desc").get());
+const sortedTickets = refThrottled(
+    computed(() => ticketRepo.value.unbound().orderBy(mode.value, "desc").get()),
+    750
+);
 
 onMounted(() => {
     operatorRepo.value.fresh(props.operators);

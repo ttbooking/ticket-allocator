@@ -4,26 +4,16 @@ import pinia from "./plugins/pinia";
 import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
 
-import Echo from "laravel-echo";
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import Colada from "colada-plugin";
 import { ZiggyVue } from "ziggy-js";
-import { PusherChannel } from "laravel-echo/dist/channel";
-
-declare global {
-    interface Window {
-        Echo: Echo;
-        ticketAllocatorChannel: PusherChannel;
-        Ziggy?: any;
-    }
-}
 
 loadFonts();
 
-const name: string = window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
+const name = window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
 
 createInertiaApp({
     title: (title) => `${title} - ${name}`,

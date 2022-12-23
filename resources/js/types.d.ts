@@ -1,3 +1,14 @@
+import Echo from "laravel-echo";
+import { PusherChannel } from "laravel-echo/dist/channel";
+
+declare global {
+    interface Window {
+        Echo: Echo;
+        ticketAllocatorChannel: PusherChannel;
+        Ziggy?: any;
+    }
+}
+
 export type TicketSortBy = "weight" | "duration";
 
 export type SortDirection = "asc" | "desc";
