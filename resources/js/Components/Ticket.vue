@@ -1,6 +1,15 @@
 <template>
     <div class="d-inline-block">
-        <v-btn ref="ticketElement" size="small" class="ticket" :class="{ overflow }" flat width="100">
+        <v-btn
+            ref="ticketElement"
+            @mousedown.ctrl="enterLockState"
+            @mouseup="exitLockState"
+            size="small"
+            class="ticket"
+            :class="{ overflow }"
+            flat
+            width="100"
+        >
             <!--<v-icon color="white" icon="mdi-airplane" start />-->
             <span class="text-white">🖱️{{ pressed ? "✔️" : "❌" }} — ⌨️{{ ctrlKeyState ? "✔️" : "❌" }}</span>
             <v-overlay
@@ -30,6 +39,15 @@ const props = defineProps<{
 const ticketElement = ref(null);
 const { pressed } = useMousePressed({ target: ticketElement });
 const ctrlKeyState = useKeyModifier("Control", { initial: false });
+
+function enterLockState(event: Event) {
+    const ticketElement = event.target as HTMLInputElement;
+    ticketElement.requestPointerLock();
+}
+
+function exitLockState() {
+    document.exitPointerLock();
+}
 
 const mode = useSharedDisplayMode();
 
