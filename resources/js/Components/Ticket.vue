@@ -1,8 +1,8 @@
 <template>
     <div class="d-inline-block">
-        <v-btn size="small" class="ticket" :class="{ overflow }" flat width="100">
-            <v-icon color="white" icon="mdi-airplane" start />
-            <span class="text-white">{{ compactPosition }}</span>
+        <v-btn ref="ticketElement" size="small" class="ticket" :class="{ overflow }" flat width="100">
+            <!--<v-icon color="white" icon="mdi-airplane" start />-->
+            <span class="text-white">🖱️{{ pressed ? "✔️" : "❌" }} — ⌨️{{ ctrlKeyState ? "✔️" : "❌" }}</span>
             <v-overlay
                 open-on-click
                 activator="parent"
@@ -17,7 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, computed } from "vue";
+import { useKeyModifier, useMousePressed } from "@vueuse/core";
 import { usePage } from "@inertiajs/inertia-vue3";
 import Ticket from "@/models/Ticket";
 import { useSharedDisplayMode } from "@/shared";
@@ -25,6 +26,10 @@ import { useSharedDisplayMode } from "@/shared";
 const props = defineProps<{
     ticket: Ticket;
 }>();
+
+const ticketElement = ref(null);
+const { pressed } = useMousePressed({ target: ticketElement });
+const ctrlKeyState = useKeyModifier("Control", { initial: false });
 
 const mode = useSharedDisplayMode();
 
