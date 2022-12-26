@@ -2,13 +2,13 @@
     <div class="d-inline-block">
         <v-btn
             ref="ticketElement"
-            @mousedown.ctrl="enterLockState"
-            @mouseup="exitLockState"
             size="small"
             class="ticket"
             :class="{ overflow }"
             flat
             width="100"
+            @mousedown.ctrl="lock"
+            @mouseup="unlock"
         >
             <!--<v-icon color="white" icon="mdi-airplane" start />-->
             <span class="text-white">🖱️{{ pressed ? "✔️" : "❌" }} — ⌨️{{ ctrlKeyState ? "✔️" : "❌" }}</span>
@@ -26,8 +26,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useKeyModifier, useMousePressed } from "@vueuse/core";
+import { usePointerLock, useMouseEx } from "@/composables";
 import { usePage } from "@inertiajs/inertia-vue3";
 import Ticket from "@/models/Ticket";
 import { useSharedDisplayMode } from "@/shared";
@@ -36,18 +37,24 @@ const props = defineProps<{
     ticket: Ticket;
 }>();
 
-const ticketElement = ref(null);
+const ticketElement = ref();
 const { pressed } = useMousePressed({ target: ticketElement });
 const ctrlKeyState = useKeyModifier("Control", { initial: false });
+const { lock, unlock, element } = usePointerLock();
+const { x, y } = useMouseEx({ type: "movement" });
 
-function enterLockState(event: Event) {
-    const ticketElement = event.target as HTMLInputElement;
-    ticketElement.requestPointerLock();
-}
+const multiplier = ref(1);
+const correction = ref(0);
 
-function exitLockState() {
-    document.exitPointerLock();
-}
+watch(element, () => {
+    multiplier.value = 1;
+    correction.value = 0;
+});
+
+watch([x, y], ([x, y]) => {
+    multiplier.value = Math.round(Math.min(Math.max(multiplier.value - y / 10, 1), 100))
+    correction.value = Math.max(correction.value - x * multiplier.value, correction.value - props.ticket.weight)
+});
 
 const mode = useSharedDisplayMode();
 
