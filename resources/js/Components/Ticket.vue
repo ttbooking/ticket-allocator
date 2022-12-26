@@ -34,8 +34,21 @@ import Ticket from "@/models/Ticket";
 import { useSharedDisplayMode } from "@/shared";
 
 const props = defineProps<{
-    ticket: Ticket;
+    modelValue: Ticket;
 }>();
+
+const emit = defineEmits<{
+    (e: "update:modelValue", ticket: Ticket): void
+}>();
+
+const ticket = computed({
+    get() {
+        return props.modelValue;
+    },
+    set(ticket) {
+        emit("update:modelValue", ticket)
+    }
+});
 
 const ticketElement = ref();
 const { pressed } = useMousePressed({ target: ticketElement });
@@ -53,7 +66,8 @@ watch(element, () => {
 
 watch([x, y], ([x, y]) => {
     multiplier.value = Math.round(Math.min(Math.max(multiplier.value - y / 10, 1), 100))
-    correction.value = Math.max(correction.value - x * multiplier.value, correction.value - props.ticket.weight)
+    correction.value = Math.max(correction.value - x * multiplier.value, correction.value - ticket.value.weight)
+    ticket.value.initial_weight = 123;
 });
 
 const mode = useSharedDisplayMode();
@@ -65,7 +79,7 @@ const threshold = computed(() => {
     }>().props.value[`${mode.value}Threshold`];
 });
 
-const position = computed(() => props.ticket[mode.value]);
+const position = computed(() => ticket.value[mode.value]);
 
 const compactPosition = computed(() => (position.value < 100000 ? position.value : position.value.toExponential(1)));
 
