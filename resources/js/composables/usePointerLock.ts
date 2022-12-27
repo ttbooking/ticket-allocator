@@ -1,23 +1,32 @@
 import { ref } from "vue";
-import { useEventListener } from "@vueuse/core";
+import { unrefElement, useEventListener } from "@vueuse/core";
+import type { MaybeElementRef } from "@vueuse/core";
 
 /**
  * Reactive pointer lock.
  */
-export function usePointerLock() {
+export function usePointerLock(target?: MaybeElementRef<HTMLElement>) {
     const element = ref<Element | null>();
 
-    function lock(event: Event) {
-        (event.target as Element).requestPointerLock();
+    function lock(e: MaybeElementRef<HTMLElement> | Event) {
+        const target = e instanceof Event ? <Element>e.target : unrefElement(e);
+        target && target.requestPointerLock();
+
+        const cleanupChange = useEventListener(document, "pointerlockchange", () => {
+            (element.value = document.pointerLockElement) || cleanupChange();
+        });
+
+        const cleanupError = useEventListener(document, "pointerlockerror", () => {
+            cleanupChange();
+            cleanupError();
+        });
     }
 
     function unlock() {
         element.value && document.exitPointerLock();
     }
 
-    useEventListener(document, "pointerlockchange", () => {
-        element.value = document.pointerLockElement;
-    });
+    target && lock(target);
 
     return {
         lock,
