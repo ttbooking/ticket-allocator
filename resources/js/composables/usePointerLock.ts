@@ -19,10 +19,12 @@ export function usePointerLock(target?: MaybeElementRef, options: ConfigurableDo
 
     if (isSupported.value) {
         useSharedEventListener(document, "pointerlockchange", () => {
+            console.log(document!.pointerLockElement ? "locked" : "unlocked");
             element.value = document!.pointerLockElement as MaybeElement;
         });
 
         useSharedEventListener(document, "pointerlockerror", () => {
+            console.log("error");
             const action = document!.pointerLockElement ? "release" : "acquire";
             throw new Error(`Failed to ${action} pointer lock.`);
         });

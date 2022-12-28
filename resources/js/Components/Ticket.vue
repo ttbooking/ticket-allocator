@@ -38,7 +38,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (e: "update:modelValue", ticket: Ticket): void
+    (e: "update:modelValue", ticket: Ticket): void;
 }>();
 
 const ticket = computed({
@@ -46,8 +46,8 @@ const ticket = computed({
         return props.modelValue;
     },
     set(ticket) {
-        emit("update:modelValue", ticket)
-    }
+        emit("update:modelValue", ticket);
+    },
 });
 
 const ticketElement = ref();
@@ -65,8 +65,8 @@ watch(element, () => {
 });
 
 watch([x, y], ([x, y]) => {
-    multiplier.value = Math.round(Math.min(Math.max(multiplier.value - y / 10, 1), 100))
-    correction.value = Math.max(correction.value - x * multiplier.value, correction.value - ticket.value.weight)
+    multiplier.value = Math.round(Math.min(Math.max(multiplier.value - y / 10, 1), 100));
+    correction.value = Math.max(correction.value - x * multiplier.value, correction.value - ticket.value.weight);
     ticket.value.initial_weight = 123;
 });
 
