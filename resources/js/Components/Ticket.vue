@@ -1,7 +1,8 @@
 <template>
     <div class="d-inline-block">
+        <span>{{ element && "id" in element ? `z${element.id}z` : "bruh" }}</span>
         <v-btn
-            ref="ticketElement"
+            :id="`ticket-${ticket.initial_weight}`"
             size="small"
             class="ticket"
             :class="{ overflow }"
@@ -10,9 +11,9 @@
             @mousedown.ctrl="lock"
             @mouseup="unlock"
         >
-            <!--<v-icon color="white" icon="mdi-airplane" start />-->
-            <span class="text-white">🖱️{{ pressed ? "✔️" : "❌" }} — ⌨️{{ ctrlKeyState ? "✔️" : "❌" }}</span>
-            <v-overlay
+            <v-icon color="white" icon="mdi-airplane" start />
+            <span class="text-white">{{ compactPosition }}</span>
+            <!--<v-overlay
                 open-on-click
                 activator="parent"
                 location-strategy="connected"
@@ -20,54 +21,51 @@
                 origin="auto"
             >
                 <v-card width="400" title="aaa" subtitle="bbb" text="zzz" />
-            </v-overlay>
+            </v-overlay>-->
         </v-btn>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import { useKeyModifier, useMousePressed } from "@vueuse/core";
+import { computed, watch } from "vue";
 import { usePointerLock, useMouseEx } from "@/composables";
 import { usePage } from "@inertiajs/inertia-vue3";
 import Ticket from "@/models/Ticket";
 import { useSharedDisplayMode } from "@/shared";
 
+import { useRepo } from "pinia-orm";
+import TicketRepository from "@/repositories/TicketRepository";
+
+const ticketRepo = computed(() => useRepo(TicketRepository));
+
 const props = defineProps<{
-    modelValue: Ticket;
+    ticket: Ticket;
 }>();
 
-const emit = defineEmits<{
-    (e: "update:modelValue", ticket: Ticket): void;
-}>();
-
-const ticket = computed({
-    get() {
-        return props.modelValue;
-    },
-    set(ticket) {
-        emit("update:modelValue", ticket);
-    },
-});
-
-const ticketElement = ref();
-const { pressed } = useMousePressed({ target: ticketElement });
-const ctrlKeyState = useKeyModifier("Control", { initial: false });
 const { lock, unlock, element } = usePointerLock();
-const { x, y } = useMouseEx({ type: "movement" });
+const { x } = useMouseEx({ type: "movement" });
 
-const multiplier = ref(1);
-const correction = ref(0);
+//const multiplier = ref(1);
+//const correction = ref(0);
 
-watch(element, () => {
+/*watch(element, () => {
     multiplier.value = 1;
     correction.value = 0;
-});
+    console.log("x");
+});*/
 
-watch([x, y], ([x, y]) => {
-    multiplier.value = Math.round(Math.min(Math.max(multiplier.value - y / 10, 1), 100));
-    correction.value = Math.max(correction.value - x * multiplier.value, correction.value - ticket.value.weight);
-    ticket.value.initial_weight = 123;
+watch(x, (x) => {
+    if (!element.value) return;
+    //let z = element.value as HTMLElement;
+    //z.innerText
+    //multiplier.value = Math.round(Math.min(Math.max(multiplier.value - y / 10, 1), 100));
+    //correction.value = Math.max(correction.value - x * multiplier.value, correction.value - props.ticket.weight);
+    //console.log(correction.value);
+    if (x < 0) {
+        ticketRepo.value.incrementInitialWeight({ uuid: props.ticket.uuid, weightPoints: x * 10 });
+    } else if (x > 0) {
+        ticketRepo.value.decrementInitialWeight({ uuid: props.ticket.uuid, weightPoints: -x * 10 });
+    }
 });
 
 const mode = useSharedDisplayMode();
@@ -79,7 +77,7 @@ const threshold = computed(() => {
     }>().props.value[`${mode.value}Threshold`];
 });
 
-const position = computed(() => ticket.value[mode.value]);
+const position = computed(() => props.ticket[mode.value]);
 
 const compactPosition = computed(() => (position.value < 100000 ? position.value : position.value.toExponential(1)));
 
