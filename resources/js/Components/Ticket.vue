@@ -1,19 +1,9 @@
 <template>
     <div class="d-inline-block">
-        <span>{{ element && "id" in element ? `z${element.id}z` : "bruh" }}</span>
-        <v-btn
-            :id="`ticket-${ticket.initial_weight}`"
-            size="small"
-            class="ticket"
-            :class="{ overflow }"
-            flat
-            width="100"
-            @mousedown.ctrl="lock"
-            @mouseup="unlock"
-        >
+        <v-btn size="small" class="ticket" :class="{ overflow }" flat width="100">
             <v-icon color="white" icon="mdi-airplane" start />
             <span class="text-white">{{ compactPosition }}</span>
-            <!--<v-overlay
+            <v-overlay
                 open-on-click
                 activator="parent"
                 location-strategy="connected"
@@ -21,53 +11,20 @@
                 origin="auto"
             >
                 <v-card width="400" title="aaa" subtitle="bbb" text="zzz" />
-            </v-overlay>-->
+            </v-overlay>
         </v-btn>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
-import { useMouse } from "@vueuse/core";
-import { usePointerLock } from "@/composables";
+import { computed } from "vue";
 import { usePage } from "@inertiajs/inertia-vue3";
 import Ticket from "@/models/Ticket";
 import { useSharedDisplayMode } from "@/shared";
 
-import { useRepo } from "pinia-orm";
-import TicketRepository from "@/repositories/TicketRepository";
-
-const ticketRepo = computed(() => useRepo(TicketRepository));
-
 const props = defineProps<{
     ticket: Ticket;
 }>();
-
-const { lock, unlock, element } = usePointerLock();
-const { x } = useMouse({ type: "movement" });
-
-//const multiplier = ref(1);
-//const correction = ref(0);
-
-/*watch(element, () => {
-    multiplier.value = 1;
-    correction.value = 0;
-    console.log("x");
-});*/
-
-watch(x, (x) => {
-    if (!element.value) return;
-    //let z = element.value as HTMLElement;
-    //z.innerText
-    //multiplier.value = Math.round(Math.min(Math.max(multiplier.value - y / 10, 1), 100));
-    //correction.value = Math.max(correction.value - x * multiplier.value, correction.value - props.ticket.weight);
-    //console.log(correction.value);
-    if (x < 0) {
-        ticketRepo.value.incrementInitialWeight({ uuid: props.ticket.uuid, weightPoints: x * 10 });
-    } else if (x > 0) {
-        ticketRepo.value.decrementInitialWeight({ uuid: props.ticket.uuid, weightPoints: -x * 10 });
-    }
-});
 
 const mode = useSharedDisplayMode();
 
