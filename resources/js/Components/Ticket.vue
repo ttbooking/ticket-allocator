@@ -28,7 +28,8 @@
 
 <script setup lang="ts">
 import { computed, watch } from "vue";
-import { usePointerLock, useMouseEx } from "@/composables";
+import { useMouse } from "@vueuse/core";
+import { usePointerLock } from "@/composables";
 import { usePage } from "@inertiajs/inertia-vue3";
 import Ticket from "@/models/Ticket";
 import { useSharedDisplayMode } from "@/shared";
@@ -43,7 +44,7 @@ const props = defineProps<{
 }>();
 
 const { lock, unlock, element } = usePointerLock();
-const { x } = useMouseEx({ type: "movement" });
+const { x } = useMouse({ type: "movement" });
 
 //const multiplier = ref(1);
 //const correction = ref(0);
