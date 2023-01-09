@@ -1,17 +1,50 @@
 <template>
-    <TransitionGroup name="ticket-pool" :css="animationEnabled">
-        <TicketComponent v-for="ticket in tickets" :key="ticket.uuid" :ticket="ticket" class="mr-1 mb-1" />
-    </TransitionGroup>
+    <div ref="ticketPool" @mouseup="unlock">
+        <TransitionGroup name="ticket-pool" :css="animationEnabled">
+            <TicketComponent
+                v-for="ticket in tickets"
+                :key="ticket.uuid"
+                :data-uuid="ticket.uuid"
+                :ticket="ticket"
+                class="mr-1 mb-1"
+                @mousedown.ctrl="lock"
+            />
+        </TransitionGroup>
+    </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
+import { useMouse } from "@vueuse/core";
+import { usePointerLock } from "@/composables";
 import { default as TicketComponent } from "@/Components/Ticket.vue";
 import Ticket from "@/models/Ticket";
+
+import { useRepo } from "pinia-orm";
+import TicketRepository from "@/repositories/TicketRepository";
 
 defineProps<{
     tickets: Ticket[];
 }>();
+
+const ticketPool = ref<HTMLElement | null>(null);
+const { lock, unlock, element, triggerElement } = usePointerLock(ticketPool);
+const { x } = useMouse({ type: "movement" });
+
+const ticketRepo = computed(() => useRepo(TicketRepository));
+
+watch([element, x], ([element, x]) => {
+    if (!element || !triggerElement.value) return;
+
+    const uuid = triggerElement.value.dataset.uuid as string;
+    //multiplier.value = Math.round(Math.min(Math.max(multiplier.value - y / 10, 1), 100));
+    //correction.value = Math.max(correction.value - x * multiplier.value, correction.value - props.ticket.weight);
+    if (x < 0) {
+        ticketRepo.value.incrementInitialWeight({ uuid, weightPoints: -x * 10 });
+    } else if (x > 0) {
+        ticketRepo.value.decrementInitialWeight({ uuid, weightPoints: x * 10 });
+    }
+});
 
 const animationEnabled = ref(false);
 

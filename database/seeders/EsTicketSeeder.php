@@ -35,7 +35,7 @@ class EsTicketSeeder extends Seeder
             }
 
             app(IncrementTicketInitialWeightAction::class)($ticket, fake()->numberBetween(0, 100000));
-            app(IncrementTicketWeightIncrementAction::class)($ticket, fake()->numberBetween(0, 1000));
+            app(IncrementTicketWeightIncrementAction::class)($ticket, fake()->numberBetween(0, 100));
             app(IncrementTicketComplexityAction::class)($ticket, fake()->randomElement([10, 25, 50, 75, 100]));
             fake()->boolean(10) && app(IncrementTicketDelayAction::class)($ticket, fake()->numberBetween(1, 10) * 60);
         }

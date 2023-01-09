@@ -17,13 +17,17 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
 
     const element = ref<MaybeHTMLElement>();
 
+    const triggerElement = ref<MaybeHTMLElement>();
+
     let targetElement: MaybeHTMLElement;
 
     if (isSupported.value) {
         useEventListener(document, "pointerlockchange", () => {
             const currentElement = document!.pointerLockElement ?? element.value;
-            if (targetElement && currentElement === targetElement)
+            if (targetElement && currentElement === targetElement) {
                 element.value = document!.pointerLockElement as MaybeHTMLElement;
+                if (!element.value) targetElement = triggerElement.value = null;
+            }
         });
 
         useEventListener(document, "pointerlockerror", () => {
@@ -38,7 +42,8 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
     async function lock(e: MaybeElementRef<MaybeHTMLElement> | Event) {
         if (!isSupported.value) throw new Error("Pointer Lock API is not supported by your browser.");
 
-        targetElement = e instanceof Event ? unrefElement(target) ?? <HTMLElement>e.currentTarget : unrefElement(e);
+        triggerElement.value = e instanceof Event ? <HTMLElement>e.currentTarget : null;
+        targetElement = e instanceof Event ? unrefElement(target) ?? triggerElement.value : unrefElement(e);
         if (!targetElement) throw new Error("Target element undefined.");
         targetElement.requestPointerLock();
 
@@ -50,13 +55,14 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
 
         document!.exitPointerLock();
 
-        targetElement = await until(element).toBeNull();
+        await until(element).toBeNull();
         return true;
     }
 
     return {
         isSupported,
         element,
+        triggerElement,
         lock,
         unlock,
     };
