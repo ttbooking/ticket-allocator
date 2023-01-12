@@ -3,10 +3,10 @@ import DefaultLayout from "@/Layouts/Default.vue";
 import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import { ref, computed, onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { refThrottled } from "@vueuse/core";
-import type { Operator, Ticket, ToggleOptions } from "@/types";
-import { useSharedDisplayMode, useSharedOperatorSorting } from "@/shared";
+import type { Operator, Ticket } from "@/types";
+import { useSharedOptions, useSharedDisplayMode, useSharedOperatorSorting } from "@/shared";
 import * as Events from "@/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
 
@@ -19,11 +19,7 @@ const props = defineProps<{
     tickets: Ticket[];
 }>();
 
-const toggle = ref<Array<ToggleOptions>>([]);
-const hideEmpty = computed(() => toggle.value.includes("hide-empty"));
-const altInfo = computed(() => toggle.value.includes("alt-info"));
-const unlocked = computed(() => toggle.value.includes("unlocked"));
-
+const options = useSharedOptions();
 const mode = useSharedDisplayMode();
 const oprSort = useSharedOperatorSorting();
 
@@ -95,17 +91,23 @@ onMounted(() => {
             <v-container fluid>
                 <v-row>
                     <v-col>
-                        <v-btn-toggle v-model="toggle" variant="plain" multiple>
-                            <v-btn value="hide-empty" :icon="hideEmpty ? 'mdi-eye-off-outline' : 'mdi-eye-outline'" />
-                            <v-btn value="alt-info" :icon="altInfo ? 'mdi-magnify-plus-outline' : 'mdi-magnify'" />
+                        <v-btn-toggle v-model="options.all" variant="plain" multiple>
+                            <v-btn
+                                value="hide-empty"
+                                :icon="options.hideEmpty ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+                            />
+                            <v-btn
+                                value="alt-info"
+                                :icon="options.altInfo ? 'mdi-magnify-plus-outline' : 'mdi-magnify'"
+                            />
                             <v-btn
                                 value="unlocked"
-                                :icon="unlocked ? 'mdi-lock-open-variant' : 'mdi-lock'"
+                                :icon="options.unlocked ? 'mdi-lock-open-variant' : 'mdi-lock'"
                                 color="red"
-                                :variant="unlocked ? 'text' : 'plain'"
+                                :variant="options.unlocked ? 'text' : 'plain'"
                             />
                         </v-btn-toggle>
-                        <v-btn-group v-if="unlocked" variant="plain">
+                        <v-btn-group v-if="options.unlocked" variant="plain">
                             <v-btn icon="mdi-delete" />
                             <v-btn icon="mdi-refresh" />
                         </v-btn-group>

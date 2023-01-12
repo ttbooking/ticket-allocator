@@ -6,6 +6,7 @@
                 :key="ticket.uuid"
                 :data-uuid="ticket.uuid"
                 :ticket="ticket"
+                draggable="true"
                 class="mr-1 mb-1"
                 @mousedown.ctrl="lock"
             />
