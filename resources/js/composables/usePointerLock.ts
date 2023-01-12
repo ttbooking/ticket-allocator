@@ -1,17 +1,31 @@
 import { ref } from "vue";
-import { until } from "@vueuse/shared";
+import { until } from "@vueuse/core";
 import { useEventListener, useSupported, unrefElement } from "@vueuse/core";
 import type { MaybeElementRef } from "@vueuse/core";
 import type { ConfigurableDocument } from "@vueuse/core";
 import { defaultDocument } from "@vueuse/core";
 
+declare global {
+    interface PointerLockOptions {
+        unadjustedMovement?: boolean;
+    }
+
+    interface Element {
+        requestPointerLock(options?: PointerLockOptions): Promise<void> | void;
+    }
+}
+
 type MaybeHTMLElement = HTMLElement | undefined | null;
+
+export interface UsePointerLockOptions extends ConfigurableDocument {
+    pointerLockOptions?: PointerLockOptions;
+}
 
 /**
  * Reactive pointer lock.
  */
-export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, options: ConfigurableDocument = {}) {
-    const { document = defaultDocument } = options;
+export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, options: UsePointerLockOptions = {}) {
+    const { document = defaultDocument, pointerLockOptions } = options;
 
     const isSupported = useSupported(() => document && "pointerLockElement" in document);
 
@@ -39,13 +53,13 @@ export function usePointerLock(target?: MaybeElementRef<MaybeHTMLElement>, optio
         });
     }
 
-    async function lock(e: MaybeElementRef<MaybeHTMLElement> | Event) {
+    async function lock(e: MaybeElementRef<MaybeHTMLElement> | Event, options?: PointerLockOptions) {
         if (!isSupported.value) throw new Error("Pointer Lock API is not supported by your browser.");
 
         triggerElement.value = e instanceof Event ? <HTMLElement>e.currentTarget : null;
         targetElement = e instanceof Event ? unrefElement(target) ?? triggerElement.value : unrefElement(e);
         if (!targetElement) throw new Error("Target element undefined.");
-        targetElement.requestPointerLock();
+        targetElement.requestPointerLock(options ?? pointerLockOptions);
 
         return await until(element).toBe(targetElement);
     }
