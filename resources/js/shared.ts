@@ -1,5 +1,5 @@
 import { createSharedComposable, useLocalStorage, useTimestamp } from "@vueuse/core";
-import { SortDirection, TicketSortBy } from "./types";
+import type { SortDirection, TicketSortBy } from "./types";
 
 export const useSharedDisplayMode = createSharedComposable(() =>
     useLocalStorage<TicketSortBy>("ticket-allocator.display-mode", "weight")

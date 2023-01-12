@@ -3,9 +3,9 @@ import DefaultLayout from "@/Layouts/Default.vue";
 import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import { computed, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { refThrottled } from "@vueuse/core";
-import { Operator, Ticket } from "@/types";
+import type { Operator, Ticket, ToggleOptions } from "@/types";
 import { useSharedDisplayMode, useSharedOperatorSorting } from "@/shared";
 import * as Events from "@/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
@@ -18,6 +18,11 @@ const props = defineProps<{
     operators: Operator[];
     tickets: Ticket[];
 }>();
+
+const toggle = ref<Array<ToggleOptions>>([]);
+const hideEmpty = computed(() => toggle.value.includes("hide-empty"));
+const altInfo = computed(() => toggle.value.includes("alt-info"));
+const unlocked = computed(() => toggle.value.includes("unlocked"));
 
 const mode = useSharedDisplayMode();
 const oprSort = useSharedOperatorSorting();
@@ -87,24 +92,46 @@ onMounted(() => {
         </template>
 
         <div>
-            <div class="d-flex">
-                <v-switch
-                    v-model="oprSort"
-                    false-value="asc"
-                    true-value="desc"
-                    prepend-icon="mdi-sort-ascending"
-                    append-icon="mdi-sort-descending"
-                    class="d-flex justify-end"
-                />
-                <v-switch
-                    v-model="mode"
-                    false-value="weight"
-                    true-value="duration"
-                    prepend-icon="mdi-weight"
-                    append-icon="mdi-clock"
-                    class="d-flex justify-end"
-                />
-            </div>
+            <v-container fluid>
+                <v-row>
+                    <v-col>
+                        <v-btn-toggle v-model="toggle" variant="plain" multiple>
+                            <v-btn value="hide-empty" :icon="hideEmpty ? 'mdi-eye-off-outline' : 'mdi-eye-outline'" />
+                            <v-btn value="alt-info" :icon="altInfo ? 'mdi-magnify-plus-outline' : 'mdi-magnify'" />
+                            <v-btn
+                                value="unlocked"
+                                :icon="unlocked ? 'mdi-lock-open-variant' : 'mdi-lock'"
+                                color="red"
+                                :variant="unlocked ? 'text' : 'plain'"
+                            />
+                        </v-btn-toggle>
+                        <v-btn-group v-if="unlocked" variant="plain">
+                            <v-btn icon="mdi-delete" />
+                            <v-btn icon="mdi-refresh" />
+                        </v-btn-group>
+                    </v-col>
+                    <v-col cols="2">
+                        <v-switch
+                            v-model="oprSort"
+                            false-value="asc"
+                            true-value="desc"
+                            prepend-icon="mdi-sort-ascending"
+                            append-icon="mdi-sort-descending"
+                            class="d-flex justify-end"
+                        />
+                    </v-col>
+                    <v-col cols="2">
+                        <v-switch
+                            v-model="mode"
+                            false-value="weight"
+                            true-value="duration"
+                            prepend-icon="mdi-weight"
+                            append-icon="mdi-clock"
+                            class="d-flex justify-end"
+                        />
+                    </v-col>
+                </v-row>
+            </v-container>
             <v-table class="ticket-monitor">
                 <tbody class="align-text-top">
                     <TicketRow :tickets="sortedTickets">
