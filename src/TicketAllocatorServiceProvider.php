@@ -46,7 +46,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         Route::group([
             'domain' => $this->app['config']['ticket-allocator.domain'] ?? null,
             'prefix' => $this->app['config']['ticket-allocator.path'] ?? null,
-            'name' => 'ticket-allocator.',
+            'as' => 'ticket-allocator.',
             'namespace' => 'TTBooking\\TicketAllocator\\Http\\Controllers',
             'middleware' => $this->app['config']['ticket-allocator.middleware'] ?? 'web',
         ], function () {
