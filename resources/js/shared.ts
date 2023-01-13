@@ -1,6 +1,6 @@
 import { createSharedComposable, useLocalStorage, useTimestamp } from "@vueuse/core";
 import type { SortDirection, TicketSortBy, ToggleOptions } from "./types";
-import { computed } from "vue";
+import { computed, reactive } from "vue";
 
 export const useSharedOptions = createSharedComposable(() => {
     const options = useLocalStorage<Array<ToggleOptions>>("ticket-allocator.options", []);
@@ -9,12 +9,12 @@ export const useSharedOptions = createSharedComposable(() => {
     const altInfo = computed(() => options.value.includes("alt-info"));
     const unlocked = computed(() => options.value.includes("unlocked"));
 
-    return {
+    return reactive({
         all: options,
         hideEmpty,
         altInfo,
         unlocked,
-    };
+    });
 });
 
 export const useSharedDisplayMode = createSharedComposable(() =>
