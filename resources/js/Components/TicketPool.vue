@@ -17,9 +17,10 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from "vue";
 import { useMouse } from "@vueuse/core";
-import { usePointerLock } from "@/composables";
+import { useDragAndDrop, useDropZone, usePointerLock } from "@/composables";
 import { default as TicketComponent } from "@/Components/Ticket.vue";
 import Ticket from "@/models/Ticket";
+import { useSupervisorApi } from "@/api";
 
 import { useRepo } from "pinia-orm";
 import TicketRepository from "@/repositories/TicketRepository";
@@ -28,7 +29,23 @@ defineProps<{
     tickets: Ticket[];
 }>();
 
+const api = useSupervisorApi();
+
 const ticketPool = ref<HTMLElement | null>(null);
+const { element: draggingElement } = useDragAndDrop(ticketPool, (dataTransfer) => {
+    dataTransfer?.setData("text/plain", draggingElement.value?.dataset.uuid ?? "");
+});
+const { isOverDropZone } = useDropZone(
+    ticketPool,
+    async (dataTransfer) => {
+        const uuid = dataTransfer?.getData("text/plain");
+        if (!uuid) throw new Error("Ticket UUID undefined.");
+        const result = await api.handler(uuid);
+        console.log(result);
+        return result;
+    },
+    false
+);
 const { lock, unlock, element, triggerElement } = usePointerLock(ticketPool);
 const { x } = useMouse({ type: "movement" });
 

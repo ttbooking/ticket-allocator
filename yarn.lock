@@ -510,6 +510,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/history@npm:^4.7.11":
+  version: 4.7.11
+  resolution: "@types/history@npm:4.7.11"
+  checksum: c92e2ba407dcab0581a9afdf98f533aa41b61a71133420a6d92b1ca9839f741ab1f9395b17454ba5b88cb86020b70b22d74a1950ccfbdfd9beeaa5459fdc3464
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:^7.0.8, @types/json-schema@npm:^7.0.9":
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
@@ -558,6 +565,15 @@ __metadata:
   version: 1.6.35
   resolution: "@types/webfontloader@npm:1.6.35"
   checksum: 8a809e1f8041fc9f7ec1df82d6e841bfc51732a3aa0b56a4e3d2abab86a8abce1b0db90dc9d2c594fd0d77034e2670cae3cfb714a902a0112985fa04fd4a61c8
+  languageName: node
+  linkType: hard
+
+"@types/ziggy-js@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "@types/ziggy-js@npm:1.3.2"
+  dependencies:
+    "@types/history": ^4.7.11
+  checksum: 10221337c774f01084df34f3c37a5c831b0f91d10b0bc4852f136e65024bed86a94d188dff64ecca20e3f520b35b307e195b6e38ecc7fe273da42b8c28b2f60b
   languageName: node
   linkType: hard
 
@@ -3572,6 +3588,7 @@ __metadata:
     "@types/lodash": ^4.14.191
     "@types/node": ^18.11.18
     "@types/webfontloader": ^1.6.35
+    "@types/ziggy-js": ^1.3.2
     "@typescript-eslint/eslint-plugin": ^5.48.1
     "@typescript-eslint/parser": ^5.48.1
     "@vitejs/plugin-vue": ^4.0.0

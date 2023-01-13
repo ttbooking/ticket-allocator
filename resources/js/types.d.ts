@@ -1,8 +1,10 @@
+import { Axios } from "axios";
 import Echo from "laravel-echo";
 import { PusherChannel } from "laravel-echo/dist/channel";
 
 declare global {
     interface Window {
+        axios: Axios;
         Echo: Echo;
         ticketAllocatorChannel: PusherChannel;
         Ziggy?: any;

@@ -9,7 +9,7 @@ import { createInertiaApp } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import Colada from "colada-plugin";
-import { ZiggyVue } from "ziggy-js";
+//import { ZiggyVue } from "ziggy-js";
 
 loadFonts();
 
@@ -24,7 +24,7 @@ createInertiaApp({
             .use(pinia)
             .use(Colada)
             .use(vuetify)
-            .use(ZiggyVue, window.Ziggy ?? {})
+            //.use(ZiggyVue, window.Ziggy ?? {})
             .mount(el);
     },
 });

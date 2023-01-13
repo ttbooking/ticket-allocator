@@ -3,7 +3,7 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["resources/js/*"],
-            "ziggy-js": ["vendor/tightenco/ziggy/dist/vue.m"]
+            "ziggy-js": ["vendor/tightenco/ziggy/dist/index.m"]
         },
         "target": "ESNext",
         "useDefineForClassFields": true,

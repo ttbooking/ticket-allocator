@@ -37,11 +37,11 @@ const props = defineProps<{
     tickets: Ticket[];
 }>();
 
-let collapsed = ref<boolean>(false);
+let collapsed = ref(false);
 
-const complexity = computed<number>(() => props.tickets.reduce((n, { complexity }) => n + complexity, 0));
+const complexity = computed(() => props.tickets.reduce((n, { complexity }) => n + complexity, 0));
 
-const moreIcon = computed<string>(() => (collapsed.value ? "mdi-chevron-down" : "mdi-chevron-up"));
+const moreIcon = computed(() => (collapsed.value ? "mdi-chevron-down" : "mdi-chevron-up"));
 </script>
 
 <style scoped>

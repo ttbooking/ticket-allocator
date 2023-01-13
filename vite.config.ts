@@ -8,7 +8,7 @@ export default defineConfig({
     resolve: {
         alias: {
             "@": "/resources/js",
-            "ziggy-js": path.resolve("vendor/tightenco/ziggy/dist/vue.m"),
+            "ziggy-js": path.resolve("vendor/tightenco/ziggy/dist/index.m"),
         },
     },
     plugins: [

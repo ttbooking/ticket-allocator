@@ -2,17 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('api/v1')->group(function () {
+Route::prefix('api/v1')->name('api.')->group(function () {
     Route::apiResource('factors', 'FactorController');
 
     Route::prefix('operators/{operator}')->group(function () {
-        Route::patch('/ready', 'SupervisorController@ready');
+        Route::name('ready')->patch('/ready', 'SupervisorController@ready');
     });
 
     Route::prefix('tickets/{ticket}')->group(function () {
-        Route::patch('/weight', 'SupervisorController@weight');
-        Route::patch('/handler', 'SupervisorController@handler');
-        Route::delete('/', 'SupervisorController@close');
+        Route::name('weight')->patch('/weight', 'SupervisorController@weight');
+        Route::name('handler')->patch('/handler', 'SupervisorController@handler');
+        Route::name('close')->delete('/', 'SupervisorController@close');
     });
 });
 
