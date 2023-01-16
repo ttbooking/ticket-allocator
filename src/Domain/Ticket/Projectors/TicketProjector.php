@@ -83,12 +83,24 @@ class TicketProjector extends Projector
 
     public function onTicketComplexityIncremented(Events\TicketComplexityIncremented $event): void
     {
-        Ticket::find($event->uuid)?->writeable()->increment('complexity', $event->complexityPoints);
+        $ticket = Ticket::find($event->uuid)?->writeable();
+
+        $ticket?->increment('complexity', $event->complexityPoints);
+
+        if ($operator = $ticket?->operator?->writeable()) {
+            $operator->increment('total_complexity', $event->complexityPoints);
+        }
     }
 
     public function onTicketComplexityDecremented(Events\TicketComplexityDecremented $event): void
     {
-        Ticket::find($event->uuid)?->writeable()->decrement('complexity', $event->complexityPoints);
+        $ticket = Ticket::find($event->uuid)?->writeable();
+
+        $ticket?->decrement('complexity', $event->complexityPoints);
+
+        if ($operator = $ticket?->operator?->writeable()) {
+            $operator->decrement('total_complexity', $event->complexityPoints);
+        }
     }
 
     public function onTicketDelayIncremented(Events\TicketDelayIncremented $event): void
