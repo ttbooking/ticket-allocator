@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Domain\Ticket\Projectors;
 
 use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
-use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Events;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 
@@ -31,34 +30,12 @@ class TicketProjector extends Projector
 
     public function onTicketBound(Events\TicketBound $event): void
     {
-        //Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => $event->operatorUuid]);
-
-        $ticket = Ticket::find($event->uuid)?->writeable();
-
-        if ($operator = $ticket?->operator?->writeable()) {
-            $operator->decrement('bound_tickets');
-            $operator->decrement('total_complexity', $ticket->complexity);
-        }
-
-        $ticket?->update(['handler_uuid' => $event->operatorUuid]);
-
-        if ($operator = Operator::find($event->operatorUuid)?->writeable()) {
-            $operator->increment('bound_tickets');
-            $operator->increment('total_complexity', $ticket->complexity);
-        }
+        Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => $event->operatorUuid]);
     }
 
     public function onTicketUnbound(Events\TicketUnbound $event): void
     {
-        //Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => null]);
-
-        $ticket = Ticket::find($event->uuid)?->writeable();
-
-        if ($operator = $ticket?->operator?->writeable()) {
-            $operator->decrement('bound_tickets');
-            $operator->decrement('total_complexity', $ticket->complexity);
-            $ticket->update(['handler_uuid' => null]);
-        }
+        Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => null]);
     }
 
     public function onTicketInitialWeightIncremented(Events\TicketInitialWeightIncremented $event): void
@@ -83,24 +60,12 @@ class TicketProjector extends Projector
 
     public function onTicketComplexityIncremented(Events\TicketComplexityIncremented $event): void
     {
-        $ticket = Ticket::find($event->uuid)?->writeable();
-
-        $ticket?->increment('complexity', $event->complexityPoints);
-
-        if ($operator = $ticket?->operator?->writeable()) {
-            $operator->increment('total_complexity', $event->complexityPoints);
-        }
+        Ticket::find($event->uuid)?->writeable()->increment('complexity', $event->complexityPoints);
     }
 
     public function onTicketComplexityDecremented(Events\TicketComplexityDecremented $event): void
     {
-        $ticket = Ticket::find($event->uuid)?->writeable();
-
-        $ticket?->decrement('complexity', $event->complexityPoints);
-
-        if ($operator = $ticket?->operator?->writeable()) {
-            $operator->decrement('total_complexity', $event->complexityPoints);
-        }
+        Ticket::find($event->uuid)?->writeable()->decrement('complexity', $event->complexityPoints);
     }
 
     public function onTicketDelayIncremented(Events\TicketDelayIncremented $event): void
