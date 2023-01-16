@@ -28,7 +28,7 @@
     "isDynamicEntry": true
   },
   "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard-6757f13c.js",
+    "file": "assets/Dashboard-b19419dd.js",
     "src": "resources/js/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
@@ -39,7 +39,7 @@
     ]
   },
   "resources/js/app.ts": {
-    "file": "assets/app-47ee92de.js",
+    "file": "assets/app-8f873fcd.js",
     "src": "resources/js/app.ts",
     "isEntry": true,
     "dynamicImports": [

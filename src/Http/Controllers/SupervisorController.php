@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use TTBooking\TicketAllocator\Domain\Operator\Actions\SetOperatorNotReadyAction;
@@ -19,11 +20,13 @@ class SupervisorController extends Controller
      * Set operator readiness status.
      *
      * @param  Operator  $operator
-     * @param  bool  $ready
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function ready(Operator $operator, bool $ready): JsonResponse
+    public function ready(Operator $operator, Request $request): JsonResponse
     {
+        $ready = $request->ready;
+
         $ready
             ? app(SetOperatorReadyAction::class)($operator)
             : app(SetOperatorNotReadyAction::class)($operator);
@@ -35,11 +38,13 @@ class SupervisorController extends Controller
      * Adjust ticket weight.
      *
      * @param  Ticket  $ticket
-     * @param  int  $weightPoints
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function weight(Ticket $ticket, int $weightPoints): JsonResponse
+    public function weight(Ticket $ticket, Request $request): JsonResponse
     {
+        $weightPoints = $request->weight_points;
+
         if ($weightPoints > 0) {
             app(Actions\IncrementTicketInitialWeightAction::class)($ticket, $weightPoints);
         } elseif ($weightPoints < 0) {
@@ -53,11 +58,13 @@ class SupervisorController extends Controller
      * Bind or unbind ticket.
      *
      * @param  Ticket  $ticket
-     * @param  Operator|null  $handler
+     * @param  Request  $request
      * @return JsonResponse
      */
-    public function handler(Ticket $ticket, ?Operator $handler): JsonResponse
+    public function handler(Ticket $ticket, Request $request): JsonResponse
     {
+        $handler = Operator::find($request->operator_uuid);
+
         if ($handler) {
             app(Actions\BindTicketAction::class)($ticket, $handler);
         } else {
