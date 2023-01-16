@@ -10,6 +10,8 @@ use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 
 class TicketProjector extends Projector
 {
+    public int $weight = 5;
+
     public function onTicketCreated(Events\TicketCreated $event): void
     {
         (new Ticket)->writeable()->create([
