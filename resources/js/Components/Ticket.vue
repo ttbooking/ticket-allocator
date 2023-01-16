@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { usePage } from "@inertiajs/inertia-vue3";
+import { usePage } from "@inertiajs/vue3";
 import Ticket from "@/models/Ticket";
 import { useSharedDisplayMode } from "@/shared";
 
@@ -29,10 +29,7 @@ const props = defineProps<{
 const mode = useSharedDisplayMode();
 
 const threshold = computed(() => {
-    return usePage<{
-        durationThreshold: number;
-        weightThreshold: number;
-    }>().props.value[`${mode.value}Threshold`];
+    return usePage().props?.[`${mode.value}Threshold`] as number;
 });
 
 const position = computed(() => props.ticket[mode.value]);

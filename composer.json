@@ -21,7 +21,7 @@
     "require": {
         "php": "^8.1",
         "ext-json": "*",
-        "inertiajs/inertia-laravel": "^0.6.4",
+        "inertiajs/inertia-laravel": "^0.6.8",
         "laravel/framework": "^9.19",
         "spatie/laravel-event-sourcing": "^7.0",
         "spatie/laravel-query-builder": "^5.0",

@@ -2,7 +2,7 @@
 import DefaultLayout from "@/Layouts/Default.vue";
 import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
-import { Head } from "@inertiajs/inertia-vue3";
+import { Head } from "@inertiajs/vue3";
 import { computed, onMounted } from "vue";
 import { refThrottled } from "@vueuse/core";
 import type { Operator, Ticket } from "@/types";

@@ -5,8 +5,7 @@ import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
 
 import { createApp, h } from "vue";
-import { createInertiaApp } from "@inertiajs/inertia-vue3";
-import { InertiaProgress } from "@inertiajs/progress";
+import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import Colada from "colada-plugin";
 //import { ZiggyVue } from "ziggy-js";
@@ -18,15 +17,13 @@ const name = window.document.getElementsByTagName("title")[0]?.innerText || "Lar
 createInertiaApp({
     title: (title) => `${title} - ${name}`,
     resolve: (name) => resolvePageComponent<any>(`./Pages/${name}.vue`, import.meta.glob("./Pages/**/*.vue")),
-    setup({ el, app, props, plugin }): any {
-        return createApp({ name, render: () => h(app, props) })
+    setup: ({ el, App, props, plugin }): any =>
+        createApp({ name, render: () => h(App, props) })
             .use(plugin)
             .use(pinia)
             .use(Colada)
             .use(vuetify)
             //.use(ZiggyVue, window.Ziggy ?? {})
-            .mount(el);
-    },
+            .mount(el),
+    progress: { color: "#4b5563" },
 });
-
-InertiaProgress.init({ color: "#4B5563" });
