@@ -22,7 +22,7 @@
         "php": "^8.1",
         "ext-json": "*",
         "inertiajs/inertia-laravel": "^0.6.8",
-        "laravel/framework": "^9.19",
+        "laravel/framework": "^9.19 || ^10.0",
         "spatie/laravel-event-sourcing": "^7.0",
         "spatie/laravel-query-builder": "^5.0",
         "tightenco/ziggy": "^1.5"
@@ -32,7 +32,7 @@
         "laravel/pint": "^1.0",
         "mockery/mockery": "^1.5",
         "nunomaduro/larastan": "^2.2",
-        "orchestra/testbench": "^7.0",
+        "orchestra/testbench": "^7.0 || ^8.0",
         "phpunit/phpunit": "^9.5.10",
         "symfony/expression-language": "^6.1"
     },
