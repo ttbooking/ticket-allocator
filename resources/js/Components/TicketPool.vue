@@ -16,8 +16,8 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from "vue";
-import { useMouse } from "@vueuse/core";
-import { useDragAndDrop, usePointerLock } from "@/composables";
+import { useMouse, usePointerLock } from "@vueuse/core";
+import { useDragAndDrop } from "@/composables";
 import { default as TicketComponent } from "@/Components/Ticket.vue";
 import Ticket from "@/models/Ticket";
 
