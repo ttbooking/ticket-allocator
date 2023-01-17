@@ -1,5 +1,5 @@
 <template>
-    <TicketRow :tickets="operator.tickets" class="operator" :class="status">
+    <TicketRow :tickets="operator.tickets" :data-uuid="operator.uuid" class="operator" :class="status">
         <template #status><v-icon icon="mdi-account" /></template>
         <template #load-max>{{ operator.ticket_limit ?? "&infin;" }}</template>
         <template #complexity-max>{{ operator.complexity_limit ?? "&infin;" }}</template>

@@ -1,5 +1,5 @@
 <template>
-    <tr class="ticket-row">
+    <tr ref="ticketRow" class="ticket-row" :class="{ dragover: isOverDropZone }">
         <td class="status">
             <slot name="status" />
         </td>
@@ -31,6 +31,8 @@
 <script setup lang="ts">
 import TicketPool from "@/Components/TicketPool.vue";
 import { computed, ref } from "vue";
+import { useSupervisorApi } from "@/api";
+import { useDropZone } from "@/composables";
 import Ticket from "@/models/Ticket";
 
 const props = defineProps<{
@@ -42,6 +44,22 @@ let collapsed = ref(false);
 const complexity = computed(() => props.tickets.reduce((n, { complexity }) => n + complexity, 0));
 
 const moreIcon = computed(() => (collapsed.value ? "mdi-chevron-down" : "mdi-chevron-up"));
+
+const api = useSupervisorApi();
+
+const ticketRow = ref<HTMLElement | null>(null);
+const { isOverDropZone } = useDropZone(
+    ticketRow,
+    async (dataTransfer) => {
+        const uuid = dataTransfer?.getData("text/plain");
+        if (!uuid) throw new Error("Ticket UUID undefined.");
+        const operatorUuid = ticketRow.value?.dataset.uuid;
+        const result = await api.handler(uuid, operatorUuid);
+        console.log(result);
+        return result;
+    },
+    false
+);
 </script>
 
 <style scoped>
@@ -59,6 +77,9 @@ const moreIcon = computed(() => (collapsed.value ? "mdi-chevron-down" : "mdi-che
 }
 .ticket-row .more {
     width: 4.8em;
+}
+.ticket-row.dragover {
+    background-color: #def2de !important;
 }
 
 .tickets {
