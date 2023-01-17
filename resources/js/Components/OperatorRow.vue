@@ -1,6 +1,6 @@
 <template>
     <TicketRow :tickets="operator.tickets" :data-uuid="operator.uuid" class="operator" :class="status">
-        <template #status><v-icon icon="mdi-account" /></template>
+        <template #status><v-icon icon="mdi-account" @click="toggleReadiness" /></template>
         <template #load-max>{{ operator.ticket_limit ?? "&infin;" }}</template>
         <template #complexity-max>{{ operator.complexity_limit ?? "&infin;" }}</template>
         <template #name>{{ operator.name }}</template>
@@ -10,6 +10,7 @@
 <script setup lang="ts">
 import TicketRow from "@/Components/TicketRow.vue";
 import { computed } from "vue";
+import { useSupervisorApi } from "@/api";
 import Operator from "@/models/Operator";
 
 const props = defineProps<{
@@ -22,6 +23,10 @@ const status = computed(() => ({
     busy: !!props.operator.tickets?.length,
     full: props.operator.ticket_limit !== null && props.operator.tickets?.length >= props.operator.ticket_limit,
 }));
+
+const api = useSupervisorApi();
+
+const toggleReadiness = async () => await api.ready(props.operator.uuid, !props.operator.ready);
 </script>
 
 <style scoped>

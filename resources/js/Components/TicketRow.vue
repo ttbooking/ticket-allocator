@@ -54,9 +54,7 @@ const { isOverDropZone } = useDropZone(
         const uuid = dataTransfer?.getData("text/plain");
         if (!uuid) throw new Error("Ticket UUID undefined.");
         const operatorUuid = ticketRow.value?.dataset.uuid;
-        const result = await api.handler(uuid, operatorUuid);
-        console.log(result);
-        return result;
+        return await api.handler(uuid, operatorUuid);
     },
     false
 );
