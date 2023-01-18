@@ -11,6 +11,7 @@ import * as Events from "@/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
 
 import { useRepo } from "pinia-orm";
+import { useCollect } from "pinia-orm/dist/helpers";
 import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
 
@@ -28,12 +29,19 @@ const ticketRepo = computed(() => useRepo(TicketRepository));
 
 const sortedOperators = refThrottled(
     computed(() =>
-        operatorRepo.value
-            .with("tickets", (query) => {
-                query.orderBy(mode.value, "desc");
-            })
-            .orderBy("free_slots", oprSort.value)
-            .get()
+        useCollect(
+            operatorRepo.value
+                .with("tickets", (query) => {
+                    query.orderBy(mode.value, "desc");
+                })
+                .get()
+        ).sortBy([
+            ["online", "desc"],
+            ["ready", "desc"],
+            ["free_slots", "desc"],
+            ["ticket_count", "asc"],
+            ["name", "asc"],
+        ])
     ),
     750
 );

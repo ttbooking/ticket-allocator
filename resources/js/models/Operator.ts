@@ -16,8 +16,12 @@ export default class Operator extends Model {
 
     @HasMany(() => Ticket, "handler_uuid") @OnDelete("set null") declare tickets: Ticket[];
 
+    get ticket_count() {
+        return this.tickets.length;
+    }
+
     get free_slots() {
-        return this.ticket_limit !== null ? Math.max(0, this.ticket_limit - this.tickets?.length) : null;
+        return this.ticket_limit !== null ? Math.max(0, this.ticket_limit - this.ticket_count) : null;
     }
 
     get total_complexity() {

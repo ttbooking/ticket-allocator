@@ -1112,7 +1112,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.2.0, axios@npm:^1.2.2":
+"axios@npm:^1.2.0":
   version: 1.2.2
   resolution: "axios@npm:1.2.2"
   dependencies:
@@ -1120,6 +1120,17 @@ __metadata:
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
   checksum: 6e357491b38426c5720f7328ecbafca3c643b03952c052d787570672ce7a9365717c2d64db4ce97cfbee3f830fa405101e360e14d0857ef7f96a9f4d814c4e03
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "axios@npm:1.2.3"
+  dependencies:
+    follow-redirects: ^1.15.0
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 52802a1e317e8a6fd2c014aa06a6978ea8381142c98e91f2be5e9e213b77b541451e588e17a3d6db2d6e76faea82911239ca4981d7af959d67fb66018dab3ac9
   languageName: node
   linkType: hard
 
@@ -2529,10 +2540,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"laravel-echo@npm:^1.14.2":
-  version: 1.14.2
-  resolution: "laravel-echo@npm:1.14.2"
-  checksum: af6b5f6cbfa1c63125d21df9238fc4c71c80c4ab46c50284204195f719e1812420142adb204019fddb6891a13632978339feb09f356d5da3f0160eafaacd926d
+"laravel-echo@npm:^1.15.0":
+  version: 1.15.0
+  resolution: "laravel-echo@npm:1.15.0"
+  checksum: ffc35cce5e5d8b37f4f278648d1b0f241a6c9f5ed9e1b6739c1f9bed3f120fa4c105c473da858247c5e6df600aebc53e7fe54a0f90253dfcf4508eea42b54525
   languageName: node
   linkType: hard
 
@@ -3573,12 +3584,12 @@ __metadata:
     "@vitejs/plugin-vue": ^4.0.0
     "@vueuse/core": ^9.11.0
     autoprefixer: ^10.4.13
-    axios: ^1.2.2
+    axios: ^1.2.3
     colada-plugin: ^0.1.0
     eslint: ^8.32.0
     eslint-config-prettier: ^8.6.0
     eslint-plugin-vue: ^9.9.0
-    laravel-echo: ^1.14.2
+    laravel-echo: ^1.15.0
     laravel-vite-plugin: ^0.7.3
     lodash: ^4.17.21
     moment: ^2.29.4

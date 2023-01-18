@@ -31,7 +31,7 @@ class EsTicketSeeder extends Seeder
             $ticket = app(CreateTicketAction::class)(fake()->randomElement($ticketCategories));
 
             if (! empty($operators)) {
-                fake()->boolean(30) && app(BindTicketAction::class)($ticket, fake()->randomElement($operators));
+                fake()->boolean(70) && app(BindTicketAction::class)($ticket, fake()->randomElement($operators));
             }
 
             app(IncrementTicketInitialWeightAction::class)($ticket, fake()->numberBetween(0, 100000));
