@@ -70,6 +70,8 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     protected function registerCommands(): void
     {
         $this->commands([
+            Console\SeedCommand::class,
+            Console\CleanCommand::class,
             Console\MakeFactorCommand::class,
             Console\SnapshotOperatorCommand::class,
         ]);
