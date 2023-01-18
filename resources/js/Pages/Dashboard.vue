@@ -3,8 +3,10 @@ import DefaultLayout from "@/Layouts/Default.vue";
 import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
 import { Head } from "@inertiajs/vue3";
-import { computed, onMounted } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { refThrottled } from "@vueuse/core";
+import { useSupervisorApi } from "@/api";
+import { useDropZone } from "@/composables";
 import type { Operator, Ticket } from "@/types";
 import { useSharedOptions, useSharedDisplayMode, useSharedOperatorSorting } from "@/shared";
 import * as Events from "@/events.d";
@@ -49,6 +51,19 @@ const sortedOperators = refThrottled(
 const sortedTickets = refThrottled(
     computed(() => ticketRepo.value.unbound().orderBy(mode.value, "desc").get()),
     750
+);
+
+const api = useSupervisorApi();
+
+const closeTicket = ref<HTMLElement | null>(null);
+const { isOverDropZone } = useDropZone(
+    closeTicket,
+    async (dataTransfer) => {
+        const uuid = dataTransfer?.getData("text/plain");
+        if (!uuid) throw new Error("Ticket UUID undefined.");
+        return await api.close(uuid);
+    },
+    false
 );
 
 onMounted(() => {
@@ -116,7 +131,7 @@ onMounted(() => {
                             />
                         </v-btn-toggle>
                         <v-btn-group v-if="options.unlocked" variant="plain">
-                            <v-btn icon="mdi-delete" />
+                            <v-btn ref="closeTicket" :icon="isOverDropZone ? 'mdi-delete-empty' : 'mdi-delete'" />
                             <v-btn icon="mdi-refresh" />
                         </v-btn-group>
                     </v-col>
