@@ -71,6 +71,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->commands([
             Console\SeedCommand::class,
+            Console\ReapCommand::class,
             Console\CleanCommand::class,
             Console\MakeFactorCommand::class,
             Console\SnapshotOperatorCommand::class,
