@@ -393,10 +393,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pinia-orm/normalizr@npm:>=1.0.6":
-  version: 1.0.6
-  resolution: "@pinia-orm/normalizr@npm:1.0.6"
-  checksum: d140d32bc120e8a0887a65e2df6a2627637f396c232893a0a479cbe13eac2251453bf3144b892acde884e4a38d10fbfb3582e065468bdbd26c89581b4d92c0a2
+"@pinia-orm/normalizr@npm:>=1.1.0":
+  version: 1.1.0
+  resolution: "@pinia-orm/normalizr@npm:1.1.0"
+  checksum: cab9d886a90b272601dbffdb904bf0232effd32c30f3c276e21e0db2d194ae2816a4ca6825374a1cd4b263d7645b6e7e21219176e6b94783fb26940e6adba36c
   languageName: node
   linkType: hard
 
@@ -1123,14 +1123,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.2.3":
-  version: 1.2.3
-  resolution: "axios@npm:1.2.3"
+"axios@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "axios@npm:1.2.4"
   dependencies:
     follow-redirects: ^1.15.0
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
-  checksum: 52802a1e317e8a6fd2c014aa06a6978ea8381142c98e91f2be5e9e213b77b541451e588e17a3d6db2d6e76faea82911239ca4981d7af959d67fb66018dab3ac9
+  checksum: 3454248d72028d69e90e348542140136c1226b448529e78beae5b88e65d6c67f85a3d0eb49f089b338cb54f173671b585c95ef3339f3cb28286eb2878fe47880
   languageName: node
   linkType: hard
 
@@ -3180,14 +3180,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia-orm@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "pinia-orm@npm:1.4.0"
+"pinia-orm@npm:^1.5.1":
+  version: 1.5.1
+  resolution: "pinia-orm@npm:1.5.1"
   dependencies:
-    "@pinia-orm/normalizr": ">=1.0.6"
+    "@pinia-orm/normalizr": ">=1.1.0"
   peerDependencies:
-    pinia: ^2.0.28
-  checksum: cc1c8ade645073950f09e19bddf7cfc16daa9d2bd399b9d1e884174ed7f15e7dcbb42847d0dec84dc8fcea945eae7a350544a5d4265063d0735544c05b0396da
+    pinia: ^2.0.29
+  checksum: b6895fd19985d0809403c83ba67f1922202af581ce725e6daee4c019ff207cccd6b9d83615fd784c4a688328d4d76efaa4cdbf5376b9e181cdc8fe0cd720285f
   languageName: node
   linkType: hard
 
@@ -3584,7 +3584,7 @@ __metadata:
     "@vitejs/plugin-vue": ^4.0.0
     "@vueuse/core": ^9.11.1
     autoprefixer: ^10.4.13
-    axios: ^1.2.3
+    axios: ^1.2.4
     colada-plugin: ^0.1.0
     eslint: ^8.32.0
     eslint-config-prettier: ^8.6.0
@@ -3594,7 +3594,7 @@ __metadata:
     lodash: ^4.17.21
     moment: ^2.29.4
     pinia: ^2.0.29
-    pinia-orm: ^1.4.0
+    pinia-orm: ^1.5.1
     postcss: ^8.4.21
     prettier: ^2.8.3
     roboto-fontface: "*"

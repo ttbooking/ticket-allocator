@@ -28,6 +28,6 @@ export class Query<M extends Model = Model> extends BaseQuery<M> {
 
 export class Repository<M extends Model = Model> extends BaseRepository<M> {
     query() {
-        return new Query(this.database, this.getModel(), this.queryCache, this.hydratedData, this.pinia);
+        return new Query(this.database, this.getModel(), this.queryCache, this.hydratedDataCache, this.pinia);
     }
 }
