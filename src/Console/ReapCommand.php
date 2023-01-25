@@ -40,6 +40,10 @@ class ReapCommand extends Command
      */
     protected $description = 'Clean up ticket allocator tables using event sourced approach';
 
+    protected ResignOperatorAction $resignOperator;
+
+    protected CloseTicketAction $closeTicket;
+
     private const OPRSORT_NONE = 0;
     private const OPRSORT_PREF = 1;
     private const OPRSORT_PREF_REV = 2;
@@ -53,10 +57,15 @@ class ReapCommand extends Command
     /**
      * Execute the console command.
      *
+     * @param  ResignOperatorAction  $resignOperator
+     * @param  CloseTicketAction  $closeTicket
      * @return void
      */
-    public function handle(): void
+    public function handle(ResignOperatorAction $resignOperator, CloseTicketAction $closeTicket): void
     {
+        $this->resignOperator = $resignOperator;
+        $this->closeTicket = $closeTicket;
+
         /** @var list<string> $entities */
         $entities = $this->choice(
             'Which entities should be reaped?',
@@ -139,7 +148,7 @@ class ReapCommand extends Command
             if ($sortTickets !== null) {
                 $this->reapTickets($operator->tickets, $sortTickets);
             }
-            app(ResignOperatorAction::class)($operator);
+            ($this->resignOperator)($operator);
         }
 
         if ($sort === self::OPRSORT_PREF_REV && $sortTickets !== null) {
@@ -169,7 +178,7 @@ class ReapCommand extends Command
         }
 
         foreach ($tickets as $ticket) {
-            app(CloseTicketAction::class)($ticket);
+            ($this->closeTicket)($ticket);
         }
     }
 }

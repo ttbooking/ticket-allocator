@@ -19,36 +19,44 @@ class SupervisorController extends Controller
     /**
      * Set operator readiness status.
      *
+     * @param  SetOperatorReadyAction  $setOperatorReady
+     * @param  SetOperatorNotReadyAction  $setOperatorNotReady
      * @param  Operator  $operator
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function ready(Operator $operator, Request $request): JsonResponse
-    {
-        $ready = $request->ready;
+    public function ready(
+        SetOperatorReadyAction $setOperatorReady,
+        SetOperatorNotReadyAction $setOperatorNotReady,
+        Operator $operator,
+        Request $request
+    ): JsonResponse {
+        $request->ready ? $setOperatorReady($operator) : $setOperatorNotReady($operator);
 
-        $ready
-            ? app(SetOperatorReadyAction::class)($operator)
-            : app(SetOperatorNotReadyAction::class)($operator);
-
-        return Response::json($ready);
+        return Response::json($request->ready);
     }
 
     /**
      * Adjust ticket weight.
      *
+     * @param  Actions\IncrementTicketInitialWeightAction  $incrementTicketInitialWeight
+     * @param  Actions\DecrementTicketInitialWeightAction  $decrementTicketInitialWeight
      * @param  Ticket  $ticket
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function weight(Ticket $ticket, Request $request): JsonResponse
-    {
+    public function weight(
+        Actions\IncrementTicketInitialWeightAction $incrementTicketInitialWeight,
+        Actions\DecrementTicketInitialWeightAction $decrementTicketInitialWeight,
+        Ticket $ticket,
+        Request $request
+    ): JsonResponse {
         $weightPoints = $request->weight_points;
 
         if ($weightPoints > 0) {
-            app(Actions\IncrementTicketInitialWeightAction::class)($ticket, $weightPoints);
+            $incrementTicketInitialWeight($ticket, $weightPoints);
         } elseif ($weightPoints < 0) {
-            app(Actions\DecrementTicketInitialWeightAction::class)($ticket, -$weightPoints);
+            $decrementTicketInitialWeight($ticket, -$weightPoints);
         }
 
         return Response::json($weightPoints);
@@ -57,18 +65,24 @@ class SupervisorController extends Controller
     /**
      * Bind or unbind ticket.
      *
+     * @param  Actions\BindTicketAction  $bindTicket
+     * @param  Actions\UnbindTicketAction  $unbindTicket
      * @param  Ticket  $ticket
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function handler(Ticket $ticket, Request $request): JsonResponse
-    {
+    public function handler(
+        Actions\BindTicketAction $bindTicket,
+        Actions\UnbindTicketAction $unbindTicket,
+        Ticket $ticket,
+        Request $request
+    ): JsonResponse {
         $handler = Operator::find($request->operator_uuid);
 
         if ($handler) {
-            app(Actions\BindTicketAction::class)($ticket, $handler);
+            $bindTicket($ticket, $handler);
         } else {
-            app(Actions\UnbindTicketAction::class)($ticket);
+            $unbindTicket($ticket);
         }
 
         return Response::json($handler?->getKey());
@@ -77,12 +91,13 @@ class SupervisorController extends Controller
     /**
      * Close ticket.
      *
+     * @param  Actions\CloseTicketAction  $closeTicket
      * @param  Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function close(Ticket $ticket): \Illuminate\Http\Response
+    public function close(Actions\CloseTicketAction $closeTicket, Ticket $ticket): \Illuminate\Http\Response
     {
-        app(Actions\CloseTicketAction::class)($ticket);
+        $closeTicket($ticket);
 
         return Response::noContent();
     }
