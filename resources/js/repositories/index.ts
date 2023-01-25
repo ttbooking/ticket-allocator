@@ -19,7 +19,10 @@ export class Query<M extends Model = Model> extends BaseQuery<M> {
                     increment ? (newRecord[key] += record[key]) : (newRecord[key] -= record[key]);
                 }
             }
-            return this.hydrate(newRecord);
+            const newModel = this.hydrate(newRecord, { action: "update", operation: "set" });
+            if (model.$self().updating(model, record) === false) return model;
+            newModel.$self().updated(newModel);
+            return newModel;
         });
         this.commit("update", this.compile(newModels));
         return newModels;
