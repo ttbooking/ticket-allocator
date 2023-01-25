@@ -16,17 +16,11 @@ use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 class ReapCommand extends Command
 {
     /**
-     * The name and signature of the console command.
+     * The console command name.
      *
      * @var string
      */
-    protected $signature = 'ticket-allocator:reap';
-    //{entity=both : "operators", "tickets" or "both"}
-    //{--from=alt : "operators", "tickets" or "alt"}
-    //{--osort=none : ["none", "dir" or "rev"]}
-    //{--tsort=none : "none", "dir" or "rev"}
-    //{--sort=none : "none", "dir" or "rev"}
-    //{--cleanup : Clean up non-ES tables}';
+    protected $name = 'ticket-allocator:reap';
 
     /**
      * The name of the console command.
@@ -63,12 +57,7 @@ class ReapCommand extends Command
      */
     public function handle(): void
     {
-        //$entity = $this->argument('entity');
-        //$from = $this->option('from');
-        //$osort = $this->option('sort') ?? $this->option('osort');
-        //$tsort = $this->option('sort') ?? $this->option('tsort');
-        //$cleanup = $this->option('cleanup');
-
+        /** @var list<string> $entities */
         $entities = $this->choice(
             'Which entities should be reaped?',
             ['Operators', 'Tickets'], '0,1',
@@ -110,7 +99,7 @@ class ReapCommand extends Command
         }
 
         foreach ($entities as $entity) {
-            $this->{"reap$entity"}(null, $sort[$entity], $withTickets ? $sort['Tickets'] : null);
+            $this->{"reap$entity"}(null, $sort[$entity] ?? 0, $withTickets ? ($sort['Tickets'] ?? null) : null);
         }
 
         if ($this->confirm('Do you want to do clean up afterwards?')) {
