@@ -63,7 +63,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
      */
     protected function registerResources(): void
     {
-        $this->loadTranslationsFrom(__DIR__.'/../lang', 'fiscal-registrar');
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'ticket-allocator');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'ticket-allocator');
     }
 
