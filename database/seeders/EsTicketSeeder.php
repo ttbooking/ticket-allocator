@@ -6,12 +6,7 @@ namespace TTBooking\TicketAllocator\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
-use TTBooking\TicketAllocator\Domain\Ticket\Actions\BindTicketAction;
-use TTBooking\TicketAllocator\Domain\Ticket\Actions\CreateTicketAction;
-use TTBooking\TicketAllocator\Domain\Ticket\Actions\IncrementTicketComplexityAction;
-use TTBooking\TicketAllocator\Domain\Ticket\Actions\IncrementTicketDelayAction;
-use TTBooking\TicketAllocator\Domain\Ticket\Actions\IncrementTicketInitialWeightAction;
-use TTBooking\TicketAllocator\Domain\Ticket\Actions\IncrementTicketWeightIncrementAction;
+use TTBooking\TicketAllocator\Domain\Ticket\Actions;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class EsTicketSeeder extends Seeder
@@ -19,25 +14,38 @@ class EsTicketSeeder extends Seeder
     /**
      * Run the database seeds.
      *
+     * @param  Actions\CreateTicketAction  $createTicket
+     * @param  Actions\BindTicketAction  $bindTicket
+     * @param  Actions\IncrementTicketInitialWeightAction  $incrementTicketInitialWeight
+     * @param  Actions\IncrementTicketWeightIncrementAction  $incrementTicketWeightIncrement
+     * @param  Actions\IncrementTicketComplexityAction  $incrementTicketComplexity
+     * @param  Actions\IncrementTicketDelayAction  $incrementTicketDelay
      * @param  int  $count
      * @return void
      */
-    public function run(int $count = 50): void
-    {
+    public function run(
+        Actions\CreateTicketAction $createTicket,
+        Actions\BindTicketAction $bindTicket,
+        Actions\IncrementTicketInitialWeightAction $incrementTicketInitialWeight,
+        Actions\IncrementTicketWeightIncrementAction $incrementTicketWeightIncrement,
+        Actions\IncrementTicketComplexityAction $incrementTicketComplexity,
+        Actions\IncrementTicketDelayAction $incrementTicketDelay,
+        int $count = 50
+    ): void {
         $ticketCategories = TicketCategory::all()->all();
         $operators = Operator::all()->all();
 
         for ($i = 0; $i < $count; $i++) {
-            $ticket = app(CreateTicketAction::class)(fake()->randomElement($ticketCategories));
+            $ticket = $createTicket(fake()->randomElement($ticketCategories));
 
             if (! empty($operators)) {
-                fake()->boolean(70) && app(BindTicketAction::class)($ticket, fake()->randomElement($operators));
+                fake()->boolean(70) && $bindTicket($ticket, fake()->randomElement($operators));
             }
 
-            app(IncrementTicketInitialWeightAction::class)($ticket, fake()->numberBetween(0, 100000));
-            app(IncrementTicketWeightIncrementAction::class)($ticket, fake()->numberBetween(0, 100));
-            app(IncrementTicketComplexityAction::class)($ticket, fake()->randomElement([10, 25, 50, 75, 100]));
-            fake()->boolean(10) && app(IncrementTicketDelayAction::class)($ticket, fake()->numberBetween(1, 10) * 60);
+            $incrementTicketInitialWeight($ticket, fake()->numberBetween(0, 100000));
+            $incrementTicketWeightIncrement($ticket, fake()->numberBetween(0, 100));
+            $incrementTicketComplexity($ticket, fake()->randomElement([10, 25, 50, 75, 100]));
+            $incrementTicketDelay($ticket, fake()->numberBetween(1, 10) * 60);
         }
     }
 }
