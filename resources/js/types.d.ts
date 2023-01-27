@@ -36,3 +36,12 @@ export interface Ticket {
     delay: number;
     created_at: string;
 }
+
+export interface OperatorTeam {
+    uuid: string;
+    name: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: ?string;
+}

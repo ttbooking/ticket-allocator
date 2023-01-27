@@ -1,5 +1,7 @@
 import { Model } from "pinia-orm";
-import { Bool, Num, Str, Uid, HasMany, OnDelete } from "pinia-orm/dist/decorators";
+import { Bool, Num, Str, Uid, BelongsToMany, HasMany, OnDelete } from "pinia-orm/dist/decorators";
+import OperatorTeam from "./OperatorTeam";
+import TeamOperator from "./TeamOperator";
 import Ticket from "./Ticket";
 
 export default class Operator extends Model {
@@ -14,6 +16,7 @@ export default class Operator extends Model {
     @Num(null) declare ticket_limit: number | null;
     @Num(null) declare complexity_limit: number | null;
 
+    @BelongsToMany(() => OperatorTeam, () => TeamOperator, "operator_uuid", "team_uuid") declare teams: OperatorTeam[];
     @HasMany(() => Ticket, "handler_uuid") @OnDelete("set null") declare tickets: Ticket[];
 
     get ticket_count() {

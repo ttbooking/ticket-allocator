@@ -15,36 +15,88 @@
     "file": "assets/materialdesignicons-webfont-c02d41ce.ttf",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf"
   },
+  "Default.css": {
+    "file": "assets/Default-f811e5dc.css",
+    "src": "Default.css"
+  },
   "resources/js/Pages/Dashboard.css": {
-    "file": "assets/Dashboard-f43d9774.css",
+    "file": "assets/Dashboard-e24ba361.css",
     "src": "resources/js/Pages/Dashboard.css"
   },
   "resources/js/app.css": {
     "file": "assets/app-79654e87.css",
     "src": "resources/js/app.css"
   },
+  "resources/js/Pages/OperatorTeam/Edit.vue": {
+    "file": "assets/Edit-14050757.js",
+    "src": "resources/js/Pages/OperatorTeam/Edit.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_Default.vue_vue_type_script_setup_true_lang-29b8ddb8.js",
+      "resources/js/app.ts"
+    ]
+  },
+  "resources/js/Pages/OperatorTeam/Create.vue": {
+    "file": "assets/Create-2c39a6d0.js",
+    "src": "resources/js/Pages/OperatorTeam/Create.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_Default.vue_vue_type_script_setup_true_lang-29b8ddb8.js",
+      "resources/js/app.ts"
+    ]
+  },
   "_webfontloader-2a4655c2.js": {
     "file": "assets/webfontloader-2a4655c2.js",
     "isDynamicEntry": true
   },
-  "resources/js/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard-4dab0b6c.js",
-    "src": "resources/js/Pages/Dashboard.vue",
+  "resources/js/Pages/OperatorTeam/Index.vue": {
+    "file": "assets/Index-fe9b5cc0.js",
+    "src": "resources/js/Pages/OperatorTeam/Index.vue",
     "isDynamicEntry": true,
+    "imports": [
+      "_Default.vue_vue_type_script_setup_true_lang-29b8ddb8.js",
+      "resources/js/app.ts",
+      "_Ticket-d1faa560.js"
+    ]
+  },
+  "_Ticket-d1faa560.js": {
+    "file": "assets/Ticket-d1faa560.js",
+    "imports": [
+      "resources/js/app.ts"
+    ]
+  },
+  "_Default.vue_vue_type_script_setup_true_lang-29b8ddb8.js": {
+    "file": "assets/Default.vue_vue_type_script_setup_true_lang-29b8ddb8.js",
     "imports": [
       "resources/js/app.ts"
     ],
     "css": [
-      "assets/Dashboard-f43d9774.css"
+      "assets/Default-f811e5dc.css"
+    ]
+  },
+  "resources/js/Pages/Dashboard.vue": {
+    "file": "assets/Dashboard-ca850ba2.js",
+    "src": "resources/js/Pages/Dashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.ts",
+      "_Default.vue_vue_type_script_setup_true_lang-29b8ddb8.js",
+      "_Ticket-d1faa560.js"
+    ],
+    "css": [
+      "assets/Dashboard-e24ba361.css"
     ]
   },
   "resources/js/app.ts": {
-    "file": "assets/app-5c9f81c4.js",
+    "file": "assets/app-9ac6c90e.js",
     "src": "resources/js/app.ts",
     "isEntry": true,
     "dynamicImports": [
       "_webfontloader-2a4655c2.js",
-      "resources/js/Pages/Dashboard.vue"
+      "resources/js/Pages/Dashboard.vue",
+      "resources/js/Pages/OperatorTeam/Create.vue",
+      "resources/js/Pages/OperatorTeam/Edit.vue",
+      "resources/js/Pages/OperatorTeam/Index.vue"
     ],
     "css": [
       "assets/app-79654e87.css"

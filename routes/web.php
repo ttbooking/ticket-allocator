@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use TTBooking\TicketAllocator\Http\Controllers\TeamController;
 
 Route::prefix('api/v1')->name('api.')->group(function () {
     Route::apiResource('factors', 'FactorController');
@@ -17,6 +18,8 @@ Route::prefix('api/v1')->name('api.')->group(function () {
 });
 
 Route::get('/', 'HomeController@index')->name('index');
+
+Route::resource('teams', TeamController::class);
 
 // Catch-all Route...
 //Route::get('/{view?}', 'HomeController@index')->where('view', '(.*)')->name('index');
