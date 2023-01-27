@@ -21,9 +21,9 @@ class TeamController extends Controller
      */
     public function index(): InertiaResponse
     {
-        $operatorTeams = OperatorTeam::all()->toArray();
+        $teams = OperatorTeam::all()->toArray();
 
-        return Inertia::render('OperatorTeam/Index', compact('operatorTeams'));
+        return Inertia::render('OperatorTeam/Index', compact('teams'));
     }
 
     /**
@@ -50,10 +50,10 @@ class TeamController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $operatorTeam
+     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $team
      * @return \Illuminate\Http\Response
      */
-    public function show(OperatorTeam $operatorTeam)
+    public function show(OperatorTeam $team)
     {
         //
     }
@@ -61,22 +61,22 @@ class TeamController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $operatorTeam
+     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $team
      * @return InertiaResponse
      */
-    public function edit(OperatorTeam $operatorTeam): InertiaResponse
+    public function edit(OperatorTeam $team): InertiaResponse
     {
-        return Inertia::render('OperatorTeam/Edit', compact('operatorTeam'));
+        return Inertia::render('OperatorTeam/Edit', compact('team'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \TTBooking\TicketAllocator\Http\Requests\UpdateOperatorTeamRequest  $request
-     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $operatorTeam
+     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $team
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateOperatorTeamRequest $request, OperatorTeam $operatorTeam)
+    public function update(UpdateOperatorTeamRequest $request, OperatorTeam $team)
     {
         //
     }
@@ -84,12 +84,12 @@ class TeamController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $operatorTeam
+     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $team
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OperatorTeam $operatorTeam)
+    public function destroy(OperatorTeam $team)
     {
-        $operatorTeam->delete();
+        $team->delete();
 
         return Response::noContent();
     }

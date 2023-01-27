@@ -7,7 +7,11 @@
         </template>
 
         <div>
-            <v-data-table :items="operatorTeams" />
+            <v-data-table :headers="headers" :items="operatorTeams">
+                <template #item.actions="{ item }">
+                    <v-icon size="small" @click="api.destroy(item.raw.uuid)">mdi-delete</v-icon>
+                </template>
+            </v-data-table>
         </div>
     </DefaultLayout>
 </template>
@@ -16,6 +20,7 @@
 import DefaultLayout from "@/Layouts/Default.vue";
 import { Head } from "@inertiajs/vue3";
 import { computed, onMounted } from "vue";
+import { useOperatorTeamApi } from "@/api";
 import type { OperatorTeam } from "@/types";
 
 import { useRepo } from "pinia-orm";
@@ -28,6 +33,14 @@ const props = defineProps<{
 const teamRepo = computed(() => useRepo(OperatorTeamModel));
 
 const operatorTeams = computed(() => teamRepo.value.all());
+
+const headers = [
+    { title: "Name", key: "name" },
+    { title: "Description", key: "description" },
+    { title: "Actions", key: "actions", sortable: false },
+];
+
+const api = useOperatorTeamApi();
 
 onMounted(() => {
     teamRepo.value.fresh(props.operatorTeams);
