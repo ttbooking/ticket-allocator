@@ -8,8 +8,8 @@
 
         <div>
             <v-data-table :headers="headers" :items="teams">
-                <template #item.actions="{ item }">
-                    <v-icon size="small" @click="api.destroy(item.raw.uuid)">mdi-delete</v-icon>
+                <template #[`item.actions`]="{ item }">
+                    <v-icon size="small" @click="deleteTeam(item.raw)">mdi-delete</v-icon>
                 </template>
             </v-data-table>
         </div>
@@ -41,6 +41,11 @@ const headers = [
 ];
 
 const api = useOperatorTeamApi();
+
+async function deleteTeam(team: OperatorTeam) {
+    await api.destroy(team.uuid);
+    teamRepo.value.destroy(team.uuid);
+}
 
 onMounted(() => {
     teamRepo.value.fresh(props.teams);
