@@ -16,6 +16,6 @@ import { Head } from "@inertiajs/vue3";
 import type { OperatorTeam } from "@/types";
 
 const props = defineProps<{
-    operatorTeam: OperatorTeam;
+    team: OperatorTeam;
 }>();
 </script>

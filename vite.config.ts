@@ -5,11 +5,8 @@ import vuetify from "vite-plugin-vuetify";
 import path from "path";
 
 export default defineConfig({
-    resolve: {
-        alias: {
-            "@": "/resources/js",
-            "ziggy-js": path.resolve("vendor/tightenco/ziggy/dist/index.m"),
-        },
+    build: {
+        sourcemap: true,
     },
     plugins: [
         laravel({
@@ -26,4 +23,10 @@ export default defineConfig({
         }),
         vuetify(),
     ],
+    resolve: {
+        alias: {
+            "@": "/resources/js",
+            "ziggy-js": path.resolve("vendor/tightenco/ziggy/dist/index.m"),
+        },
+    },
 });

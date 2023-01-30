@@ -7,7 +7,7 @@
         </template>
 
         <div>
-            <v-data-table :headers="headers" :items="operatorTeams">
+            <v-data-table :headers="headers" :items="teams">
                 <template #item.actions="{ item }">
                     <v-icon size="small" @click="api.destroy(item.raw.uuid)">mdi-delete</v-icon>
                 </template>
@@ -27,12 +27,12 @@ import { useRepo } from "pinia-orm";
 import OperatorTeamModel from "@/models/OperatorTeam";
 
 const props = defineProps<{
-    operatorTeams: OperatorTeam[];
+    teams: OperatorTeam[];
 }>();
 
 const teamRepo = computed(() => useRepo(OperatorTeamModel));
 
-const operatorTeams = computed(() => teamRepo.value.all());
+const teams = computed(() => teamRepo.value.all());
 
 const headers = [
     { title: "Name", key: "name" },
@@ -43,6 +43,6 @@ const headers = [
 const api = useOperatorTeamApi();
 
 onMounted(() => {
-    teamRepo.value.fresh(props.operatorTeams);
+    teamRepo.value.fresh(props.teams);
 });
 </script>
