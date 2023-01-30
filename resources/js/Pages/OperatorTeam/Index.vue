@@ -9,7 +9,10 @@
         <div>
             <v-data-table :headers="headers" :items="teams">
                 <template #[`item.actions`]="{ item }">
-                    <v-icon size="small" @click="deleteTeam(item.raw)">mdi-delete</v-icon>
+                    <Link :href="route('ticket-allocator.teams.edit', item.raw.uuid)">
+                        <v-btn icon="mdi-pencil" size="small" variant="plain" />
+                    </Link>
+                    <v-btn icon="mdi-delete" size="small" variant="plain" @click="deleteTeam(item.raw)" />
                 </template>
             </v-data-table>
         </div>
@@ -18,10 +21,11 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/Layouts/Default.vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
 import { computed, onMounted } from "vue";
 import { useOperatorTeamApi } from "@/api";
 import type { OperatorTeam } from "@/types";
+import route from "ziggy-js";
 
 import { useRepo } from "pinia-orm";
 import OperatorTeamModel from "@/models/OperatorTeam";
