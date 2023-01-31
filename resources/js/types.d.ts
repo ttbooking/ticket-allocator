@@ -45,3 +45,15 @@ export interface OperatorTeam {
     updated_at: string;
     deleted_at: ?string;
 }
+
+export interface TicketCategory {
+    uuid: string;
+    name: string;
+    short: string;
+    initial_weight: number;
+    weight_increment: number;
+    complexity: number;
+    delay: number;
+    created_at: string;
+    updated_at: string;
+}

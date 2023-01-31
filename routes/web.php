@@ -21,5 +21,7 @@ Route::get('/', 'HomeController@index')->name('index');
 
 Route::resource('teams', TeamController::class);
 
+Route::get('users', 'UserController@index');
+
 // Catch-all Route...
 //Route::get('/{view?}', 'HomeController@index')->where('view', '(.*)')->name('index');

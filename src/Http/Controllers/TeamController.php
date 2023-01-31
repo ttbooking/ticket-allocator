@@ -11,6 +11,7 @@ use Inertia\Response as InertiaResponse;
 use TTBooking\TicketAllocator\Http\Requests\StoreOperatorTeamRequest;
 use TTBooking\TicketAllocator\Http\Requests\UpdateOperatorTeamRequest;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
+use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class TeamController extends Controller
 {
@@ -66,7 +67,9 @@ class TeamController extends Controller
      */
     public function edit(OperatorTeam $team): InertiaResponse
     {
-        return Inertia::render('OperatorTeam/Edit', compact('team'));
+        $categories = TicketCategory::all()->toArray();
+
+        return Inertia::render('OperatorTeam/Edit', compact('team', 'categories'));
     }
 
     /**
