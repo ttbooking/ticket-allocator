@@ -32,7 +32,8 @@
                     item-title="name"
                     item-value="uuid"
                 />
-                <v-btn type="submit">Save</v-btn>
+                <v-btn type="submit" color="primary" class="mr-3">Save</v-btn>
+                <Link :href="route('ticket-allocator.teams.index')"><v-btn class="mr-3">Cancel</v-btn></Link>
             </v-form>
         </div>
     </DefaultLayout>
@@ -40,10 +41,11 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/Layouts/Default.vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
 import { reactive } from "vue";
 import { useOperatorTeamApi, useUserListApi } from "@/api";
 import type { OperatorTeam, Operator, TicketCategory } from "@/types";
+import route from "ziggy-js";
 
 const props = defineProps<{
     team: OperatorTeam;
