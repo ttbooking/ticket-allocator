@@ -7,27 +7,32 @@
         </template>
 
         <div>
-            <v-form>
-                <v-text-field label="Name" :model-value="team.name" />
-                <v-textarea label="Description" :model-value="team.description" />
+            <v-form @submit.prevent="submit">
+                <v-text-field v-model="request.name" label="Name" />
+                <v-textarea v-model="request.description" label="Description" />
                 <v-autocomplete
+                    v-model="request.operators"
                     multiple
                     clearable
                     chips
                     closable-chips
                     label="Operators"
-                    :items="['Fuck', 'off', 'bitch', '!!!']"
+                    :items="operators"
+                    item-title="name"
+                    item-value="uuid"
                 />
                 <v-autocomplete
+                    v-model="request.ticket_categories"
                     multiple
                     clearable
                     chips
                     closable-chips
                     label="Ticket categories"
-                    :items="categories"
+                    :items="ticketCategories"
                     item-title="name"
                     item-value="uuid"
                 />
+                <v-btn type="submit">Save</v-btn>
             </v-form>
         </div>
     </DefaultLayout>
@@ -36,27 +41,27 @@
 <script setup lang="ts">
 import DefaultLayout from "@/Layouts/Default.vue";
 import { Head } from "@inertiajs/vue3";
-import { useUserListApi } from "@/api";
-import type { OperatorTeam, TicketCategory } from "@/types";
-
-import { useRepo } from "pinia-orm";
-import OperatorTeamModel from "@/models/OperatorTeam";
-import TicketCategoryModel from "@/models/TicketCategory";
-import { computed, onMounted } from "vue";
+import { reactive } from "vue";
+import { useOperatorTeamApi, useUserListApi } from "@/api";
+import type { OperatorTeam, Operator, TicketCategory } from "@/types";
 
 const props = defineProps<{
     team: OperatorTeam;
-    categories: TicketCategory[];
+    operators: Operator[];
+    ticketCategories: TicketCategory[];
 }>();
 
-const teamRepo = computed(() => useRepo(OperatorTeamModel));
-const categoryRepo = computed(() => useRepo(TicketCategoryModel));
-
-const team = computed(() => teamRepo.value.with("operators").with("categories").find(props.team.uuid));
-const categories = computed(() => categoryRepo.value.all());
-
-onMounted(() => {
-    teamRepo.value.fresh(props.team);
-    categoryRepo.value.fresh(props.categories);
+const request = reactive({
+    name: props.team.name,
+    description: props.team.description,
+    operators: props.team.operators.map((operator) => operator.uuid),
+    ticket_categories: props.team.ticket_categories.map((category) => category.uuid),
 });
+
+const api = useOperatorTeamApi();
+
+async function submit() {
+    const result = await api.update(props.team.uuid, request);
+    console.log(result);
+}
 </script>

@@ -19,5 +19,5 @@ export default class OperatorTeam extends Model {
 
     @BelongsToMany(() => Operator, () => TeamOperator, "team_uuid", "operator_uuid") declare operators: Operator[];
     @BelongsToMany(() => TicketCategory, () => TeamCategory, "team_uuid", "category_uuid")
-    declare categories: TicketCategory[];
+    declare ticketCategories: TicketCategory[];
 }

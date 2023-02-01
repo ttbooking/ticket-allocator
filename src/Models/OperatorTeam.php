@@ -37,7 +37,8 @@ class OperatorTeam extends Model
 
     public $incrementing = false;
 
-    protected $with = ['ticketCategories'];
+    /** @var string[] */
+    protected $with = ['operators', 'ticketCategories'];
 
     protected $fillable = ['uuid', 'name', 'description', 'matching'];
 
