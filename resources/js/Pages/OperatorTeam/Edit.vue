@@ -8,10 +8,10 @@
 
         <div>
             <v-form @submit.prevent="submit">
-                <v-text-field v-model="request.name" label="Name" />
-                <v-textarea v-model="request.description" label="Description" />
+                <v-text-field v-model="form.name" label="Name" />
+                <v-textarea v-model="form.description" label="Description" />
                 <v-autocomplete
-                    v-model="request.operators"
+                    v-model="form.operators"
                     multiple
                     clearable
                     chips
@@ -22,7 +22,7 @@
                     item-value="uuid"
                 />
                 <v-autocomplete
-                    v-model="request.ticket_categories"
+                    v-model="form.ticket_categories"
                     multiple
                     clearable
                     chips
@@ -32,7 +32,7 @@
                     item-title="name"
                     item-value="uuid"
                 />
-                <v-btn type="submit" color="primary" class="mr-3">Save</v-btn>
+                <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">Save</v-btn>
                 <Link :href="route('ticket-allocator.teams.index')"><v-btn class="mr-3">Cancel</v-btn></Link>
             </v-form>
         </div>
@@ -41,9 +41,7 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/Layouts/Default.vue";
-import { Head, Link } from "@inertiajs/vue3";
-import { reactive } from "vue";
-import { useOperatorTeamApi, useUserListApi } from "@/api";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import type { OperatorTeam, Operator, TicketCategory } from "@/types";
 import route from "ziggy-js";
 
@@ -53,17 +51,14 @@ const props = defineProps<{
     ticketCategories: TicketCategory[];
 }>();
 
-const request = reactive({
+const form = useForm({
     name: props.team.name,
     description: props.team.description,
     operators: props.team.operators.map((operator) => operator.uuid),
     ticket_categories: props.team.ticket_categories.map((category) => category.uuid),
 });
 
-const api = useOperatorTeamApi();
-
-async function submit() {
-    const result = await api.update(props.team.uuid, request);
-    console.log(result);
+function submit() {
+    form.put(route("ticket-allocator.teams.update", props.team.uuid));
 }
 </script>

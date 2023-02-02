@@ -21,9 +21,8 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/Layouts/Default.vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, router } from "@inertiajs/vue3";
 import { computed, onMounted } from "vue";
-import { useOperatorTeamApi } from "@/api";
 import type { OperatorTeam } from "@/types";
 import route from "ziggy-js";
 
@@ -44,10 +43,8 @@ const headers = [
     { title: "Actions", key: "actions", sortable: false },
 ];
 
-const api = useOperatorTeamApi();
-
-async function deleteTeam(team: OperatorTeam) {
-    await api.destroy(team.uuid);
+function deleteTeam(team: OperatorTeam) {
+    router.delete(route("ticket-allocator.teams.destroy", team.uuid));
     teamRepo.value.destroy(team.uuid);
 }
 

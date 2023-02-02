@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
@@ -46,9 +46,9 @@ class TeamController extends Controller
      * Store a newly created operator team in storage.
      *
      * @param  \TTBooking\TicketAllocator\Http\Requests\StoreOperatorTeamRequest  $request
-     * @return JsonResponse
+     * @return RedirectResponse
      */
-    public function store(StoreOperatorTeamRequest $request): JsonResponse
+    public function store(StoreOperatorTeamRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -59,19 +59,18 @@ class TeamController extends Controller
         $team->ticketCategories()->sync($validated['ticket_categories']);
         $team->save();
 
-        return Response::json($team);
+        return Response::redirectToRoute('ticket-allocator.teams.index', status: 303);
     }
 
     /**
      * Display the specified operator team.
      *
      * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $team
-     * @return JsonResponse
+     * @return InertiaResponse
      */
-    public function show(OperatorTeam $team): JsonResponse
+    public function show(OperatorTeam $team): InertiaResponse
     {
-        // TODO: remove?
-        return Response::json($team);
+        return Inertia::render('OperatorTeam/Show', compact('team'));
     }
 
     /**
@@ -93,9 +92,9 @@ class TeamController extends Controller
      *
      * @param  \TTBooking\TicketAllocator\Http\Requests\UpdateOperatorTeamRequest  $request
      * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $team
-     * @return JsonResponse
+     * @return RedirectResponse
      */
-    public function update(UpdateOperatorTeamRequest $request, OperatorTeam $team): JsonResponse
+    public function update(UpdateOperatorTeamRequest $request, OperatorTeam $team): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -105,19 +104,19 @@ class TeamController extends Controller
         $team->ticketCategories()->sync($validated['ticket_categories']);
         $team->save();
 
-        return Response::json($team);
+        return Response::redirectToRoute('ticket-allocator.teams.index', status: 303);
     }
 
     /**
      * Remove the specified operator team from storage.
      *
      * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $team
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
-    public function destroy(OperatorTeam $team): \Illuminate\Http\Response
+    public function destroy(OperatorTeam $team): RedirectResponse
     {
         $team->delete();
 
-        return Response::noContent();
+        return Response::redirectToRoute('ticket-allocator.teams.index', status: 303);
     }
 }

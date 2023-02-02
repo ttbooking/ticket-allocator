@@ -1,2 +1,0 @@
-import{P as a}from"./index.m-3c027150.js";function s(){async function o(t){return await window.axios.post(a("ticket-allocator.teams.store"),t)}async function e(t,i){return await window.axios.put(a("ticket-allocator.teams.update",t),i)}async function r(t){return await window.axios.delete(a("ticket-allocator.teams.destroy",t))}return{store:o,update:e,destroy:r}}export{s as u};
-//# sourceMappingURL=useOperatorTeamApi-f005c82c.js.map
