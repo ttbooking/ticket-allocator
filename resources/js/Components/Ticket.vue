@@ -13,8 +13,8 @@
                 <v-card width="400" title="aaa" subtitle="bbb">
                     <v-card-text>
                         <v-table>
-                            <tr v-for="(key, value) in ticket.meta" :key="key">
-                                <th>{{ key }}</th>
+                            <tr v-for="(value, key) in ticket.meta" :key="key">
+                                <th class="text-left">{{ key }}</th>
                                 <td>{{ value }}</td>
                             </tr>
                         </v-table>
