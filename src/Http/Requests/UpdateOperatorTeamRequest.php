@@ -34,4 +34,14 @@ class UpdateOperatorTeamRequest extends FormRequest
             'ticket_categories.*' => 'required|uuid',
         ];
     }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, mixed>
+     */
+    public function attributes(): array
+    {
+        return (array) trans('ticket-allocator::validation.attributes');
+    }
 }
