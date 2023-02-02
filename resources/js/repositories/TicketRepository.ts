@@ -25,6 +25,12 @@ export default class TicketRepository extends Repository<Ticket> {
         this.where("uuid", uuid).update({ category_uuid: categoryUuid });
     };
 
+    setMetaValue = ({ uuid, key, value }: Events.Ticket.MetaValueSetPayload) => {
+        const meta = this.find(uuid)?.meta ?? {};
+        meta[key] = value;
+        this.where("uuid", uuid).update({ meta });
+    };
+
     incrementInitialWeight = ({ uuid, weightPoints }: Events.Ticket.InitialWeightIncrementedPayload) => {
         this.query().where("uuid", uuid).increment({ initial_weight: weightPoints });
     };

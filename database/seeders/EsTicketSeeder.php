@@ -15,6 +15,7 @@ class EsTicketSeeder extends Seeder
      * Run the database seeds.
      *
      * @param  Actions\CreateTicketAction  $createTicket
+     * @param  Actions\SetTicketMetaValueAction  $setTicketMetaValue
      * @param  Actions\BindTicketAction  $bindTicket
      * @param  Actions\IncrementTicketInitialWeightAction  $incrementTicketInitialWeight
      * @param  Actions\IncrementTicketWeightIncrementAction  $incrementTicketWeightIncrement
@@ -25,6 +26,7 @@ class EsTicketSeeder extends Seeder
      */
     public function run(
         Actions\CreateTicketAction $createTicket,
+        Actions\SetTicketMetaValueAction $setTicketMetaValue,
         Actions\BindTicketAction $bindTicket,
         Actions\IncrementTicketInitialWeightAction $incrementTicketInitialWeight,
         Actions\IncrementTicketWeightIncrementAction $incrementTicketWeightIncrement,
@@ -37,6 +39,7 @@ class EsTicketSeeder extends Seeder
 
         for ($i = 0; $i < $count; $i++) {
             $ticket = $createTicket(fake()->randomElement($ticketCategories));
+            $setTicketMetaValue($ticket, 'order', (string) fake()->numberBetween(100, 1000));
 
             if (! empty($operators)) {
                 fake()->boolean(70) && $bindTicket($ticket, fake()->randomElement($operators));

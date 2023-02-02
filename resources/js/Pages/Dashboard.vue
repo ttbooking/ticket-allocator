@@ -91,6 +91,7 @@ onMounted(() => {
         .listen(Events.Ticket.Bound, ticketRepo.value.bind)
         .listen(Events.Ticket.Unbound, ticketRepo.value.unbind)
         .listen(Events.Ticket.CategoryChanged, ticketRepo.value.changeCategory)
+        .listen(Events.Ticket.MetaValueSet, ticketRepo.value.setMetaValue)
         .listen(Events.Ticket.InitialWeightIncremented, ticketRepo.value.incrementInitialWeight)
         .listen(Events.Ticket.InitialWeightDecremented, ticketRepo.value.decrementInitialWeight)
         .listen(Events.Ticket.WeightIncrementIncremented, ticketRepo.value.incrementWeightIncrement)

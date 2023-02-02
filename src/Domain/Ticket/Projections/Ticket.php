@@ -57,7 +57,7 @@ class Ticket extends Projection
 
     /** @var array<string, string> */
     protected $casts = [
-        //'meta' => 'array',
+        'meta' => 'array',
         'initial_weight' => 'integer',
         'weight_increment' => 'integer',
         'complexity' => 'integer',

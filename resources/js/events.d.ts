@@ -20,6 +20,7 @@ export enum Operator {
 export enum Ticket {
     Bound = ".ticket.bound",
     CategoryChanged = ".ticket.category-changed",
+    MetaValueSet = ".ticket.meta-value-set",
     Closed = ".ticket.closed",
     ComplexityDecremented = ".ticket.complexity-decremented",
     ComplexityIncremented = ".ticket.complexity-incremented",
@@ -110,6 +111,12 @@ namespace Ticket {
     export interface CategoryChangedPayload {
         uuid: string;
         categoryUuid: string;
+    }
+
+    export interface MetaValueSetPayload {
+        uuid: string;
+        key: string;
+        value: string;
     }
 
     export interface ClosedPayload {

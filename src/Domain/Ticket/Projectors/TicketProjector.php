@@ -30,6 +30,11 @@ class TicketProjector extends Projector
         Ticket::find($event->uuid)?->writeable()->update(['category_uuid' => $event->categoryUuid]);
     }
 
+    public function onTicketMetaValueSet(Events\TicketMetaValueSet $event): void
+    {
+        Ticket::find($event->uuid)?->writeable()->update(['meta->'.$event->key => $event->value]);
+    }
+
     public function onTicketBound(Events\TicketBound $event): void
     {
         Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => $event->operatorUuid]);

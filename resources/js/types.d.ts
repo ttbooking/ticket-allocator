@@ -30,6 +30,7 @@ export interface Ticket {
     uuid: string;
     category_uuid: string;
     handler_uuid: ?string;
+    meta: ?Record<string, string>;
     initial_weight: number;
     weight_increment: number;
     complexity: number;

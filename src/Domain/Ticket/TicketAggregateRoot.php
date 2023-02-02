@@ -15,6 +15,9 @@ class TicketAggregateRoot extends AggregateRoot
 
     public string $categoryUuid;
 
+    /** @var array<string, string> */
+    public array $meta = [];
+
     public ?string $operatorUuid;
 
     #[Incrementable]
@@ -69,6 +72,20 @@ class TicketAggregateRoot extends AggregateRoot
     protected function applyTicketCategoryChanged(Events\TicketCategoryChanged $event): void
     {
         $this->categoryUuid = $event->categoryUuid;
+    }
+
+    public function setMetaValue(Commands\SetTicketMetaValue $command): static
+    {
+        return $this->recordThat(new Events\TicketMetaValueSet(
+            uuid: $this->uuid(),
+            key: $command->key,
+            value: $command->value,
+        ));
+    }
+
+    protected function applyTicketMetaValueSet(Events\TicketMetaValueSet $event): void
+    {
+        $this->meta[$event->key] = $event->value;
     }
 
     public function bind(Commands\BindTicket $command): static

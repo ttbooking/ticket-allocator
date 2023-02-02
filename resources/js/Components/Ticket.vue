@@ -10,7 +10,16 @@
                 location="bottom center"
                 origin="auto"
             >
-                <v-card width="400" title="aaa" subtitle="bbb" text="zzz" />
+                <v-card width="400" title="aaa" subtitle="bbb">
+                    <v-card-text>
+                        <v-table>
+                            <tr v-for="(key, value) in ticket.meta" :key="key">
+                                <th>{{ key }}</th>
+                                <td>{{ value }}</td>
+                            </tr>
+                        </v-table>
+                    </v-card-text>
+                </v-card>
             </v-overlay>
         </v-btn>
     </div>
