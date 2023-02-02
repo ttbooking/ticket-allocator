@@ -8,8 +8,8 @@
 
         <div>
             <v-form @submit.prevent="submit">
-                <v-text-field v-model="form.name" label="Name" />
-                <v-textarea v-model="form.description" label="Description" />
+                <v-text-field v-model="form.name" label="Name" :error-messages="errors.name" />
+                <v-textarea v-model="form.description" label="Description" :error-messages="errors.description" />
                 <v-autocomplete
                     v-model="form.operators"
                     multiple
@@ -20,6 +20,7 @@
                     :items="operators"
                     item-title="name"
                     item-value="uuid"
+                    :error-messages="errors.operators"
                 />
                 <v-autocomplete
                     v-model="form.ticket_categories"
@@ -31,6 +32,7 @@
                     :items="ticketCategories"
                     item-title="name"
                     item-value="uuid"
+                    :error-messages="errors.ticket_categories"
                 />
                 <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">Save</v-btn>
                 <Link :href="route('ticket-allocator.teams.index')"><v-btn class="mr-3">Cancel</v-btn></Link>
@@ -49,6 +51,7 @@ const props = defineProps<{
     team: OperatorTeam;
     operators: Operator[];
     ticketCategories: TicketCategory[];
+    errors: Record<string, string>;
 }>();
 
 const form = useForm({

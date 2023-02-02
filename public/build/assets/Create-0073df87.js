@@ -1,0 +1,2 @@
+import{a as s}from"./Default.vue_vue_type_script_setup_true_lang-c126c1f3.js";import{K as n,P as o,c as e,W as l,Q as t,Z as r,O as c,as as _,T as a}from"./app-8ed5ada1.js";const i=a("h2",{class:"font-semibold text-xl text-gray-800 leading-tight"},"New team",-1),m=a("div",null,null,-1),x=n({__name:"Create",setup(d){return(u,f)=>(c(),o(r,null,[e(l(_),{title:"New team"}),e(s,null,{header:t(()=>[i]),default:t(()=>[m]),_:1})],64))}});export{x as default};
+//# sourceMappingURL=Create-0073df87.js.map
