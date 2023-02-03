@@ -19,7 +19,7 @@ Route::prefix('api/v1')->name('api.')->group(function () {
 
 Route::get('/', 'HomeController@index')->name('index');
 
-Route::resource('teams', TeamController::class);
+Route::resource('teams', TeamController::class)->withTrashed(['show', 'edit', 'update', 'destroy']);
 
 Route::get('users', 'UserController@index');
 

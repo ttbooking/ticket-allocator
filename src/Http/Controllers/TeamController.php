@@ -24,7 +24,7 @@ class TeamController extends Controller
      */
     public function index(): InertiaResponse
     {
-        $teams = OperatorTeam::all();
+        $teams = OperatorTeam::withTrashed()->get();
 
         return Inertia::render('OperatorTeam/Index', compact('teams'));
     }
@@ -52,6 +52,7 @@ class TeamController extends Controller
     {
         /** @var OperatorTeam $team */
         $team = OperatorTeam::query()->create($request->safe(['name', 'description']));
+        $request->validated('active') ? $team->restore() : $team->delete();
         $team->operators()->sync($request->validated('operators'));
         $team->ticketCategories()->sync($request->validated('ticket_categories'));
 
@@ -92,6 +93,7 @@ class TeamController extends Controller
      */
     public function update(UpdateOperatorTeamRequest $request, OperatorTeam $team): RedirectResponse
     {
+        $request->validated('active') ? $team->restore() : $team->delete();
         $team->update($request->safe(['name', 'description']));
         $team->operators()->sync($request->validated('operators'));
         $team->ticketCategories()->sync($request->validated('ticket_categories'));
@@ -107,7 +109,7 @@ class TeamController extends Controller
      */
     public function destroy(OperatorTeam $team): RedirectResponse
     {
-        $team->delete();
+        $team->forceDelete();
 
         return Response::redirectToRoute('ticket-allocator.teams.index', status: 303);
     }

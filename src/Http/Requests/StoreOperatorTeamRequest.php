@@ -26,6 +26,7 @@ class StoreOperatorTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'active' => 'required|boolean',
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:65535',
             'operators' => 'required|array',

@@ -8,6 +8,7 @@
 
         <div>
             <v-form @submit.prevent="submit">
+                <v-checkbox v-model="form.active" label="Active" />
                 <v-text-field v-model="form.name" label="Name" :error-messages="errors.name" class="mb-4" />
                 <v-textarea
                     v-model="form.description"
@@ -61,6 +62,7 @@ defineProps<{
 }>();
 
 const form = useForm({
+    active: true,
     name: "",
     description: "",
     operators: [],

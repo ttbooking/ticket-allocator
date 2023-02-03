@@ -18,11 +18,18 @@
                         </Link>
                     </v-toolbar>
                 </template>
+                <template #[`item.active`]="{ item }">
+                    <v-checkbox-btn :model-value="!item.raw.deleted_at" disabled />
+                </template>
                 <template #[`item.actions`]="{ item }">
                     <Link :href="route('ticket-allocator.teams.edit', item.raw.uuid)">
                         <v-btn icon="mdi-pencil" size="small" variant="plain" />
                     </Link>
-                    <Link :href="route('ticket-allocator.teams.destroy', item.raw.uuid)" :method="Method.DELETE">
+                    <Link
+                        :href="route('ticket-allocator.teams.destroy', item.raw.uuid)"
+                        :method="Method.DELETE"
+                        as="span"
+                    >
                         <v-btn icon="mdi-delete" size="small" variant="plain" />
                     </Link>
                 </template>
@@ -43,6 +50,7 @@ defineProps<{
 }>();
 
 const headers = [
+    { title: "Active", key: "active", sortable: false },
     { title: "Name", key: "name" },
     { title: "Description", key: "description" },
     { title: "Actions", key: "actions", sortable: false },

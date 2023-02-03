@@ -8,6 +8,7 @@
 
         <div>
             <v-form @submit.prevent="submit">
+                <v-checkbox v-model="form.active" label="Active" />
                 <v-text-field v-model="form.name" label="Name" :error-messages="errors.name" class="mb-4" />
                 <v-textarea
                     v-model="form.description"
@@ -62,6 +63,7 @@ const props = defineProps<{
 }>();
 
 const form = useForm({
+    active: !props.team.deleted_at,
     name: props.team.name,
     description: props.team.description,
     operators: props.team.operators.map((operator) => operator.uuid),
