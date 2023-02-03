@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Str;
 use TTBooking\TicketAllocator\Database\Factories\TicketCategoryFactory;
 
 /**
@@ -54,13 +53,6 @@ class TicketCategory extends Model
         'complexity' => 'integer',
         'delay' => 'integer',
     ];
-
-    protected static function booted(): void
-    {
-        static::creating(function (self $model) {
-            $model->setAttribute($model->getKeyName(), (string) Str::uuid());
-        });
-    }
 
     protected static function newFactory(): TicketCategoryFactory
     {

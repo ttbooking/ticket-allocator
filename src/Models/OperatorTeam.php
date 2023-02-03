@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 use TTBooking\TicketAllocator\Database\Factories\OperatorTeamFactory;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 
@@ -42,13 +41,6 @@ class OperatorTeam extends Model
     protected $with = ['operators', 'ticketCategories'];
 
     protected $fillable = ['uuid', 'name', 'description', 'matching'];
-
-    protected static function booted(): void
-    {
-        static::creating(function (self $model) {
-            $model->setAttribute($model->getKeyName(), (string) Str::uuid());
-        });
-    }
 
     protected static function newFactory(): OperatorTeamFactory
     {

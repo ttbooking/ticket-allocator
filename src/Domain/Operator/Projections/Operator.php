@@ -65,6 +65,9 @@ class Operator extends Projection
         'free_complexity' => 'integer',
     ];
 
+    /** @var string[] */
+    protected $touches = ['operatorTeams'];
+
     protected static function newFactory(): OperatorFactory
     {
         return OperatorFactory::new();

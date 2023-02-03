@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Str;
 
 /**
  * @property non-empty-string $uuid
@@ -36,13 +35,6 @@ class Factor extends Model
     public $incrementing = false;
 
     protected $fillable = ['uuid', 'aggregate', 'class', 'description', 'config'];
-
-    protected static function booted(): void
-    {
-        static::creating(function (self $model) {
-            $model->setAttribute($model->getKeyName(), (string) Str::uuid());
-        });
-    }
 
     /**
      * @return HasMany<Event>

@@ -50,14 +50,10 @@ class TeamController extends Controller
      */
     public function store(StoreOperatorTeamRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $team = new OperatorTeam;
-        $team->name = $validated['name'];
-        $team->description = $validated['description'];
-        $team->operators()->sync($validated['operators']);
-        $team->ticketCategories()->sync($validated['ticket_categories']);
-        $team->save();
+        /** @var OperatorTeam $team */
+        $team = OperatorTeam::query()->create($request->safe(['name', 'description']));
+        $team->operators()->sync($request->validated('operators'));
+        $team->ticketCategories()->sync($request->validated('ticket_categories'));
 
         return Response::redirectToRoute('ticket-allocator.teams.index', status: 303);
     }
@@ -96,13 +92,9 @@ class TeamController extends Controller
      */
     public function update(UpdateOperatorTeamRequest $request, OperatorTeam $team): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $team->name = $validated['name'];
-        $team->description = $validated['description'];
-        $team->operators()->sync($validated['operators']);
-        $team->ticketCategories()->sync($validated['ticket_categories']);
-        $team->save();
+        $team->update($request->safe(['name', 'description']));
+        $team->operators()->sync($request->validated('operators'));
+        $team->ticketCategories()->sync($request->validated('ticket_categories'));
 
         return Response::redirectToRoute('ticket-allocator.teams.index', status: 303);
     }
