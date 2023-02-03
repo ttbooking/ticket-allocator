@@ -54,6 +54,9 @@ class TicketCategory extends Model
         'delay' => 'integer',
     ];
 
+    /** @var string[] */
+    protected $touches = ['operatorTeams'];
+
     protected static function newFactory(): TicketCategoryFactory
     {
         return TicketCategoryFactory::new();
