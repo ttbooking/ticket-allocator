@@ -8,11 +8,23 @@
 
         <div>
             <v-data-table :headers="headers" :items="teams">
+                <template #top>
+                    <v-toolbar flat>
+                        <v-toolbar-title>Operator teams</v-toolbar-title>
+                        <v-divider class="mx-4" inset vertical />
+                        <v-spacer />
+                        <Link :href="route('ticket-allocator.teams.create')" class="mb-2">
+                            <v-btn color="primary" dark>New Item</v-btn>
+                        </Link>
+                    </v-toolbar>
+                </template>
                 <template #[`item.actions`]="{ item }">
                     <Link :href="route('ticket-allocator.teams.edit', item.raw.uuid)">
                         <v-btn icon="mdi-pencil" size="small" variant="plain" />
                     </Link>
-                    <v-btn icon="mdi-delete" size="small" variant="plain" @click="deleteTeam(item.raw)" />
+                    <Link :href="route('ticket-allocator.teams.destroy', item.raw.uuid)" :method="Method.DELETE">
+                        <v-btn icon="mdi-delete" size="small" variant="plain" />
+                    </Link>
                 </template>
             </v-data-table>
         </div>
@@ -21,34 +33,18 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/Layouts/Default.vue";
-import { Head, Link, router } from "@inertiajs/vue3";
-import { computed, onMounted } from "vue";
+import { Head, Link } from "@inertiajs/vue3";
+import { Method } from "@inertiajs/core";
 import type { OperatorTeam } from "@/types";
 import route from "ziggy-js";
 
-import { useRepo } from "pinia-orm";
-import OperatorTeamModel from "@/models/OperatorTeam";
-
-const props = defineProps<{
+defineProps<{
     teams: OperatorTeam[];
 }>();
-
-const teamRepo = computed(() => useRepo(OperatorTeamModel));
-
-const teams = computed(() => teamRepo.value.all());
 
 const headers = [
     { title: "Name", key: "name" },
     { title: "Description", key: "description" },
     { title: "Actions", key: "actions", sortable: false },
 ];
-
-function deleteTeam(team: OperatorTeam) {
-    router.delete(route("ticket-allocator.teams.destroy", team.uuid));
-    teamRepo.value.destroy(team.uuid);
-}
-
-onMounted(() => {
-    teamRepo.value.fresh(props.teams);
-});
 </script>

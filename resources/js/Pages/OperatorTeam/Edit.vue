@@ -35,7 +35,7 @@
                     :error-messages="errors.ticket_categories"
                 />
                 <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">Save</v-btn>
-                <Link :href="route('ticket-allocator.teams.index')"><v-btn class="mr-3">Cancel</v-btn></Link>
+                <Link :href="route('ticket-allocator.teams.index')" class="mr-3"><v-btn>Cancel</v-btn></Link>
             </v-form>
         </div>
     </DefaultLayout>
