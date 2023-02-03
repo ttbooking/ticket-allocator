@@ -19,16 +19,23 @@
                     </v-toolbar>
                 </template>
                 <template #[`item.active`]="{ item }">
-                    <v-checkbox-btn :model-value="!item.raw.deleted_at" disabled />
+                    <Link
+                        as="span"
+                        :href="route('ticket-allocator.teams.update', item.raw.uuid)"
+                        :method="Method.PATCH"
+                        :data="{ active: !!item.raw.deleted_at }"
+                    >
+                        <v-checkbox-btn :model-value="!item.raw.deleted_at" />
+                    </Link>
                 </template>
                 <template #[`item.actions`]="{ item }">
                     <Link :href="route('ticket-allocator.teams.edit', item.raw.uuid)">
                         <v-btn icon="mdi-pencil" size="small" variant="plain" />
                     </Link>
                     <Link
+                        as="span"
                         :href="route('ticket-allocator.teams.destroy', item.raw.uuid)"
                         :method="Method.DELETE"
-                        as="span"
                     >
                         <v-btn icon="mdi-delete" size="small" variant="plain" />
                     </Link>

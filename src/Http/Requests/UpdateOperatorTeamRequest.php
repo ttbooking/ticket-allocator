@@ -26,13 +26,13 @@ class UpdateOperatorTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'active' => 'required|boolean',
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:65535',
-            'operators' => 'required|array',
-            'operators.*' => 'required|uuid',
-            'ticket_categories' => 'required|array',
-            'ticket_categories.*' => 'required|uuid',
+            'active' => 'sometimes|required|boolean',
+            'name' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required|string|max:65535',
+            'operators' => 'sometimes|required|array',
+            'operators.*' => 'sometimes|required|uuid',
+            'ticket_categories' => 'sometimes|required|array',
+            'ticket_categories.*' => 'sometimes|required|uuid',
         ];
     }
 

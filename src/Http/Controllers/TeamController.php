@@ -93,10 +93,19 @@ class TeamController extends Controller
      */
     public function update(UpdateOperatorTeamRequest $request, OperatorTeam $team): RedirectResponse
     {
-        $request->validated('active') ? $team->restore() : $team->delete();
+        if (! is_null($active = $request->validated('active'))) {
+            $active ? $team->restore() : $team->delete();
+        }
+
         $team->update($request->safe(['name', 'description']));
-        $team->operators()->sync($request->validated('operators'));
-        $team->ticketCategories()->sync($request->validated('ticket_categories'));
+
+        if (! is_null($operators = $request->validated('operators'))) {
+            $team->operators()->sync($operators);
+        }
+
+        if (! is_null($ticketCategories = $request->validated('ticket_categories'))) {
+            $team->ticketCategories()->sync($ticketCategories);
+        }
 
         return Response::redirectToRoute('ticket-allocator.teams.index', status: 303);
     }
