@@ -119,7 +119,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->configure();
         $this->registerServices();
-        $this->scheduleOperatorSnapshot();
+        //$this->scheduleOperatorSnapshot();
     }
 
     protected function configure(): void
