@@ -6,6 +6,7 @@ namespace TTBooking\TicketAllocator\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -27,7 +28,7 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
  */
 class OperatorTeam extends Model
 {
-    use SoftDeletes, HasFactory;
+    use HasUuids, SoftDeletes, HasFactory;
 
     protected $table = 'ticket_allocator_operator_teams';
 
