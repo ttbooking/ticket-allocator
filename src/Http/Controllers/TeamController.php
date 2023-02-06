@@ -39,7 +39,7 @@ class TeamController extends Controller
         $operators = Operator::all();
         $ticketCategories = TicketCategory::all();
 
-        return Inertia::render('OperatorTeam/Create', compact('operators', 'ticketCategories'));
+        return Inertia::render('OperatorTeam/CreateEdit', compact('operators', 'ticketCategories'));
     }
 
     /**
@@ -81,7 +81,7 @@ class TeamController extends Controller
         $operators = Operator::all();
         $ticketCategories = TicketCategory::all();
 
-        return Inertia::render('OperatorTeam/Edit', compact('team', 'operators', 'ticketCategories'));
+        return Inertia::render('OperatorTeam/CreateEdit', compact('team', 'operators', 'ticketCategories'));
     }
 
     /**

@@ -1,22 +1,9 @@
 {
-  "VTextarea.css": {
-    "file": "assets/VTextarea-b93310b5.css",
-    "src": "VTextarea.css"
-  },
-  "_VTextarea-b0a5ffb0.js": {
-    "css": [
-      "assets/VTextarea-b93310b5.css"
-    ],
-    "file": "assets/VTextarea-b0a5ffb0.js",
-    "imports": [
-      "resources/js/app.ts"
-    ]
-  },
-  "_index.m-bfe79f5a.js": {
+  "_index.m-3523eb90.js": {
     "css": [
       "assets/index-f811e5dc.css"
     ],
-    "file": "assets/index.m-bfe79f5a.js",
+    "file": "assets/index.m-3523eb90.js",
     "imports": [
       "resources/js/app.ts"
     ]
@@ -53,33 +40,29 @@
     "css": [
       "assets/Dashboard-dfc212de.css"
     ],
-    "file": "assets/Dashboard-423ef4a9.js",
+    "file": "assets/Dashboard-e2119a07.js",
     "imports": [
       "resources/js/app.ts",
-      "_index.m-bfe79f5a.js"
+      "_index.m-3523eb90.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Dashboard.vue"
   },
-  "resources/js/Pages/OperatorTeam/Create.vue": {
-    "file": "assets/Create-620c466c.js",
-    "imports": [
-      "resources/js/app.ts",
-      "_index.m-bfe79f5a.js",
-      "_VTextarea-b0a5ffb0.js"
-    ],
-    "isDynamicEntry": true,
-    "src": "resources/js/Pages/OperatorTeam/Create.vue"
+  "resources/js/Pages/OperatorTeam/CreateEdit.css": {
+    "file": "assets/CreateEdit-b93310b5.css",
+    "src": "resources/js/Pages/OperatorTeam/CreateEdit.css"
   },
-  "resources/js/Pages/OperatorTeam/Edit.vue": {
-    "file": "assets/Edit-d4db1238.js",
+  "resources/js/Pages/OperatorTeam/CreateEdit.vue": {
+    "css": [
+      "assets/CreateEdit-b93310b5.css"
+    ],
+    "file": "assets/CreateEdit-413b12d5.js",
     "imports": [
       "resources/js/app.ts",
-      "_index.m-bfe79f5a.js",
-      "_VTextarea-b0a5ffb0.js"
+      "_index.m-3523eb90.js"
     ],
     "isDynamicEntry": true,
-    "src": "resources/js/Pages/OperatorTeam/Edit.vue"
+    "src": "resources/js/Pages/OperatorTeam/CreateEdit.vue"
   },
   "resources/js/Pages/OperatorTeam/Index.css": {
     "file": "assets/Index-a9ba3311.css",
@@ -89,9 +72,9 @@
     "css": [
       "assets/Index-a9ba3311.css"
     ],
-    "file": "assets/Index-75433084.js",
+    "file": "assets/Index-4d01d245.js",
     "imports": [
-      "_index.m-bfe79f5a.js",
+      "_index.m-3523eb90.js",
       "resources/js/app.ts"
     ],
     "isDynamicEntry": true,
@@ -114,11 +97,10 @@
     "dynamicImports": [
       "_webfontloader-2a4655c2.js",
       "resources/js/Pages/Dashboard.vue",
-      "resources/js/Pages/OperatorTeam/Create.vue",
-      "resources/js/Pages/OperatorTeam/Edit.vue",
+      "resources/js/Pages/OperatorTeam/CreateEdit.vue",
       "resources/js/Pages/OperatorTeam/Index.vue"
     ],
-    "file": "assets/app-e3e0ddb2.js",
+    "file": "assets/app-c961d766.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
   }

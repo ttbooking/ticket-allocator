@@ -1,9 +1,9 @@
 <template>
-    <Head title="Edit team" />
+    <Head :title="team ? 'Edit team' : 'New team'" />
 
     <DefaultLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit team</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ team ? "Edit team" : "New team" }}</h2>
         </template>
 
         <div>
@@ -56,21 +56,23 @@ import type { OperatorTeam, Operator, TicketCategory } from "@/types";
 import route from "ziggy-js";
 
 const props = defineProps<{
-    team: OperatorTeam;
+    team?: OperatorTeam;
     operators: Operator[];
     ticketCategories: TicketCategory[];
     errors: Record<string, string>;
 }>();
 
 const form = useForm({
-    active: !props.team.deleted_at,
-    name: props.team.name,
-    description: props.team.description,
-    operators: props.team.operators.map((operator) => operator.uuid),
-    ticket_categories: props.team.ticket_categories.map((category) => category.uuid),
+    active: !props.team?.deleted_at,
+    name: props.team?.name ?? "",
+    description: props.team?.description ?? "",
+    operators: props.team?.operators.map((operator) => operator.uuid) ?? [],
+    ticket_categories: props.team?.ticket_categories.map((category) => category.uuid) ?? [],
 });
 
 function submit() {
-    form.put(route("ticket-allocator.teams.update", props.team.uuid));
+    props.team
+        ? form.put(route("ticket-allocator.teams.update", props.team.uuid))
+        : form.post(route("ticket-allocator.teams.store"));
 }
 </script>
