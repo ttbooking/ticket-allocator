@@ -12,6 +12,8 @@ use Inertia\Response as InertiaResponse;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Http\Requests\StoreOperatorRequest;
 use TTBooking\TicketAllocator\Http\Requests\UpdateOperatorRequest;
+use TTBooking\TicketAllocator\Http\Resources\OperatorResource;
+use TTBooking\TicketAllocator\Http\Resources\OperatorTeamResource;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
 
 class OperatorController extends Controller
@@ -23,7 +25,7 @@ class OperatorController extends Controller
      */
     public function index(): InertiaResponse
     {
-        $operators = Operator::all();
+        $operators = OperatorResource::collection(Operator::all());
 
         return Inertia::render('Operator/Index', compact('operators'));
     }
@@ -35,7 +37,7 @@ class OperatorController extends Controller
      */
     public function create(): InertiaResponse
     {
-        $teams = OperatorTeam::all();
+        $teams = OperatorTeamResource::collection(OperatorTeam::all());
 
         return Inertia::render('Operator/CreateEdit', compact('teams'));
     }
@@ -61,6 +63,8 @@ class OperatorController extends Controller
      */
     public function show(Operator $operator): InertiaResponse
     {
+        $operator = new OperatorResource($operator);
+
         return Inertia::render('Operator/Show', compact('operator'));
     }
 
@@ -72,7 +76,8 @@ class OperatorController extends Controller
      */
     public function edit(Operator $operator): InertiaResponse
     {
-        $teams = OperatorTeam::all();
+        $operator = new OperatorResource($operator);
+        $teams = OperatorTeamResource::collection(OperatorTeam::all());
 
         return Inertia::render('Operator/CreateEdit', compact('operator', 'teams'));
     }

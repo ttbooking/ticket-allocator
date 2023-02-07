@@ -66,9 +66,6 @@ class Operator extends Projection
     ];
 
     /** @var string[] */
-    protected $with = ['teams'];
-
-    /** @var string[] */
     protected $touches = ['operatorTeams'];
 
     protected static function newFactory(): OperatorFactory

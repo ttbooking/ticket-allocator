@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use TTBooking\TicketAllocator\Models\OperatorTeam;
+use TTBooking\TicketAllocator\Models\TicketCategory;
 
 /**
- * @mixin OperatorTeam
+ * @mixin TicketCategory
  */
-class OperatorTeamResource extends JsonResource
+class TicketCategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,12 +23,13 @@ class OperatorTeamResource extends JsonResource
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,
-            'description' => $this->description,
+            'short' => $this->short,
+            'initial_weight' => $this->initial_weight,
+            'weight_increment' => $this->weight_increment,
+            'complexity' => $this->complexity,
+            'delay' => $this->delay,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
-            'operators' => OperatorResource::collection($this->operators),
-            'ticket_categories' => TicketCategoryResource::collection($this->ticketCategories),
         ];
     }
 }

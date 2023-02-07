@@ -37,9 +37,6 @@ class OperatorTeam extends Model
 
     public $incrementing = false;
 
-    /** @var string[] */
-    protected $with = ['operators', 'ticketCategories'];
-
     protected $fillable = ['uuid', 'name', 'description', 'matching'];
 
     protected static function newFactory(): OperatorTeamFactory

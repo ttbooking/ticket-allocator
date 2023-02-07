@@ -12,6 +12,9 @@ use Inertia\Response as InertiaResponse;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Http\Requests\StoreOperatorTeamRequest;
 use TTBooking\TicketAllocator\Http\Requests\UpdateOperatorTeamRequest;
+use TTBooking\TicketAllocator\Http\Resources\OperatorResource;
+use TTBooking\TicketAllocator\Http\Resources\OperatorTeamResource;
+use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
@@ -24,7 +27,7 @@ class TeamController extends Controller
      */
     public function index(): InertiaResponse
     {
-        $teams = OperatorTeam::withTrashed()->get();
+        $teams = OperatorTeamResource::collection(OperatorTeam::withTrashed()->get());
 
         return Inertia::render('OperatorTeam/Index', compact('teams'));
     }
@@ -36,8 +39,8 @@ class TeamController extends Controller
      */
     public function create(): InertiaResponse
     {
-        $operators = Operator::all();
-        $ticketCategories = TicketCategory::all();
+        $operators = OperatorResource::collection(Operator::all());
+        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all());
 
         return Inertia::render('OperatorTeam/CreateEdit', compact('operators', 'ticketCategories'));
     }
@@ -67,6 +70,8 @@ class TeamController extends Controller
      */
     public function show(OperatorTeam $team): InertiaResponse
     {
+        $team = new OperatorTeamResource($team);
+
         return Inertia::render('OperatorTeam/Show', compact('team'));
     }
 
@@ -78,8 +83,9 @@ class TeamController extends Controller
      */
     public function edit(OperatorTeam $team): InertiaResponse
     {
-        $operators = Operator::all();
-        $ticketCategories = TicketCategory::all();
+        $team = new OperatorTeamResource($team);
+        $operators = OperatorResource::collection(Operator::all());
+        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all());
 
         return Inertia::render('OperatorTeam/CreateEdit', compact('team', 'operators', 'ticketCategories'));
     }
