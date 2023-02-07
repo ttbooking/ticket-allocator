@@ -24,6 +24,7 @@ export interface Operator {
     ready: boolean;
     ticket_limit: ?number;
     complexity_limit: ?number;
+    teams: OperatorTeam[];
 }
 
 export interface Ticket {

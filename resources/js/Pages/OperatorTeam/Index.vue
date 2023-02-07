@@ -14,7 +14,7 @@
                         <v-divider class="mx-4" inset vertical />
                         <v-spacer />
                         <Link :href="route('ticket-allocator.teams.create')" class="mb-2">
-                            <v-btn color="primary" dark>New Item</v-btn>
+                            <v-btn color="primary" dark>New Team</v-btn>
                         </Link>
                     </v-toolbar>
                 </template>

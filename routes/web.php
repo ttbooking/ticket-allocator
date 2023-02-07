@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use TTBooking\TicketAllocator\Http\Controllers\OperatorController;
 use TTBooking\TicketAllocator\Http\Controllers\TeamController;
 
 Route::prefix('api/v1')->name('api.')->group(function () {
@@ -19,6 +20,7 @@ Route::prefix('api/v1')->name('api.')->group(function () {
 
 Route::get('/', 'HomeController@index')->name('index');
 
+Route::resource('operators', OperatorController::class);
 Route::resource('teams', TeamController::class)->withTrashed(['show', 'edit', 'update', 'destroy']);
 
 Route::get('users', 'UserController@index');

@@ -1,9 +1,35 @@
 {
-  "_index.m-10c6a710.js": {
+  "VForm.css": {
+    "file": "assets/VForm-b35c36c5.css",
+    "src": "VForm.css"
+  },
+  "VToolbar.css": {
+    "file": "assets/VToolbar-a9ba3311.css",
+    "src": "VToolbar.css"
+  },
+  "_VForm-b7e5a6b2.js": {
+    "css": [
+      "assets/VForm-b35c36c5.css"
+    ],
+    "file": "assets/VForm-b7e5a6b2.js",
+    "imports": [
+      "resources/js/app.ts"
+    ]
+  },
+  "_VToolbar-98a81dce.js": {
+    "css": [
+      "assets/VToolbar-a9ba3311.css"
+    ],
+    "file": "assets/VToolbar-98a81dce.js",
+    "imports": [
+      "resources/js/app.ts"
+    ]
+  },
+  "_index.m-b0762662.js": {
     "css": [
       "assets/index-f811e5dc.css"
     ],
-    "file": "assets/index.m-10c6a710.js",
+    "file": "assets/index.m-b0762662.js",
     "imports": [
       "resources/js/app.ts"
     ]
@@ -40,42 +66,57 @@
     "css": [
       "assets/Dashboard-dfc212de.css"
     ],
-    "file": "assets/Dashboard-e85095d0.js",
+    "file": "assets/Dashboard-ef04cc51.js",
     "imports": [
       "resources/js/app.ts",
-      "_index.m-10c6a710.js"
+      "_index.m-b0762662.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Dashboard.vue"
   },
+  "resources/js/Pages/Operator/CreateEdit.vue": {
+    "file": "assets/CreateEdit-17a021fe.js",
+    "imports": [
+      "resources/js/app.ts",
+      "_index.m-b0762662.js",
+      "_VForm-b7e5a6b2.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Operator/CreateEdit.vue"
+  },
+  "resources/js/Pages/Operator/Index.vue": {
+    "file": "assets/Index-6300356b.js",
+    "imports": [
+      "_index.m-b0762662.js",
+      "resources/js/app.ts",
+      "_VToolbar-98a81dce.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Operator/Index.vue"
+  },
   "resources/js/Pages/OperatorTeam/CreateEdit.css": {
-    "file": "assets/CreateEdit-b93310b5.css",
+    "file": "assets/CreateEdit-660e07f3.css",
     "src": "resources/js/Pages/OperatorTeam/CreateEdit.css"
   },
   "resources/js/Pages/OperatorTeam/CreateEdit.vue": {
     "css": [
-      "assets/CreateEdit-b93310b5.css"
+      "assets/CreateEdit-660e07f3.css"
     ],
-    "file": "assets/CreateEdit-9ec4e78b.js",
+    "file": "assets/CreateEdit-5fda2a12.js",
     "imports": [
       "resources/js/app.ts",
-      "_index.m-10c6a710.js"
+      "_index.m-b0762662.js",
+      "_VForm-b7e5a6b2.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/OperatorTeam/CreateEdit.vue"
   },
-  "resources/js/Pages/OperatorTeam/Index.css": {
-    "file": "assets/Index-a9ba3311.css",
-    "src": "resources/js/Pages/OperatorTeam/Index.css"
-  },
   "resources/js/Pages/OperatorTeam/Index.vue": {
-    "css": [
-      "assets/Index-a9ba3311.css"
-    ],
-    "file": "assets/Index-d12cf2d5.js",
+    "file": "assets/Index-87c3b3bd.js",
     "imports": [
-      "_index.m-10c6a710.js",
-      "resources/js/app.ts"
+      "_index.m-b0762662.js",
+      "resources/js/app.ts",
+      "_VToolbar-98a81dce.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/OperatorTeam/Index.vue"
@@ -97,10 +138,12 @@
     "dynamicImports": [
       "_webfontloader-2a4655c2.js",
       "resources/js/Pages/Dashboard.vue",
+      "resources/js/Pages/Operator/CreateEdit.vue",
+      "resources/js/Pages/Operator/Index.vue",
       "resources/js/Pages/OperatorTeam/CreateEdit.vue",
       "resources/js/Pages/OperatorTeam/Index.vue"
     ],
-    "file": "assets/app-080f6b58.js",
+    "file": "assets/app-4c37da21.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
   }
