@@ -27,7 +27,7 @@ class TeamController extends Controller
      */
     public function index(): InertiaResponse
     {
-        $teams = OperatorTeamResource::collection(OperatorTeam::withTrashed()->get());
+        $teams = OperatorTeamResource::collection(OperatorTeam::withTrashed()->get())->resolve();
 
         return Inertia::render('OperatorTeam/Index', compact('teams'));
     }
@@ -39,8 +39,8 @@ class TeamController extends Controller
      */
     public function create(): InertiaResponse
     {
-        $operators = OperatorResource::collection(Operator::all());
-        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all());
+        $operators = OperatorResource::collection(Operator::all())->resolve();
+        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
 
         return Inertia::render('OperatorTeam/CreateEdit', compact('operators', 'ticketCategories'));
     }
@@ -70,7 +70,7 @@ class TeamController extends Controller
      */
     public function show(OperatorTeam $team): InertiaResponse
     {
-        $team = new OperatorTeamResource($team);
+        $team = new OperatorTeamResource($team->load('operators', 'ticketCategories'));
 
         return Inertia::render('OperatorTeam/Show', compact('team'));
     }
@@ -83,9 +83,9 @@ class TeamController extends Controller
      */
     public function edit(OperatorTeam $team): InertiaResponse
     {
-        $team = new OperatorTeamResource($team);
-        $operators = OperatorResource::collection(Operator::all());
-        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all());
+        $team = new OperatorTeamResource($team->load('operators', 'ticketCategories'));
+        $operators = OperatorResource::collection(Operator::all())->resolve();
+        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
 
         return Inertia::render('OperatorTeam/CreateEdit', compact('team', 'operators', 'ticketCategories'));
     }

@@ -25,7 +25,7 @@ class OperatorController extends Controller
      */
     public function index(): InertiaResponse
     {
-        $operators = OperatorResource::collection(Operator::all());
+        $operators = OperatorResource::collection(Operator::all())->resolve();
 
         return Inertia::render('Operator/Index', compact('operators'));
     }
@@ -37,7 +37,7 @@ class OperatorController extends Controller
      */
     public function create(): InertiaResponse
     {
-        $teams = OperatorTeamResource::collection(OperatorTeam::all());
+        $teams = OperatorTeamResource::collection(OperatorTeam::all())->resolve();
 
         return Inertia::render('Operator/CreateEdit', compact('teams'));
     }
@@ -63,7 +63,7 @@ class OperatorController extends Controller
      */
     public function show(Operator $operator): InertiaResponse
     {
-        $operator = new OperatorResource($operator);
+        $operator = new OperatorResource($operator->load('teams'));
 
         return Inertia::render('Operator/Show', compact('operator'));
     }
@@ -76,8 +76,8 @@ class OperatorController extends Controller
      */
     public function edit(Operator $operator): InertiaResponse
     {
-        $operator = new OperatorResource($operator);
-        $teams = OperatorTeamResource::collection(OperatorTeam::all());
+        $operator = new OperatorResource($operator->load('teams'));
+        $teams = OperatorTeamResource::collection(OperatorTeam::all())->resolve();
 
         return Inertia::render('Operator/CreateEdit', compact('operator', 'teams'));
     }

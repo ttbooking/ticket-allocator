@@ -27,7 +27,7 @@ class OperatorResource extends JsonResource
             'ready' => $this->ready,
             'ticket_limit' => $this->ticket_limit,
             'complexity_limit' => $this->complexity_limit,
-            'teams' => OperatorTeamResource::collection($this->teams),
+            'teams' => OperatorTeamResource::collection($this->whenLoaded('teams')),
         ];
     }
 }
