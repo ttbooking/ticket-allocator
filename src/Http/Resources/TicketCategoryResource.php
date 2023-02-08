@@ -13,6 +13,13 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
 class TicketCategoryResource extends JsonResource
 {
     /**
+     * The "data" wrapper that should be applied.
+     *
+     * @var string|null
+     */
+    public static $wrap = null;
+
+    /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request|null  $request
