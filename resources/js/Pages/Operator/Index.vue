@@ -22,11 +22,7 @@
                     <Link :href="route('ticket-allocator.operators.edit', item.raw.uuid)">
                         <v-btn icon="mdi-pencil" size="small" variant="plain" />
                     </Link>
-                    <Link
-                        as="span"
-                        :href="route('ticket-allocator.operators.destroy', item.raw.uuid)"
-                        :method="Method.DELETE"
-                    >
+                    <Link as="span" :href="route('ticket-allocator.operators.destroy', item.raw.uuid)" method="delete">
                         <v-btn icon="mdi-delete" size="small" variant="plain" />
                     </Link>
                 </template>
@@ -38,7 +34,6 @@
 <script setup lang="ts">
 import DefaultLayout from "@/Layouts/Default.vue";
 import { Head, Link } from "@inertiajs/vue3";
-import { Method } from "@inertiajs/core";
 import type { Operator } from "@/types";
 import route from "ziggy-js";
 
