@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
-use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 
 /**
- * @mixin Operator
+ * @mixin User
  */
-class OperatorResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * The "data" wrapper that should be applied.
@@ -28,14 +28,8 @@ class OperatorResource extends JsonResource
     public function toArray($request = null): array
     {
         return [
-            'uuid' => $this->uuid,
+            'id' => $this->id,
             'name' => $this->name,
-            'online' => $this->online,
-            'ready' => $this->ready,
-            'ticket_limit' => $this->ticket_limit,
-            'complexity_limit' => $this->complexity_limit,
-            'user' => new UserResource($this->whenLoaded('user')),
-            'teams' => OperatorTeamResource::collection($this->whenLoaded('teams')),
         ];
     }
 }

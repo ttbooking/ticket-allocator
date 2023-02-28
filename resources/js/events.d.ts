@@ -6,6 +6,7 @@ export enum Operator {
     Enrolled = ".operator.enrolled",
     JoinedTeam = ".operator.joined-team",
     LeftTeam = ".operator.left-team",
+    SetTeams = ".operator.set-teams",
     NameChanged = ".operator.name-changed",
     NotReady = ".operator.not-ready",
     Offline = ".operator.offline",
@@ -48,7 +49,7 @@ namespace Operator {
 
     export interface EnrolledPayload {
         uuid: string;
-        origin?: any;
+        userId: number | string;
     }
 
     export interface JoinedTeamPayload {
@@ -59,6 +60,11 @@ namespace Operator {
     export interface LeftTeamPayload {
         uuid: string;
         operatorTeamUuid: string;
+    }
+
+    export interface SetTeamsPayload {
+        uuid: string;
+        operatorTeamUuids: string[];
     }
 
     export interface NameChangedPayload {

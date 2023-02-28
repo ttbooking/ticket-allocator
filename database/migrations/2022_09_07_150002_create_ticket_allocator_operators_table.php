@@ -18,7 +18,7 @@ return new class extends Migration
             $table->uuid()->primary();
 
             // inherited properties
-            $table->unsignedInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id')->unique();
             $table->string('name');
             $table->boolean('online')->default(false);
             $table->boolean('ready')->default(false);

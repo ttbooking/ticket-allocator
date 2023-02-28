@@ -9,11 +9,15 @@ use Spatie\EventSourcing\Commands\HandledBy;
 use TTBooking\TicketAllocator\Domain\Operator\OperatorAggregateRoot;
 
 #[HandledBy(OperatorAggregateRoot::class)]
-class EnrollOperator
+class SetOperatorTeams
 {
+    /**
+     * @param  string  $uuid
+     * @param  string[]  $operatorTeamUuids
+     */
     public function __construct(
         #[AggregateUuid] public string $uuid,
-        public int|string $userId,
+        public array $operatorTeamUuids,
     ) {
     }
 }

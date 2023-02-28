@@ -29,8 +29,8 @@ class UpdateOperatorRequest extends FormRequest
             'name' => 'sometimes|required|string|max:255',
             'teams' => 'sometimes|required|array',
             'teams.*' => 'sometimes|required|uuid',
-            'ticket_limit' => 'sometimes|required|integer',
-            'complexity_limit' => 'sometimes|required|integer',
+            //'ticket_limit' => 'sometimes|required|integer',
+            //'complexity_limit' => 'sometimes|required|integer',
         ];
     }
 

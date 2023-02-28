@@ -6,11 +6,15 @@ namespace TTBooking\TicketAllocator\Domain\Operator\Events;
 
 use TTBooking\TicketAllocator\Domain\Support\Event;
 
-class OperatorEnrolled extends Event
+class OperatorSetTeams extends Event
 {
+    /**
+     * @param  string  $uuid
+     * @param  string[]  $operatorTeamUuids
+     */
     public function __construct(
         public string $uuid,
-        public int|string $userId,
+        public array $operatorTeamUuids,
     ) {
     }
 }

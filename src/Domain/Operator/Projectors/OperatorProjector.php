@@ -16,6 +16,7 @@ class OperatorProjector extends Projector
     {
         (new Operator)->writeable()->create([
             'uuid' => $event->uuid,
+            'user_id' => $event->userId,
         ]);
     }
 
@@ -72,6 +73,11 @@ class OperatorProjector extends Projector
     public function onOperatorLeftTeam(Events\OperatorLeftTeam $event): void
     {
         Operator::find($event->uuid)?->writeable()->teams()->detach($event->operatorTeamUuid);
+    }
+
+    public function onOperatorSetTeams(Events\OperatorSetTeams $event): void
+    {
+        Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
     }
 
     public function onTicketBound(TicketEvents\TicketBound $event): void

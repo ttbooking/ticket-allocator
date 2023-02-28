@@ -8,7 +8,7 @@ use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 
 class OperatorAggregateRoot extends AggregateRoot
 {
-    public ?object $origin = null;
+    public int|string $userId;
 
     public string $name;
 
@@ -24,13 +24,13 @@ class OperatorAggregateRoot extends AggregateRoot
     {
         return $this->recordThat(new Events\OperatorEnrolled(
             uuid: $this->uuid(),
-            origin: $command->origin,
+            userId: $command->userId,
         ));
     }
 
     protected function applyOperatorEnrolled(Events\OperatorEnrolled $event): void
     {
-        $this->origin = $event->origin;
+        $this->userId = $event->userId;
     }
 
     public function resign(Commands\ResignOperator $command): static
@@ -152,6 +152,18 @@ class OperatorAggregateRoot extends AggregateRoot
     }
 
     protected function applyOperatorLeftTeam(Events\OperatorLeftTeam $event): void
+    {
+    }
+
+    public function setOperatorTeams(Commands\SetOperatorTeams $command): static
+    {
+        return $this->recordThat(new Events\OperatorSetTeams(
+            uuid: $this->uuid(),
+            operatorTeamUuids: $command->operatorTeamUuids,
+        ));
+    }
+
+    protected function applyOperatorSetTeams(Events\OperatorSetTeams $event): void
     {
     }
 

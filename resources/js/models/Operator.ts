@@ -1,5 +1,5 @@
 import { Model } from "pinia-orm";
-import { Bool, Num, Str, Uid, BelongsToMany, HasMany, OnDelete } from "pinia-orm/dist/decorators";
+import { Attr, Bool, Num, Str, Uid, BelongsToMany, HasMany, OnDelete } from "pinia-orm/dist/decorators";
 import OperatorTeam from "./OperatorTeam";
 import TeamOperator from "./TeamOperator";
 import Ticket from "./Ticket";
@@ -10,6 +10,7 @@ export default class Operator extends Model {
     static primaryKey = "uuid";
 
     @Uid() declare uuid: string;
+    @Attr() declare user_id: number | string;
     @Str("") declare name: string;
     @Bool(false) declare online: boolean;
     @Bool(false) declare ready: boolean;

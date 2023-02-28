@@ -11,13 +11,13 @@ use TTBooking\TicketAllocator\Domain\Support\Action;
 
 class EnrollOperatorAction extends Action
 {
-    public function __invoke(object $operatorOrigin = null): ?Operator
+    public function __invoke(int|string $userId): ?Operator
     {
         $uuid = (string) Str::orderedUuid();
 
         $this->dispatch(new EnrollOperator(
             uuid: $uuid,
-            origin: $operatorOrigin,
+            userId: $userId,
         ));
 
         return Operator::find($uuid);

@@ -10,7 +10,16 @@
 
         <div>
             <v-form @submit.prevent="submit">
-                <v-text-field v-model="form.name" label="Name" :error-messages="errors.name" class="mb-4" />
+                <v-autocomplete
+                    v-model="form.user"
+                    label="User"
+                    :items="users"
+                    item-title="name"
+                    item-value="id"
+                    :error-messages="errors.user"
+                    class="mb-4"
+                />
+                <v-text-field v-model="form.name" label="Display name" :error-messages="errors.name" class="mb-4" />
                 <v-autocomplete
                     v-model="form.teams"
                     multiple
@@ -34,17 +43,19 @@
 <script setup lang="ts">
 import DefaultLayout from "@/Layouts/Default.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import type { Operator, OperatorTeam } from "@/types";
+import type { User, Operator, OperatorTeam } from "@/types";
 import route from "ziggy-js";
 
 const props = defineProps<{
+    users?: User[];
     operator?: Operator;
     teams: OperatorTeam[];
     errors: Record<string, string>;
 }>();
 
 const form = useForm({
-    name: props.operator?.name ?? "",
+    user: null,
+    name: props.operator?.name ?? props.operator?.user?.name ?? "",
     ticket_limit: props.operator?.ticket_limit ?? null,
     complexity_limit: props.operator?.complexity_limit ?? null,
     teams: props.operator?.teams.map((team) => team.uuid) ?? [],

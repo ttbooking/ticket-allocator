@@ -11,11 +11,11 @@ use TTBooking\TicketAllocator\Models\OperatorTeam;
 
 class LeaveOperatorTeamAction extends Action
 {
-    public function __invoke(Operator $operator, OperatorTeam $operatorTeam): void
+    public function __invoke(Operator $operator, OperatorTeam|string $operatorTeam): void
     {
         $this->dispatch(new LeaveOperatorTeam(
             uuid: $operator->getKey(),
-            operatorTeamUuid: $operatorTeam->getKey(),
+            operatorTeamUuid: is_string($operatorTeam) ? $operatorTeam : $operatorTeam->getKey(),
         ));
     }
 }

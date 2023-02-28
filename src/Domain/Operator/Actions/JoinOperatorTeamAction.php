@@ -11,11 +11,11 @@ use TTBooking\TicketAllocator\Models\OperatorTeam;
 
 class JoinOperatorTeamAction extends Action
 {
-    public function __invoke(Operator $operator, OperatorTeam $operatorTeam): void
+    public function __invoke(Operator $operator, OperatorTeam|string $operatorTeam): void
     {
         $this->dispatch(new JoinOperatorTeam(
             uuid: $operator->getKey(),
-            operatorTeamUuid: $operatorTeam->getKey(),
+            operatorTeamUuid: is_string($operatorTeam) ? $operatorTeam : $operatorTeam->getKey(),
         ));
     }
 }

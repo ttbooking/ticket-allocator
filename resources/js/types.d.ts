@@ -17,6 +17,11 @@ export type TicketSortBy = "weight" | "duration";
 
 export type SortDirection = "asc" | "desc";
 
+export interface User {
+    id: number | string;
+    name: string;
+}
+
 export interface Operator {
     uuid: string;
     name: string;
@@ -24,6 +29,7 @@ export interface Operator {
     ready: boolean;
     ticket_limit: ?number;
     complexity_limit: ?number;
+    user: ?User;
     teams: OperatorTeam[];
 }
 

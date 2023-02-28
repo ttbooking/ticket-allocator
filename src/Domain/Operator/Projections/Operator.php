@@ -7,6 +7,8 @@ namespace TTBooking\TicketAllocator\Domain\Operator\Projections;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\EventSourcing\Projections\Projection;
@@ -16,6 +18,7 @@ use TTBooking\TicketAllocator\Models\OperatorTeam;
 
 /**
  * @property string $uuid
+ * @property int|string $user_id
  * @property string $name
  * @property bool $online
  * @property bool $ready
@@ -27,6 +30,7 @@ use TTBooking\TicketAllocator\Models\OperatorTeam;
  * @property-read int|null $free_complexity
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property Model $user
  * @property Collection<int, OperatorTeam> $teams
  * @property Collection<int, Ticket> $tickets
  *
@@ -71,6 +75,14 @@ class Operator extends Projection
     protected static function newFactory(): OperatorFactory
     {
         return OperatorFactory::new();
+    }
+
+    /**
+     * @return BelongsTo<static, Model>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(config('ticket-allocator.operator_source')[0]);
     }
 
     /**

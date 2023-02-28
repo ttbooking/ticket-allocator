@@ -26,11 +26,12 @@ class StoreOperatorRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user' => 'required',
             'name' => 'required|string|max:255',
             'teams' => 'required|array',
             'teams.*' => 'required|uuid',
-            'ticket_limit' => 'required|integer',
-            'complexity_limit' => 'required|integer',
+            //'ticket_limit' => 'required|integer',
+            //'complexity_limit' => 'required|integer',
         ];
     }
 
