@@ -18,6 +18,8 @@
                         </Link>
                     </v-toolbar>
                 </template>
+                <template #[`item.ticket_limit`]="{ item }">{{ item.raw.ticket_limit ?? "&infin;" }}</template>
+                <template #[`item.complexity_limit`]="{ item }">{{ item.raw.complexity_limit ?? "&infin;" }}</template>
                 <template #[`item.actions`]="{ item }">
                     <Link :href="route('ticket-allocator.operators.edit', item.raw.uuid)">
                         <v-btn icon="mdi-pencil" size="small" variant="plain" />

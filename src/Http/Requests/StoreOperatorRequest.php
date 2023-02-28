@@ -9,6 +9,22 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreOperatorRequest extends FormRequest
 {
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation(): void
+    {
+        if (isset($this->ticket_limit) && $this->ticket_limit === '') {
+            $this->ticket_limit = null;
+        }
+
+        if (isset($this->complexity_limit) && $this->complexity_limit === '') {
+            $this->complexity_limit = null;
+        }
+    }
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -28,10 +44,10 @@ class StoreOperatorRequest extends FormRequest
         return [
             'user' => 'required',
             'name' => 'required|string|max:255',
+            'ticket_limit' => 'nullable|integer|between:1,100',
+            'complexity_limit' => 'nullable|integer|between:1,1000',
             'teams' => 'required|array',
             'teams.*' => 'required|uuid',
-            //'ticket_limit' => 'required|integer',
-            //'complexity_limit' => 'required|integer',
         ];
     }
 

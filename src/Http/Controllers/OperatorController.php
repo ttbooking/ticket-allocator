@@ -54,6 +54,8 @@ class OperatorController extends Controller
      * @param  \TTBooking\TicketAllocator\Http\Requests\StoreOperatorRequest  $request
      * @param  Actions\EnrollOperatorAction  $enrollOperator
      * @param  Actions\ChangeOperatorNameAction  $changeOperatorName
+     * @param  Actions\AdjustOperatorTicketLimitAction  $adjustOperatorTicketLimit
+     * @param  Actions\AdjustOperatorComplexityLimitAction  $adjustOperatorComplexityLimit
      * @param  Actions\SetOperatorTeamsAction  $setOperatorTeams
      * @return RedirectResponse
      */
@@ -61,10 +63,14 @@ class OperatorController extends Controller
         StoreOperatorRequest $request,
         Actions\EnrollOperatorAction $enrollOperator,
         Actions\ChangeOperatorNameAction $changeOperatorName,
+        Actions\AdjustOperatorTicketLimitAction $adjustOperatorTicketLimit,
+        Actions\AdjustOperatorComplexityLimitAction $adjustOperatorComplexityLimit,
         Actions\SetOperatorTeamsAction $setOperatorTeams,
     ): RedirectResponse {
         $operator = $enrollOperator($request->validated('user'));
         $changeOperatorName($operator, $request->validated('name'));
+        $adjustOperatorTicketLimit($operator, $request->validated('ticket_limit'));
+        $adjustOperatorComplexityLimit($operator, $request->validated('complexity_limit'));
         $setOperatorTeams($operator, $request->validated('teams'));
 
         return Response::redirectToRoute('ticket-allocator.operators.index', status: 303);
@@ -103,6 +109,8 @@ class OperatorController extends Controller
      * @param  \TTBooking\TicketAllocator\Http\Requests\UpdateOperatorRequest  $request
      * @param  \TTBooking\TicketAllocator\Domain\Operator\Projections\Operator  $operator
      * @param  Actions\ChangeOperatorNameAction  $changeOperatorName
+     * @param  Actions\AdjustOperatorTicketLimitAction  $adjustOperatorTicketLimit
+     * @param  Actions\AdjustOperatorComplexityLimitAction  $adjustOperatorComplexityLimit
      * @param  Actions\SetOperatorTeamsAction  $setOperatorTeams
      * @return RedirectResponse
      */
@@ -110,9 +118,13 @@ class OperatorController extends Controller
         UpdateOperatorRequest $request,
         Operator $operator,
         Actions\ChangeOperatorNameAction $changeOperatorName,
+        Actions\AdjustOperatorTicketLimitAction $adjustOperatorTicketLimit,
+        Actions\AdjustOperatorComplexityLimitAction $adjustOperatorComplexityLimit,
         Actions\SetOperatorTeamsAction $setOperatorTeams,
     ): RedirectResponse {
         $changeOperatorName($operator, $request->validated('name'));
+        $adjustOperatorTicketLimit($operator, $request->validated('ticket_limit'));
+        $adjustOperatorComplexityLimit($operator, $request->validated('complexity_limit'));
         $setOperatorTeams($operator, $request->validated('teams'));
 
         return Response::redirectToRoute('ticket-allocator.operators.index', status: 303);
@@ -122,11 +134,12 @@ class OperatorController extends Controller
      * Remove the specified operator from storage.
      *
      * @param  \TTBooking\TicketAllocator\Domain\Operator\Projections\Operator  $operator
+     * @param  Actions\ResignOperatorAction  $resignOperator
      * @return RedirectResponse
      */
-    public function destroy(Operator $operator): RedirectResponse
+    public function destroy(Operator $operator, Actions\ResignOperatorAction $resignOperator): RedirectResponse
     {
-        // TODO
+        $resignOperator($operator);
 
         return Response::redirectToRoute('ticket-allocator.operators.index', status: 303);
     }

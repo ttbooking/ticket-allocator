@@ -10,31 +10,75 @@
 
         <div>
             <v-form @submit.prevent="submit">
-                <v-autocomplete
-                    v-model="form.user"
-                    label="User"
-                    :items="users"
-                    item-title="name"
-                    item-value="id"
-                    :error-messages="errors.user"
-                    class="mb-4"
-                />
-                <v-text-field v-model="form.name" label="Display name" :error-messages="errors.name" class="mb-4" />
-                <v-autocomplete
-                    v-model="form.teams"
-                    multiple
-                    clearable
-                    chips
-                    closable-chips
-                    label="Teams"
-                    :items="teams"
-                    item-title="name"
-                    item-value="uuid"
-                    :error-messages="errors.teams"
-                    class="mb-4"
-                />
-                <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">Save</v-btn>
-                <Link :href="route('ticket-allocator.operators.index')" class="mr-3"><v-btn>Cancel</v-btn></Link>
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-autocomplete
+                                v-model="form.user"
+                                label="User"
+                                :items="users"
+                                item-title="name"
+                                item-value="id"
+                                :error-messages="errors.user"
+                            />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-text-field v-model="form.name" label="Display name" :error-messages="errors.name" />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                                v-model.number="form.ticket_limit"
+                                type="number"
+                                min="1"
+                                max="100"
+                                label="Ticket limit"
+                                placeholder="&infin;"
+                                dirty
+                                :error-messages="errors.ticket_limit"
+                            />
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                                v-model.number="form.complexity_limit"
+                                type="number"
+                                min="1"
+                                max="1000"
+                                label="Complexity limit"
+                                placeholder="&infin;"
+                                dirty
+                                :error-messages="errors.complexity_limit"
+                            />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-autocomplete
+                                v-model="form.teams"
+                                multiple
+                                clearable
+                                chips
+                                closable-chips
+                                label="Teams"
+                                :items="teams"
+                                item-title="name"
+                                item-value="uuid"
+                                :error-messages="errors.teams"
+                            />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">Save</v-btn>
+                            <Link :href="route('ticket-allocator.operators.index')" class="mr-3">
+                                <v-btn>Cancel</v-btn>
+                            </Link>
+                        </v-col>
+                    </v-row>
+                </v-container>
             </v-form>
         </div>
     </DefaultLayout>
