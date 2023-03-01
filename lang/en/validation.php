@@ -18,6 +18,7 @@ return [
         'description' => 'description',
         'operators' => 'operators',
         'ticket_categories' => 'ticket categories',
+        'user' => 'user',
         'ticket_limit' => 'ticket limit',
         'complexity_limit' => 'complexity limit',
         'teams' => 'teams',
