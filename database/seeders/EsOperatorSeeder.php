@@ -36,7 +36,7 @@ class EsOperatorSeeder extends Seeder
         $operatorTeams = OperatorTeam::all()->all();
 
         for ($i = 0; $i < $count; $i++) {
-            $operator = $enrollOperator(0);
+            $operator = $enrollOperator($i + 1);
 
             $changeOperatorName($operator, fake()->name());
 

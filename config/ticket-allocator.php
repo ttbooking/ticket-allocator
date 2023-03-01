@@ -37,11 +37,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Ticket Allocator User Model and Scope
+    | Ticket Allocator User Model
     |--------------------------------------------------------------------------
     */
 
-    'operator_source' => [App\Models\User::class, 'operators'],
+    'operator_source' => App\Models\User::class,
 
     /*
     |--------------------------------------------------------------------------

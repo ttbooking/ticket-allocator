@@ -82,7 +82,7 @@ class Operator extends Projection
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(config('ticket-allocator.operator_source')[0]);
+        return $this->belongsTo(config('ticket-allocator.operator_source'));
     }
 
     /**

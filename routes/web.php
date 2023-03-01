@@ -23,7 +23,5 @@ Route::get('/', 'HomeController@index')->name('index');
 Route::resource('operators', OperatorController::class);
 Route::resource('teams', TeamController::class)->withTrashed(['show', 'edit', 'update', 'destroy']);
 
-Route::get('users', 'UserController@index');
-
 // Catch-all Route...
 //Route::get('/{view?}', 'HomeController@index')->where('view', '(.*)')->name('index');

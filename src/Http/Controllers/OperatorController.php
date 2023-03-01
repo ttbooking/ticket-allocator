@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use TTBooking\TicketAllocator\Concerns\MayHaveOperatorPrivileges;
 use TTBooking\TicketAllocator\Domain\Operator\Actions;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Http\Requests\StoreOperatorRequest;
@@ -40,8 +40,10 @@ class OperatorController extends Controller
      */
     public function create(): InertiaResponse
     {
-        /** @var Builder $userQuery */
-        $userQuery = call_user_func(config('ticket-allocator.operator_source'));
+        /** @var class-string<MayHaveOperatorPrivileges> $userClass */
+        $userClass = config('ticket-allocator.operator_source');
+        $userQuery = $userClass::eligibleToProcessTickets()->doesntHave('operator');
+
         $users = UserResource::collection($userQuery->get(['id', 'name']))->resolve();
         $teams = OperatorTeamResource::collection(OperatorTeam::all())->resolve();
 
