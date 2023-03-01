@@ -14,8 +14,13 @@ return [
     */
 
     'attributes' => [
-        'operators' => 'Operators',
-        'ticket_categories' => 'Ticket categories',
+        'name' => 'name',
+        'description' => 'description',
+        'operators' => 'operators',
+        'ticket_categories' => 'ticket categories',
+        'ticket_limit' => 'ticket limit',
+        'complexity_limit' => 'complexity limit',
+        'teams' => 'teams',
     ],
 
 ];

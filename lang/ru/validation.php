@@ -14,8 +14,13 @@ return [
     */
 
     'attributes' => [
-        'operators' => 'Операторы',
-        'ticket_categories' => 'Категории тикетов',
+        'name' => 'имя',
+        'description' => 'описание',
+        'operators' => 'операторы',
+        'ticket_categories' => 'категории тикетов',
+        'ticket_limit' => 'максимальное число тикетов',
+        'complexity_limit' => 'ограничение по суммарной сложности',
+        'teams' => 'команды',
     ],
 
 ];

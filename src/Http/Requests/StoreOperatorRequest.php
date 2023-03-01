@@ -46,7 +46,7 @@ class StoreOperatorRequest extends FormRequest
             'name' => 'required|string|max:255',
             'ticket_limit' => 'nullable|integer|between:1,100',
             'complexity_limit' => 'nullable|integer|between:1,1000',
-            'teams' => 'required|array',
+            'teams' => 'array',
             'teams.*' => 'required|uuid',
         ];
     }
