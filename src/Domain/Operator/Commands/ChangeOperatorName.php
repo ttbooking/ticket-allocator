@@ -13,7 +13,7 @@ class ChangeOperatorName
 {
     public function __construct(
         #[AggregateUuid] public string $uuid,
-        public string $name,
+        public ?string $name,
     ) {
     }
 }

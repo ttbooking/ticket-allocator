@@ -10,7 +10,7 @@ class OperatorAggregateRoot extends AggregateRoot
 {
     public int|string $userId;
 
-    public string $name;
+    public ?string $name = null;
 
     public bool $online = false;
 

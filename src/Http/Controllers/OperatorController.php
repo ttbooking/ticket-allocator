@@ -28,7 +28,7 @@ class OperatorController extends Controller
      */
     public function index(): InertiaResponse
     {
-        $operators = OperatorResource::collection(Operator::all())->resolve();
+        $operators = OperatorResource::collection(Operator::all()->load('user'))->resolve();
 
         return Inertia::render('Operator/Index', compact('operators'));
     }
@@ -69,11 +69,12 @@ class OperatorController extends Controller
         Actions\AdjustOperatorComplexityLimitAction $adjustOperatorComplexityLimit,
         Actions\SetOperatorTeamsAction $setOperatorTeams,
     ): RedirectResponse {
-        $operator = $enrollOperator($request->validated('user'));
-        $changeOperatorName($operator, $request->validated('name'));
-        $adjustOperatorTicketLimit($operator, $request->validated('ticket_limit'));
-        $adjustOperatorComplexityLimit($operator, $request->validated('complexity_limit'));
-        $setOperatorTeams($operator, $request->validated('teams'));
+        $input = $request->safe();
+        $operator = $enrollOperator($input->user);
+        $input->name && $changeOperatorName($operator, $input->name);
+        $adjustOperatorTicketLimit($operator, $input->ticket_limit);
+        $adjustOperatorComplexityLimit($operator, $input->complexity_limit);
+        $setOperatorTeams($operator, $input->teams);
 
         return Response::redirectToRoute('ticket-allocator.operators.index', status: 303);
     }
@@ -124,10 +125,11 @@ class OperatorController extends Controller
         Actions\AdjustOperatorComplexityLimitAction $adjustOperatorComplexityLimit,
         Actions\SetOperatorTeamsAction $setOperatorTeams,
     ): RedirectResponse {
-        $changeOperatorName($operator, $request->validated('name'));
-        $adjustOperatorTicketLimit($operator, $request->validated('ticket_limit'));
-        $adjustOperatorComplexityLimit($operator, $request->validated('complexity_limit'));
-        $setOperatorTeams($operator, $request->validated('teams'));
+        $input = $request->safe();
+        $changeOperatorName($operator, $input->name ?? '');
+        $adjustOperatorTicketLimit($operator, $input->ticket_limit);
+        $adjustOperatorComplexityLimit($operator, $input->complexity_limit);
+        $setOperatorTeams($operator, $input->teams);
 
         return Response::redirectToRoute('ticket-allocator.operators.index', status: 303);
     }

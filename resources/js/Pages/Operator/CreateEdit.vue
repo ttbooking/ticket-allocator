@@ -13,7 +13,9 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
+                            <v-text-field v-if="operator" :model-value="operator.user?.name" label="User" readonly />
                             <v-autocomplete
+                                v-else
                                 v-model="form.user"
                                 label="User"
                                 :items="users"
@@ -25,7 +27,13 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-text-field v-model="form.name" label="Display name" :error-messages="errors.name" />
+                            <v-text-field
+                                v-model="form.name"
+                                label="Display name"
+                                :placeholder="name"
+                                :persistent-placeholder="!!name.length"
+                                :error-messages="errors.name"
+                            />
                         </v-col>
                     </v-row>
                     <v-row>
@@ -37,7 +45,7 @@
                                 max="100"
                                 label="Ticket limit"
                                 placeholder="&infin;"
-                                dirty
+                                persistent-placeholder
                                 :error-messages="errors.ticket_limit"
                             />
                         </v-col>
@@ -49,7 +57,7 @@
                                 max="1000"
                                 label="Complexity limit"
                                 placeholder="&infin;"
-                                dirty
+                                persistent-placeholder
                                 :error-messages="errors.complexity_limit"
                             />
                         </v-col>
@@ -87,22 +95,37 @@
 <script setup lang="ts">
 import DefaultLayout from "@/Layouts/Default.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
+import { computed } from "vue";
 import type { User, Operator, OperatorTeam } from "@/types";
 import route from "ziggy-js";
 
 const props = defineProps<{
-    users?: User[];
+    users: User[];
     operator?: Operator;
     teams: OperatorTeam[];
     errors: Record<string, string>;
 }>();
 
-const form = useForm({
+const form = useForm<{
+    user: number | null;
+    name: string | null;
+    ticket_limit: number | null;
+    complexity_limit: number | null;
+    teams: string[];
+}>({
     user: null,
-    name: props.operator?.name ?? props.operator?.user?.name ?? "",
+    name: props.operator?.name ?? "",
     ticket_limit: props.operator?.ticket_limit ?? null,
     complexity_limit: props.operator?.complexity_limit ?? null,
     teams: props.operator?.teams.map((team) => team.uuid) ?? [],
+});
+
+const name = computed(() => {
+    const name = props.operator?.user?.name;
+    if (name) return name;
+
+    const index = props.users.findIndex((user) => user.id === form.user);
+    return index < 0 ? "" : props.users[index].name;
 });
 
 function submit() {

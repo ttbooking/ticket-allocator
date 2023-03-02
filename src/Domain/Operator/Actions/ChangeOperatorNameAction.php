@@ -10,7 +10,7 @@ use TTBooking\TicketAllocator\Domain\Support\Action;
 
 class ChangeOperatorNameAction extends Action
 {
-    public function __invoke(Operator $operator, string $name): void
+    public function __invoke(Operator $operator, ?string $name): void
     {
         $this->dispatch(new ChangeOperatorName(
             uuid: $operator->getKey(),

@@ -10,7 +10,7 @@ class OperatorNameChanged extends Event
 {
     public function __construct(
         public string $uuid,
-        public string $name,
+        public ?string $name,
     ) {
     }
 }

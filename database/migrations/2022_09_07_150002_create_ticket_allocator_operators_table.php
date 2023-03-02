@@ -19,7 +19,7 @@ return new class extends Migration
 
             // inherited properties
             $table->unsignedBigInteger('user_id')->unique();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->boolean('online')->default(false);
             $table->boolean('ready')->default(false);
             $table->unsignedInteger('ticket_limit')->nullable();

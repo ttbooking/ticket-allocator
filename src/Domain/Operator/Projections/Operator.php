@@ -19,7 +19,7 @@ use TTBooking\TicketAllocator\Models\OperatorTeam;
 /**
  * @property string $uuid
  * @property int|string $user_id
- * @property string $name
+ * @property string|null $name
  * @property bool $online
  * @property bool $ready
  * @property int|null $ticket_limit
@@ -47,6 +47,7 @@ class Operator extends Projection
 
     /** @var array<string, mixed> */
     protected $attributes = [
+        'name' => null,
         'online' => false,
         'ready' => false,
         'ticket_limit' => null,
