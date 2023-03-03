@@ -147,4 +147,21 @@ class OperatorController extends Controller
 
         return Response::redirectToRoute('ticket-allocator.operators.index', status: 303);
     }
+
+    /**
+     * Discover users with operator privileges and store them as operators.
+     *
+     * @param  Actions\EnrollOperatorAction  $enrollOperator
+     * @return RedirectResponse
+     */
+    public function discover(Actions\EnrollOperatorAction $enrollOperator): RedirectResponse
+    {
+        /** @var class-string<MayHaveOperatorPrivileges> $userClass */
+        $userClass = config('ticket-allocator.operator_source');
+
+        $userClass::eligibleToProcessTickets()->doesntHave('operator')
+            ->each(static fn ($user) => $enrollOperator($user));
+
+        return Response::redirectToRoute('ticket-allocator.operators.index', status: 303);
+    }
 }

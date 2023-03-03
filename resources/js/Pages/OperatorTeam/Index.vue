@@ -13,7 +13,7 @@
                         <v-toolbar-title>Operator teams</v-toolbar-title>
                         <v-divider class="mx-4" inset vertical />
                         <v-spacer />
-                        <Link :href="route('ticket-allocator.teams.create')" class="mb-2">
+                        <Link :href="route('ticket-allocator.teams.create')">
                             <v-btn color="primary" dark>New Team</v-btn>
                         </Link>
                     </v-toolbar>

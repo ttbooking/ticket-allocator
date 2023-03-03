@@ -21,6 +21,8 @@ Route::prefix('api/v1')->name('api.')->group(function () {
 Route::get('/', 'HomeController@index')->name('index');
 
 Route::resource('operators', OperatorController::class);
+Route::put('operators', 'OperatorController@discover')->name('operators.discover');
+
 Route::resource('teams', TeamController::class)->withTrashed(['show', 'edit', 'update', 'destroy']);
 
 // Catch-all Route...

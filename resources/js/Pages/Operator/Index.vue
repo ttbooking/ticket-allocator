@@ -13,7 +13,10 @@
                         <v-toolbar-title>Operators</v-toolbar-title>
                         <v-divider class="mx-4" inset vertical />
                         <v-spacer />
-                        <Link :href="route('ticket-allocator.operators.create')" class="mb-2">
+                        <Link :href="route('ticket-allocator.operators.discover')" method="put">
+                            <v-btn color="primary" dark>Discover</v-btn>
+                        </Link>
+                        <Link :href="route('ticket-allocator.operators.create')">
                             <v-btn color="primary" dark>New Operator</v-btn>
                         </Link>
                     </v-toolbar>
