@@ -71,7 +71,7 @@ class OperatorController extends Controller
     ): RedirectResponse {
         $input = $request->safe();
         $operator = $enrollOperator($input->user);
-        $input->name && $changeOperatorName($operator, $input->name);
+        $changeOperatorName($operator, $input->name);
         $adjustOperatorTicketLimit($operator, $input->ticket_limit);
         $adjustOperatorComplexityLimit($operator, $input->complexity_limit);
         $setOperatorTeams($operator, $input->teams);
@@ -126,7 +126,7 @@ class OperatorController extends Controller
         Actions\SetOperatorTeamsAction $setOperatorTeams,
     ): RedirectResponse {
         $input = $request->safe();
-        $changeOperatorName($operator, $input->name ?? '');
+        $changeOperatorName($operator, $input->name);
         $adjustOperatorTicketLimit($operator, $input->ticket_limit);
         $adjustOperatorComplexityLimit($operator, $input->complexity_limit);
         $setOperatorTeams($operator, $input->teams);
