@@ -11,38 +11,38 @@
     "file": "assets/VToolbar-ccd80fdb.css",
     "src": "VToolbar.css"
   },
-  "_VForm-44275cef.js": {
+  "_VForm-36cac3d6.js": {
     "css": [
       "assets/VForm-b35c36c5.css"
     ],
-    "file": "assets/VForm-44275cef.js",
+    "file": "assets/VForm-36cac3d6.js",
     "imports": [
       "resources/js/app.ts"
     ]
   },
-  "_VRow-ff125084.js": {
+  "_VRow-5f7f43b1.js": {
     "css": [
       "assets/VRow-37f80755.css"
     ],
-    "file": "assets/VRow-ff125084.js",
+    "file": "assets/VRow-5f7f43b1.js",
     "imports": [
       "resources/js/app.ts"
     ]
   },
-  "_VToolbar-a86b29b1.js": {
+  "_VToolbar-7c49d84f.js": {
     "css": [
       "assets/VToolbar-ccd80fdb.css"
     ],
-    "file": "assets/VToolbar-a86b29b1.js",
+    "file": "assets/VToolbar-7c49d84f.js",
     "imports": [
       "resources/js/app.ts"
     ]
   },
-  "_index.m-6c85a758.js": {
+  "_index.m-906f0bdc.js": {
     "css": [
       "assets/index-f811e5dc.css"
     ],
-    "file": "assets/index.m-6c85a758.js",
+    "file": "assets/index.m-906f0bdc.js",
     "imports": [
       "resources/js/app.ts"
     ]
@@ -54,6 +54,26 @@
   "index.css": {
     "file": "assets/index-f811e5dc.css",
     "src": "index.css"
+  },
+  "lang/en.json": {
+    "file": "assets/en-c4672036.js",
+    "isDynamicEntry": true,
+    "src": "lang/en.json"
+  },
+  "lang/php_en.json": {
+    "file": "assets/php_en-0ad5b56d.js",
+    "isDynamicEntry": true,
+    "src": "lang/php_en.json"
+  },
+  "lang/php_ru.json": {
+    "file": "assets/php_ru-4013d716.js",
+    "isDynamicEntry": true,
+    "src": "lang/php_ru.json"
+  },
+  "lang/ru.json": {
+    "file": "assets/ru-c377eae8.js",
+    "isDynamicEntry": true,
+    "src": "lang/ru.json"
   },
   "node_modules/@mdi/font/fonts/materialdesignicons-webfont.eot": {
     "file": "assets/materialdesignicons-webfont-f5966bae.eot",
@@ -72,39 +92,39 @@
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2"
   },
   "resources/js/Pages/Dashboard.css": {
-    "file": "assets/Dashboard-d1d2ac10.css",
+    "file": "assets/Dashboard-d599f58d.css",
     "src": "resources/js/Pages/Dashboard.css"
   },
   "resources/js/Pages/Dashboard.vue": {
     "css": [
-      "assets/Dashboard-d1d2ac10.css"
+      "assets/Dashboard-d599f58d.css"
     ],
-    "file": "assets/Dashboard-8e000c61.js",
+    "file": "assets/Dashboard-9b05a54e.js",
     "imports": [
       "resources/js/app.ts",
-      "_index.m-6c85a758.js",
-      "_VRow-ff125084.js"
+      "_index.m-906f0bdc.js",
+      "_VRow-5f7f43b1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Dashboard.vue"
   },
   "resources/js/Pages/Operator/CreateEdit.vue": {
-    "file": "assets/CreateEdit-5c96bac7.js",
+    "file": "assets/CreateEdit-22d637a3.js",
     "imports": [
       "resources/js/app.ts",
-      "_index.m-6c85a758.js",
-      "_VForm-44275cef.js",
-      "_VRow-ff125084.js"
+      "_index.m-906f0bdc.js",
+      "_VForm-36cac3d6.js",
+      "_VRow-5f7f43b1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Operator/CreateEdit.vue"
   },
   "resources/js/Pages/Operator/Index.vue": {
-    "file": "assets/Index-80a34871.js",
+    "file": "assets/Index-543c5ba4.js",
     "imports": [
-      "_index.m-6c85a758.js",
+      "_index.m-906f0bdc.js",
       "resources/js/app.ts",
-      "_VToolbar-a86b29b1.js"
+      "_VToolbar-7c49d84f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/Operator/Index.vue"
@@ -117,22 +137,22 @@
     "css": [
       "assets/CreateEdit-660e07f3.css"
     ],
-    "file": "assets/CreateEdit-405c8fb6.js",
+    "file": "assets/CreateEdit-55cb55b7.js",
     "imports": [
       "resources/js/app.ts",
-      "_index.m-6c85a758.js",
-      "_VForm-44275cef.js",
-      "_VRow-ff125084.js"
+      "_index.m-906f0bdc.js",
+      "_VForm-36cac3d6.js",
+      "_VRow-5f7f43b1.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/OperatorTeam/CreateEdit.vue"
   },
   "resources/js/Pages/OperatorTeam/Index.vue": {
-    "file": "assets/Index-f2adc37e.js",
+    "file": "assets/Index-80c1b125.js",
     "imports": [
-      "_index.m-6c85a758.js",
+      "_index.m-906f0bdc.js",
       "resources/js/app.ts",
-      "_VToolbar-a86b29b1.js"
+      "_VToolbar-7c49d84f.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/Pages/OperatorTeam/Index.vue"
@@ -157,9 +177,13 @@
       "resources/js/Pages/Operator/CreateEdit.vue",
       "resources/js/Pages/Operator/Index.vue",
       "resources/js/Pages/OperatorTeam/CreateEdit.vue",
-      "resources/js/Pages/OperatorTeam/Index.vue"
+      "resources/js/Pages/OperatorTeam/Index.vue",
+      "lang/en.json",
+      "lang/php_en.json",
+      "lang/php_ru.json",
+      "lang/ru.json"
     ],
-    "file": "assets/app-03c727dd.js",
+    "file": "assets/app-2c5221b5.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
   }

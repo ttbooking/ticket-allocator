@@ -4,6 +4,7 @@ import TicketRow from "@/Components/TicketRow.vue";
 import OperatorRow from "@/Components/OperatorRow.vue";
 import { Head } from "@inertiajs/vue3";
 import { computed, ref, onMounted } from "vue";
+import { trans } from "laravel-vue-i18n";
 import { refThrottled } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
 import { useDropZone } from "@/composables";
@@ -104,11 +105,11 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head :title="trans('dashboard')" />
 
     <DefaultLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ trans("dashboard") }}</h2>
         </template>
 
         <div>
@@ -161,7 +162,7 @@ onMounted(() => {
             <v-table class="ticket-monitor">
                 <tbody class="align-text-top">
                     <TicketRow :tickets="sortedTickets">
-                        <template #name>Очередь заявок</template>
+                        <template #name>{{ trans("ticket_pool") }}</template>
                     </TicketRow>
                     <TransitionGroup name="operator-pool">
                         <OperatorRow v-for="operator in sortedOperators" :key="operator.uuid" :operator="operator" />

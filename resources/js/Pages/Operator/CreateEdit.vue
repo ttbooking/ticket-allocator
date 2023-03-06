@@ -1,10 +1,10 @@
 <template>
-    <Head :title="operator ? 'Edit operator' : 'New operator'" />
+    <Head :title="trans(operator ? 'edit_operator' : 'new_operator')" />
 
     <DefaultLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ operator ? "Edit operator" : "New operator" }}
+                {{ trans(operator ? "edit_operator" : "new_operator") }}
             </h2>
         </template>
 
@@ -13,11 +13,16 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-text-field v-if="operator" :model-value="operator.user?.name" label="User" readonly />
+                            <v-text-field
+                                v-if="operator"
+                                :model-value="operator.user?.name"
+                                :label="trans('user')"
+                                readonly
+                            />
                             <v-autocomplete
                                 v-else
                                 v-model="form.user"
-                                label="User"
+                                :label="trans('user')"
                                 :items="users"
                                 item-title="name"
                                 item-value="id"
@@ -29,7 +34,7 @@
                         <v-col cols="12" md="12">
                             <v-text-field
                                 v-model="form.name"
-                                label="Display name"
+                                :label="trans('display_name')"
                                 :placeholder="name"
                                 :persistent-placeholder="!!name.length"
                                 :error-messages="errors.name"
@@ -43,7 +48,7 @@
                                 type="number"
                                 min="1"
                                 max="100"
-                                label="Ticket limit"
+                                :label="trans('ticket_limit')"
                                 placeholder="&infin;"
                                 persistent-placeholder
                                 :error-messages="errors.ticket_limit"
@@ -55,7 +60,7 @@
                                 type="number"
                                 min="1"
                                 max="1000"
-                                label="Complexity limit"
+                                :label="trans('complexity_limit')"
                                 placeholder="&infin;"
                                 persistent-placeholder
                                 :error-messages="errors.complexity_limit"
@@ -70,7 +75,7 @@
                                 clearable
                                 chips
                                 closable-chips
-                                label="Teams"
+                                :label="trans('teams')"
                                 :items="teams"
                                 item-title="name"
                                 item-value="uuid"
@@ -80,9 +85,11 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">Save</v-btn>
+                            <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">
+                                {{ trans("save") }}
+                            </v-btn>
                             <Link :href="route('ticket-allocator.operators.index')" class="mr-3">
-                                <v-btn>Cancel</v-btn>
+                                <v-btn>{{ trans("cancel") }}</v-btn>
                             </Link>
                         </v-col>
                     </v-row>
@@ -97,6 +104,7 @@ import DefaultLayout from "@/Layouts/Default.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import { computed } from "vue";
 import type { User, Operator, OperatorTeam } from "@/types";
+import { trans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 const props = defineProps<{

@@ -7,6 +7,7 @@ import { loadFonts } from "./plugins/webfontloader";
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import { i18nVue } from "laravel-vue-i18n";
 import Colada from "colada-plugin";
 //import { ZiggyVue } from "ziggy-js";
 
@@ -24,6 +25,9 @@ createInertiaApp({
             .use(Colada)
             .use(vuetify)
             //.use(ZiggyVue, window.Ziggy ?? {})
+            .use(i18nVue, {
+                resolve: (lang: string) => import(`../../lang/${lang}.json`),
+            })
             .mount(el),
     progress: { color: "#4b5563" },
 });

@@ -1,6 +1,7 @@
 /vendor
 /node_modules
 /.idea
+/lang/php_*.json
 /public/hot
 /phpstan.neon
 /phpunit.xml

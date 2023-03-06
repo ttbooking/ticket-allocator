@@ -528,10 +528,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.14.5, @types/node@npm:^18.7.14":
+"@types/node@npm:*, @types/node@npm:^18.7.14":
   version: 18.14.5
   resolution: "@types/node@npm:18.14.5"
   checksum: 415fb0edc132baa9580f1b7a381a3f10b662f5d7a7d11641917fa0961788ccede3272badc414aadc47306e9fc35c5f6c59159ac470b46d3f3a15fb0446224c8c
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.14.6":
+  version: 18.14.6
+  resolution: "@types/node@npm:18.14.6"
+  checksum: 2f88f482cabadc6dbddd627a1674239e68c3c9beab56eb4ae2309fb96fd17fc3a509d99b0309bafe13b58529574f49ecf3a583f2ebe2896dd32fe4be436dc96e
   languageName: node
   linkType: hard
 
@@ -1711,14 +1718,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:^8.6.0":
-  version: 8.6.0
-  resolution: "eslint-config-prettier@npm:8.6.0"
+"eslint-config-prettier@npm:^8.7.0":
+  version: 8.7.0
+  resolution: "eslint-config-prettier@npm:8.7.0"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: bin/cli.js
-  checksum: ff0d0dfc839a556355422293428637e8d35693de58dabf8638bf0b6529131a109d0b2ade77521aa6e54573bb842d7d9d322e465dd73dd61c7590fa3834c3fa81
+  checksum: b05bc7f2296ce3e0925c14147849706544870e0382d38af2352d709a6cf8521bdaff2bd8e5021f1780e570775a8ffa1d2bac28b8065d90d43a3f1f98fd26ce52
   languageName: node
   linkType: hard
 
@@ -2557,6 +2564,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"laravel-vue-i18n@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "laravel-vue-i18n@npm:2.4.0"
+  dependencies:
+    php-parser: 3.1.3
+    vue: ^3.2.45
+  checksum: 0a8ed686cbd376069886a0f2bc724f390f8e5a90bc19a7bf54e2979e5fcd78ca4e599feffdf3bd3e51d15a66152d9713bdb974326a34251601e7c4878a615593
+  languageName: node
+  linkType: hard
+
 "levn@npm:^0.4.1":
   version: 0.4.1
   resolution: "levn@npm:0.4.1"
@@ -3164,6 +3181,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"php-parser@npm:3.1.3":
+  version: 3.1.3
+  resolution: "php-parser@npm:3.1.3"
+  checksum: 80d12718cd4ee139f7c8b29d12f2b7e67d63a876adaf2300763d6fde2c7bb0a7c5880e899e1dbf49ba111d43cf821c46a90f888650c8de7cccf13446f9ba1d15
+  languageName: node
+  linkType: hard
+
 "picocolors@npm:^1.0.0":
   version: 1.0.0
   resolution: "picocolors@npm:1.0.0"
@@ -3196,7 +3220,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia@npm:^2.0.22, pinia@npm:^2.0.32":
+"pinia@npm:^2.0.22":
   version: 2.0.32
   resolution: "pinia@npm:2.0.32"
   dependencies:
@@ -3212,6 +3236,25 @@ __metadata:
     typescript:
       optional: true
   checksum: cd02a7cb852b055a37bf91570b2831ac493b1e79ffd0096901177e5764f4b1fe392939c6a5c08d46962dc42db8f4f2750b8af250639bb5fa2e5b4270b6507670
+  languageName: node
+  linkType: hard
+
+"pinia@npm:^2.0.33":
+  version: 2.0.33
+  resolution: "pinia@npm:2.0.33"
+  dependencies:
+    "@vue/devtools-api": ^6.5.0
+    vue-demi: "*"
+  peerDependencies:
+    "@vue/composition-api": ^1.4.0
+    typescript: ">=4.4.4"
+    vue: ^2.6.14 || ^3.2.0
+  peerDependenciesMeta:
+    "@vue/composition-api":
+      optional: true
+    typescript:
+      optional: true
+  checksum: efd9cf1d61521ab2a4549f93ada6e2c1b9feeb6c8f2f482281a53c0079e0008f02adaebb07a782865ccfe896876ac60447ef4586fc6eeaeaf17d634767e22638
   languageName: node
   linkType: hard
 
@@ -3581,7 +3624,7 @@ __metadata:
     "@mdi/font": 7.1.96
     "@tailwindcss/forms": ^0.5.3
     "@types/lodash": ^4.14.191
-    "@types/node": ^18.14.5
+    "@types/node": ^18.14.6
     "@types/webfontloader": ^1.6.35
     "@types/ziggy-js": ^1.3.2
     "@typescript-eslint/eslint-plugin": ^5.54.0
@@ -3592,13 +3635,14 @@ __metadata:
     axios: ^1.3.4
     colada-plugin: ^0.1.0
     eslint: ^8.35.0
-    eslint-config-prettier: ^8.6.0
+    eslint-config-prettier: ^8.7.0
     eslint-plugin-vue: ^9.9.0
     laravel-echo: ^1.15.0
     laravel-vite-plugin: ^0.7.4
+    laravel-vue-i18n: ^2.4.0
     lodash: ^4.17.21
     moment: ^2.29.4
-    pinia: ^2.0.32
+    pinia: ^2.0.33
     pinia-orm: ^1.5.1
     postcss: ^8.4.21
     prettier: ^2.8.4
@@ -4217,7 +4261,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.2.38, vue@npm:^3.2.47":
+"vue@npm:^3.2.38, vue@npm:^3.2.45, vue@npm:^3.2.47":
   version: 3.2.47
   resolution: "vue@npm:3.2.47"
   dependencies:

@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import i18n from "laravel-vue-i18n/vite";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
@@ -9,6 +10,7 @@ export default defineConfig({
         sourcemap: true,
     },
     plugins: [
+        i18n(),
         laravel({
             input: "resources/js/app.ts",
             refresh: true,
