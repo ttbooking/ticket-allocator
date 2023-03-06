@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use TTBooking\TicketAllocator\Http\Controllers\OperatorController;
 use TTBooking\TicketAllocator\Http\Controllers\TeamController;
+use TTBooking\TicketAllocator\Http\Controllers\TicketCategoryController;
 
 Route::prefix('api/v1')->name('api.')->group(function () {
     Route::apiResource('factors', 'FactorController');
@@ -24,6 +25,8 @@ Route::resource('operators', OperatorController::class);
 Route::put('operators', 'OperatorController@discover')->name('operators.discover');
 
 Route::resource('teams', TeamController::class)->withTrashed(['show', 'edit', 'update', 'destroy']);
+
+Route::resource('ticket-categories', TicketCategoryController::class);
 
 // Catch-all Route...
 //Route::get('/{view?}', 'HomeController@index')->where('view', '(.*)')->name('index');

@@ -14,14 +14,19 @@ return [
     */
 
     'attributes' => [
-        'name' => 'имя',
-        'description' => 'описание',
-        'operators' => 'операторы',
-        'ticket_categories' => 'категории тикетов',
-        'user' => 'пользователь',
-        'ticket_limit' => 'максимальное число тикетов',
+        'complexity' => 'сложность',
         'complexity_limit' => 'ограничение по суммарной сложности',
+        'delay' => 'задержка',
+        'description' => 'описание',
+        'initial_weight' => 'начальный вес',
+        'name' => 'имя',
+        'operators' => 'операторы',
+        'short' => 'короткое имя',
         'teams' => 'команды',
+        'ticket_categories' => 'категории тикетов',
+        'ticket_limit' => 'максимальное число тикетов',
+        'user' => 'пользователь',
+        'weight_increment' => 'приращение веса',
     ],
 
 ];

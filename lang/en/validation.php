@@ -14,14 +14,19 @@ return [
     */
 
     'attributes' => [
-        'name' => 'name',
-        'description' => 'description',
-        'operators' => 'operators',
-        'ticket_categories' => 'ticket categories',
-        'user' => 'user',
-        'ticket_limit' => 'ticket limit',
+        'complexity' => 'complexity',
         'complexity_limit' => 'complexity limit',
+        'delay' => 'delay',
+        'description' => 'description',
+        'initial_weight' => 'initial weight',
+        'name' => 'name',
+        'operators' => 'operators',
+        'short' => 'short',
         'teams' => 'teams',
+        'ticket_categories' => 'ticket categories',
+        'ticket_limit' => 'ticket limit',
+        'user' => 'user',
+        'weight_increment' => 'weight increment',
     ],
 
 ];
