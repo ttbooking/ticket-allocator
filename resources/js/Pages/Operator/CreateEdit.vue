@@ -122,7 +122,7 @@ const form = useForm<{
     teams: string[];
 }>({
     user: null,
-    name: props.operator?.name ?? "",
+    name: props.operator?.display_name ?? "",
     ticket_limit: props.operator?.ticket_limit ?? null,
     complexity_limit: props.operator?.complexity_limit ?? null,
     teams: props.operator?.teams.map((team) => team.uuid) ?? [],

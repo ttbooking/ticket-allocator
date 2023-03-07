@@ -25,6 +25,7 @@ export interface User {
 export interface Operator {
     uuid: string;
     name: string;
+    display_name: ?string;
     online: boolean;
     ready: boolean;
     ticket_limit: ?number;

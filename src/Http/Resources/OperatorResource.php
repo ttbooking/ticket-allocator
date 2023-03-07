@@ -29,7 +29,8 @@ class OperatorResource extends JsonResource
     {
         return [
             'uuid' => $this->uuid,
-            'name' => $this->getRawOriginal('name'),
+            'name' => $this->name,
+            'display_name' => $this->getRawOriginal('name'),
             'online' => $this->online,
             'ready' => $this->ready,
             'ticket_limit' => $this->ticket_limit,
