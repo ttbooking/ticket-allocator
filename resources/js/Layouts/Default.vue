@@ -1,10 +1,32 @@
 <script setup lang="ts">
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import { Link } from "@inertiajs/vue3";
+import { trans } from "laravel-vue-i18n";
+import route from "ziggy-js";
 </script>
 
 <template>
     <v-app>
+        <v-navigation-drawer expand-on-hover rail>
+            <v-list density="compact" nav>
+                <Link :href="route('ticket-allocator.index')">
+                    <v-list-item prepend-icon="mdi-monitor-dashboard" :title="trans('dashboard')" value="dashboard" />
+                </Link>
+                <Link :href="route('ticket-allocator.ticket-categories.index')">
+                    <v-list-item
+                        prepend-icon="mdi-ticket"
+                        :title="trans('ticket_categories')"
+                        value="ticket-categories"
+                    />
+                </Link>
+                <Link :href="route('ticket-allocator.operators.index')">
+                    <v-list-item prepend-icon="mdi-account" :title="trans('operators')" value="operators" />
+                </Link>
+                <Link :href="route('ticket-allocator.teams.index')">
+                    <v-list-item prepend-icon="mdi-account-group" :title="trans('teams')" value="teams" />
+                </Link>
+            </v-list>
+        </v-navigation-drawer>
         <v-main>
             <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
                 <div>

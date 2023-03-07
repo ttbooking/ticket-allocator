@@ -13,7 +13,7 @@
                         <v-toolbar-title>{{ trans("operators") }}</v-toolbar-title>
                         <v-divider class="mx-4" inset vertical />
                         <v-spacer />
-                        <Link :href="route('ticket-allocator.operators.discover')" method="put">
+                        <Link as="span" :href="route('ticket-allocator.operators.discover')" method="put">
                             <v-btn color="primary" dark>{{ trans("discover") }}</v-btn>
                         </Link>
                         <Link :href="route('ticket-allocator.operators.create')">
