@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Domain\Operator\Projections;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,7 +20,7 @@ use TTBooking\TicketAllocator\Models\OperatorTeam;
 /**
  * @property string $uuid
  * @property int|string $user_id
- * @property string|null $name
+ * @property string $name
  * @property bool $online
  * @property bool $ready
  * @property int|null $ticket_limit
@@ -76,6 +77,14 @@ class Operator extends Projection
     protected static function newFactory(): OperatorFactory
     {
         return OperatorFactory::new();
+    }
+
+    /**
+     * @return Attribute<string, never>
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::get(fn ($value) => $value ?? $this->user->name);
     }
 
     /**
