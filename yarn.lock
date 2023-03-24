@@ -224,6 +224,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@eslint-community/eslint-utils@npm:^4.3.0":
+  version: 4.4.0
+  resolution: "@eslint-community/eslint-utils@npm:4.4.0"
+  dependencies:
+    eslint-visitor-keys: ^3.3.0
+  peerDependencies:
+    eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
+  checksum: cdfe3ae42b4f572cbfb46d20edafe6f36fc5fb52bf2d90875c58aefe226892b9677fef60820e2832caf864a326fe4fc225714c46e8389ccca04d5f9288aabd22
+  languageName: node
+  linkType: hard
+
 "@eslint-community/regexpp@npm:^4.4.0":
   version: 4.4.0
   resolution: "@eslint-community/regexpp@npm:4.4.0"
@@ -418,10 +429,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pinia-orm/normalizr@npm:>=1.1.0":
-  version: 1.1.0
-  resolution: "@pinia-orm/normalizr@npm:1.1.0"
-  checksum: cab9d886a90b272601dbffdb904bf0232effd32c30f3c276e21e0db2d194ae2816a4ca6825374a1cd4b263d7645b6e7e21219176e6b94783fb26940e6adba36c
+"@pinia-orm/normalizr@npm:>=1.6.0":
+  version: 1.6.0
+  resolution: "@pinia-orm/normalizr@npm:1.6.0"
+  checksum: f903e49033e2dbeae4c3e5a5fc9dc9dfedbd00acb7920b0338bd69fb5251a5816cf27d647e38f9e25f3b7ef4dc3d7f714c4c59f879418e255b764423e414e3fe
   languageName: node
   linkType: hard
 
@@ -546,10 +557,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.15.5, @types/node@npm:^18.7.14":
+"@types/node@npm:*, @types/node@npm:^18.7.14":
   version: 18.15.5
   resolution: "@types/node@npm:18.15.5"
   checksum: 5fbf3453bd5ce1402bb2964e55d928fc8a8a7de5451b1b0fe66587fecb8a3eb86854ca9cefa5076a5971e2cff00e1773ceeb5d872a54f6c6ddfbbc1064b4e91a
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.15.7":
+  version: 18.15.7
+  resolution: "@types/node@npm:18.15.7"
+  checksum: 08d1dd1898be10cd274955ed7f491bcab5b7e70ce66b6a1e996a582d5467f7517046b0d9c5f4e15871df94dd72d1ad9e7be236d2cff1a1450ec906d7fa3062d2
   languageName: node
   linkType: hard
 
@@ -1740,11 +1758,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:^9.9.0":
-  version: 9.9.0
-  resolution: "eslint-plugin-vue@npm:9.9.0"
+"eslint-plugin-vue@npm:^9.10.0":
+  version: 9.10.0
+  resolution: "eslint-plugin-vue@npm:9.10.0"
   dependencies:
-    eslint-utils: ^3.0.0
+    "@eslint-community/eslint-utils": ^4.3.0
     natural-compare: ^1.4.0
     nth-check: ^2.0.1
     postcss-selector-parser: ^6.0.9
@@ -1753,7 +1771,7 @@ __metadata:
     xml-name-validator: ^4.0.0
   peerDependencies:
     eslint: ^6.2.0 || ^7.0.0 || ^8.0.0
-  checksum: 059f9c1915504d074adf64bc3371d1e174f8844088d0e08800c958cbef09d7fdf2a0a949634187231645435a1ef31595c8c81f441000ec43589bb58a1282fe3c
+  checksum: 91c6f1ab59433cfa3ade0e6003ca4a9f3ee50e1fd6b49ad9487805dc582f1865ef27796ff18b89e92f37f9ed39d7bfb8c8ccd029c2b77bb3e26ce9b705713070
   languageName: node
   linkType: hard
 
@@ -1774,24 +1792,6 @@ __metadata:
     esrecurse: ^4.3.0
     estraverse: ^5.2.0
   checksum: 9f6e974ab2db641ca8ab13508c405b7b859e72afe9f254e8131ff154d2f40c99ad4545ce326fd9fde3212ff29707102562a4834f1c48617b35d98c71a97fbf3e
-  languageName: node
-  linkType: hard
-
-"eslint-utils@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "eslint-utils@npm:3.0.0"
-  dependencies:
-    eslint-visitor-keys: ^2.0.0
-  peerDependencies:
-    eslint: ">=5"
-  checksum: 0668fe02f5adab2e5a367eee5089f4c39033af20499df88fe4e6aba2015c20720404d8c3d6349b6f716b08fdf91b9da4e5d5481f265049278099c4c836ccb619
-  languageName: node
-  linkType: hard
-
-"eslint-visitor-keys@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "eslint-visitor-keys@npm:2.1.0"
-  checksum: e3081d7dd2611a35f0388bbdc2f5da60b3a3c5b8b6e928daffff7391146b434d691577aa95064c8b7faad0b8a680266bcda0a42439c18c717b80e6718d7e267d
   languageName: node
   linkType: hard
 
@@ -3220,14 +3220,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia-orm@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "pinia-orm@npm:1.5.1"
+"pinia-orm@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "pinia-orm@npm:1.6.1"
   dependencies:
-    "@pinia-orm/normalizr": ">=1.1.0"
+    "@pinia-orm/normalizr": ">=1.6.0"
   peerDependencies:
-    pinia: ^2.0.29
-  checksum: b6895fd19985d0809403c83ba67f1922202af581ce725e6daee4c019ff207cccd6b9d83615fd784c4a688328d4d76efaa4cdbf5376b9e181cdc8fe0cd720285f
+    pinia: ^2.0.33
+  checksum: 3022bda243bb9cb2aa889fe98dbd044c382a8e58c8841bb184e9ae796c758358b24745eead4b833b7f101702584b7386609be50aada3bf792f292ada0fc6bb19
   languageName: node
   linkType: hard
 
@@ -3347,12 +3347,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.8.6":
-  version: 2.8.6
-  resolution: "prettier@npm:2.8.6"
+"prettier@npm:^2.8.7":
+  version: 2.8.7
+  resolution: "prettier@npm:2.8.7"
   bin:
     prettier: bin-prettier.js
-  checksum: 8ac94fa67aec0e65743ea15ebf954ef2f1e52638abd129dc04e8b49e8bb3224c0233c98df6b5c98efd31bd2a43866590486559438ee4ead09dc81be389068572
+  checksum: fdc8f2616f099f5f0d685907f4449a70595a0fc1d081a88919604375989e0d5e9168d6121d8cc6861f21990b31665828e00472544d785d5940ea08a17660c3a6
   languageName: node
   linkType: hard
 
@@ -3609,7 +3609,7 @@ __metadata:
     "@mdi/font": 7.2.96
     "@tailwindcss/forms": ^0.5.3
     "@types/lodash": ^4.14.191
-    "@types/node": ^18.15.5
+    "@types/node": ^18.15.7
     "@types/webfontloader": ^1.6.35
     "@types/ziggy-js": ^1.3.2
     "@typescript-eslint/eslint-plugin": ^5.56.0
@@ -3621,16 +3621,16 @@ __metadata:
     colada-plugin: ^0.1.0
     eslint: ^8.36.0
     eslint-config-prettier: ^8.8.0
-    eslint-plugin-vue: ^9.9.0
+    eslint-plugin-vue: ^9.10.0
     laravel-echo: ^1.15.0
     laravel-vite-plugin: ^0.7.4
     laravel-vue-i18n: ^2.4.1
     lodash: ^4.17.21
     moment: ^2.29.4
     pinia: ^2.0.33
-    pinia-orm: ^1.5.1
+    pinia-orm: ^1.6.1
     postcss: ^8.4.21
-    prettier: ^2.8.6
+    prettier: ^2.8.7
     roboto-fontface: "*"
     tailwindcss: ^3.2.7
     typescript: ^5.0.2
@@ -3639,7 +3639,7 @@ __metadata:
     vue: ^3.2.47
     vue-cli-plugin-vuetify: ~2.5.8
     vue-tsc: ^1.3.4
-    vuetify: ^3.1.10
+    vuetify: ^3.1.11
     webfontloader: ^1.6.28
   languageName: unknown
   linkType: soft
@@ -4279,9 +4279,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuetify@npm:^3.1.10":
-  version: 3.1.10
-  resolution: "vuetify@npm:3.1.10"
+"vuetify@npm:^3.1.11":
+  version: 3.1.11
+  resolution: "vuetify@npm:3.1.11"
   peerDependencies:
     vite-plugin-vuetify: ^1.0.0-alpha.12
     vue: ^3.2.0
@@ -4294,7 +4294,7 @@ __metadata:
       optional: true
     webpack-plugin-vuetify:
       optional: true
-  checksum: 5ce05c5ef86024d637a10814e7883b4dcdfbfe6d649bcec88889b907add9f1a2b66b0f4247fd8f7c368240331f62d96f5d45f8652f573e5454c48e5896a2f955
+  checksum: d9e3dd90b065e6321717ff5dbd450da470741d0e5595b15877b57aa57727ebdfb1b80d30e8bc54e59b46af79f5feede94bbf6aea907c5b1088bace49f10b61d2
   languageName: node
   linkType: hard
 
