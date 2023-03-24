@@ -14,12 +14,16 @@ class DispenseQuery
 {
     public static function make(): Builder
     {
-        return DB::query()->fromSub(
+        return DB::query()
+
+        ->select('o.uuid as operator_uuid', 't.uuid as ticket_uuid')
+
+        ->fromSub(
 
             Ticket::query()
                 ->whereNull('handler_uuid')
                 ->where('delayed_until', '<=', DB::raw('NOW()'))
-                ->orderByDesc('weight'),
+                ->orderByRaw('initial_weight + TIMESTAMPDIFF(SECOND, created_at, NOW()) * weight_increment DESC'),
 
             't'
 
@@ -37,7 +41,7 @@ class DispenseQuery
             static fn (JoinClause $join) => $join
                 ->on('t.complexity', '<=', 'o.free_complexity')
                 ->on(static fn (Builder $query) => $query
-                    ->whereJsonContains('o.matching->categories', DB::raw('t.category_id'))
+                    ->whereJsonContains('o.matching->categories', DB::raw('json_quote(t.category_uuid)'))
                 )
 
         )->take(1);
