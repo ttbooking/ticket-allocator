@@ -145,17 +145,21 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $this->scheduleTicketAllocation($schedule);
-            //$this->scheduleOperatorSnapshot($schedule);
+            $this->scheduleOperatorSnapshot($schedule);
         });
     }
 
     protected function scheduleTicketAllocation(Schedule $schedule): void
     {
-        $schedule->job(Dispense::class)->everyMinute();
+        if ($expression = $this->app['config']['ticket-allocator.triage_schedule']) {
+            $schedule->job(Dispense::class)->cron($expression);
+        }
     }
 
     protected function scheduleOperatorSnapshot(Schedule $schedule): void
     {
-        $schedule->command('ticket-allocator:snapshot-operator')->daily();
+        if ($expression = $this->app['config']['ticket-allocator.snapshot_schedule']) {
+            $schedule->command('ticket-allocator:snapshot-operator')->cron($expression);
+        }
     }
 }

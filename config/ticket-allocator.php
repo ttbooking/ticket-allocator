@@ -28,6 +28,22 @@ return [
 
     'middleware' => ['web', 'auth', HandleInertiaRequests::class],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Ticket Allocator Triage Schedule
+    |--------------------------------------------------------------------------
+    */
+
+    'triage_schedule' => env('TA_TRIAGE_SCHEDULE', '* * * * *'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ticket Allocator Snapshot Schedule
+    |--------------------------------------------------------------------------
+    */
+
+    'snapshot_schedule' => env('TA_SNAPSHOT_SCHEDULE', '* * * 0 0'),
+
     'ticket_origin' => '', // TODO: Enter your class from which tickets originate
 
     'factors' => [
