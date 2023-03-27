@@ -49,7 +49,8 @@ class OperatorTeam extends Model
      */
     public function operators(): BelongsToMany
     {
-        return $this->belongsToMany(Operator::class, 'ticket_allocator_team_operator', 'team_uuid', 'operator_uuid');
+        return $this->belongsToMany(Operator::class, 'ticket_allocator_team_operator', 'team_uuid', 'operator_uuid')
+            ->using(TeamOperator::class);
     }
 
     /**
@@ -57,6 +58,7 @@ class OperatorTeam extends Model
      */
     public function ticketCategories(): BelongsToMany
     {
-        return $this->belongsToMany(TicketCategory::class, 'ticket_allocator_team_category', 'team_uuid', 'category_uuid');
+        return $this->belongsToMany(TicketCategory::class, 'ticket_allocator_team_category', 'team_uuid', 'category_uuid')
+            ->using(TeamCategory::class);
     }
 }

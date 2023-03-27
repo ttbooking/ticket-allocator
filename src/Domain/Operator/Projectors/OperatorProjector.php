@@ -80,6 +80,33 @@ class OperatorProjector extends Projector
         Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
     }
 
+    public function onOperatorTicketCategoryAttached(Events\OperatorTicketCategoryAttached $event): void
+    {
+        if (! $operator = Operator::find($event->uuid)?->writeable()) {
+            return;
+        }
+
+        if (isset($operator->matching['categories']) && is_array($operator->matching['categories'])) {
+            $operator->matching['categories'][] = $event->ticketCategoryUuid;
+            $operator->matching['categories'] = array_unique($operator->matching['categories']);
+        } else {
+            $operator->matching['categories'] = [$event->ticketCategoryUuid];
+        }
+
+        $operator->save();
+    }
+
+    public function onOperatorTicketCategoryDetached(Events\OperatorTicketCategoryDetached $event): void
+    {
+        if (! $operator = Operator::find($event->uuid)?->writeable()) {
+            return;
+        }
+
+        if (isset($operator->matching['categories']) && is_array($operator->matching['categories'])) {
+            $operator->matching['categories'] = array_diff($operator->matching['categories'], [$event->ticketCategoryUuid]);
+        }
+    }
+
     public function onTicketBound(TicketEvents\TicketBound $event): void
     {
         $ticket = Ticket::find($event->uuid);

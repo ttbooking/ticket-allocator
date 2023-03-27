@@ -67,6 +67,7 @@ class TicketCategory extends Model
      */
     public function operatorTeams(): BelongsToMany
     {
-        return $this->belongsToMany(OperatorTeam::class, 'ticket_allocator_team_category', 'category_uuid', 'team_uuid');
+        return $this->belongsToMany(OperatorTeam::class, 'ticket_allocator_team_category', 'category_uuid', 'team_uuid')
+            ->using(TeamCategory::class);
     }
 }

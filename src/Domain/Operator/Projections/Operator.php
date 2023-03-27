@@ -16,6 +16,7 @@ use Spatie\EventSourcing\Projections\Projection;
 use TTBooking\TicketAllocator\Database\Factories\OperatorFactory;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
+use TTBooking\TicketAllocator\Models\TeamOperator;
 
 /**
  * @property string $uuid
@@ -25,6 +26,7 @@ use TTBooking\TicketAllocator\Models\OperatorTeam;
  * @property bool $ready
  * @property int|null $ticket_limit
  * @property int|null $complexity_limit
+ * @property array<string, mixed> $matching
  * @property int $bound_tickets
  * @property int $total_complexity
  * @property-read int|null $free_slots
@@ -53,6 +55,7 @@ class Operator extends Projection
         'ready' => false,
         'ticket_limit' => null,
         'complexity_limit' => null,
+        'matching' => [],
         'bound_tickets' => 0,
         'total_complexity' => 0,
         //'free_slots' => null,
@@ -65,6 +68,7 @@ class Operator extends Projection
         'ready' => 'boolean',
         'ticket_limit' => 'integer',
         'complexity_limit' => 'integer',
+        'matching' => 'array',
         'bound_tickets' => 'integer',
         'total_complexity' => 'integer',
         'free_slots' => 'integer',
@@ -100,7 +104,8 @@ class Operator extends Projection
      */
     protected function operatorTeams(): BelongsToMany
     {
-        return $this->belongsToMany(OperatorTeam::class, 'ticket_allocator_team_operator', 'operator_uuid', 'team_uuid');
+        return $this->belongsToMany(OperatorTeam::class, 'ticket_allocator_team_operator', 'operator_uuid', 'team_uuid')
+            ->using(TeamOperator::class);
     }
 
     /**

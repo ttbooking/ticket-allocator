@@ -11,11 +11,11 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class DetachTicketCategoryAction extends Action
 {
-    public function __invoke(Operator $operator, TicketCategory $ticketCategory): void
+    public function __invoke(Operator|string $operator, TicketCategory|string $ticketCategory): void
     {
         $this->dispatch(new DetachTicketCategory(
-            uuid: $operator->getKey(),
-            ticketCategoryUuid: $ticketCategory->getKey(),
+            uuid: is_string($operator) ? $operator : $operator->getKey(),
+            ticketCategoryUuid: is_string($ticketCategory) ? $ticketCategory : $ticketCategory->getKey(),
         ));
     }
 }
