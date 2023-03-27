@@ -42,7 +42,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'snapshot_schedule' => env('TA_SNAPSHOT_SCHEDULE', '* * * 0 0'),
+    'snapshot_schedule' => env('TA_SNAPSHOT_SCHEDULE', '0 0 * * *'),
 
     'ticket_origin' => '', // TODO: Enter your class from which tickets originate
 
