@@ -564,10 +564,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.15.7":
-  version: 18.15.7
-  resolution: "@types/node@npm:18.15.7"
-  checksum: 08d1dd1898be10cd274955ed7f491bcab5b7e70ce66b6a1e996a582d5467f7517046b0d9c5f4e15871df94dd72d1ad9e7be236d2cff1a1450ec906d7fa3062d2
+"@types/node@npm:^18.15.10":
+  version: 18.15.10
+  resolution: "@types/node@npm:18.15.10"
+  checksum: 9aeae0b683eda82892def5315812bdee3f1a28c4898b7e70f8e2514564538b16c4dccbe8339c1266f8fc1d707a48f152689264a854f5ebc2eba5011e793612d9
   languageName: node
   linkType: hard
 
@@ -768,9 +768,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@volar/vue-language-core@npm:1.3.4":
-  version: 1.3.4
-  resolution: "@volar/vue-language-core@npm:1.3.4"
+"@volar/vue-language-core@npm:1.3.6":
+  version: 1.3.6
+  resolution: "@volar/vue-language-core@npm:1.3.6"
   dependencies:
     "@volar/language-core": 1.4.0-alpha.4
     "@volar/source-map": 1.4.0-alpha.4
@@ -781,17 +781,17 @@ __metadata:
     minimatch: ^6.1.6
     muggle-string: ^0.2.2
     vue-template-compiler: ^2.7.14
-  checksum: ae234de4a5b0be9b34b6b42ab0782cbf7c52d1d223406985f7dc1652fbb67d87552df54730356e2cf70d2d6fde7bf0eaf43baa6dfe9d6190f4599f41b398fa3c
+  checksum: fd5a18e17d4505e25cacc6c9792040dcff017db55c6b789cc398b2099437906549232fda0afac38b0f51b116d83bb972317dadc9618002a6a7542bced5c7c4f4
   languageName: node
   linkType: hard
 
-"@volar/vue-typescript@npm:1.3.4":
-  version: 1.3.4
-  resolution: "@volar/vue-typescript@npm:1.3.4"
+"@volar/vue-typescript@npm:1.3.6":
+  version: 1.3.6
+  resolution: "@volar/vue-typescript@npm:1.3.6"
   dependencies:
     "@volar/typescript": 1.4.0-alpha.4
-    "@volar/vue-language-core": 1.3.4
-  checksum: a347714cdb5010ab21f7002e9b84849dcc51a78f5e69f275c5bef6c271fef4c2f769bf9bb57f6d2defa74449b394b08eb7c8c015971a87f2c71a9906d64ac24e
+    "@volar/vue-language-core": 1.3.6
+  checksum: 39f015ce7a6f07bb1bf6bc911dfeb567eea3ce33b762d0559aaac709b3e5bc951fda3e309be3d5e9b827b9cb0c575bf8ac35a22c53ad79bb5ce7d7393cb12000
   languageName: node
   linkType: hard
 
@@ -3220,14 +3220,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia-orm@npm:^1.6.1":
-  version: 1.6.1
-  resolution: "pinia-orm@npm:1.6.1"
+"pinia-orm@npm:^1.6.5":
+  version: 1.6.5
+  resolution: "pinia-orm@npm:1.6.5"
   dependencies:
     "@pinia-orm/normalizr": ">=1.6.0"
   peerDependencies:
     pinia: ^2.0.33
-  checksum: 3022bda243bb9cb2aa889fe98dbd044c382a8e58c8841bb184e9ae796c758358b24745eead4b833b7f101702584b7386609be50aada3bf792f292ada0fc6bb19
+  checksum: 39b4cfc9e87a21f512f21201f3855163c867101d08d1f39d912fc085c2452f069b933d5c4c94bae417e4846bb8da5981684f18d90817ae62ecb323299d1d697a
   languageName: node
   linkType: hard
 
@@ -3609,7 +3609,7 @@ __metadata:
     "@mdi/font": 7.2.96
     "@tailwindcss/forms": ^0.5.3
     "@types/lodash": ^4.14.191
-    "@types/node": ^18.15.7
+    "@types/node": ^18.15.10
     "@types/webfontloader": ^1.6.35
     "@types/ziggy-js": ^1.3.2
     "@typescript-eslint/eslint-plugin": ^5.56.0
@@ -3628,7 +3628,7 @@ __metadata:
     lodash: ^4.17.21
     moment: ^2.29.4
     pinia: ^2.0.33
-    pinia-orm: ^1.6.1
+    pinia-orm: ^1.6.5
     postcss: ^8.4.21
     prettier: ^2.8.7
     roboto-fontface: "*"
@@ -3638,7 +3638,7 @@ __metadata:
     vite-plugin-vuetify: ^1.0.2
     vue: ^3.2.47
     vue-cli-plugin-vuetify: ~2.5.8
-    vue-tsc: ^1.3.4
+    vue-tsc: 1.3.6
     vuetify: ^3.1.11
     webfontloader: ^1.6.28
   languageName: unknown
@@ -4252,17 +4252,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-tsc@npm:^1.3.4":
-  version: 1.3.4
-  resolution: "vue-tsc@npm:1.3.4"
+"vue-tsc@npm:1.3.6":
+  version: 1.3.6
+  resolution: "vue-tsc@npm:1.3.6"
   dependencies:
-    "@volar/vue-language-core": 1.3.4
-    "@volar/vue-typescript": 1.3.4
+    "@volar/vue-language-core": 1.3.6
+    "@volar/vue-typescript": 1.3.6
   peerDependencies:
     typescript: "*"
   bin:
     vue-tsc: bin/vue-tsc.js
-  checksum: 827a912692dd59a02fbb99d5a68482afafa73e8fcfb84b59bc3c8a45858b2ac4882e3e07418577becadb777be78120ab32ad0140c28431f72a207e7fb1809e60
+  checksum: 542d04ed7243f69c91aa8bf25d117f4c57e55ef4203068e9499764330836a7643b612b055c1d490377bfa5e7056f059396eba390ba5211823d5888bd8062dd22
   languageName: node
   linkType: hard
 
