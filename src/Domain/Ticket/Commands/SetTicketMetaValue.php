@@ -14,7 +14,7 @@ class SetTicketMetaValue
     public function __construct(
         #[AggregateUuid] public string $uuid,
         public string $key,
-        public string $value,
+        public mixed $value,
     ) {
     }
 }

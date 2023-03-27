@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Domain\Ticket;
 
+use Illuminate\Support\Arr;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 use TTBooking\TicketAllocator\Domain\Attributes\Incrementable;
 
@@ -15,7 +16,7 @@ class TicketAggregateRoot extends AggregateRoot
 
     public string $categoryUuid;
 
-    /** @var array<string, string> */
+    /** @var array<string, mixed> */
     public array $meta = [];
 
     public ?string $operatorUuid;
@@ -85,7 +86,7 @@ class TicketAggregateRoot extends AggregateRoot
 
     protected function applyTicketMetaValueSet(Events\TicketMetaValueSet $event): void
     {
-        $this->meta[$event->key] = $event->value;
+        Arr::set($this->meta, $event->key, $event->value);
     }
 
     public function bind(Commands\BindTicket $command): static

@@ -11,7 +11,7 @@ class TicketMetaValueSet extends Event
     public function __construct(
         public string $uuid,
         public string $key,
-        public string $value,
+        public mixed $value,
     ) {
     }
 }
