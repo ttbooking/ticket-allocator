@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 
-class DispenseQuery
+class MatchQuery
 {
     public static function make(): Builder
     {

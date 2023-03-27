@@ -15,7 +15,7 @@ use TTBooking\TicketAllocator\Domain\Support\FactorRepository;
 use TTBooking\TicketAllocator\Domain\Ticket\Factors\Category;
 use TTBooking\TicketAllocator\Domain\Ticket\Factors\ExpressiveFactor;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
-use TTBooking\TicketAllocator\Jobs\Dispense;
+use TTBooking\TicketAllocator\Jobs\Triage;
 
 class TicketAllocatorServiceProvider extends ServiceProvider
 {
@@ -144,15 +144,15 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     protected function scheduleTasks(): void
     {
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
-            $this->scheduleTicketAllocation($schedule);
+            $this->scheduleTicketTriage($schedule);
             $this->scheduleOperatorSnapshot($schedule);
         });
     }
 
-    protected function scheduleTicketAllocation(Schedule $schedule): void
+    protected function scheduleTicketTriage(Schedule $schedule): void
     {
         if ($expression = $this->app['config']['ticket-allocator.triage_schedule']) {
-            $schedule->job(Dispense::class)->cron($expression);
+            $schedule->job(Triage::class)->cron($expression);
         }
     }
 

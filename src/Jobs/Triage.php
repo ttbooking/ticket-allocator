@@ -9,9 +9,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use TTBooking\TicketAllocator\Domain\Ticket\Actions\BindTicketAction;
-use TTBooking\TicketAllocator\Support\DispenseQuery;
+use TTBooking\TicketAllocator\Support\MatchQuery;
 
-class Dispense implements ShouldQueue
+class Triage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable;
 
@@ -20,7 +20,7 @@ class Dispense implements ShouldQueue
      */
     public function handle(BindTicketAction $bindTicket): void
     {
-        $query = DispenseQuery::make();
+        $query = MatchQuery::make();
 
         while (! is_null($pair = $query->first())) {
             $bindTicket($pair['ticket_uuid'], $pair['operator_uuid']);
