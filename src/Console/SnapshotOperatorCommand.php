@@ -7,6 +7,7 @@ namespace TTBooking\TicketAllocator\Console;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
 use TTBooking\TicketAllocator\Domain\Operator\OperatorAggregateRoot;
+use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 
 #[AsCommand(name: 'ticket-allocator:snapshot-operator')]
 class SnapshotOperatorCommand extends Command
@@ -16,7 +17,7 @@ class SnapshotOperatorCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'ticket-allocator:snapshot-operator {uuid : Operator UUID}';
+    protected $signature = 'ticket-allocator:snapshot-operator {uuid?* : Operator UUID(s)}';
 
     /**
      * The name of the console command.
@@ -43,6 +44,13 @@ class SnapshotOperatorCommand extends Command
      */
     public function handle(): void
     {
-        OperatorAggregateRoot::retrieve($this->argument('uuid'))->snapshot();
+        /** @var string[] $uuids */
+        $uuids = $this->argument('uuid') ?: Operator::all()->modelKeys();
+
+        foreach ($uuids as $uuid) {
+            OperatorAggregateRoot::retrieve($uuid)->snapshot();
+        }
+
+        $this->info('Snapshots successfully created.');
     }
 }

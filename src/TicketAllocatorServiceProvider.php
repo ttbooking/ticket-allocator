@@ -15,6 +15,7 @@ use TTBooking\TicketAllocator\Domain\Support\FactorRepository;
 use TTBooking\TicketAllocator\Domain\Ticket\Factors\Category;
 use TTBooking\TicketAllocator\Domain\Ticket\Factors\ExpressiveFactor;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
+use TTBooking\TicketAllocator\Jobs\Dispense;
 
 class TicketAllocatorServiceProvider extends ServiceProvider
 {
@@ -119,7 +120,10 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->configure();
         $this->registerServices();
-        //$this->scheduleOperatorSnapshot();
+
+        if ($this->app->runningInConsole()) {
+            $this->scheduleTasks();
+        }
     }
 
     protected function configure(): void
@@ -137,10 +141,21 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         $this->app->singleton(FactorRepositoryContract::class, FactorRepository::class);
     }
 
-    protected function scheduleOperatorSnapshot(): void
+    protected function scheduleTasks(): void
     {
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
-            $schedule->command('ticket-allocator:snapshot-operator')->daily();
+            $this->scheduleTicketAllocation($schedule);
+            //$this->scheduleOperatorSnapshot($schedule);
         });
+    }
+
+    protected function scheduleTicketAllocation(Schedule $schedule): void
+    {
+        $schedule->job(Dispense::class)->everyMinute();
+    }
+
+    protected function scheduleOperatorSnapshot(Schedule $schedule): void
+    {
+        $schedule->command('ticket-allocator:snapshot-operator')->daily();
     }
 }
