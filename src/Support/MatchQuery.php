@@ -44,6 +44,13 @@ class MatchQuery
                     //->whereJsonContains('o.matching->categories', DB::raw('json_quote(t.category_uuid)'))
                 )
 
-        )->take(1);
+        )
+
+        ->join('ticket_allocator_operator_category as otc', static fn (JoinClause $join) => $join
+            ->on('otc.operator_uuid', 'o.uuid')
+            ->on('otc.category_uuid', 't.category_uuid')
+        )
+
+        ->take(1);
     }
 }
