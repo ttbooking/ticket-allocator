@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_allocator_ticket_operator_stats', function (Blueprint $table) {
+        /*Schema::create('ticket_allocator_ticket_operator_stats', function (Blueprint $table) {
             // PK
             $table->uuid('ticket_uuid')->index();
             $table->uuid('operator_uuid')->index();
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->json('ticket_meta')->nullable();
             $table->unsignedInteger('post_count');
             $table->timestamp('last_bound');
-        });
+        });*/
     }
 
     /**

@@ -41,7 +41,7 @@ class MatchQuery
             static fn (JoinClause $join) => $join
                 ->on('t.complexity', '<=', 'o.free_complexity')
                 ->on(static fn (Builder $query) => $query
-                    ->whereJsonContains('o.matching->categories', DB::raw('json_quote(t.category_uuid)'))
+                    //->whereJsonContains('o.matching->categories', DB::raw('json_quote(t.category_uuid)'))
                 )
 
         )->take(1);

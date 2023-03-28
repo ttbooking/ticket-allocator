@@ -50,6 +50,7 @@ class CleanCommand extends Command
             //'ticket_allocator_events',
             'ticket_allocator_factors',
             'ticket_allocator_operators',
+            'ticket_allocator_operator_category',
             'ticket_allocator_operator_teams',
             'ticket_allocator_team_category',
             'ticket_allocator_team_operator',

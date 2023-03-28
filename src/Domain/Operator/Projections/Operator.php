@@ -17,6 +17,7 @@ use TTBooking\TicketAllocator\Database\Factories\OperatorFactory;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
 use TTBooking\TicketAllocator\Models\TeamOperator;
+use TTBooking\TicketAllocator\Models\TicketCategory;
 
 /**
  * @property string $uuid
@@ -35,6 +36,7 @@ use TTBooking\TicketAllocator\Models\TeamOperator;
  * @property Carbon $updated_at
  * @property Model $user
  * @property Collection<int, OperatorTeam> $teams
+ * @property Collection<int, TicketCategory>  $ticketCategories
  * @property Collection<int, Ticket> $tickets
  *
  * @method int increment(string $column, float|int $amount = 1, array $extra = [])
@@ -55,7 +57,7 @@ class Operator extends Projection
         'ready' => false,
         'ticket_limit' => null,
         'complexity_limit' => null,
-        'matching' => [],
+        //'matching' => [],
         'bound_tickets' => 0,
         'total_complexity' => 0,
         //'free_slots' => null,
@@ -114,6 +116,15 @@ class Operator extends Projection
     public function teams(): BelongsToMany
     {
         return $this->operatorTeams();
+    }
+
+    /**
+     * @return BelongsToMany<TicketCategory>
+     */
+    public function ticketCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(TicketCategory::class, 'ticket_allocator_operator_category', 'operator_uuid', 'category_uuid')
+            ->withPivot('team_count');
     }
 
     /**

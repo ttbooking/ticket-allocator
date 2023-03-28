@@ -11,6 +11,7 @@ use Spatie\EventSourcing\Facades\Projectionist;
 use TTBooking\TicketAllocator\Contracts\Factor;
 use TTBooking\TicketAllocator\Contracts\FactorRepository as FactorRepositoryContract;
 use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorProjector;
+use TTBooking\TicketAllocator\Domain\Operator\Reactors\SyncTicketCategories;
 use TTBooking\TicketAllocator\Domain\Support\FactorRepository;
 use TTBooking\TicketAllocator\Domain\Ticket\Factors\Category;
 use TTBooking\TicketAllocator\Domain\Ticket\Factors\ExpressiveFactor;
@@ -84,6 +85,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         Projectionist::addEventHandlers([
             OperatorProjector::class,
             TicketProjector::class,
+            SyncTicketCategories::class,
         ]);
     }
 

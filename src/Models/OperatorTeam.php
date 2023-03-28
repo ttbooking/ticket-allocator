@@ -15,6 +15,8 @@ use TTBooking\TicketAllocator\Database\Factories\OperatorTeamFactory;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 
 /**
+ * @method static static create(array $parameters = [])
+ * @method static static|null find(string $uuid)
  * @property non-empty-string $uuid
  * @property string $name
  * @property string $description

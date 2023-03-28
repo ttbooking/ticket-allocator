@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Domain\Operator\Projectors;
 
+use Illuminate\Support\Facades\DB;
 use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
 use TTBooking\TicketAllocator\Domain\Operator\Events;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
@@ -67,44 +68,35 @@ class OperatorProjector extends Projector
 
     public function onOperatorJoinedTeam(Events\OperatorJoinedTeam $event): void
     {
-        Operator::find($event->uuid)?->writeable()->teams()->attach($event->operatorTeamUuid);
+        //Operator::find($event->uuid)?->writeable()->teams()->attach($event->operatorTeamUuid);
     }
 
     public function onOperatorLeftTeam(Events\OperatorLeftTeam $event): void
     {
-        Operator::find($event->uuid)?->writeable()->teams()->detach($event->operatorTeamUuid);
+        //Operator::find($event->uuid)?->writeable()->teams()->detach($event->operatorTeamUuid);
     }
 
     public function onOperatorSetTeams(Events\OperatorSetTeams $event): void
     {
-        Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
+        //Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
     }
 
     public function onOperatorTicketCategoryAttached(Events\OperatorTicketCategoryAttached $event): void
     {
-        if (! $operator = Operator::find($event->uuid)?->writeable()) {
-            return;
-        }
-
-        if (isset($operator->matching['categories']) && is_array($operator->matching['categories'])) {
-            $operator->matching['categories'][] = $event->ticketCategoryUuid;
-            $operator->matching['categories'] = array_unique($operator->matching['categories']);
-        } else {
-            $operator->matching['categories'] = [$event->ticketCategoryUuid];
-        }
-
-        $operator->save();
+        Operator::find($event->uuid)?->writeable()->ticketCategories()
+            ->syncWithoutDetaching([$event->ticketCategoryUuid => [
+                'team_count' => DB::raw('team_count + 1'),
+            ]]);
     }
 
     public function onOperatorTicketCategoryDetached(Events\OperatorTicketCategoryDetached $event): void
     {
-        if (! $operator = Operator::find($event->uuid)?->writeable()) {
-            return;
-        }
+        Operator::find($event->uuid)?->writeable()->ticketCategories()
+            ->syncWithoutDetaching([$event->ticketCategoryUuid => [
+                'team_count' => DB::raw('team_count - 1'),
+            ]]);
 
-        if (isset($operator->matching['categories']) && is_array($operator->matching['categories'])) {
-            $operator->matching['categories'] = array_diff($operator->matching['categories'], [$event->ticketCategoryUuid]);
-        }
+        Operator::find($event->uuid)?->writeable()->ticketCategories()->wherePivot('team_count', 0)->detach($event->ticketCategoryUuid);
     }
 
     public function onTicketBound(TicketEvents\TicketBound $event): void

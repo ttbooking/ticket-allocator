@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_allocator_team_operator', function (Blueprint $table) {
-            $table->foreignUuid('team_uuid')->constrained('ticket_allocator_operator_teams', 'uuid')->cascadeOnDelete();
+        Schema::create('ticket_allocator_operator_category', function (Blueprint $table) {
             $table->foreignUuid('operator_uuid')->constrained('ticket_allocator_operators', 'uuid')->cascadeOnDelete();
+            $table->foreignUuid('category_uuid')->constrained('ticket_allocator_ticket_categories', 'uuid')->cascadeOnDelete();
+            $table->unsignedTinyInteger('team_count')->default(0);
 
-            $table->primary(['team_uuid', 'operator_uuid']);
+            $table->primary(['operator_uuid', 'category_uuid']);
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_allocator_team_operator');
+        Schema::dropIfExists('ticket_allocator_operator_category');
     }
 };

@@ -19,7 +19,6 @@ class EsOperatorSeeder extends Seeder
      * @param  Actions\SetOperatorReadyAction  $setOperatorReady
      * @param  Actions\AdjustOperatorTicketLimitAction  $adjustOperatorTicketLimit
      * @param  Actions\AdjustOperatorComplexityLimitAction  $adjustOperatorComplexityLimit
-     * @param  Actions\JoinOperatorTeamAction  $joinOperatorTeam
      * @param  int  $count
      * @return void
      */
@@ -30,8 +29,7 @@ class EsOperatorSeeder extends Seeder
         Actions\SetOperatorReadyAction $setOperatorReady,
         Actions\AdjustOperatorTicketLimitAction $adjustOperatorTicketLimit,
         Actions\AdjustOperatorComplexityLimitAction $adjustOperatorComplexityLimit,
-        Actions\JoinOperatorTeamAction $joinOperatorTeam,
-        int $count = 10
+        int $count = 10,
     ): void {
         $operatorTeams = OperatorTeam::all()->all();
 
@@ -50,7 +48,7 @@ class EsOperatorSeeder extends Seeder
                 foreach (fake()->randomElements($operatorTeams,
                     fake()->optional(.9, 0)->numberBetween(1, count($operatorTeams))
                 ) as $team) {
-                    $joinOperatorTeam($operator, $team);
+                    $team->operators()->attach($operator);
                 }
             }
         }
