@@ -32,15 +32,19 @@ class MatchQuery
             Operator::query()
                 ->where('online', true)
                 ->where('ready', true)
-                ->where('free_slots', '>', 0)
+                ->where(static fn (Builder $query) => $query
+                    ->whereNull('free_slots')
+                    ->orWhere('free_slots', '>', 0)
+                )
                 ->orderByDesc('free_slots')
                 ->orderByDesc('free_complexity'),
 
             'o',
 
             static fn (JoinClause $join) => $join
-                ->on('t.complexity', '<=', 'o.free_complexity')
                 ->on(static fn (Builder $query) => $query
+                    ->whereNull('o.free_complexity')
+                    ->orWhere('t.complexity', '<=', 'o.free_complexity')
                     //->whereJsonContains('o.matching->categories', DB::raw('json_quote(t.category_uuid)'))
                 )
 

@@ -47,7 +47,7 @@ class EsTicketSeeder extends Seeder
 
             $incrementTicketInitialWeight($ticket, fake()->numberBetween(0, 100000));
             $incrementTicketWeightIncrement($ticket, fake()->numberBetween(0, 100));
-            $incrementTicketComplexity($ticket, fake()->randomElement([10, 25, 50, 75, 100]));
+            $incrementTicketComplexity($ticket, fake()->randomElement([5, 10, 25, 50]));
             $incrementTicketDelay($ticket, fake()->numberBetween(1, 10) * 60);
         }
     }
