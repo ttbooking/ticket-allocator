@@ -42,13 +42,13 @@ class EsTicketSeeder extends Seeder
             $setTicketMetaValue($ticket, 'order', fake()->numberBetween(100, 1000));
 
             if (! empty($operators)) {
-                fake()->boolean(70) && $bindTicket($ticket, fake()->randomElement($operators));
+                fake()->boolean(20) && $bindTicket($ticket, fake()->randomElement($operators));
             }
 
             $incrementTicketInitialWeight($ticket, fake()->numberBetween(0, 100000));
             $incrementTicketWeightIncrement($ticket, fake()->numberBetween(0, 100));
             $incrementTicketComplexity($ticket, fake()->randomElement([5, 10, 25, 50]));
-            $incrementTicketDelay($ticket, fake()->numberBetween(1, 10) * 60);
+            //$incrementTicketDelay($ticket, fake()->numberBetween(1, 10) * 60);
         }
     }
 }
