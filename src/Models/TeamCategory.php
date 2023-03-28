@@ -38,7 +38,7 @@ class TeamCategory extends Pivot
     }
 
     /**
-     * @return BelongsTo<static, OperatorTeam>
+     * @return BelongsTo<OperatorTeam, self>
      */
     public function team(): BelongsTo
     {
@@ -46,7 +46,7 @@ class TeamCategory extends Pivot
     }
 
     /**
-     * @return BelongsTo<static, TicketCategory>
+     * @return BelongsTo<TicketCategory, self>
      */
     public function category(): BelongsTo
     {

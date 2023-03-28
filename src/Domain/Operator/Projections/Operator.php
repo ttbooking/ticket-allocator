@@ -92,7 +92,7 @@ class Operator extends Projection
     }
 
     /**
-     * @return BelongsTo<static, Model>
+     * @return BelongsTo<Model, self>
      */
     public function user(): BelongsTo
     {
