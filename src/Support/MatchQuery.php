@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Support;
 
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,7 @@ class MatchQuery
             Operator::query()
                 ->where('online', true)
                 ->where('ready', true)
-                ->where(static fn (Builder $query) => $query
+                ->where(static fn (EloquentBuilder $query) => $query
                     ->whereNull('free_slots')
                     ->orWhere('free_slots', '>', 0)
                 )
@@ -44,7 +45,7 @@ class MatchQuery
             static fn (JoinClause $join) => $join
                 ->on(static fn (Builder $query) => $query
                     ->whereNull('o.free_complexity')
-                    ->orWhere('t.complexity', '<=', 'o.free_complexity')
+                    ->orWhereColumn('t.complexity', '<=', 'o.free_complexity')
                     //->whereJsonContains('o.matching->categories', DB::raw('json_quote(t.category_uuid)'))
                 )
 
