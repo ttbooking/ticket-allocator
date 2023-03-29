@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
+use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class HomeController extends Controller
 {
@@ -19,7 +20,8 @@ class HomeController extends Controller
     {
         $operators = Operator::all()->toArray();
         $tickets = Ticket::all()->toArray();
+        $ticketCategories = TicketCategory::all()->toArray();
 
-        return Inertia::render('Dashboard', compact('operators', 'tickets'));
+        return Inertia::render('Dashboard', compact('operators', 'tickets', 'ticketCategories'));
     }
 }

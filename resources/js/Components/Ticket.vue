@@ -2,7 +2,7 @@
     <div class="d-inline-block">
         <v-btn size="small" class="ticket" :class="{ overflow }" flat width="100">
             <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon" color="white" start />
-            <span class="text-white">{{ compactPosition }}</span>
+            <span class="text-white">{{ ticket.category.short }}</span>
             <v-overlay
                 open-on-click
                 activator="parent"

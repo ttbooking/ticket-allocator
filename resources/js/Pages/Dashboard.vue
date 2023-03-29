@@ -8,7 +8,7 @@ import { trans } from "laravel-vue-i18n";
 import { refThrottled } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
 import { useDropZone } from "@/composables";
-import type { Operator, Ticket } from "@/types";
+import type { Operator, Ticket, TicketCategory } from "@/types";
 import { useSharedOptions, useSharedDisplayMode, useSharedOperatorSorting } from "@/shared";
 import * as Events from "@/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
@@ -17,10 +17,12 @@ import { useRepo } from "pinia-orm";
 import { useCollect } from "pinia-orm/dist/helpers";
 import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
+import TicketCategoryRepository from "@/models/TicketCategory";
 
 const props = defineProps<{
     operators: Operator[];
     tickets: Ticket[];
+    ticketCategories: TicketCategory[];
 }>();
 
 const options = useSharedOptions();
@@ -29,13 +31,14 @@ const oprSort = useSharedOperatorSorting();
 
 const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
+const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 
 const sortedOperators = refThrottled(
     computed(() =>
         useCollect(
             operatorRepo.value
                 .with("tickets", (query) => {
-                    query.orderBy(mode.value, "desc");
+                    query.with("category").orderBy(mode.value, "desc");
                 })
                 .get()
         ).sortBy([
@@ -50,7 +53,7 @@ const sortedOperators = refThrottled(
 );
 
 const sortedTickets = refThrottled(
-    computed(() => ticketRepo.value.unbound().orderBy(mode.value, "desc").get()),
+    computed(() => ticketRepo.value.unbound().with("category").orderBy(mode.value, "desc").get()),
     750
 );
 
@@ -70,6 +73,7 @@ const { isOverDropZone } = useDropZone(
 onMounted(() => {
     operatorRepo.value.fresh(props.operators);
     ticketRepo.value.fresh(props.tickets);
+    ticketCategoryRepo.value.fresh(props.ticketCategories);
 
     window.ticketAllocatorChannel = <PusherChannel>window.Echo.channel(Events.Channel);
 

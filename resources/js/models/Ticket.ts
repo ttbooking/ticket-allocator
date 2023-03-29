@@ -2,6 +2,7 @@ import { Model } from "pinia-orm";
 import { Attr, Num, Str, Uid, Cast, BelongsTo } from "pinia-orm/dist/decorators";
 import { DateCast } from "pinia-orm/dist/casts";
 import { useSharedTimestamp } from "@/shared";
+import TicketCategory from "./TicketCategory";
 import Operator from "./Operator";
 
 export default class Ticket extends Model {
@@ -18,6 +19,8 @@ export default class Ticket extends Model {
     @Num(0) declare complexity: number;
     @Num(0) declare delay: number;
     @Attr() declare created_at: string;
+
+    @BelongsTo(() => TicketCategory, "category_uuid") declare category: TicketCategory;
 
     @BelongsTo(() => Operator, "handler_uuid") declare handler: Operator | null;
 
