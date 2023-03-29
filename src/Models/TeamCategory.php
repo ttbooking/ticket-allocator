@@ -42,7 +42,7 @@ class TeamCategory extends Pivot
      */
     public function team(): BelongsTo
     {
-        return $this->belongsTo(OperatorTeam::class);
+        return $this->belongsTo(OperatorTeam::class)->withTrashed();
     }
 
     /**
