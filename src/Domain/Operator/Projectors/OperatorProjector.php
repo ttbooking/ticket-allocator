@@ -89,11 +89,13 @@ class OperatorProjector extends Projector
 
     public function onOperatorTicketCategoriesDetached(Events\OperatorTicketCategoriesDetached $event): void
     {
-        Operator::find($event->uuid)?->writeable()->ticketCategories()
-            ->syncWithPivotValues($event->ticketCategoryUuids, ['team_count' => DB::raw('team_count - 1')], false);
+        DB::transaction(function () use ($event) {
+            Operator::find($event->uuid)?->writeable()->ticketCategories()
+                ->syncWithPivotValues($event->ticketCategoryUuids, ['team_count' => DB::raw('team_count - 1')], false);
 
-        Operator::find($event->uuid)?->writeable()->ticketCategories()
-            ->wherePivot('team_count', 0)->detach($event->ticketCategoryUuids);
+            Operator::find($event->uuid)?->writeable()->ticketCategories()
+                ->wherePivot('team_count', 0)->detach($event->ticketCategoryUuids);
+        });
     }
 
     public function onTicketBound(TicketEvents\TicketBound $event): void
