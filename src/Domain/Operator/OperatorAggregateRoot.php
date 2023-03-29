@@ -167,27 +167,27 @@ class OperatorAggregateRoot extends AggregateRoot
     {
     }
 
-    public function attachTicketCategory(Commands\AttachTicketCategory $command): static
+    public function attachTicketCategories(Commands\AttachTicketCategories $command): static
     {
-        return $this->recordThat(new Events\OperatorTicketCategoryAttached(
+        return $this->recordThat(new Events\OperatorTicketCategoriesAttached(
             uuid: $this->uuid(),
-            ticketCategoryUuid: $command->ticketCategoryUuid,
+            ticketCategoryUuids: $command->ticketCategoryUuids,
         ));
     }
 
-    protected function applyOperatorTicketCategoryAttached(Events\OperatorTicketCategoryAttached $event): void
+    protected function applyOperatorTicketCategoriesAttached(Events\OperatorTicketCategoriesAttached $event): void
     {
     }
 
-    public function detachTicketCategory(Commands\DetachTicketCategory $command): static
+    public function detachTicketCategories(Commands\DetachTicketCategories $command): static
     {
-        return $this->recordThat(new Events\OperatorTicketCategoryDetached(
+        return $this->recordThat(new Events\OperatorTicketCategoriesDetached(
             uuid: $this->uuid(),
-            ticketCategoryUuid: $command->ticketCategoryUuid,
+            ticketCategoryUuids: $command->ticketCategoryUuids,
         ));
     }
 
-    protected function applyOperatorTicketCategoryDetached(Events\OperatorTicketCategoryDetached $event): void
+    protected function applyOperatorTicketCategoriesDetached(Events\OperatorTicketCategoriesDetached $event): void
     {
     }
 }

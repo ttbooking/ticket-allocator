@@ -81,22 +81,19 @@ class OperatorProjector extends Projector
         //Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
     }
 
-    public function onOperatorTicketCategoryAttached(Events\OperatorTicketCategoryAttached $event): void
+    public function onOperatorTicketCategoriesAttached(Events\OperatorTicketCategoriesAttached $event): void
     {
         Operator::find($event->uuid)?->writeable()->ticketCategories()
-            ->syncWithoutDetaching([$event->ticketCategoryUuid => [
-                'team_count' => DB::raw('team_count + 1'),
-            ]]);
+            ->syncWithPivotValues($event->ticketCategoryUuids, ['team_count' => DB::raw('team_count + 1')], false);
     }
 
-    public function onOperatorTicketCategoryDetached(Events\OperatorTicketCategoryDetached $event): void
+    public function onOperatorTicketCategoriesDetached(Events\OperatorTicketCategoriesDetached $event): void
     {
         Operator::find($event->uuid)?->writeable()->ticketCategories()
-            ->syncWithoutDetaching([$event->ticketCategoryUuid => [
-                'team_count' => DB::raw('team_count - 1'),
-            ]]);
+            ->syncWithPivotValues($event->ticketCategoryUuids, ['team_count' => DB::raw('team_count - 1')], false);
 
-        Operator::find($event->uuid)?->writeable()->ticketCategories()->wherePivot('team_count', 0)->detach($event->ticketCategoryUuid);
+        Operator::find($event->uuid)?->writeable()->ticketCategories()
+            ->wherePivot('team_count', 0)->detach($event->ticketCategoryUuids);
     }
 
     public function onTicketBound(TicketEvents\TicketBound $event): void

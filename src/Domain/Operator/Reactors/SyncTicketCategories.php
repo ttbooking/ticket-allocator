@@ -25,9 +25,7 @@ class SyncTicketCategories extends Reactor
             return;
         }
 
-        foreach ($operatorTeam->ticketCategories as $ticketCategory) {
-            ($this->attachTicketCategory)($event->uuid, $ticketCategory);
-        }
+        ($this->attachTicketCategory)($event->uuid, $operatorTeam->ticketCategories);
     }
 
     public function onOperatorLeftTeam(OperatorLeftTeam $event): void
@@ -36,8 +34,6 @@ class SyncTicketCategories extends Reactor
             return;
         }
 
-        foreach ($operatorTeam->ticketCategories as $ticketCategory) {
-            ($this->detachTicketCategory)($event->uuid, $ticketCategory);
-        }
+        ($this->detachTicketCategory)($event->uuid, $operatorTeam->ticketCategories);
     }
 }

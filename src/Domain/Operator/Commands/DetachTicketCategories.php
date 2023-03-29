@@ -9,11 +9,15 @@ use Spatie\EventSourcing\Commands\HandledBy;
 use TTBooking\TicketAllocator\Domain\Operator\OperatorAggregateRoot;
 
 #[HandledBy(OperatorAggregateRoot::class)]
-class AttachTicketCategory
+class DetachTicketCategories
 {
+    /**
+     * @param  string  $uuid
+     * @param  string[]  $ticketCategoryUuids
+     */
     public function __construct(
         #[AggregateUuid] public string $uuid,
-        public string $ticketCategoryUuid,
+        public array $ticketCategoryUuids,
     ) {
     }
 }
