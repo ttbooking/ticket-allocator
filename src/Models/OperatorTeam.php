@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use TTBooking\TicketAllocator\Database\Factories\OperatorTeamFactory;
-use TTBooking\TicketAllocator\Domain\Operator\Actions\AttachTicketCategoryAction;
-use TTBooking\TicketAllocator\Domain\Operator\Actions\DetachTicketCategoryAction;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 
 /**
@@ -42,35 +40,6 @@ class OperatorTeam extends Model
     public $incrementing = false;
 
     protected $fillable = ['uuid', 'name', 'description', 'matching'];
-
-    protected static function booted(): void
-    {
-        /** @var AttachTicketCategoryAction $attachTicketCategory */
-        $attachTicketCategory = app(AttachTicketCategoryAction::class);
-        /** @var DetachTicketCategoryAction $detachTicketCategory */
-        $detachTicketCategory = app(DetachTicketCategoryAction::class);
-
-        static::restored(static function (self $team) use ($attachTicketCategory) {
-            foreach ($team->operators as $operator) {
-                $attachTicketCategory($operator, $team->ticketCategories);
-            }
-        });
-
-        static::deleting(static function (self $team) use ($detachTicketCategory) {
-            if ($team->forceDeleting) {
-                return;
-            }
-
-            foreach ($team->operators as $operator) {
-                $detachTicketCategory($operator, $team->ticketCategories);
-            }
-        });
-
-        static::forceDeleting(static function (self $team) {
-            $team->operators()->detach($team->operators);
-            $team->ticketCategories()->detach($team->ticketCategories);
-        });
-    }
 
     protected static function newFactory(): OperatorTeamFactory
     {

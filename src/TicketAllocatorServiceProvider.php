@@ -30,6 +30,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         $this->registerRoutes();
         $this->registerResources();
         $this->registerCommands();
+        $this->registerObservers();
         $this->registerEventHandlers();
 
         if ($this->app->runningInConsole()) {
@@ -78,6 +79,13 @@ class TicketAllocatorServiceProvider extends ServiceProvider
             Console\MakeFactorCommand::class,
             Console\SnapshotOperatorCommand::class,
         ]);
+    }
+
+    protected function registerObservers(): void
+    {
+        Models\OperatorTeam::observe(Observers\OperatorTeamObserver::class);
+        Models\TeamCategory::observe(Observers\TeamCategoryObserver::class);
+        Models\TeamOperator::observe(Observers\TeamOperatorObserver::class);
     }
 
     protected function registerEventHandlers(): void
