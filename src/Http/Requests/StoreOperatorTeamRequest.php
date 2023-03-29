@@ -28,10 +28,10 @@ class StoreOperatorTeamRequest extends FormRequest
         return [
             'active' => 'required|boolean',
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:65535',
-            'operators' => 'required|array',
+            'description' => 'nullable|string|max:65535',
+            'operators' => 'array',
             'operators.*' => 'required|uuid',
-            'ticket_categories' => 'required|array',
+            'ticket_categories' => 'array',
             'ticket_categories.*' => 'required|uuid',
         ];
     }

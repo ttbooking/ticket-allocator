@@ -34,6 +34,7 @@
                         <v-col cols="12" md="12">
                             <v-text-field
                                 v-model="form.name"
+                                maxlength="255"
                                 :label="trans('display_name')"
                                 :placeholder="name"
                                 :persistent-placeholder="!!name.length"

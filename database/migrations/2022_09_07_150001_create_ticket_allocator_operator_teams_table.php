@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('ticket_allocator_operator_teams', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->json('matching')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

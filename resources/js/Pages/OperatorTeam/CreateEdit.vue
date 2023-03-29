@@ -20,6 +20,8 @@
                         <v-col cols="12" md="12">
                             <v-text-field
                                 v-model="form.name"
+                                required
+                                maxlength="255"
                                 :label="trans('name')"
                                 :error-messages="errors.name"
                             />

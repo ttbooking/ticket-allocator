@@ -28,10 +28,10 @@ class UpdateOperatorTeamRequest extends FormRequest
         return [
             'active' => 'sometimes|required|boolean',
             'name' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string|max:65535',
-            'operators' => 'sometimes|required|array',
+            'description' => 'sometimes|nullable|string|max:65535',
+            'operators' => 'sometimes|array',
             'operators.*' => 'sometimes|required|uuid',
-            'ticket_categories' => 'sometimes|required|array',
+            'ticket_categories' => 'sometimes|array',
             'ticket_categories.*' => 'sometimes|required|uuid',
         ];
     }

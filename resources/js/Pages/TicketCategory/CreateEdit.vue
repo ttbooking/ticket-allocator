@@ -15,6 +15,7 @@
                         <v-col cols="12" md="6">
                             <v-text-field
                                 v-model="form.name"
+                                required
                                 maxlength="255"
                                 :label="trans('name')"
                                 :error-messages="errors.name"
@@ -23,6 +24,7 @@
                         <v-col cols="12" md="6">
                             <v-text-field
                                 v-model="form.short"
+                                required
                                 maxlength="32"
                                 :label="trans('short_name')"
                                 :error-messages="errors.short"
@@ -34,6 +36,7 @@
                             <v-text-field
                                 v-model.number="form.initial_weight"
                                 type="number"
+                                required
                                 min="0"
                                 max="9999999"
                                 :label="trans('initial_weight')"
@@ -44,6 +47,7 @@
                             <v-text-field
                                 v-model.number="form.weight_increment"
                                 type="number"
+                                required
                                 min="0"
                                 max="99999"
                                 :label="trans('weight_increment')"
@@ -54,6 +58,7 @@
                             <v-text-field
                                 v-model.number="form.complexity"
                                 type="number"
+                                required
                                 min="0"
                                 max="9999"
                                 :label="trans('complexity')"
@@ -64,6 +69,7 @@
                             <v-text-field
                                 v-model.number="form.delay"
                                 type="number"
+                                required
                                 min="0"
                                 max="99999"
                                 :label="trans('delay')"
