@@ -30,7 +30,7 @@ class TeamCategory extends Pivot
             }
         });
 
-        static::deleted(static function (self $pivot) use ($detachTicketCategory) {
+        static::deleting(static function (self $pivot) use ($detachTicketCategory) {
             foreach ($pivot->team->operators as $operator) {
                 $detachTicketCategory($operator, $pivot->category_uuid);
             }

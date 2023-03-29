@@ -56,7 +56,7 @@ class OperatorTeam extends Model
             }
         });
 
-        static::deleted(static function (self $team) use ($detachTicketCategory) {
+        static::deleting(static function (self $team) use ($detachTicketCategory) {
             foreach ($team->operators as $operator) {
                 $detachTicketCategory($operator, $team->ticketCategories);
             }

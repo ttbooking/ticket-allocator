@@ -29,7 +29,7 @@ class TeamOperator extends Pivot
             $joinOperatorTeam($pivot->operator_uuid, $pivot->team_uuid);
         });
 
-        static::deleted(static function (self $pivot) use ($leaveOperatorTeam) {
+        static::deleting(static function (self $pivot) use ($leaveOperatorTeam) {
             $leaveOperatorTeam($pivot->operator_uuid, $pivot->team_uuid);
         });
     }
