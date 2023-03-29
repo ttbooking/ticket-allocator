@@ -1,7 +1,7 @@
 <template>
     <div class="d-inline-block">
         <v-btn size="small" class="ticket" :class="{ overflow }" flat width="100">
-            <v-icon color="white" icon="mdi-airplane" start />
+            <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon" color="white" start />
             <span class="text-white">{{ compactPosition }}</span>
             <v-overlay
                 open-on-click

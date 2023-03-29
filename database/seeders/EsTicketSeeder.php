@@ -39,6 +39,7 @@ class EsTicketSeeder extends Seeder
 
         for ($i = 0; $i < $count; $i++) {
             $ticket = $createTicket(fake()->randomElement($ticketCategories));
+            $setTicketMetaValue($ticket, 'icon', fake()->randomElement(['mdi-airplane', 'mdi-train', 'mdi-bus', 'mdi-car']));
             $setTicketMetaValue($ticket, 'order', fake()->numberBetween(100, 1000));
 
             if (! empty($operators)) {
