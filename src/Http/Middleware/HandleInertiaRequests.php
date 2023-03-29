@@ -45,8 +45,7 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
-            'durationThreshold' => config('ticket-allocator.duration_threshold'),
-            'weightThreshold' => config('ticket-allocator.weight_threshold'),
+            'options' => config('ticket-allocator.display_options'),
         ]);
     }
 }

@@ -65,8 +65,10 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'duration_threshold' => env('TA_DURATION_THRESHOLD', 1800),
-
-    'weight_threshold' => env('TA_WEIGHT_THRESHOLD', 360_000),
+    'display_options' => [
+        'duration_threshold' => env('TA_DURATION_THRESHOLD', 1800),
+        'weight_threshold' => env('TA_WEIGHT_THRESHOLD', 360_000),
+        'alt_title' => env('TA_TICKET_ALT_TITLE'),
+    ],
 
 ];

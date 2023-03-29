@@ -2,7 +2,7 @@
     <div class="d-inline-block">
         <v-btn size="small" class="ticket" :class="{ overflow }" flat width="100">
             <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon" color="white" start />
-            <span class="text-white">{{ ticket.category.short }}</span>
+            <span class="text-white">{{ title }}</span>
             <v-overlay
                 open-on-click
                 activator="parent"
@@ -29,21 +29,29 @@
 import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import Ticket from "@/models/Ticket";
-import { useSharedDisplayMode } from "@/shared";
+import { DisplayOptions } from "@/types";
+import { useSharedOptions, useSharedDisplayMode } from "@/shared";
 
 const props = defineProps<{
     ticket: Ticket;
 }>();
 
+const options = useSharedOptions();
 const mode = useSharedDisplayMode();
 
-const threshold = computed(() => {
-    return usePage().props?.[`${mode.value}Threshold`] as number;
-});
+const config = computed(() => usePage().props.options as DisplayOptions);
+
+const threshold = computed(() => config.value[`${mode.value}_threshold`]);
 
 const position = computed(() => props.ticket[mode.value]);
 
 const compactPosition = computed(() => (position.value < 100000 ? position.value : position.value.toExponential(1)));
+
+const title = computed(() =>
+    options.altInfo
+        ? props.ticket.meta?.[config.value.alt_title] ?? props.ticket.category.short
+        : props.ticket.category.short
+);
 
 const overflow = computed(() => position.value > threshold.value);
 

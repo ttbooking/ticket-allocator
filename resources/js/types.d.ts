@@ -68,3 +68,9 @@ export interface TicketCategory {
     created_at: string;
     updated_at: string;
 }
+
+export interface DisplayOptions {
+    duration_threshold: number;
+    weight_threshold: number;
+    alt_title: string;
+}
