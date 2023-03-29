@@ -68,7 +68,10 @@ return [
     'display_options' => [
         'duration_threshold' => env('TA_DURATION_THRESHOLD', 1800),
         'weight_threshold' => env('TA_WEIGHT_THRESHOLD', 360_000),
-        'alt_title' => env('TA_TICKET_ALT_TITLE'),
+        'alt_title' => env('TA_TICKET_ALT_TITLE', 'title'),
+        'card_title' => env('TA_CARD_TITLE', 'card_title'),
+        'card_subtitle' => env('TA_CARD_SUBTITLE', 'card_subtitle'),
+        'card_lines' => env('TA_CARD_LINES', 'card_lines'),
     ],
 
 ];

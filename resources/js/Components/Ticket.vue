@@ -10,10 +10,10 @@
                 location="bottom center"
                 origin="auto"
             >
-                <v-card width="400" title="aaa" subtitle="bbb">
+                <v-card width="400" :title="cardTitle" :subtitle="cardSubtitle">
                     <v-card-text>
                         <v-table>
-                            <tr v-for="(value, key) in ticket.meta" :key="key">
+                            <tr v-for="(value, key) in cardLines" :key="key">
                                 <th class="text-left">{{ key }}</th>
                                 <td>{{ value }}</td>
                             </tr>
@@ -52,6 +52,12 @@ const title = computed(() =>
         ? props.ticket.meta?.[config.value.alt_title] ?? props.ticket.category.short
         : props.ticket.category.short
 );
+
+const cardTitle = computed(() => props.ticket.meta?.[config.value.card_title] ?? "Title");
+
+const cardSubtitle = computed(() => props.ticket.meta?.[config.value.card_subtitle] ?? props.ticket.category.name);
+
+const cardLines = computed(() => props.ticket.meta?.[config.value.card_lines] ?? []);
 
 const overflow = computed(() => position.value > threshold.value);
 
