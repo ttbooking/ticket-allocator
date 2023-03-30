@@ -53,13 +53,15 @@ const position = computed(() => props.ticket[mode.value]);
 
 const compactPosition = computed(() => (position.value < 100000 ? position.value : position.value.toExponential(1)));
 
-const title = computed(() =>
-    options.altInfo ? props.ticket.meta?.title ?? props.ticket.category.short : props.ticket.category.short
-);
+const categoryName = computed(() => props.ticket.meta?.category_name ?? props.ticket.category.name);
+
+const categoryShort = computed(() => props.ticket.meta?.category_short ?? props.ticket.category.short);
+
+const title = computed(() => (options.altInfo ? props.ticket.meta?.title ?? categoryShort.value : categoryShort.value));
 
 const cardTitle = computed(() => props.ticket.meta?.card_title ?? "Title");
 
-const cardSubtitle = computed(() => props.ticket.meta?.card_subtitle ?? props.ticket.category.name);
+const cardSubtitle = computed(() => props.ticket.meta?.card_subtitle ?? categoryName.value);
 
 const cardContent = computed(() => props.ticket.meta?.card_content ?? []);
 

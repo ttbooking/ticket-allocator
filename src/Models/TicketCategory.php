@@ -10,8 +10,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use TTBooking\TicketAllocator\Database\Factories\TicketCategoryFactory;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
+use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 
 /**
  * @method static static create(array $parameters = [])
@@ -27,6 +29,7 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
  * @property Carbon $updated_at
  * @property Collection<int, OperatorTeam> $operatorTeams
  * @property Collection<int, Operator> $operators
+ * @property Collection<int, Ticket> $tickets
  */
 class TicketCategory extends Model
 {
@@ -82,5 +85,13 @@ class TicketCategory extends Model
     {
         return $this->belongsToMany(Operator::class, 'ticket_allocator_operator_category', 'category_uuid', 'operator_uuid')
             ->withPivot('team_count');
+    }
+
+    /**
+     * @return HasMany<Ticket>
+     */
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class, 'category_uuid');
     }
 }

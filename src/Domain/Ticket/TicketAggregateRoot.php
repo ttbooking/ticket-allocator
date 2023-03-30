@@ -12,6 +12,10 @@ class TicketAggregateRoot extends AggregateRoot
 {
     const META_ICON = 'icon';
 
+    const META_CATEGORY_NAME = 'category_name';
+
+    const META_CATEGORY_SHORT = 'category_short';
+
     const META_TITLE = 'title';
 
     const META_CARD_TITLE = 'card_title';
