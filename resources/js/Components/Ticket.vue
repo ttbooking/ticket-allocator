@@ -11,14 +11,16 @@
                 origin="auto"
             >
                 <v-card width="400" :title="cardTitle" :subtitle="cardSubtitle">
-                    <v-card-text>
+                    <v-card-text class="prose">
                         <div v-if="typeof cardContent === 'string'" v-html="md.render(cardContent)"></div>
-                        <v-table v-else>
-                            <tr v-for="(value, key) in cardContent" :key="key">
-                                <th class="text-left">{{ key }}</th>
-                                <td v-html="md.render(value)"></td>
-                            </tr>
-                        </v-table>
+                        <table v-else>
+                            <tbody>
+                                <tr v-for="(value, key) in cardContent" :key="key">
+                                    <th>{{ key }}</th>
+                                    <td v-html="md.renderInline(value)"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </v-card-text>
                 </v-card>
             </v-overlay>
