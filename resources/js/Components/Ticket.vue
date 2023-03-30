@@ -2,7 +2,7 @@
     <div class="d-inline-block">
         <v-btn size="small" class="ticket" :class="{ overflow }" flat width="100">
             <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon" color="white" start />
-            <span class="text-white">{{ title }}</span>
+            <span class="text-white">{{ title() }}</span>
             <v-overlay
                 open-on-click
                 activator="parent"
@@ -53,15 +53,15 @@ const position = computed(() => props.ticket[mode.value]);
 
 const compactPosition = computed(() => (position.value < 100000 ? position.value : position.value.toExponential(1)));
 
-const categoryName = computed(() => props.ticket.meta?.category_name ?? props.ticket.category.name);
+const categoryName = () => props.ticket.meta?.category_name ?? props.ticket.category?.name ?? "";
 
-const categoryShort = computed(() => props.ticket.meta?.category_short ?? props.ticket.category.short);
+const categoryShort = () => props.ticket.meta?.category_short ?? props.ticket.category?.short ?? "";
 
-const title = computed(() => (options.altInfo ? props.ticket.meta?.title ?? categoryShort.value : categoryShort.value));
+const title = () => (options.altInfo ? props.ticket.meta?.title ?? categoryShort() : categoryShort());
 
 const cardTitle = computed(() => props.ticket.meta?.card_title ?? "Title");
 
-const cardSubtitle = computed(() => props.ticket.meta?.card_subtitle ?? categoryName.value);
+const cardSubtitle = computed(() => props.ticket.meta?.card_subtitle ?? categoryName());
 
 const cardContent = computed(() => props.ticket.meta?.card_content ?? []);
 
