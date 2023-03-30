@@ -11,8 +11,9 @@ module.exports = {
         "vue/multi-word-component-names": [
             "error",
             {
-                ignores: ["Create", "Dashboard", "Default", "Edit", "Index"],
+                ignores: ["Dashboard", "Default", "Index", "Ticket"],
             },
         ],
+        "vue/no-v-html": 0,
     },
 };

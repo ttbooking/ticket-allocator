@@ -75,5 +75,5 @@ export interface DisplayOptions {
     alt_title: string;
     card_title: string;
     card_subtitle: string;
-    card_lines: string;
+    card_content: string;
 }

@@ -12,10 +12,11 @@
             >
                 <v-card width="400" :title="cardTitle" :subtitle="cardSubtitle">
                     <v-card-text>
-                        <v-table>
-                            <tr v-for="(value, key) in cardLines" :key="key">
+                        <div v-if="typeof cardContent === 'string'" v-html="md.render(cardContent)"></div>
+                        <v-table v-else>
+                            <tr v-for="(value, key) in cardContent" :key="key">
                                 <th class="text-left">{{ key }}</th>
-                                <td>{{ value }}</td>
+                                <td v-html="md.render(value)"></td>
                             </tr>
                         </v-table>
                     </v-card-text>
@@ -27,6 +28,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import MarkdownIt from "markdown-it";
 import { usePage } from "@inertiajs/vue3";
 import Ticket from "@/models/Ticket";
 import { DisplayOptions } from "@/types";
@@ -35,6 +37,8 @@ import { useSharedOptions, useSharedDisplayMode } from "@/shared";
 const props = defineProps<{
     ticket: Ticket;
 }>();
+
+const md = new MarkdownIt({ linkify: true });
 
 const options = useSharedOptions();
 const mode = useSharedDisplayMode();
@@ -57,7 +61,7 @@ const cardTitle = computed(() => props.ticket.meta?.[config.value.card_title] ??
 
 const cardSubtitle = computed(() => props.ticket.meta?.[config.value.card_subtitle] ?? props.ticket.category.name);
 
-const cardLines = computed(() => props.ticket.meta?.[config.value.card_lines] ?? []);
+const cardContent = computed(() => props.ticket.meta?.[config.value.card_content] ?? []);
 
 const overflow = computed(() => position.value > threshold.value);
 

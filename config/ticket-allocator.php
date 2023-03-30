@@ -71,7 +71,7 @@ return [
         'alt_title' => env('TA_TICKET_ALT_TITLE', 'title'),
         'card_title' => env('TA_CARD_TITLE', 'card_title'),
         'card_subtitle' => env('TA_CARD_SUBTITLE', 'card_subtitle'),
-        'card_lines' => env('TA_CARD_LINES', 'card_lines'),
+        'card_content' => env('TA_CARD_CONTENT', 'card_content'),
     ],
 
 ];
