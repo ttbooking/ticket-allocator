@@ -7,6 +7,7 @@ namespace TTBooking\TicketAllocator\Database\Seeders;
 use Illuminate\Database\Seeder;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Actions;
+use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot as Ticket;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class EsTicketSeeder extends Seeder
@@ -39,10 +40,10 @@ class EsTicketSeeder extends Seeder
 
         for ($i = 0; $i < $count; $i++) {
             $ticket = $createTicket(fake()->randomElement($ticketCategories));
-            $setTicketMetaValue($ticket, 'icon', fake()->randomElement(['mdi-airplane', 'mdi-train', 'mdi-bus', 'mdi-car']));
-            $setTicketMetaValue($ticket, 'title', $order = fake()->numberBetween(100, 1000));
-            $setTicketMetaValue($ticket, 'card_title', 'Order #'.$order);
-            $setTicketMetaValue($ticket, 'card_content', [
+            $setTicketMetaValue($ticket, Ticket::META_ICON, fake()->randomElement(['mdi-airplane', 'mdi-train', 'mdi-bus', 'mdi-car']));
+            $setTicketMetaValue($ticket, Ticket::META_TITLE, $order = fake()->numberBetween(100, 1000));
+            $setTicketMetaValue($ticket, Ticket::META_CARD_TITLE, 'Order #'.$order);
+            $setTicketMetaValue($ticket, Ticket::META_CARD_CONTENT, [
                 'Applicant' => fake()->name,
                 'Organisation' => fake()->company,
             ]);

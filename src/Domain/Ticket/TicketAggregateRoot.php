@@ -10,6 +10,16 @@ use TTBooking\TicketAllocator\Domain\Attributes\Incrementable;
 
 class TicketAggregateRoot extends AggregateRoot
 {
+    const META_ICON = 'icon';
+
+    const META_TITLE = 'title';
+
+    const META_CARD_TITLE = 'card_title';
+
+    const META_CARD_SUBTITLE = 'card_subtitle';
+
+    const META_CARD_CONTENT = 'card_content';
+
     public ?object $origin = null;
 
     // TODO: group by factors? Return magic sum?

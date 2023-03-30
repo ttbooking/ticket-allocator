@@ -54,16 +54,14 @@ const position = computed(() => props.ticket[mode.value]);
 const compactPosition = computed(() => (position.value < 100000 ? position.value : position.value.toExponential(1)));
 
 const title = computed(() =>
-    options.altInfo
-        ? props.ticket.meta?.[config.value.alt_title] ?? props.ticket.category.short
-        : props.ticket.category.short
+    options.altInfo ? props.ticket.meta?.title ?? props.ticket.category.short : props.ticket.category.short
 );
 
-const cardTitle = computed(() => props.ticket.meta?.[config.value.card_title] ?? "Title");
+const cardTitle = computed(() => props.ticket.meta?.card_title ?? "Title");
 
-const cardSubtitle = computed(() => props.ticket.meta?.[config.value.card_subtitle] ?? props.ticket.category.name);
+const cardSubtitle = computed(() => props.ticket.meta?.card_subtitle ?? props.ticket.category.name);
 
-const cardContent = computed(() => props.ticket.meta?.[config.value.card_content] ?? []);
+const cardContent = computed(() => props.ticket.meta?.card_content ?? []);
 
 const overflow = computed(() => position.value > threshold.value);
 

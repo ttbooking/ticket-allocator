@@ -72,8 +72,4 @@ export interface TicketCategory {
 export interface DisplayOptions {
     duration_threshold: number;
     weight_threshold: number;
-    alt_title: string;
-    card_title: string;
-    card_subtitle: string;
-    card_content: string;
 }
