@@ -163,7 +163,7 @@ onMounted(() => {
                     </v-col>
                 </v-row>
             </v-container>
-            <v-table class="ticket-monitor">
+            <v-table density="compact" class="ticket-monitor">
                 <tbody class="align-text-top">
                     <TicketRow :tickets="sortedTickets">
                         <template #name>{{ trans("ticket_pool") }}</template>

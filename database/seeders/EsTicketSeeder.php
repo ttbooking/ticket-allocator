@@ -44,8 +44,8 @@ class EsTicketSeeder extends Seeder
             $setTicketMetaValue($ticket, Ticket::META_TITLE, $order = fake()->numberBetween(100, 1000));
             $setTicketMetaValue($ticket, Ticket::META_CARD_TITLE, 'Order #'.$order);
             $setTicketMetaValue($ticket, Ticket::META_CARD_CONTENT, [
-                'Applicant' => fake()->name,
-                'Organisation' => fake()->company,
+                'Applicant' => fake()->name(),
+                'Organisation' => fake()->company(),
             ]);
 
             if (! empty($operators)) {

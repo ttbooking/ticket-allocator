@@ -36,7 +36,7 @@ class EsOperatorSeeder extends Seeder
         for ($i = 0; $i < $count; $i++) {
             $operator = $enrollOperator($i + 1);
 
-            $changeOperatorName($operator, fake()->name());
+            $changeOperatorName($operator, fake()->lastName());
 
             fake()->boolean(90) && $setOperatorOnline($operator);
             fake()->boolean(70) && $setOperatorReady($operator);
