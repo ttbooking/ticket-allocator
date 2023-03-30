@@ -10,7 +10,7 @@
                 location="bottom center"
                 origin="auto"
             >
-                <v-card width="400" :title="cardTitle" :subtitle="cardSubtitle">
+                <v-card width="400" :prepend-icon="ticket.meta?.icon" :title="cardTitle" :subtitle="cardSubtitle">
                     <v-card-text class="prose">
                         <div v-if="typeof cardContent === 'string'" v-html="md.render(cardContent)"></div>
                         <table v-else>
