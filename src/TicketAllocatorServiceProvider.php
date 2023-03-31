@@ -47,15 +47,12 @@ class TicketAllocatorServiceProvider extends ServiceProvider
      */
     protected function registerRoutes(): void
     {
-        Route::group([
-            'domain' => $this->app['config']['ticket-allocator.domain'] ?? null,
-            'prefix' => $this->app['config']['ticket-allocator.path'] ?? null,
-            'as' => 'ticket-allocator.',
-            'namespace' => 'TTBooking\\TicketAllocator\\Http\\Controllers',
-            'middleware' => $this->app['config']['ticket-allocator.middleware'] ?? 'web',
-        ], function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-        });
+        Route::domain($this->app['config']['ticket-allocator.domain'] ?? '')
+            ->prefix($this->app['config']['ticket-allocator.path'] ?? '')
+            ->name('ticket-allocator.')
+            ->namespace('TTBooking\\TicketAllocator\\Http\\Controllers')
+            ->middleware($this->app['config']['ticket-allocator.middleware'] ?? 'web')
+            ->group(fn () => $this->loadRoutesFrom(__DIR__.'/../routes/web.php'));
 
         require __DIR__.'/../routes/channels.php';
     }

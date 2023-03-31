@@ -7,23 +7,31 @@ namespace TTBooking\TicketAllocator\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Response;
+use Inertia\Inertia;
+use Inertia\Response;
 use TTBooking\TicketAllocator\Domain\Operator\Actions\SetOperatorNotReadyAction;
 use TTBooking\TicketAllocator\Domain\Operator\Actions\SetOperatorReadyAction;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Actions;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
+use TTBooking\TicketAllocator\Models\TicketCategory;
 
-class SupervisorController extends Controller
+class DashboardController extends Controller
 {
     /**
+     * Display supervisor dashboard.
+     */
+    public function index(): Response
+    {
+        $operators = Operator::all()->toArray();
+        $tickets = Ticket::all()->toArray();
+        $ticketCategories = TicketCategory::all()->toArray();
+
+        return Inertia::render('Dashboard', compact('operators', 'tickets', 'ticketCategories'));
+    }
+
+    /**
      * Set operator readiness status.
-     *
-     * @param  SetOperatorReadyAction  $setOperatorReady
-     * @param  SetOperatorNotReadyAction  $setOperatorNotReady
-     * @param  Operator  $operator
-     * @param  Request  $request
-     * @return JsonResponse
      */
     public function ready(
         SetOperatorReadyAction $setOperatorReady,
@@ -33,17 +41,11 @@ class SupervisorController extends Controller
     ): JsonResponse {
         $request->ready ? $setOperatorReady($operator) : $setOperatorNotReady($operator);
 
-        return Response::json($request->ready);
+        return \Illuminate\Support\Facades\Response::json($request->ready);
     }
 
     /**
      * Adjust ticket weight.
-     *
-     * @param  Actions\IncrementTicketInitialWeightAction  $incrementTicketInitialWeight
-     * @param  Actions\DecrementTicketInitialWeightAction  $decrementTicketInitialWeight
-     * @param  Ticket  $ticket
-     * @param  Request  $request
-     * @return JsonResponse
      */
     public function weight(
         Actions\IncrementTicketInitialWeightAction $incrementTicketInitialWeight,
@@ -64,12 +66,6 @@ class SupervisorController extends Controller
 
     /**
      * Bind or unbind ticket.
-     *
-     * @param  Actions\BindTicketAction  $bindTicket
-     * @param  Actions\UnbindTicketAction  $unbindTicket
-     * @param  Ticket  $ticket
-     * @param  Request  $request
-     * @return JsonResponse
      */
     public function handler(
         Actions\BindTicketAction $bindTicket,
@@ -90,10 +86,6 @@ class SupervisorController extends Controller
 
     /**
      * Close ticket.
-     *
-     * @param  Actions\CloseTicketAction  $closeTicket
-     * @param  Ticket  $ticket
-     * @return \Illuminate\Http\Response
      */
     public function close(Actions\CloseTicketAction $closeTicket, Ticket $ticket): \Illuminate\Http\Response
     {
