@@ -9,7 +9,7 @@ use TTBooking\TicketAllocator\Http\Controllers\TicketCategoryController;
     Route::apiResource('factors', 'FactorController');
 });*/
 
-Route::redirect('/', '/dashboard');
+Route::get('/', fn () => to_route('ticket-allocator.dashboard.index'));
 
 Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', 'DashboardController@index')->name('index');

@@ -2,7 +2,7 @@
     <v-app>
         <v-navigation-drawer expand-on-hover rail>
             <v-list density="compact" nav>
-                <Link :href="route('ticket-allocator.index')">
+                <Link :href="route('ticket-allocator.dashboard.index')">
                     <v-list-item prepend-icon="mdi-monitor-dashboard" :title="trans('dashboard')" value="dashboard" />
                 </Link>
                 <Link :href="route('ticket-allocator.ticket-categories.index')">
