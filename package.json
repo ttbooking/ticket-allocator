@@ -35,7 +35,6 @@
         "@typescript-eslint/parser": "^5.57.0",
         "@vitejs/plugin-vue": "^4.1.0",
         "autoprefixer": "^10.4.14",
-        "colada-plugin": "^0.1.0",
         "eslint": "^8.37.0",
         "eslint-config-prettier": "^8.8.0",
         "eslint-plugin-vue": "^9.10.0",
