@@ -13,21 +13,18 @@ Route::redirect('/', '/dashboard');
 
 Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', 'DashboardController@index')->name('index');
-
-    Route::prefix('operators/{operator}')->group(function () {
-        Route::patch('/ready', 'DashboardController@ready')->name('ready');
-    });
-
-    Route::prefix('tickets/{ticket}')->group(function () {
-        Route::patch('/weight', 'DashboardController@weight')->name('weight');
-        Route::patch('/handler', 'DashboardController@handler')->name('handler');
-        Route::delete('/', 'DashboardController@close')->name('close');
-    });
 });
-
-Route::resource('ticket-categories', TicketCategoryController::class);
 
 Route::resource('operators', OperatorController::class);
 Route::put('/operators', 'OperatorController@discover')->name('operators.discover');
+Route::patch('/operators/{operator}/ready', 'OperatorController@ready')->name('operators.ready');
 
 Route::resource('teams', TeamController::class)->withTrashed(['show', 'edit', 'update', 'destroy']);
+
+Route::resource('ticket-categories', TicketCategoryController::class);
+
+Route::prefix('tickets/{ticket}')->name('tickets.')->group(function () {
+    Route::patch('/weight', 'TicketController@weight')->name('weight');
+    Route::patch('/handler', 'TicketController@handler')->name('handler');
+    Route::delete('/', 'TicketController@close')->name('close');
+});

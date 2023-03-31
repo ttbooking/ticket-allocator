@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
@@ -159,5 +161,19 @@ class OperatorController extends Controller
             ->each(static fn ($user) => $enrollOperator($user));
 
         return Response::redirectToRoute('ticket-allocator.operators.index', status: 303);
+    }
+
+    /**
+     * Set operator readiness status.
+     */
+    public function ready(
+        Actions\SetOperatorReadyAction $setOperatorReady,
+        Actions\SetOperatorNotReadyAction $setOperatorNotReady,
+        Operator $operator,
+        Request $request,
+    ): JsonResponse {
+        $request->ready ? $setOperatorReady($operator) : $setOperatorNotReady($operator);
+
+        return Response::json($request->ready);
     }
 }
