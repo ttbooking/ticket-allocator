@@ -17,7 +17,7 @@ const name = window.document.getElementsByTagName("title")[0]?.innerText || "Lar
 createInertiaApp({
     title: (title) => `${title} - ${name}`,
     resolve: (name) =>
-        resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob<DefineComponent>("./Pages/**/*.vue")),
+        resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>("./pages/**/*.vue")),
     setup({ el, App, props, plugin }) {
         createApp({ name, render: () => h(App, props) })
             .use(plugin)
