@@ -10,6 +10,8 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { i18nVue } from "laravel-vue-i18n";
 //import { ZiggyVue } from "ziggy-js";
 
+import.meta.glob("../images/**");
+
 loadFonts();
 
 const name = window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";

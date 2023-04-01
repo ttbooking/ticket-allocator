@@ -97,6 +97,10 @@
     "file": "assets/materialdesignicons-webfont-c1c004a9.woff2",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2"
   },
+  "resources/images/favicon.png": {
+    "file": "assets/favicon-f8743b61.png",
+    "src": "resources/images/favicon.png"
+  },
   "resources/js/app.css": {
     "file": "assets/app-83debe58.css",
     "src": "resources/js/app.css"
