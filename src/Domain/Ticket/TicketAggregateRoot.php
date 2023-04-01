@@ -12,6 +12,8 @@ class TicketAggregateRoot extends AggregateRoot
 {
     const META_ICON = 'icon';
 
+    const META_TRIAGE = 'triage';
+
     const META_CATEGORY_NAME = 'category_name';
 
     const META_CATEGORY_SHORT = 'category_short';
