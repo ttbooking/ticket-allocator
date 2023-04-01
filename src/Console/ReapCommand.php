@@ -56,10 +56,6 @@ class ReapCommand extends Command
 
     /**
      * Execute the console command.
-     *
-     * @param  ResignOperatorAction  $resignOperator
-     * @param  CloseTicketAction  $closeTicket
-     * @return void
      */
     public function handle(ResignOperatorAction $resignOperator, CloseTicketAction $closeTicket): void
     {

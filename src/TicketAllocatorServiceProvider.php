@@ -23,8 +23,6 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -42,8 +40,6 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     /**
      * Register the Ticket Allocator routes.
-     *
-     * @return void
      */
     protected function registerRoutes(): void
     {
@@ -59,8 +55,6 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     /**
      * Register the Ticket Allocator resources.
-     *
-     * @return void
      */
     protected function registerResources(): void
     {
@@ -123,8 +117,6 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
     public function register(): void
     {

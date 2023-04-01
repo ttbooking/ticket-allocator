@@ -18,8 +18,6 @@ class TicketCategoryController extends Controller
 {
     /**
      * Display a listing of the ticket categories.
-     *
-     * @return InertiaResponse
      */
     public function index(): InertiaResponse
     {
@@ -30,8 +28,6 @@ class TicketCategoryController extends Controller
 
     /**
      * Show the form for creating a new ticket category.
-     *
-     * @return InertiaResponse
      */
     public function create(): InertiaResponse
     {
@@ -40,9 +36,6 @@ class TicketCategoryController extends Controller
 
     /**
      * Store a newly created ticket category in storage.
-     *
-     * @param  \TTBooking\TicketAllocator\Http\Requests\StoreOperatorRequest  $request
-     * @return RedirectResponse
      */
     public function store(StoreTicketCategoryRequest $request): RedirectResponse {
         TicketCategory::query()->create($request->validated());
@@ -52,9 +45,6 @@ class TicketCategoryController extends Controller
 
     /**
      * Display the specified ticket category.
-     *
-     * @param  \TTBooking\TicketAllocator\Models\TicketCategory  $ticketCategory
-     * @return InertiaResponse
      */
     public function show(TicketCategory $ticketCategory): InertiaResponse
     {
@@ -65,9 +55,6 @@ class TicketCategoryController extends Controller
 
     /**
      * Show the form for editing the specified ticket category.
-     *
-     * @param  \TTBooking\TicketAllocator\Models\TicketCategory  $ticketCategory
-     * @return InertiaResponse
      */
     public function edit(TicketCategory $ticketCategory): InertiaResponse
     {
@@ -78,10 +65,6 @@ class TicketCategoryController extends Controller
 
     /**
      * Update the specified ticket category in storage.
-     *
-     * @param  \TTBooking\TicketAllocator\Http\Requests\UpdateTicketCategoryRequest  $request
-     * @param  \TTBooking\TicketAllocator\Models\TicketCategory  $ticketCategory
-     * @return RedirectResponse
      */
     public function update(UpdateTicketCategoryRequest $request, TicketCategory $ticketCategory): RedirectResponse {
         $ticketCategory->update($request->validated());
@@ -91,9 +74,6 @@ class TicketCategoryController extends Controller
 
     /**
      * Remove the specified ticket category from storage.
-     *
-     * @param  \TTBooking\TicketAllocator\Models\TicketCategory  $ticketCategory
-     * @return RedirectResponse
      */
     public function destroy(TicketCategory $ticketCategory): RedirectResponse
     {

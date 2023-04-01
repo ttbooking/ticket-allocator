@@ -25,8 +25,6 @@ class OperatorController extends Controller
 {
     /**
      * Display a listing of the operators.
-     *
-     * @return InertiaResponse
      */
     public function index(): InertiaResponse
     {
@@ -37,8 +35,6 @@ class OperatorController extends Controller
 
     /**
      * Show the form for creating a new operator.
-     *
-     * @return InertiaResponse
      */
     public function create(): InertiaResponse
     {
@@ -54,13 +50,6 @@ class OperatorController extends Controller
 
     /**
      * Store a newly created operator in storage.
-     *
-     * @param  \TTBooking\TicketAllocator\Http\Requests\StoreOperatorRequest  $request
-     * @param  Actions\EnrollOperatorAction  $enrollOperator
-     * @param  Actions\ChangeOperatorNameAction  $changeOperatorName
-     * @param  Actions\AdjustOperatorTicketLimitAction  $adjustOperatorTicketLimit
-     * @param  Actions\AdjustOperatorComplexityLimitAction  $adjustOperatorComplexityLimit
-     * @return RedirectResponse
      */
     public function store(
         StoreOperatorRequest $request,
@@ -81,9 +70,6 @@ class OperatorController extends Controller
 
     /**
      * Display the specified operator.
-     *
-     * @param  \TTBooking\TicketAllocator\Domain\Operator\Projections\Operator  $operator
-     * @return InertiaResponse
      */
     public function show(Operator $operator): InertiaResponse
     {
@@ -94,9 +80,6 @@ class OperatorController extends Controller
 
     /**
      * Show the form for editing the specified operator.
-     *
-     * @param  \TTBooking\TicketAllocator\Domain\Operator\Projections\Operator  $operator
-     * @return InertiaResponse
      */
     public function edit(Operator $operator): InertiaResponse
     {
@@ -108,13 +91,6 @@ class OperatorController extends Controller
 
     /**
      * Update the specified operator in storage.
-     *
-     * @param  \TTBooking\TicketAllocator\Http\Requests\UpdateOperatorRequest  $request
-     * @param  \TTBooking\TicketAllocator\Domain\Operator\Projections\Operator  $operator
-     * @param  Actions\ChangeOperatorNameAction  $changeOperatorName
-     * @param  Actions\AdjustOperatorTicketLimitAction  $adjustOperatorTicketLimit
-     * @param  Actions\AdjustOperatorComplexityLimitAction  $adjustOperatorComplexityLimit
-     * @return RedirectResponse
      */
     public function update(
         UpdateOperatorRequest $request,
@@ -134,10 +110,6 @@ class OperatorController extends Controller
 
     /**
      * Remove the specified operator from storage.
-     *
-     * @param  \TTBooking\TicketAllocator\Domain\Operator\Projections\Operator  $operator
-     * @param  Actions\ResignOperatorAction  $resignOperator
-     * @return RedirectResponse
      */
     public function destroy(Operator $operator, Actions\ResignOperatorAction $resignOperator): RedirectResponse
     {
@@ -148,9 +120,6 @@ class OperatorController extends Controller
 
     /**
      * Discover users with operator privileges and store them as operators.
-     *
-     * @param  Actions\EnrollOperatorAction  $enrollOperator
-     * @return RedirectResponse
      */
     public function discover(Actions\EnrollOperatorAction $enrollOperator): RedirectResponse
     {

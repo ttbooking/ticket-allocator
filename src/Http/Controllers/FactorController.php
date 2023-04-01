@@ -15,9 +15,6 @@ class FactorController extends Controller
 {
     /**
      * Display a listing of the factors.
-     *
-     * @param  FactorQueryBuilder  $query
-     * @return JsonResponse
      */
     public function index(FactorQueryBuilder $query): JsonResponse
     {
@@ -26,9 +23,6 @@ class FactorController extends Controller
 
     /**
      * Store a newly created factor in repository.
-     *
-     * @param  FactorStoreRequest  $request
-     * @return JsonResponse
      */
     public function store(FactorStoreRequest $request): JsonResponse
     {
@@ -39,9 +33,6 @@ class FactorController extends Controller
 
     /**
      * Display the specified factor.
-     *
-     * @param  Factor  $factor
-     * @return JsonResponse
      */
     public function show(Factor $factor): JsonResponse
     {
@@ -50,10 +41,6 @@ class FactorController extends Controller
 
     /**
      * Update the specified factor in repository.
-     *
-     * @param  FactorStoreRequest  $request
-     * @param  Factor  $factor
-     * @return JsonResponse
      */
     public function update(FactorStoreRequest $request, Factor $factor): JsonResponse
     {
@@ -64,9 +51,6 @@ class FactorController extends Controller
 
     /**
      * Remove the specified factor from repository.
-     *
-     * @param  Factor  $factor
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Factor $factor): \Illuminate\Http\Response
     {

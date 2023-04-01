@@ -22,8 +22,6 @@ class TeamController extends Controller
 {
     /**
      * Display a listing of the operator teams.
-     *
-     * @return InertiaResponse
      */
     public function index(): InertiaResponse
     {
@@ -34,8 +32,6 @@ class TeamController extends Controller
 
     /**
      * Show the form for creating a new operator team.
-     *
-     * @return InertiaResponse
      */
     public function create(): InertiaResponse
     {
@@ -47,9 +43,6 @@ class TeamController extends Controller
 
     /**
      * Store a newly created operator team in storage.
-     *
-     * @param  \TTBooking\TicketAllocator\Http\Requests\StoreOperatorTeamRequest  $request
-     * @return RedirectResponse
      */
     public function store(StoreOperatorTeamRequest $request): RedirectResponse
     {
@@ -64,9 +57,6 @@ class TeamController extends Controller
 
     /**
      * Display the specified operator team.
-     *
-     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $team
-     * @return InertiaResponse
      */
     public function show(OperatorTeam $team): InertiaResponse
     {
@@ -77,9 +67,6 @@ class TeamController extends Controller
 
     /**
      * Show the form for editing the specified operator team.
-     *
-     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $team
-     * @return InertiaResponse
      */
     public function edit(OperatorTeam $team): InertiaResponse
     {
@@ -92,10 +79,6 @@ class TeamController extends Controller
 
     /**
      * Update the specified operator team in storage.
-     *
-     * @param  \TTBooking\TicketAllocator\Http\Requests\UpdateOperatorTeamRequest  $request
-     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $team
-     * @return RedirectResponse
      */
     public function update(UpdateOperatorTeamRequest $request, OperatorTeam $team): RedirectResponse
     {
@@ -118,9 +101,6 @@ class TeamController extends Controller
 
     /**
      * Remove the specified operator team from storage.
-     *
-     * @param  \TTBooking\TicketAllocator\Models\OperatorTeam  $team
-     * @return RedirectResponse
      */
     public function destroy(OperatorTeam $team): RedirectResponse
     {

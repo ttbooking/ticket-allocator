@@ -19,9 +19,6 @@ class HandleInertiaRequests extends Middleware
 
     /**
      * Determine the current asset version.
-     *
-     * @param  Request  $request
-     * @return string|null
      */
     public function version(Request $request): ?string
     {

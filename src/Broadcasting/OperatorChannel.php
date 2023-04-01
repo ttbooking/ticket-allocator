@@ -8,8 +8,6 @@ class OperatorChannel
 {
     /**
      * Create a new channel instance.
-     *
-     * @return void
      */
     public function __construct()
     {
