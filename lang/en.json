@@ -28,6 +28,7 @@
     "ticket_limit": "Ticket limit",
     "ticket_pool": "Ticket pool",
     "tickets": "Tickets",
+    "title": "Ticket Allocator",
     "user": "User",
     "weight_increment": "Weight increment"
 }

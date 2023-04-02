@@ -22,9 +22,10 @@
         </v-navigation-drawer>
         <v-main>
             <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-                <div>
-                    <Link :href="route('ticket-allocator.index')">
-                        <ApplicationLogo class="w-20 h-20 fill-current text-gray-500" />
+                <div class="w-1/4">
+                    <Link :href="route('ticket-allocator.index')" class="flex align-center">
+                        <ApplicationLogo class="w-20 h-20 shrink-0" />
+                        <span class="font-title text-4xl text-gray-600">{{ trans("title") }}</span>
                     </Link>
                 </div>
 
