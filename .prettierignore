@@ -1,3 +1,4 @@
 /vendor
 /public/build
+/resources/js/components/ApplicationLogo.vue
 *.yarn
