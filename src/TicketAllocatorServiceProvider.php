@@ -6,6 +6,7 @@ namespace TTBooking\TicketAllocator;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Spatie\EventSourcing\Facades\Projectionist;
 use TTBooking\TicketAllocator\Contracts\Factor;
@@ -28,6 +29,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->registerRoutes();
         $this->registerResources();
+        $this->registerViteAliases();
         $this->registerCommands();
         $this->registerObservers();
         $this->registerEventHandlers();
@@ -60,6 +62,23 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'ticket-allocator');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'ticket-allocator');
+    }
+
+    protected function registerViteAliases(): void
+    {
+        /** @var \Illuminate\Foundation\Vite $this */
+        Vite::macro('ticketAllocatorEntryPoint', fn () => $this
+            ->useHotFile('vendor/ticket-allocator/hot')
+            ->useBuildDirectory('vendor/ticket-allocator/build')
+            ->withEntryPoints(['resources/js/app.ts'])
+        );
+
+        /** @var \Illuminate\Foundation\Vite $this */
+        Vite::macro('ticketAllocatorImage', fn ($asset) => $this
+            ->useHotFile('vendor/ticket-allocator/hot')
+            ->useBuildDirectory('vendor/ticket-allocator/build')
+            ->asset("resources/images/$asset")
+        );
     }
 
     protected function registerCommands(): void
