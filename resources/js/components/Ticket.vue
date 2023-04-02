@@ -1,8 +1,8 @@
 <template>
     <div class="d-inline-block">
-        <v-btn size="small" class="ticket" :class="{ overflow }" flat width="100">
+        <v-btn size="small" class="ticket justify-start px-2" :class="{ overflow }" :ripple="false" flat width="100">
             <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon" color="white" start />
-            <span class="text-white">{{ title() }}</span>
+            <span class="text-white overflow-hidden">{{ title() }}</span>
             <v-overlay
                 open-on-click
                 activator="parent"
