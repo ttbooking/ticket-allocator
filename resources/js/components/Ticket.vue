@@ -1,8 +1,10 @@
 <template>
     <div class="d-inline-block">
         <v-btn size="small" class="ticket justify-start px-2" :class="{ overflow }" :ripple="false" flat width="100">
-            <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon" color="white" start />
-            <span class="text-white overflow-hidden">{{ title() }}</span>
+            <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon" color="white" />
+            <span class="text-white overflow-hidden">
+                <span class="title inline-block relative">{{ title() }}</span>
+            </span>
             <v-overlay
                 open-on-click
                 activator="parent"
@@ -77,5 +79,26 @@ const animation = computed(() => ({
 .ticket {
     animation-delay: v-bind("animation.delay");
     animation-duration: v-bind("animation.duration");
+}
+
+.ticket:deep(.v-btn__content) {
+    overflow: hidden;
+}
+
+.ticket:hover .title {
+    animation: 4s linear infinite alternate ticker;
+}
+
+@keyframes ticker {
+    0%,
+    25% {
+        left: 0;
+        transform: translateX(0%);
+    }
+    75%,
+    100% {
+        left: 100%;
+        transform: translateX(-100%);
+    }
 }
 </style>
