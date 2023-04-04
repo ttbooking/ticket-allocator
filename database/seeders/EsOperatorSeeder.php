@@ -12,15 +12,6 @@ class EsOperatorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @param  Actions\EnrollOperatorAction  $enrollOperator
-     * @param  Actions\ChangeOperatorNameAction  $changeOperatorName
-     * @param  Actions\SetOperatorOnlineAction  $setOperatorOnline
-     * @param  Actions\SetOperatorReadyAction  $setOperatorReady
-     * @param  Actions\AdjustOperatorTicketLimitAction  $adjustOperatorTicketLimit
-     * @param  Actions\AdjustOperatorComplexityLimitAction  $adjustOperatorComplexityLimit
-     * @param  int  $count
-     * @return void
      */
     public function run(
         Actions\EnrollOperatorAction $enrollOperator,

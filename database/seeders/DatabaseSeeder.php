@@ -10,8 +10,6 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -30,10 +28,6 @@ class DatabaseSeeder extends Seeder
 
     /**
      * Prompt the user for numeric input.
-     *
-     * @param  string  $question
-     * @param  int  $default
-     * @return int
      */
     protected function askNumber(string $question, int $default = 0): int
     {

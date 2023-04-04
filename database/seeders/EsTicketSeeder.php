@@ -14,16 +14,6 @@ class EsTicketSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @param  Actions\CreateTicketAction  $createTicket
-     * @param  Actions\SetTicketMetaValueAction  $setTicketMetaValue
-     * @param  Actions\BindTicketAction  $bindTicket
-     * @param  Actions\IncrementTicketInitialWeightAction  $incrementTicketInitialWeight
-     * @param  Actions\IncrementTicketWeightIncrementAction  $incrementTicketWeightIncrement
-     * @param  Actions\IncrementTicketComplexityAction  $incrementTicketComplexity
-     * @param  Actions\IncrementTicketDelayAction  $incrementTicketDelay
-     * @param  int  $count
-     * @return void
      */
     public function run(
         Actions\CreateTicketAction $createTicket,

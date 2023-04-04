@@ -11,9 +11,6 @@ class TicketSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @param  int  $count
-     * @return void
      */
     public function run(int $count = 50): void
     {
