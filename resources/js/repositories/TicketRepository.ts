@@ -9,7 +9,7 @@ export default class TicketRepository extends Repository<Ticket> {
         this.save({
             uuid: payload.uuid,
             category_uuid: payload.categoryUuid,
-            operator_uuid: payload.operatorUuid,
+            handler_uuid: payload.operatorUuid,
             initial_weight: payload.initialWeight,
             weight_increment: payload.weightIncrement,
             complexity: payload.complexity,
