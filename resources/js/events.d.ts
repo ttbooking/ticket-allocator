@@ -142,7 +142,12 @@ namespace Ticket {
     export interface CreatedPayload {
         uuid: string;
         categoryUuid: string;
-        origin?: any;
+        operatorUuid: string | null;
+        initialWeight: number;
+        weightIncrement: number;
+        complexity: number;
+        delay: number;
+        meta: Record<string, string>;
     }
 
     export interface DelayDecrementedPayload {

@@ -5,8 +5,18 @@ import * as Events from "@/events";
 export default class TicketRepository extends Repository<Ticket> {
     use = Ticket;
 
-    create = ({ uuid, categoryUuid }: Events.Ticket.CreatedPayload) => {
-        this.save({ uuid, category_uuid: categoryUuid, created_at: new Date().toISOString() });
+    create = (payload: Events.Ticket.CreatedPayload) => {
+        this.save({
+            uuid: payload.uuid,
+            category_uuid: payload.categoryUuid,
+            operator_uuid: payload.operatorUuid,
+            initial_weight: payload.initialWeight,
+            weight_increment: payload.weightIncrement,
+            complexity: payload.complexity,
+            delay: payload.delay,
+            meta: payload.meta,
+            created_at: new Date().toISOString(),
+        });
     };
 
     close = ({ uuid }: Events.Ticket.ClosedPayload) => {

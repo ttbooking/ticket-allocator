@@ -26,8 +26,6 @@ class TicketAggregateRoot extends AggregateRoot
 
     const META_CARD_CONTENT = 'card_content';
 
-    public ?object $origin = null;
-
     // TODO: group by factors? Return magic sum?
 
     public string $categoryUuid;
@@ -57,14 +55,24 @@ class TicketAggregateRoot extends AggregateRoot
         return $this->recordThat(new Events\TicketCreated(
             uuid: $this->uuid(),
             categoryUuid: $command->categoryUuid,
-            origin: $command->origin,
+            operatorUuid: $command->operatorUuid,
+            initialWeight: $command->initialWeight,
+            weightIncrement: $command->weightIncrement,
+            complexity: $command->complexity,
+            delay: $command->delay,
+            meta: $command->meta,
         ));
     }
 
     protected function applyTicketCreated(Events\TicketCreated $event): void
     {
         $this->categoryUuid = $event->categoryUuid;
-        $this->origin = $event->origin;
+        $this->operatorUuid = $event->operatorUuid;
+        $this->initialWeight = $event->initialWeight;
+        $this->weightIncrement = $event->weightIncrement;
+        $this->complexity = $event->complexity;
+        $this->delay = $event->delay;
+        $this->meta = $event->meta;
     }
 
     public function close(Commands\CloseTicket $command): static

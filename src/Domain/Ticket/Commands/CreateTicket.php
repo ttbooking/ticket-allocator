@@ -14,7 +14,12 @@ class CreateTicket
     public function __construct(
         #[AggregateUuid] public string $uuid,
         public string $categoryUuid,
-        public ?object $origin = null,
+        public ?string $operatorUuid = null,
+        public int $initialWeight = 0,
+        public int $weightIncrement = 0,
+        public int $complexity = 0,
+        public int $delay = 0,
+        public array $meta = [],
     ) {
     }
 }
