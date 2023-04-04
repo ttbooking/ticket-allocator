@@ -17,7 +17,7 @@ class TicketProjector extends Projector
         (new Ticket)->writeable()->create([
             'uuid' => $event->uuid,
             'category_uuid' => $event->categoryUuid,
-            'operator_uuid' => $event->operatorUuid,
+            'handler_uuid' => $event->operatorUuid,
             'initial_weight' => $event->initialWeight,
             'weight_weight' => $event->weightIncrement,
             'complexity' => $event->complexity,
