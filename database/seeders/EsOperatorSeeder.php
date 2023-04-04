@@ -15,7 +15,7 @@ class EsOperatorSeeder extends Seeder
      */
     public function run(EnrollOperatorAction $enrollOperator, int $count = 10): void
     {
-        $operatorTeams = OperatorTeam::all()->modelKeys();
+        $operatorTeams = OperatorTeam::all()->all();
 
         for ($i = 0; $i < $count; $i++) {
             $operator = $enrollOperator(
