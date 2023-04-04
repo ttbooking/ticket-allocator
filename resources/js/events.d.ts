@@ -50,6 +50,11 @@ namespace Operator {
     export interface EnrolledPayload {
         uuid: string;
         userId: number | string;
+        name: string | null;
+        online: boolean;
+        ready: boolean;
+        ticketLimit: number | null;
+        complexityLimit: number | null;
     }
 
     export interface JoinedTeamPayload {
@@ -69,7 +74,7 @@ namespace Operator {
 
     export interface NameChangedPayload {
         uuid: string;
-        name: string;
+        name: string | null;
     }
 
     export interface NotReadyPayload {

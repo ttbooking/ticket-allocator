@@ -12,13 +12,24 @@ use TTBooking\TicketAllocator\Domain\Support\Action;
 
 class EnrollOperatorAction extends Action
 {
-    public function __invoke(Model|int|string $user): ?Operator
-    {
+    public function __invoke(
+        Model|int|string $user,
+        string $name = null,
+        bool $online = false,
+        bool $ready = false,
+        int $ticketLimit = null,
+        int $complexityLimit = null,
+    ): ?Operator {
         $uuid = (string) Str::orderedUuid();
 
         $this->dispatch(new EnrollOperator(
             uuid: $uuid,
             userId: is_scalar($user) ? $user : $user->getKey(),
+            name: $name,
+            online: $online,
+            ready: $ready,
+            ticketLimit: $ticketLimit,
+            complexityLimit: $complexityLimit,
         ));
 
         return Operator::find($uuid);

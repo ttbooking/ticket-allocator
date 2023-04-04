@@ -25,12 +25,22 @@ class OperatorAggregateRoot extends AggregateRoot
         return $this->recordThat(new Events\OperatorEnrolled(
             uuid: $this->uuid(),
             userId: $command->userId,
+            name: $command->name,
+            online: $command->online,
+            ready: $command->ready,
+            ticketLimit: $command->ticketLimit,
+            complexityLimit: $command->complexityLimit,
         ));
     }
 
     protected function applyOperatorEnrolled(Events\OperatorEnrolled $event): void
     {
         $this->userId = $event->userId;
+        $this->name = $event->name;
+        $this->online = $event->online;
+        $this->ready = $event->ready;
+        $this->ticketLimit = $event->ticketLimit;
+        $this->complexityLimit = $event->complexityLimit;
     }
 
     public function resign(Commands\ResignOperator $command): static

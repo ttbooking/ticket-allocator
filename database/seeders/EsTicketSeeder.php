@@ -15,7 +15,8 @@ class EsTicketSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(CreateTicketAction $createTicket, int $count = 50): void {
+    public function run(CreateTicketAction $createTicket, int $count = 50): void
+    {
         $ticketCategories = TicketCategory::all()->modelKeys();
         $operators = Operator::all()->modelKeys();
 

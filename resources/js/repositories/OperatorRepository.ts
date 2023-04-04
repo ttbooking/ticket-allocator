@@ -5,8 +5,16 @@ import * as Events from "@/events";
 export default class OperatorRepository extends Repository<Operator> {
     use = Operator;
 
-    enroll = ({ uuid, userId }: Events.Operator.EnrolledPayload) => {
-        this.save({ uuid, user_id: userId });
+    enroll = (payload: Events.Operator.EnrolledPayload) => {
+        this.save({
+            uuid: payload.uuid,
+            user_id: payload.userId,
+            name: payload.name,
+            online: payload.online,
+            ready: payload.ready,
+            ticket_limit: payload.ticketLimit,
+            complexity_limit: payload.complexityLimit,
+        });
     };
 
     resign = ({ uuid }: Events.Operator.ResignedPayload) => {

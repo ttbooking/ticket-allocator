@@ -18,6 +18,11 @@ class OperatorProjector extends Projector
         (new Operator)->writeable()->create([
             'uuid' => $event->uuid,
             'user_id' => $event->userId,
+            'name' => $event->name,
+            'online' => $event->online,
+            'ready' => $event->ready,
+            'ticket_limit' => $event->ticketLimit,
+            'complexity_limit' => $event->complexityLimit,
         ]);
     }
 
