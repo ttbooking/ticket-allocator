@@ -7,6 +7,7 @@ namespace TTBooking\TicketAllocator\Console;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Helper\ProgressBar;
 use TTBooking\TicketAllocator\Domain\Operator\Actions\ResignOperatorAction;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Actions\CloseTicketAction;
@@ -43,6 +44,8 @@ class ReapCommand extends Command
     protected ResignOperatorAction $resignOperator;
 
     protected CloseTicketAction $closeTicket;
+
+    protected ProgressBar $bar;
 
     private const OPRSORT_NONE = 0;
     private const OPRSORT_PREF = 1;
@@ -87,8 +90,10 @@ class ReapCommand extends Command
             }
         }
 
+        $count = 0;
         $sort = [];
         if ($operators) {
+            $count += Operator::query()->count();
             $choices = ["Doesn't matter", 'Preferable first', 'Preferable last'];
             $sort['Operators'] = array_search(
                 $this->choice('In what order operators should be reaped?', $choices, 2),
@@ -96,6 +101,7 @@ class ReapCommand extends Command
             );
         }
         if ($tickets) {
+            $count += Ticket::query()->count();
             $choices = ["Doesn't matter", 'Significant first', 'Significant last', 'Protracted first', 'Protracted last'];
             $sort['Tickets'] = array_search(
                 $this->choice('In what order tickets should be reaped?', $choices, 2),
@@ -103,8 +109,18 @@ class ReapCommand extends Command
             );
         }
 
-        foreach ($entities as $entity) {
-            $this->{"reap$entity"}(null, $sort[$entity] ?? 0, $withTickets ? ($sort['Tickets'] ?? null) : null);
+        if ($count > 0) {
+            $this->bar = $this->output->createProgressBar($count);
+            $this->bar->start();
+
+            foreach ($entities as $entity) {
+                $this->{"reap$entity"}(null, $sort[$entity] ?? 0, $withTickets ? ($sort['Tickets'] ?? null) : null);
+            }
+
+            $this->bar->finish();
+            $this->newLine(2);
+        } else {
+            $this->warn('Nothing to reap!');
         }
 
         if ($this->confirm('Do you want to do clean up afterwards?')) {
@@ -145,6 +161,7 @@ class ReapCommand extends Command
                 $this->reapTickets($operator->tickets, $sortTickets);
             }
             ($this->resignOperator)($operator);
+            $this->bar->advance();
         }
 
         if ($sort === self::OPRSORT_PREF_REV && $sortTickets !== null) {
@@ -175,6 +192,7 @@ class ReapCommand extends Command
 
         foreach ($tickets as $ticket) {
             ($this->closeTicket)($ticket);
+            $this->bar->advance();
         }
     }
 }

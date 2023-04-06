@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Symfony\Component\Console\Helper\ProgressBar;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 
 class OperatorSeeder extends Seeder
@@ -14,6 +15,15 @@ class OperatorSeeder extends Seeder
      */
     public function run(int $count = 10): void
     {
-        Operator::factory($count)->create();
+        if ($count === 0) {
+            return;
+        }
+
+        $this->command->withProgressBar($count, function (ProgressBar $bar) use ($count) {
+            Operator::created(static fn () => $bar->advance());
+            Operator::factory($count)->create();
+        });
+
+        $this->command->newLine();
     }
 }

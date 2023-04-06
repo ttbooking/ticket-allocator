@@ -15,7 +15,14 @@ class EsOperatorSeeder extends Seeder
      */
     public function run(EnrollOperatorAction $enrollOperator, int $count = 10): void
     {
+        if ($count === 0) {
+            return;
+        }
+
         $operatorTeams = OperatorTeam::all()->all();
+
+        $bar = $this->command->getOutput()->createProgressBar($count);
+        $bar->start();
 
         for ($i = 0; $i < $count; $i++) {
             $operator = $enrollOperator(
@@ -34,6 +41,11 @@ class EsOperatorSeeder extends Seeder
                     $team->operators()->attach($operator);
                 }
             }
+
+            $bar->advance();
         }
+
+        $bar->finish();
+        $this->command->newLine();
     }
 }

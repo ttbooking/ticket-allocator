@@ -17,8 +17,15 @@ class EsTicketSeeder extends Seeder
      */
     public function run(CreateTicketAction $createTicket, int $count = 50): void
     {
+        if ($count === 0) {
+            return;
+        }
+
         $ticketCategories = TicketCategory::all()->modelKeys();
         $operators = Operator::all()->modelKeys();
+
+        $bar = $this->command->getOutput()->createProgressBar($count);
+        $bar->start();
 
         for ($i = 0; $i < $count; $i++) {
             $createTicket(
@@ -38,6 +45,11 @@ class EsTicketSeeder extends Seeder
                     ],
                 ],
             );
+
+            $bar->advance();
         }
+
+        $bar->finish();
+        $this->command->newLine();
     }
 }
