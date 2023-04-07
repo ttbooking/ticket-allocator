@@ -12,9 +12,15 @@ class MergeTicketMetaValuesAction extends Action
 {
     public function __invoke(Ticket|string $ticket, array $meta): void
     {
-        $this->dispatch(new MergeTicketMetaValues(
-            uuid: is_string($ticket) ? $ticket : $ticket->getKey(),
-            meta: $meta,
-        ));
+        if (is_string($ticket)) {
+            $ticket = Ticket::find($ticket);
+        }
+
+        if($meta = array_diff_assoc($ticket->meta, $meta)) {
+            $this->dispatch(new MergeTicketMetaValues(
+                uuid: $ticket->getKey(),
+                meta: $meta,
+            ));
+        }
     }
 }

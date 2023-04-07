@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Observers;
 
-use TTBooking\TicketAllocator\Domain\Ticket\Actions\SetTicketMetaValueAction;
+use TTBooking\TicketAllocator\Domain\Ticket\Actions\MergeTicketMetaValuesAction;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot as Ticket;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class TicketCategoryObserver
 {
-    public function __construct(protected SetTicketMetaValueAction $setTicketMetaValue)
+    public function __construct(protected MergeTicketMetaValuesAction $mergeTicketMetaValues)
     {
     }
 
@@ -20,8 +20,10 @@ class TicketCategoryObserver
     public function updated(TicketCategory $category): void
     {
         foreach ($category->tickets as $ticket) {
-            ($this->setTicketMetaValue)($ticket, Ticket::META_CATEGORY_NAME, $category->name);
-            ($this->setTicketMetaValue)($ticket, Ticket::META_CATEGORY_SHORT, $category->short);
+            ($this->mergeTicketMetaValues)($ticket, [
+                Ticket::META_CATEGORY_NAME => $category->name,
+                Ticket::META_CATEGORY_SHORT => $category->short,
+            ]);
         }
     }
 }
