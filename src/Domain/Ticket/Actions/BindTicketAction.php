@@ -11,11 +11,12 @@ use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 
 class BindTicketAction extends Action
 {
-    public function __invoke(Ticket|string $ticket, Operator|string $operator): void
+    public function __invoke(Ticket|string $ticket, Operator|string $operator, array $meta = []): void
     {
         $this->dispatch(new BindTicket(
             uuid: is_string($ticket) ? $ticket : $ticket->getKey(),
             operatorUuid: is_string($operator) ? $operator : $operator->getKey(),
+            meta: $meta,
         ));
     }
 }

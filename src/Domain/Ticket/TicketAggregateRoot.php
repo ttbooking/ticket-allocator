@@ -110,7 +110,20 @@ class TicketAggregateRoot extends AggregateRoot
 
     protected function applyTicketMetaValueSet(Events\TicketMetaValueSet $event): void
     {
-        Arr::set($this->meta, $event->key, $event->value);
+        $this->meta[$event->key] = $event->value;
+    }
+
+    public function mergeMetaValues(Commands\MergeTicketMetaValues $command): static
+    {
+        return $this->recordThat(new Events\TicketMetaValuesMerged(
+            uuid: $this->uuid(),
+            meta: $command->meta,
+        ));
+    }
+
+    protected function applyTicketMetaValuesMerged(Events\TicketMetaValuesMerged $event): void
+    {
+        $this->meta = array_merge($this->meta, $event->meta);
     }
 
     public function bind(Commands\BindTicket $command): static
@@ -118,12 +131,14 @@ class TicketAggregateRoot extends AggregateRoot
         return $this->recordThat(new Events\TicketBound(
             uuid: $this->uuid(),
             operatorUuid: $command->operatorUuid,
+            meta: $command->meta,
         ));
     }
 
     protected function applyTicketBound(Events\TicketBound $event): void
     {
         $this->operatorUuid = $event->operatorUuid;
+        $this->meta = array_merge($this->meta, $event->meta);
     }
 
     public function unbind(Commands\UnbindTicket $command): static

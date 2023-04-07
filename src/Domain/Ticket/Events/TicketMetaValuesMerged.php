@@ -6,11 +6,10 @@ namespace TTBooking\TicketAllocator\Domain\Ticket\Events;
 
 use TTBooking\TicketAllocator\Domain\Support\Event;
 
-class TicketBound extends Event
+class TicketMetaValuesMerged extends Event
 {
     public function __construct(
         public string $uuid,
-        public string $operatorUuid,
         public array $meta,
     ) {
     }

@@ -9,11 +9,10 @@ use Spatie\EventSourcing\Commands\HandledBy;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 
 #[HandledBy(TicketAggregateRoot::class)]
-class BindTicket
+class MergeTicketMetaValues
 {
     public function __construct(
         #[AggregateUuid] public string $uuid,
-        public string $operatorUuid,
         public array $meta,
     ) {
     }

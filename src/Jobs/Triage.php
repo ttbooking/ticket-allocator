@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use TTBooking\TicketAllocator\Domain\Ticket\Actions\BindTicketAction;
-use TTBooking\TicketAllocator\Domain\Ticket\Actions\SetTicketMetaValueAction;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot as Ticket;
 use TTBooking\TicketAllocator\Support\MatchQuery;
 
@@ -20,13 +19,12 @@ class Triage implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(BindTicketAction $bindTicket, SetTicketMetaValueAction $setTicketMetaValue): void
+    public function handle(BindTicketAction $bindTicket): void
     {
         $query = MatchQuery::make();
 
         while (! is_null($pair = $query->first())) {
-            $bindTicket($pair['ticket_uuid'], $pair['operator_uuid']);
-            $setTicketMetaValue($pair['ticket_uuid'], Ticket::META_TRIAGE, true);
+            $bindTicket($pair['ticket_uuid'], $pair['operator_uuid'], [Ticket::META_TRIAGE => true]);
         }
     }
 }

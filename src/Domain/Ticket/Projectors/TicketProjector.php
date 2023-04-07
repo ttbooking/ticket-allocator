@@ -41,9 +41,25 @@ class TicketProjector extends Projector
         Ticket::find($event->uuid)?->writeable()->update(['meta->'.$event->key => $event->value]);
     }
 
+    public function onTicketMetaValuesMerged(Events\TicketMetaValuesMerged $event): void
+    {
+        if (! $ticket = Ticket::find($event->uuid)?->writeable()) {
+            return;
+        }
+
+        $ticket->update(['meta' => array_merge($ticket->meta, $event->meta)]);
+    }
+
     public function onTicketBound(Events\TicketBound $event): void
     {
-        Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => $event->operatorUuid]);
+        if (! $ticket = Ticket::find($event->uuid)?->writeable()) {
+            return;
+        }
+
+        $ticket->update([
+            'handler_uuid' => $event->operatorUuid,
+            'meta' => array_merge($ticket->meta, $event->meta),
+        ]);
     }
 
     public function onTicketUnbound(Events\TicketUnbound $event): void

@@ -23,8 +23,10 @@ export default class TicketRepository extends Repository<Ticket> {
         this.destroy(uuid);
     };
 
-    bind = ({ uuid, operatorUuid }: Events.Ticket.BoundPayload) => {
-        this.where("uuid", uuid).update({ handler_uuid: operatorUuid });
+    bind = ({ uuid, operatorUuid, meta }: Events.Ticket.BoundPayload) => {
+        const ticketMeta = this.find(uuid)?.meta ?? {};
+        meta = { ...ticketMeta, ...meta };
+        this.where("uuid", uuid).update({ handler_uuid: operatorUuid, meta });
     };
 
     unbind = ({ uuid }: Events.Ticket.UnboundPayload) => {
@@ -38,6 +40,12 @@ export default class TicketRepository extends Repository<Ticket> {
     setMetaValue = ({ uuid, key, value }: Events.Ticket.MetaValueSetPayload) => {
         const meta = this.find(uuid)?.meta ?? {};
         meta[key] = value;
+        this.where("uuid", uuid).update({ meta });
+    };
+
+    mergeMetaValues = ({ uuid, meta }: Events.Ticket.MetaValuesMergedPayload) => {
+        const ticketMeta = this.find(uuid)?.meta ?? {};
+        meta = { ...ticketMeta, ...meta };
         this.where("uuid", uuid).update({ meta });
     };
 
