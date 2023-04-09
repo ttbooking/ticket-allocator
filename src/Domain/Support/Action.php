@@ -32,4 +32,12 @@ abstract class Action
             default => $items,
         })->all();
     }
+
+    final protected static function diffAssoc(array $array1, array $array2): array
+    {
+        return array_map('unserialize', array_diff_assoc(
+            array_map('serialize', $array1),
+            array_map('serialize', $array2)
+        ));
+    }
 }

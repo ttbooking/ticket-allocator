@@ -16,7 +16,7 @@ class MergeTicketMetaValuesAction extends Action
             $ticket = Ticket::find($ticket);
         }
 
-        if($meta = array_diff_assoc($ticket->meta, $meta)) {
+        if($meta = self::diffAssoc(array_merge($ticket->meta ?? [], $meta), $ticket->meta ?? [])) {
             $this->dispatch(new MergeTicketMetaValues(
                 uuid: $ticket->getKey(),
                 meta: $meta,
