@@ -9,7 +9,6 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Support\Action;
 use TTBooking\TicketAllocator\Domain\Ticket\Commands\CreateTicket;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
-use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class CreateTicketAction extends Action
@@ -25,22 +24,15 @@ class CreateTicketAction extends Action
     ): ?Ticket {
         $uuid = (string) Str::orderedUuid();
 
-        if (is_string($category)) {
-            $category = TicketCategory::find($category);
-        }
-
         $this->dispatch(new CreateTicket(
             uuid: $uuid,
-            categoryUuid: $category->getKey(),
+            categoryUuid: is_string($category) ? $category : $category->getKey(),
             operatorUuid: is_string($operator) ? $operator : $operator?->getKey(),
             initialWeight: $initialWeight,
             weightIncrement: $weightIncrement,
             complexity: $complexity,
             delay: $delay,
-            meta: $meta + [
-                TicketAggregateRoot::META_CATEGORY_NAME => $category->name,
-                TicketAggregateRoot::META_CATEGORY_SHORT => $category->short,
-            ],
+            meta: $meta,
         ));
 
         return Ticket::find($uuid);

@@ -21,7 +21,7 @@ class EsTicketSeeder extends Seeder
             return;
         }
 
-        $ticketCategories = TicketCategory::all(['uuid', 'name', 'short'])->all();
+        $ticketCategories = TicketCategory::all(['uuid'])->modelKeys();
         $operators = Operator::all(['uuid'])->modelKeys();
 
         $bar = $this->command->getOutput()->createProgressBar($count);
@@ -29,7 +29,7 @@ class EsTicketSeeder extends Seeder
 
         for ($i = 0; $i < $count; $i++) {
             $createTicket(
-                category: $category = fake()->randomElement($ticketCategories),
+                category: fake()->randomElement($ticketCategories),
                 operator: fake()->boolean(20) ? fake()->randomElement($operators) : null,
                 initialWeight: fake()->numberBetween(0, 100000),
                 weightIncrement: fake()->numberBetween(0, 100),
@@ -37,8 +37,6 @@ class EsTicketSeeder extends Seeder
                 delay: fake()->boolean(10) ? fake()->numberBetween(1, 10) * 60 : 0,
                 meta: [
                     Ticket::META_ICON => fake()->randomElement(['mdi-airplane', 'mdi-train', 'mdi-bus', 'mdi-car']),
-                    //Ticket::META_CATEGORY_NAME => $category->name,
-                    //Ticket::META_CATEGORY_SHORT => $category->short,
                     Ticket::META_TITLE => $order = fake()->numberBetween(100, 1000),
                     Ticket::META_CARD_TITLE => 'Order #'.$order,
                     Ticket::META_CARD_CONTENT => [

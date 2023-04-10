@@ -17,7 +17,7 @@ use TTBooking\TicketAllocator\Domain\Support\FactorRepository;
 use TTBooking\TicketAllocator\Domain\Ticket\Factors\Category;
 use TTBooking\TicketAllocator\Domain\Ticket\Factors\ExpressiveFactor;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
-use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
+//use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
 use TTBooking\TicketAllocator\Jobs\Triage;
 
 class TicketAllocatorServiceProvider extends ServiceProvider
@@ -106,7 +106,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
             OperatorProjector::class,
             TicketProjector::class,
             SyncTicketCategories::class,
-            ApplyCategoryInfo::class,
+            //ApplyCategoryInfo::class,
         ]);
     }
 

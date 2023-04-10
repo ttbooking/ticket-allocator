@@ -7,6 +7,7 @@ namespace TTBooking\TicketAllocator\Domain\Ticket;
 use Illuminate\Support\Arr;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
 use TTBooking\TicketAllocator\Domain\Attributes\Incrementable;
+use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class TicketAggregateRoot extends AggregateRoot
 {
@@ -60,7 +61,7 @@ class TicketAggregateRoot extends AggregateRoot
             weightIncrement: $command->weightIncrement,
             complexity: $command->complexity,
             delay: $command->delay,
-            meta: $command->meta,
+            meta: $command->meta + static::getCategoryData($command->categoryUuid),
         ));
     }
 
@@ -255,5 +256,20 @@ class TicketAggregateRoot extends AggregateRoot
     protected function applyTicketDelayDecremented(Events\TicketDelayDecremented $event): void
     {
         $this->delay -= $event->delaySeconds;
+    }
+
+    /**
+     * @param  string  $categoryUuid
+     * @return array{category_name: string, category_short: string}
+     */
+    protected static function getCategoryData(string $categoryUuid): array
+    {
+        static $categoryDataCache;
+
+        $categoryDataCache ??= TicketCategory::all(['uuid', 'name', 'short'])
+            ->keyBy('uuid')->map->only(['name', 'short'])->all();
+
+        /** @var array{category_name: string, category_short: string} */
+        return Arr::prependKeysWith($categoryDataCache[$categoryUuid], 'category_');
     }
 }
