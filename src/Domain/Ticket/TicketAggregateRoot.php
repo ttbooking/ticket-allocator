@@ -92,12 +92,14 @@ class TicketAggregateRoot extends AggregateRoot
         return $this->recordThat(new Events\TicketCategoryChanged(
             uuid: $this->uuid(),
             categoryUuid: $command->categoryUuid,
+            meta: static::getCategoryData($command->categoryUuid),
         ));
     }
 
     protected function applyTicketCategoryChanged(Events\TicketCategoryChanged $event): void
     {
         $this->categoryUuid = $event->categoryUuid;
+        $this->meta = array_merge($this->meta, $event->meta);
     }
 
     public function setMetaValue(Commands\SetTicketMetaValue $command): static

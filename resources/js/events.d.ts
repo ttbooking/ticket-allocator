@@ -124,6 +124,7 @@ namespace Ticket {
     export interface CategoryChangedPayload {
         uuid: string;
         categoryUuid: string;
+        meta: Record<string, string>;
     }
 
     export interface MetaValueSetPayload {

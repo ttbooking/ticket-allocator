@@ -33,8 +33,10 @@ export default class TicketRepository extends Repository<Ticket> {
         this.where("uuid", uuid).update({ handler_uuid: null });
     };
 
-    changeCategory = ({ uuid, categoryUuid }: Events.Ticket.CategoryChangedPayload) => {
-        this.where("uuid", uuid).update({ category_uuid: categoryUuid });
+    changeCategory = ({ uuid, categoryUuid, meta }: Events.Ticket.CategoryChangedPayload) => {
+        const ticketMeta = this.find(uuid)?.meta ?? {};
+        meta = { ...ticketMeta, ...meta };
+        this.where("uuid", uuid).update({ category_uuid: categoryUuid, meta });
     };
 
     setMetaValue = ({ uuid, key, value }: Events.Ticket.MetaValueSetPayload) => {
