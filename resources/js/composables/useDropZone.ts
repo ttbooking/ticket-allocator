@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import type { MaybeComputedRef } from "@vueuse/core";
+import type { MaybeRefOrGetter } from "@vueuse/core";
 import { isClient, useEventListener } from "@vueuse/core";
 
 // export type DropHandler = <T extends DataTransfer | File[] = DataTransfer>(arg: T | null) => void
@@ -8,7 +8,7 @@ export type FileDropHandler = (arg: File[] | null) => void;
 export type DataDropHandler = (arg: DataTransfer | null) => void;
 
 export function useDropZone(
-    target: MaybeComputedRef<HTMLElement | null | undefined>,
+    target: MaybeRefOrGetter<HTMLElement | null | undefined>,
     onDrop?: DataDropHandler,
     filesOnly = true
 ) {

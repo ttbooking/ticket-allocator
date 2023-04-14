@@ -1,11 +1,11 @@
 import { ref } from "vue";
-import type { MaybeComputedRef } from "@vueuse/core";
+import type { MaybeRefOrGetter } from "@vueuse/core";
 import { useEventListener } from "@vueuse/core";
 
 export type DragStartHandler = (element: HTMLElement, dataTransfer: DataTransfer | null) => void;
 
 export function useDragAndDrop(
-    target: MaybeComputedRef<HTMLElement | null | undefined>,
+    target: MaybeRefOrGetter<HTMLElement | null | undefined>,
     onDragStart?: DragStartHandler | string
 ) {
     const element = ref<HTMLElement | null | undefined>();
