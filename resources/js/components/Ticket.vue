@@ -13,16 +13,25 @@
                 origin="auto"
             >
                 <v-card width="400" :prepend-icon="ticket.meta?.icon" :title="cardTitle" :subtitle="cardSubtitle">
-                    <v-card-text class="prose">
-                        <div v-if="typeof cardContent === 'string'" v-html="md.render(cardContent)"></div>
-                        <table v-else>
-                            <tbody>
-                                <tr v-for="(value, key) in cardContent" :key="key">
-                                    <th>{{ key }}</th>
-                                    <td v-html="md.renderInline(value)"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <v-tabs v-model="tab">
+                        <v-tab value="properties">{{ trans("properties") }}</v-tab>
+                        <v-tab value="metrics">{{ trans("metrics") }}</v-tab>
+                    </v-tabs>
+                    <v-card-text>
+                        <v-window v-model="tab">
+                            <v-window-item value="properties" class="prose">
+                                <div v-if="typeof cardContent === 'string'" v-html="md.render(cardContent)"></div>
+                                <table v-else>
+                                    <tbody>
+                                        <tr v-for="(value, key) in cardContent" :key="key">
+                                            <th>{{ key }}</th>
+                                            <td v-html="md.renderInline(value)"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </v-window-item>
+                            <v-window-item value="metrics">Window Two</v-window-item>
+                        </v-window>
                     </v-card-text>
                 </v-card>
             </v-overlay>
@@ -31,7 +40,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import { trans } from "laravel-vue-i18n";
 import MarkdownIt from "markdown-it";
 import { usePage } from "@inertiajs/vue3";
 import Ticket from "@/models/Ticket";
@@ -41,6 +51,8 @@ import { useSharedOptions, useSharedDisplayMode } from "@/shared";
 const props = defineProps<{
     ticket: Ticket;
 }>();
+
+const tab = ref(null);
 
 const md = new MarkdownIt({ linkify: true });
 

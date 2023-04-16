@@ -22,6 +22,7 @@ return new class extends Migration
             // inherited properties
             //$table->json('tags')->nullable();
             $table->json('meta')->nullable();
+            $table->json('metrics')->nullable();
 
             // calculated properties
             $table->unsignedInteger('initial_weight')->default(0);

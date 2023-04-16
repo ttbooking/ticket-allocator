@@ -833,31 +833,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "@vueuse/core@npm:10.0.0"
+"@vueuse/core@npm:^10.0.2":
+  version: 10.0.2
+  resolution: "@vueuse/core@npm:10.0.2"
   dependencies:
     "@types/web-bluetooth": ^0.0.16
-    "@vueuse/metadata": 10.0.0
-    "@vueuse/shared": 10.0.0
+    "@vueuse/metadata": 10.0.2
+    "@vueuse/shared": 10.0.2
     vue-demi: ">=0.14.0"
-  checksum: c015024973a69475fabc81547492cb6803c1c5a4cd97e9ab8c48d0eb0f60ffb47ff176e011f5f6c0d15cea32d6e8a353d594b2a9970a38e2d557d64d60c0a1aa
+  checksum: 3ac42789cac0e1610a27706c2a73e8a37a101174dd077fb14fcad50c2d73c3e72ccc95677cebc6415f4bd757562207ed87a210364337826501f75efe60c2b1f8
   languageName: node
   linkType: hard
 
-"@vueuse/metadata@npm:10.0.0":
-  version: 10.0.0
-  resolution: "@vueuse/metadata@npm:10.0.0"
-  checksum: 58f6f32ad42dbbcc30cb25c7aa8ba23ead5abb641566fd141f1c258b83e7d42170bf59182bce8f5bf155e380d14479f9c9f7cb9499dd919010a72403c1649928
+"@vueuse/metadata@npm:10.0.2":
+  version: 10.0.2
+  resolution: "@vueuse/metadata@npm:10.0.2"
+  checksum: fb8039205fe58ab71a70c363525f6b66862747bca8861cfa6c8d8cecb442206d7fb917dc3f60ea3a1625da433c604333238589a230f8d149692d51354dca077f
   languageName: node
   linkType: hard
 
-"@vueuse/shared@npm:10.0.0":
-  version: 10.0.0
-  resolution: "@vueuse/shared@npm:10.0.0"
+"@vueuse/shared@npm:10.0.2":
+  version: 10.0.2
+  resolution: "@vueuse/shared@npm:10.0.2"
   dependencies:
     vue-demi: ">=0.14.0"
-  checksum: 38beaaa83005a1a56cd57e30d2aea860ae7281e43565c82b971d2d921636dc91448e194670bcc75f09f0eb3741ac626c0c6bc1ebbbd9e32d9c23074f5fd81dd7
+  checksum: c0082a592c3f2e5d43bea66435d72878c071c7fa97f1f39fc9530b4ebe8c9d3d3741496876addb15735d10f6162af0150eca92f36082e03bd5322dffe5e32ff7
   languageName: node
   linkType: hard
 
@@ -1542,9 +1542,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-vue@npm:^9.10.0":
-  version: 9.10.0
-  resolution: "eslint-plugin-vue@npm:9.10.0"
+"eslint-plugin-vue@npm:^9.11.0":
+  version: 9.11.0
+  resolution: "eslint-plugin-vue@npm:9.11.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.3.0
     natural-compare: ^1.4.0
@@ -1555,7 +1555,7 @@ __metadata:
     xml-name-validator: ^4.0.0
   peerDependencies:
     eslint: ^6.2.0 || ^7.0.0 || ^8.0.0
-  checksum: 91c6f1ab59433cfa3ade0e6003ca4a9f3ee50e1fd6b49ad9487805dc582f1865ef27796ff18b89e92f37f9ed39d7bfb8c8ccd029c2b77bb3e26ce9b705713070
+  checksum: 1bcb6cf76831419dbb18b9ef7a71831b69325eab1f83137af7a7ffe2800962af2afae30d5eb94210597e70e9503b698d31af210f0d36c0b3fd9cafc77d2a1895
   languageName: node
   linkType: hard
 
@@ -2675,7 +2675,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.3.4":
+"nanoid@npm:^3.3.4, nanoid@npm:^3.3.6":
   version: 3.3.6
   resolution: "nanoid@npm:3.3.6"
   bin:
@@ -3102,6 +3102,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss@npm:^8.4.22":
+  version: 8.4.22
+  resolution: "postcss@npm:8.4.22"
+  dependencies:
+    nanoid: ^3.3.6
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 7473dfb7ac5b4cb03576c39d687d7fc02c826ab08af97df15b5d3970662532d44a18a0994f392a9c3658ee17c292e7a55990e586b90ca0afcc9f36df13e07029
+  languageName: node
+  linkType: hard
+
 "prelude-ls@npm:^1.2.1":
   version: 1.2.1
   resolution: "prelude-ls@npm:1.2.1"
@@ -3305,12 +3316,12 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.58.0
     "@typescript-eslint/parser": ^5.58.0
     "@vitejs/plugin-vue": ^4.1.0
-    "@vueuse/core": ^10.0.0
+    "@vueuse/core": ^10.0.2
     autoprefixer: ^10.4.14
     axios: ^1.3.5
     eslint: ^8.38.0
     eslint-config-prettier: ^8.8.0
-    eslint-plugin-vue: ^9.10.0
+    eslint-plugin-vue: ^9.11.0
     laravel-echo: ^1.15.0
     laravel-vite-plugin: ^0.7.4
     laravel-vue-i18n: ^2.4.2
@@ -3319,7 +3330,7 @@ __metadata:
     moment: ^2.29.4
     pinia: ^2.0.34
     pinia-orm: ^1.6.7
-    postcss: ^8.4.21
+    postcss: ^8.4.22
     prettier: ^2.8.7
     roboto-fontface: "*"
     tailwindcss: ^3.3.1

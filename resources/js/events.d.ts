@@ -23,6 +23,7 @@ export enum Ticket {
     CategoryChanged = ".ticket.category-changed",
     MetaValueSet = ".ticket.meta-value-set",
     MetaValuesMerged = ".ticket.meta-values-merged",
+    MetricsAdjusted = ".ticket.metrics-adjusted",
     Closed = ".ticket.closed",
     ComplexityDecremented = ".ticket.complexity-decremented",
     ComplexityIncremented = ".ticket.complexity-incremented",
@@ -136,6 +137,12 @@ namespace Ticket {
     export interface MetaValuesMergedPayload {
         uuid: string;
         meta: Record<string, string>;
+    }
+
+    export interface MetricsAdjustedPayload {
+        uuid: string;
+        factorUuid: string;
+        adjustments: Record<string, Record<string, number>>;
     }
 
     export interface ClosedPayload {

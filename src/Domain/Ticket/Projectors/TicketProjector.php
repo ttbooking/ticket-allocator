@@ -57,6 +57,15 @@ class TicketProjector extends Projector
         $ticket->update(['meta' => array_merge($ticket->meta, $event->meta)]);
     }
 
+    public function onTicketMetricsAdjusted(Events\TicketMetricsAdjusted $event): void
+    {
+        if (! $ticket = Ticket::find($event->uuid)?->writeable()) {
+            return;
+        }
+
+        $ticket->update(['metrics' => array_merge($ticket->metrics, $event->adjustments)]);
+    }
+
     public function onTicketBound(Events\TicketBound $event): void
     {
         if (! $ticket = Ticket::find($event->uuid)?->writeable()) {

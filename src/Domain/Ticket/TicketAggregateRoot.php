@@ -34,6 +34,9 @@ class TicketAggregateRoot extends AggregateRoot
     /** @var array<string, mixed> */
     public array $meta = [];
 
+    /** @var array<string, array<string, int>> */
+    public array $metrics = [];
+
     public ?string $operatorUuid;
 
     #[Incrementable]
@@ -47,9 +50,6 @@ class TicketAggregateRoot extends AggregateRoot
 
     #[Incrementable]
     public int $delay = 0;
-
-    /** @var array<string, array<string, mixed>> */
-    protected array $attributes = [];
 
     public function create(Commands\CreateTicket $command): static
     {
@@ -127,6 +127,20 @@ class TicketAggregateRoot extends AggregateRoot
     protected function applyTicketMetaValuesMerged(Events\TicketMetaValuesMerged $event): void
     {
         $this->meta = array_merge($this->meta, $event->meta);
+    }
+
+    public function adjustMetrics(Commands\AdjustTicketMetrics $command): static
+    {
+        return $this->recordThat(new Events\TicketMetricsAdjusted(
+            uuid: $this->uuid(),
+            factorUuid: $command->factorUuid,
+            adjustments: $command->adjustments,
+        ));
+    }
+
+    protected function applyTicketMetricsAdjusted(Events\TicketMetricsAdjusted $event): void
+    {
+        $this->metrics[$event->factorUuid] = $event->adjustments;
     }
 
     public function bind(Commands\BindTicket $command): static

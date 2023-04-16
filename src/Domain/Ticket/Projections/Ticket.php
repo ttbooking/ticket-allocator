@@ -20,6 +20,7 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
  * @property string $category_uuid
  * @property string|null $handler_uuid
  * @property array<string, mixed>|null $meta
+ * @property array<string, <string, int>>|null $metrics
  * @property int $initial_weight
  * @property int $weight_increment
  * @property int $complexity
@@ -49,6 +50,7 @@ class Ticket extends Projection
     /** @var array<string, mixed> */
     protected $attributes = [
         //'meta' => [],
+        //'metrics' => [],
         'initial_weight' => 0,
         'weight_increment' => 0,
         'complexity' => 0,
@@ -58,6 +60,7 @@ class Ticket extends Projection
     /** @var array<string, string> */
     protected $casts = [
         'meta' => 'array',
+        'metrics' => 'array',
         'initial_weight' => 'integer',
         'weight_increment' => 'integer',
         'complexity' => 'integer',
