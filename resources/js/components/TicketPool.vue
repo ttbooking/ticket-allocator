@@ -42,11 +42,11 @@ watch([element, x], ([element, x]) => {
     const uuid = triggerElement.value.dataset.uuid as string;
     //multiplier.value = Math.round(Math.min(Math.max(multiplier.value - y / 10, 1), 100));
     //correction.value = Math.max(correction.value - x * multiplier.value, correction.value - props.ticket.weight);
-    if (x < 0) {
+    /*if (x < 0) {
         ticketRepo.value.incrementInitialWeight({ uuid, weightPoints: -x * 10 });
     } else if (x > 0) {
         ticketRepo.value.decrementInitialWeight({ uuid, weightPoints: x * 10 });
-    }
+    }*/
 });
 
 const animationEnabled = ref(false);

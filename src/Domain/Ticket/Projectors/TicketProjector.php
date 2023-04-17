@@ -82,44 +82,4 @@ class TicketProjector extends Projector
     {
         Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => null]);
     }
-
-    public function onTicketInitialWeightIncremented(Events\TicketInitialWeightIncremented $event): void
-    {
-        Ticket::find($event->uuid)?->writeable()->increment('initial_weight', $event->weightPoints);
-    }
-
-    public function onTicketInitialWeightDecremented(Events\TicketInitialWeightDecremented $event): void
-    {
-        Ticket::find($event->uuid)?->writeable()->decrement('initial_weight', $event->weightPoints);
-    }
-
-    public function onTicketWeightIncrementIncremented(Events\TicketWeightIncrementIncremented $event): void
-    {
-        Ticket::find($event->uuid)?->writeable()->increment('weight_increment', $event->weightPoints);
-    }
-
-    public function onTicketWeightIncrementDecremented(Events\TicketWeightIncrementDecremented $event): void
-    {
-        Ticket::find($event->uuid)?->writeable()->decrement('weight_increment', $event->weightPoints);
-    }
-
-    public function onTicketComplexityIncremented(Events\TicketComplexityIncremented $event): void
-    {
-        Ticket::find($event->uuid)?->writeable()->increment('complexity', $event->complexityPoints);
-    }
-
-    public function onTicketComplexityDecremented(Events\TicketComplexityDecremented $event): void
-    {
-        Ticket::find($event->uuid)?->writeable()->decrement('complexity', $event->complexityPoints);
-    }
-
-    public function onTicketDelayIncremented(Events\TicketDelayIncremented $event): void
-    {
-        Ticket::find($event->uuid)?->writeable()->increment('delay', $event->delaySeconds);
-    }
-
-    public function onTicketDelayDecremented(Events\TicketDelayDecremented $event): void
-    {
-        Ticket::find($event->uuid)?->writeable()->decrement('delay', $event->delaySeconds);
-    }
 }

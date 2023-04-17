@@ -69,6 +69,15 @@ export interface TicketCategory {
     updated_at: string;
 }
 
+export interface Factor {
+    uuid: string;
+    name: string;
+    description: ?string;
+    created_at: string;
+    updated_at: string;
+    deleted_at: ?string;
+}
+
 export interface DisplayOptions {
     duration_threshold: number;
     weight_threshold: number;

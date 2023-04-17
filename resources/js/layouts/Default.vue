@@ -18,6 +18,9 @@
                 <Link :href="route('ticket-allocator.teams.index')">
                     <v-list-item prepend-icon="mdi-account-group" :title="trans('teams')" value="teams" />
                 </Link>
+                <Link :href="route('ticket-allocator.factors.index')">
+                    <v-list-item prepend-icon="mdi-tune" :title="trans('factors')" value="factors" />
+                </Link>
             </v-list>
         </v-navigation-drawer>
         <v-main>

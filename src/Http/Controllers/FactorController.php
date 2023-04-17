@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
-use TTBooking\TicketAllocator\Http\Queries\FactorQueryBuilder;
-use TTBooking\TicketAllocator\Http\Requests\FactorStoreRequest;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
+use TTBooking\TicketAllocator\Http\Requests\StoreFactorRequest;
+use TTBooking\TicketAllocator\Http\Requests\UpdateFactorRequest;
+use TTBooking\TicketAllocator\Http\Resources\FactorResource;
 use TTBooking\TicketAllocator\Models\Factor;
 
 class FactorController extends Controller
@@ -16,46 +19,74 @@ class FactorController extends Controller
     /**
      * Display a listing of the factors.
      */
-    public function index(FactorQueryBuilder $query): JsonResponse
+    public function index(): InertiaResponse
     {
-        return Response::json($query->paginate());
+        $factors = FactorResource::collection(Factor::withTrashed()->get())->resolve();
+
+        return Inertia::render('Factor/Index', compact('factors'));
     }
 
     /**
-     * Store a newly created factor in repository.
+     * Show the form for creating a new factor.
      */
-    public function store(FactorStoreRequest $request): JsonResponse
+    public function create(): InertiaResponse
     {
-        $factor = Factor::query()->create($request->validated());
+        return Inertia::render('Factor/CreateEdit');
+    }
 
-        return Response::json($factor, JsonResponse::HTTP_CREATED);
+    /**
+     * Store a newly created factor in storage.
+     */
+    public function store(StoreFactorRequest $request): RedirectResponse
+    {
+        /** @var Factor $factor */
+        $factor = Factor::query()->create($request->safe(['name', 'description']));
+        $request->validated('active') ? $factor->restore() : $factor->delete();
+
+        return Response::redirectToRoute('ticket-allocator.factors.index', status: 303);
     }
 
     /**
      * Display the specified factor.
      */
-    public function show(Factor $factor): JsonResponse
+    public function show(Factor $factor): InertiaResponse
     {
-        return Response::json($factor);
+        $factor = new FactorResource($factor);
+
+        return Inertia::render('Factor/Show', compact('factor'));
     }
 
     /**
-     * Update the specified factor in repository.
+     * Show the form for editing the specified factor.
      */
-    public function update(FactorStoreRequest $request, Factor $factor): JsonResponse
+    public function edit(Factor $factor): InertiaResponse
     {
-        $factor->update($request->validated());
+        $factor = new FactorResource($factor);
 
-        return Response::json($factor);
+        return Inertia::render('Factor/CreateEdit', compact('factor'));
     }
 
     /**
-     * Remove the specified factor from repository.
+     * Update the specified factor in storage.
      */
-    public function destroy(Factor $factor): \Illuminate\Http\Response
+    public function update(UpdateFactorRequest $request, Factor $factor): RedirectResponse
     {
-        $factor->delete();
+        if (! is_null($active = $request->validated('active'))) {
+            $active ? $factor->restore() : $factor->delete();
+        }
 
-        return Response::noContent();
+        $factor->update($request->safe(['name', 'description']));
+
+        return Response::redirectToRoute('ticket-allocator.factors.index', status: 303);
+    }
+
+    /**
+     * Remove the specified factor from storage.
+     */
+    public function destroy(Factor $factor): RedirectResponse
+    {
+        $factor->forceDelete();
+
+        return Response::redirectToRoute('ticket-allocator.factors.index', status: 303);
     }
 }

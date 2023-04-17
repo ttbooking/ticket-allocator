@@ -25,17 +25,8 @@ export enum Ticket {
     MetaValuesMerged = ".ticket.meta-values-merged",
     MetricsAdjusted = ".ticket.metrics-adjusted",
     Closed = ".ticket.closed",
-    ComplexityDecremented = ".ticket.complexity-decremented",
-    ComplexityIncremented = ".ticket.complexity-incremented",
     Created = ".ticket.created",
-    DelayDecremented = ".ticket.delay-decremented",
-    DelayIncremented = ".ticket.delay-incremented",
-    InitialWeightDecremented = ".ticket.initial-weight-decremented",
-    InitialWeightIncremented = ".ticket.initial-weight-incremented",
-    Tagged = ".ticket.tagged",
     Unbound = ".ticket.unbound",
-    WeightIncrementDecremented = ".ticket.weight-increment-decremented",
-    WeightIncrementIncremented = ".ticket.weight-increment-incremented",
 }
 
 namespace Operator {
@@ -149,16 +140,6 @@ namespace Ticket {
         uuid: string;
     }
 
-    export interface ComplexityDecrementedPayload {
-        uuid: string;
-        complexityPoints: number;
-    }
-
-    export interface ComplexityIncrementedPayload {
-        uuid: string;
-        complexityPoints: number;
-    }
-
     export interface CreatedPayload {
         uuid: string;
         categoryUuid: string;
@@ -170,42 +151,7 @@ namespace Ticket {
         meta: Record<string, string>;
     }
 
-    export interface DelayDecrementedPayload {
-        uuid: string;
-        delaySeconds: number;
-    }
-
-    export interface DelayIncrementedPayload {
-        uuid: string;
-        delaySeconds: number;
-    }
-
-    export interface InitialWeightDecrementedPayload {
-        uuid: string;
-        weightPoints: number;
-    }
-
-    export interface InitialWeightIncrementedPayload {
-        uuid: string;
-        weightPoints: number;
-    }
-
-    export interface TaggedPayload {
-        uuid: string;
-        tags: string[];
-    }
-
     export interface UnboundPayload {
         uuid: string;
-    }
-
-    export interface WeightIncrementDecrementedPayload {
-        uuid: string;
-        weightPoints: number;
-    }
-
-    export interface WeightIncrementIncrementedPayload {
-        uuid: string;
-        weightPoints: number;
     }
 }

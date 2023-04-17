@@ -57,38 +57,6 @@ export default class TicketRepository extends Repository<Ticket> {
         this.where("uuid", uuid).update({ metrics });
     };
 
-    incrementInitialWeight = ({ uuid, weightPoints }: Events.Ticket.InitialWeightIncrementedPayload) => {
-        this.query().where("uuid", uuid).increment({ initial_weight: weightPoints });
-    };
-
-    decrementInitialWeight = ({ uuid, weightPoints }: Events.Ticket.InitialWeightDecrementedPayload) => {
-        this.query().where("uuid", uuid).decrement({ initial_weight: weightPoints });
-    };
-
-    incrementWeightIncrement = ({ uuid, weightPoints }: Events.Ticket.WeightIncrementIncrementedPayload) => {
-        this.query().where("uuid", uuid).increment({ weight_increment: weightPoints });
-    };
-
-    decrementWeightIncrement = ({ uuid, weightPoints }: Events.Ticket.WeightIncrementDecrementedPayload) => {
-        this.query().where("uuid", uuid).decrement({ weight_increment: weightPoints });
-    };
-
-    incrementComplexity = ({ uuid, complexityPoints }: Events.Ticket.ComplexityIncrementedPayload) => {
-        this.query().where("uuid", uuid).increment({ complexity: complexityPoints });
-    };
-
-    decrementComplexity = ({ uuid, complexityPoints }: Events.Ticket.ComplexityDecrementedPayload) => {
-        this.query().where("uuid", uuid).decrement({ complexity: complexityPoints });
-    };
-
-    incrementDelay = ({ uuid, delaySeconds }: Events.Ticket.DelayIncrementedPayload) => {
-        this.query().where("uuid", uuid).increment({ delay: delaySeconds });
-    };
-
-    decrementDelay = ({ uuid, delaySeconds }: Events.Ticket.DelayDecrementedPayload) => {
-        this.query().where("uuid", uuid).decrement({ delay: delaySeconds });
-    };
-
     unbound() {
         return this.where("handler_uuid", null);
     }
