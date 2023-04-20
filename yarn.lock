@@ -267,28 +267,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inertiajs/core@npm:1.0.3":
-  version: 1.0.3
-  resolution: "@inertiajs/core@npm:1.0.3"
+"@inertiajs/core@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@inertiajs/core@npm:1.0.4"
   dependencies:
     axios: ^1.2.0
     deepmerge: ^4.0.0
     nprogress: ^0.2.0
     qs: ^6.9.0
-  checksum: 7198e19576a258fdc76e3fcd927e1ff371142b56c63f1f5c8d7fa539e2124dbf5ba3052b17e945021757698d2aab0072f91666bf91b7c5d20fce2fca056f70e5
+  checksum: c931bfb98d59b0089cbae61c55ba423a8cd9053504c73f2371173d2de8a3551034f5a84239c930325c73812f8d80cf745ba50704e035252af0977e746fe4916b
   languageName: node
   linkType: hard
 
-"@inertiajs/vue3@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "@inertiajs/vue3@npm:1.0.3"
+"@inertiajs/vue3@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "@inertiajs/vue3@npm:1.0.4"
   dependencies:
-    "@inertiajs/core": 1.0.3
+    "@inertiajs/core": 1.0.4
     lodash.clonedeep: ^4.5.0
     lodash.isequal: ^4.5.0
   peerDependencies:
     vue: ^3.0.0
-  checksum: 9e63f5ced98ce2856ebe3fe4163fd885897846bc4e9bb6dc1278b043c179059cf197113718bc19f1452701b454281b3191d09b85647bc09025e5fb0fb85c5e92
+  checksum: 3ec0ada3fe439c634f36a0ede44b232493c2c4bd3711df131ed013665fa7914369c2cd1470086c5c9ff84d8afebfb19d56a16fbcc6ee1239b0232a8c213d7720
   languageName: node
   linkType: hard
 
@@ -479,10 +479,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.15.11":
-  version: 18.15.11
-  resolution: "@types/node@npm:18.15.11"
-  checksum: 977b4ad04708897ff0eb049ecf82246d210939c82461922d20f7d2dcfd81bbc661582ba3af28869210f7e8b1934529dcd46bff7d448551400f9d48b9d3bddec3
+"@types/node@npm:^18.15.12":
+  version: 18.15.12
+  resolution: "@types/node@npm:18.15.12"
+  checksum: dff7596db8d0a18bcd8da542dc62ed4377cba39546ff53baaa06d106f1482bc3e4e5e03644f5d1e3cef0904ffbe8ebbc244b2b0851f8025ab2a3959ee0ace58f
   languageName: node
   linkType: hard
 
@@ -1033,7 +1033,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.2.0, axios@npm:^1.3.5":
+"axios@npm:^1.2.0":
   version: 1.3.5
   resolution: "axios@npm:1.3.5"
   dependencies:
@@ -1041,6 +1041,17 @@ __metadata:
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
   checksum: 4d6bcf933b1cdff86d4993752aaeeeedc4a7f7a4b1c942847f6884bb13fc6106610ff826b076acf0b08d8ced55dee9344bb9a11f3624c3e70ab1da1a40bb5506
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.3.6":
+  version: 1.3.6
+  resolution: "axios@npm:1.3.6"
+  dependencies:
+    follow-redirects: ^1.15.0
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: c90497ebf738723654a6e80147dc294186ad9d7b08f95f5a22fd48f826c7e06a576229b8dff3137195ca627349a4312e00fa78e4f1c499250b9860596adef44a
   languageName: node
   linkType: hard
 
@@ -3102,14 +3113,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.22":
-  version: 8.4.22
-  resolution: "postcss@npm:8.4.22"
+"postcss@npm:^8.4.23":
+  version: 8.4.23
+  resolution: "postcss@npm:8.4.23"
   dependencies:
     nanoid: ^3.3.6
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
-  checksum: 7473dfb7ac5b4cb03576c39d687d7fc02c826ab08af97df15b5d3970662532d44a18a0994f392a9c3658ee17c292e7a55990e586b90ca0afcc9f36df13e07029
+  checksum: 8bb9d1b2ea6e694f8987d4f18c94617971b2b8d141602725fedcc2222fdc413b776a6e1b969a25d627d7b2681ca5aabb56f59e727ef94072e1b6ac8412105a2f
   languageName: node
   linkType: hard
 
@@ -3286,9 +3297,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^3.18.0":
-  version: 3.20.2
-  resolution: "rollup@npm:3.20.2"
+"rollup@npm:^3.20.2":
+  version: 3.20.6
+  resolution: "rollup@npm:3.20.6"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -3296,7 +3307,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: 34b0932839b7c2a5d1742fb21ce95a47e0b49a0849f4abee2dccf25833187aa7babb898ca90d4fc761cffa4102b9ed0ac6ad7f6f6b96c8b8e2d67305abc5da65
+  checksum: fa30f1e1d214b8c62e631d3c181a75d61bc9c20fca38220d6f938bb3bf734a874e407cd641c90f550dc2b127df5029dfb3108be08934a654f1f40b50f368b0c2
   languageName: node
   linkType: hard
 
@@ -3304,13 +3315,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@inertiajs/vue3": ^1.0.3
+    "@inertiajs/vue3": ^1.0.4
     "@mdi/font": 7.2.96
     "@tailwindcss/forms": ^0.5.3
     "@tailwindcss/typography": ^0.5.9
     "@types/lodash": ^4.14.194
     "@types/markdown-it": ^12.2.3
-    "@types/node": ^18.15.11
+    "@types/node": ^18.15.12
     "@types/webfontloader": ^1.6.35
     "@types/ziggy-js": ^1.3.2
     "@typescript-eslint/eslint-plugin": ^5.59.0
@@ -3318,7 +3329,7 @@ __metadata:
     "@vitejs/plugin-vue": ^4.1.0
     "@vueuse/core": ^10.0.2
     autoprefixer: ^10.4.14
-    axios: ^1.3.5
+    axios: ^1.3.6
     eslint: ^8.38.0
     eslint-config-prettier: ^8.8.0
     eslint-plugin-vue: ^9.11.0
@@ -3330,17 +3341,17 @@ __metadata:
     moment: ^2.29.4
     pinia: ^2.0.34
     pinia-orm: ^1.6.7
-    postcss: ^8.4.22
+    postcss: ^8.4.23
     prettier: ^2.8.7
     roboto-fontface: "*"
     tailwindcss: ^3.3.1
     typescript: ^5.0.4
-    vite: ^4.2.2
+    vite: ^4.3.0
     vite-plugin-vuetify: ^1.0.2
     vue: ^3.2.47
     vue-cli-plugin-vuetify: ~2.5.8
     vue-tsc: 1.3.6
-    vuetify: ^3.1.14
+    vuetify: ^3.1.15
     webfontloader: ^1.6.28
   languageName: unknown
   linkType: soft
@@ -3829,15 +3840,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^4.2.2":
-  version: 4.2.2
-  resolution: "vite@npm:4.2.2"
+"vite@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "vite@npm:4.3.0"
   dependencies:
     esbuild: ^0.17.5
     fsevents: ~2.3.2
     postcss: ^8.4.21
-    resolve: ^1.22.1
-    rollup: ^3.18.0
+    rollup: ^3.20.2
   peerDependencies:
     "@types/node": ">= 14"
     less: "*"
@@ -3863,7 +3873,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 7fff9d046f6091c02e030aa5f45e68939b9bec1dd15d4e2c3c084d82ec185300295f3db26f537daf2e19f9ad191be260bf70e5fe0e2d9054f174a7ad457623f8
+  checksum: 9b6084c92e234e74c47514d864477abb7ad40cf53aa904f84b0a87c1b1238d64ea13ecc7595cf06df4aab1649bda8fa86671f40731a8fc00f4bca3b2c6d76f93
   languageName: node
   linkType: hard
 
@@ -3955,9 +3965,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuetify@npm:^3.1.14":
-  version: 3.1.14
-  resolution: "vuetify@npm:3.1.14"
+"vuetify@npm:^3.1.15":
+  version: 3.1.15
+  resolution: "vuetify@npm:3.1.15"
   peerDependencies:
     vite-plugin-vuetify: ^1.0.0-alpha.12
     vue: ^3.2.0
@@ -3970,7 +3980,7 @@ __metadata:
       optional: true
     webpack-plugin-vuetify:
       optional: true
-  checksum: 6f8b28eb17e29c715a587220ffa234827c0f2805988ddcd90195031255b2a4c18a52ed5ef1e48bf458cfe497eb344992eecc6613bf0072bf9e18a2a3713df06f
+  checksum: 0109e9bcdcc4aff8010ded1961db15b11666eca5a7ae1579f0455672032a894f74acabb9cd9f8a60a97ef0ef5cac526af59055e7de74b4305abf0dbe14f99f38
   languageName: node
   linkType: hard
 
