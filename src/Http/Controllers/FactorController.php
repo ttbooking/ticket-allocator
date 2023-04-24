@@ -12,7 +12,9 @@ use Inertia\Response as InertiaResponse;
 use TTBooking\TicketAllocator\Http\Requests\StoreFactorRequest;
 use TTBooking\TicketAllocator\Http\Requests\UpdateFactorRequest;
 use TTBooking\TicketAllocator\Http\Resources\FactorResource;
+use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
 use TTBooking\TicketAllocator\Models\Factor;
+use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class FactorController extends Controller
 {
@@ -31,7 +33,9 @@ class FactorController extends Controller
      */
     public function create(): InertiaResponse
     {
-        return Inertia::render('Factor/CreateEdit');
+        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
+
+        return Inertia::render('Factor/CreateEdit', compact('ticketCategories'));
     }
 
     /**
@@ -40,7 +44,7 @@ class FactorController extends Controller
     public function store(StoreFactorRequest $request): RedirectResponse
     {
         /** @var Factor $factor */
-        $factor = Factor::query()->create($request->safe(['name', 'description']));
+        $factor = Factor::query()->create($request->safe(['name', 'description', 'config']));
         $request->validated('active') ? $factor->restore() : $factor->delete();
 
         return Response::redirectToRoute('ticket-allocator.factors.index', status: 303);
@@ -62,8 +66,9 @@ class FactorController extends Controller
     public function edit(Factor $factor): InertiaResponse
     {
         $factor = new FactorResource($factor);
+        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
 
-        return Inertia::render('Factor/CreateEdit', compact('factor'));
+        return Inertia::render('Factor/CreateEdit', compact('factor', 'ticketCategories'));
     }
 
     /**

@@ -27,6 +27,7 @@ class StoreFactorRequest extends FormRequest
             'active' => 'required|boolean',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:65535',
+            'config' => 'array',
         ];
     }
 

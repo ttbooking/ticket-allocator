@@ -69,10 +69,19 @@ export interface TicketCategory {
     updated_at: string;
 }
 
+export interface TicketCategoryFactorConfig {
+    value: string;
+    initial_weight: number;
+    weight_increment: number;
+    complexity: number;
+    delay: number;
+}
+
 export interface Factor {
     uuid: string;
     name: string;
     description: ?string;
+    config: TicketCategoryFactorConfig[];
     created_at: string;
     updated_at: string;
     deleted_at: ?string;

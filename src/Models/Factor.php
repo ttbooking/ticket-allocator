@@ -36,6 +36,11 @@ class Factor extends Model
 
     protected $fillable = ['uuid', 'aggregate', 'class', 'description', 'config'];
 
+    /** @var array<string, string> */
+    protected $casts = [
+        'config' => 'array',
+    ];
+
     /**
      * @return HasMany<Event>
      */

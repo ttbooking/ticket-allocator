@@ -38,6 +38,79 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12" md="12">
+                            <v-data-table :headers="headers" :items="form.config" density="compact">
+                                <template #top>
+                                    <v-toolbar flat>
+                                        <v-toolbar-title>{{ trans("entries") }}</v-toolbar-title>
+                                        <v-divider class="mx-4" inset vertical />
+                                        <v-spacer />
+                                        <v-btn color="primary" dark @click="addEntry">{{ trans("new_entry") }}</v-btn>
+                                    </v-toolbar>
+                                </template>
+                                <template #[`item.value`]="{ item }">
+                                    <v-autocomplete
+                                        v-model="item.raw.value"
+                                        :items="getTicketCategories()"
+                                        item-title="name"
+                                        item-value="uuid"
+                                        density="compact"
+                                        hide-details="auto"
+                                    />
+                                </template>
+                                <template #[`item.initial_weight`]="{ item }">
+                                    <v-text-field
+                                        v-model.number="item.raw.initial_weight"
+                                        type="number"
+                                        min="0"
+                                        max="9999999"
+                                        density="compact"
+                                        hide-details="auto"
+                                    />
+                                </template>
+                                <template #[`item.weight_increment`]="{ item }">
+                                    <v-text-field
+                                        v-model.number="item.raw.weight_increment"
+                                        type="number"
+                                        min="0"
+                                        max="99999"
+                                        density="compact"
+                                        hide-details="auto"
+                                    />
+                                </template>
+                                <template #[`item.complexity`]="{ item }">
+                                    <v-text-field
+                                        v-model.number="item.raw.complexity"
+                                        type="number"
+                                        min="0"
+                                        max="9999"
+                                        density="compact"
+                                        hide-details="auto"
+                                    />
+                                </template>
+                                <template #[`item.delay`]="{ item }">
+                                    <v-text-field
+                                        v-model.number="item.raw.delay"
+                                        type="number"
+                                        min="0"
+                                        max="99999"
+                                        density="compact"
+                                        hide-details="auto"
+                                    />
+                                </template>
+                                <template #[`item.actions`]="{ item }">
+                                    <v-btn
+                                        icon="mdi-delete"
+                                        :title="trans('remove')"
+                                        size="small"
+                                        variant="plain"
+                                        @click="removeEntry(item)"
+                                    />
+                                </template>
+                            </v-data-table>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="12">
                             <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">
                                 {{ trans("save") }}
                             </v-btn>
@@ -55,20 +128,51 @@
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import type { Factor } from "@/types";
-import { trans } from "laravel-vue-i18n";
+import type { Factor, TicketCategory } from "@/types";
+import { trans, wTrans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 const props = defineProps<{
     factor?: Factor;
+    ticketCategories: TicketCategory[];
     errors: Record<string, string>;
 }>();
+
+const headers = [
+    { title: wTrans("value"), key: "value" },
+    { title: wTrans("initial_weight"), key: "initial_weight" },
+    { title: wTrans("weight_increment"), key: "weight_increment" },
+    { title: wTrans("complexity"), key: "complexity" },
+    { title: wTrans("delay"), key: "delay" },
+    { title: wTrans("actions"), key: "actions", sortable: false },
+];
 
 const form = useForm({
     active: !props.factor?.deleted_at,
     name: props.factor?.name ?? "",
     description: props.factor?.description ?? "",
+    config: props.factor?.config ?? [],
 });
+
+function getTicketCategories() {
+    return props.ticketCategories.filter(
+        (ticketCategory) => !form.config.map((item) => item.value).includes(ticketCategory.uuid)
+    );
+}
+
+function addEntry() {
+    form.config.push({
+        value: getTicketCategories()[0]?.uuid ?? "",
+        initial_weight: 0,
+        weight_increment: 0,
+        complexity: 0,
+        delay: 0,
+    });
+}
+
+function removeEntry(id: any) {
+    console.log(id);
+}
 
 function submit() {
     props.factor
