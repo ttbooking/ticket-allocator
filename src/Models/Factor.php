@@ -5,22 +5,21 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
+ * @method static static create(array $parameters = [])
+ * @method static static|null find(string $uuid)
  * @property non-empty-string $uuid
- * @property string $aggregate
- * @property class-string $class
+ * @property string $name
  * @property string $description
+ * @property class-string $class
  * @property array $config
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon|null $deleted_at
- * @property Collection<Event> $events
  */
 class Factor extends Model
 {
@@ -34,18 +33,10 @@ class Factor extends Model
 
     public $incrementing = false;
 
-    protected $fillable = ['uuid', 'aggregate', 'class', 'description', 'config'];
+    protected $fillable = ['uuid', 'name', 'description', 'class', 'config'];
 
     /** @var array<string, string> */
     protected $casts = [
         'config' => 'array',
     ];
-
-    /**
-     * @return HasMany<Event>
-     */
-    public function events(): HasMany
-    {
-        return $this->hasMany(Event::class);
-    }
 }

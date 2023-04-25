@@ -80,7 +80,7 @@ class FactorController extends Controller
             $active ? $factor->restore() : $factor->delete();
         }
 
-        $factor->update($request->safe(['name', 'description']));
+        $factor->update($request->safe(['name', 'description', 'config']));
 
         return Response::redirectToRoute('ticket-allocator.factors.index', status: 303);
     }

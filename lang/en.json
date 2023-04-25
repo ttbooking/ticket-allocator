@@ -14,11 +14,13 @@
     "edit_factor": "Edit Factor",
     "edit_operator": "Edit Operator",
     "edit_team": "Edit Team",
+    "entries": "Entries",
     "factors": "Factors",
     "initial_weight": "Initial weight",
     "metrics": "Metrics",
     "name": "Name",
     "new_category": "New Category",
+    "new_entry": "New Entry",
     "new_factor": "New Factor",
     "new_operator": "New Operator",
     "new_team": "New Team",
@@ -35,5 +37,6 @@
     "tickets": "Tickets",
     "title": "Ticket Allocator",
     "user": "User",
+    "value": "Value",
     "weight_increment": "Weight increment"
 }

@@ -44,13 +44,20 @@
                                         <v-toolbar-title>{{ trans("entries") }}</v-toolbar-title>
                                         <v-divider class="mx-4" inset vertical />
                                         <v-spacer />
-                                        <v-btn color="primary" dark @click="addEntry">{{ trans("new_entry") }}</v-btn>
+                                        <v-btn
+                                            color="primary"
+                                            dark
+                                            :disabled="getTicketCategories().length === 0"
+                                            @click="addEntry"
+                                        >
+                                            {{ trans("new_entry") }}
+                                        </v-btn>
                                     </v-toolbar>
                                 </template>
                                 <template #[`item.value`]="{ item }">
                                     <v-autocomplete
                                         v-model="item.raw.value"
-                                        :items="getTicketCategories()"
+                                        :items="getTicketCategories(item.raw.value)"
                                         item-title="name"
                                         item-value="uuid"
                                         density="compact"
@@ -103,7 +110,7 @@
                                         :title="trans('remove')"
                                         size="small"
                                         variant="plain"
-                                        @click="removeEntry(item)"
+                                        @click="removeEntry(item.raw.value)"
                                     />
                                 </template>
                             </v-data-table>
@@ -154,9 +161,10 @@ const form = useForm({
     config: props.factor?.config ?? [],
 });
 
-function getTicketCategories() {
+function getTicketCategories(uuid?: string) {
     return props.ticketCategories.filter(
-        (ticketCategory) => !form.config.map((item) => item.value).includes(ticketCategory.uuid)
+        (ticketCategory) =>
+            ticketCategory.uuid === uuid || !form.config.map((item) => item.value).includes(ticketCategory.uuid)
     );
 }
 
@@ -170,8 +178,8 @@ function addEntry() {
     });
 }
 
-function removeEntry(id: any) {
-    console.log(id);
+function removeEntry(id: number | string) {
+    form.config = form.config.filter((entry) => entry.value !== id);
 }
 
 function submit() {
