@@ -1,6 +1,6 @@
 import { Repository } from ".";
 import Ticket from "@/models/Ticket";
-import * as Events from "@/events";
+import * as Events from "@/types/events";
 
 export default class TicketRepository extends Repository<Ticket> {
     use = Ticket;

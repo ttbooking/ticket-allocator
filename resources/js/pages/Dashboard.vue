@@ -79,7 +79,7 @@ import { useSupervisorApi } from "@/api";
 import { useDropZone } from "@/composables";
 import type { Operator, Ticket, TicketCategory } from "@/types";
 import { useSharedOptions, useSharedDisplayMode, useSharedOperatorSorting } from "@/shared";
-import * as Events from "@/events.d";
+import * as Events from "@/types/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
 
 import { useRepo } from "pinia-orm";

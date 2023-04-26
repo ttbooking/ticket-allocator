@@ -1,6 +1,6 @@
 import { Repository } from "pinia-orm";
 import Operator from "@/models/Operator";
-import * as Events from "@/events";
+import * as Events from "@/types/events";
 
 export default class OperatorRepository extends Repository<Operator> {
     use = Operator;

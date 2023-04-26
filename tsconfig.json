@@ -1,25 +1,25 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["resources/js/*"],
-            "ziggy-js": ["vendor/tightenco/ziggy/dist/index.m"]
-        },
-        "target": "ESNext",
-        "useDefineForClassFields": true,
-        "experimentalDecorators": true,
+        "allowJs": true,
         "module": "ESNext",
         "moduleResolution": "Node",
-        "strict": true,
         "jsx": "preserve",
-        "resolveJsonModule": true,
+        "strict": true,
         "isolatedModules": true,
+        "target": "ESNext",
         "esModuleInterop": true,
-        "lib": ["ESNext", "DOM"],
-        "skipLibCheck": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
         "noEmit": true,
-        "typeRoots": ["./resources/js/types"],
-        "types": ["vite/client"]
+        "skipLibCheck": true,
+        "paths": {
+            "@/*": ["./resources/js/*"]
+        }
     },
-    "exclude": ["node_modules", "public"]
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.d.ts",
+        "resources/js/**/*.vue",
+        "vite.config.ts"
+    ]
 }

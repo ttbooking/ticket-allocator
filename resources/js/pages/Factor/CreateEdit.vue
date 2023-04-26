@@ -60,6 +60,7 @@
                                         :items="getTicketCategories(item.raw.value)"
                                         item-title="name"
                                         item-value="uuid"
+                                        variant="plain"
                                         density="compact"
                                         hide-details="auto"
                                     />
@@ -70,6 +71,7 @@
                                         type="number"
                                         min="0"
                                         max="9999999"
+                                        variant="plain"
                                         density="compact"
                                         hide-details="auto"
                                     />
@@ -80,6 +82,7 @@
                                         type="number"
                                         min="0"
                                         max="99999"
+                                        variant="plain"
                                         density="compact"
                                         hide-details="auto"
                                     />
@@ -90,6 +93,7 @@
                                         type="number"
                                         min="0"
                                         max="9999"
+                                        variant="plain"
                                         density="compact"
                                         hide-details="auto"
                                     />
@@ -100,6 +104,7 @@
                                         type="number"
                                         min="0"
                                         max="99999"
+                                        variant="plain"
                                         density="compact"
                                         hide-details="auto"
                                     />
