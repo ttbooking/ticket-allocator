@@ -60,10 +60,10 @@ export interface TicketCategory {
 
 export interface TicketCategoryFactorConfig {
     value: string;
-    initial_weight: number;
-    weight_increment: number;
-    complexity: number;
-    delay: number;
+    initial_weight: number | null;
+    weight_increment: number | null;
+    complexity: number | null;
+    delay: number | null;
 }
 
 export interface Factor {

@@ -71,6 +71,7 @@
                                         type="number"
                                         min="0"
                                         max="9999999"
+                                        placeholder="0"
                                         variant="plain"
                                         density="compact"
                                         hide-details="auto"
@@ -82,6 +83,7 @@
                                         type="number"
                                         min="0"
                                         max="99999"
+                                        placeholder="0"
                                         variant="plain"
                                         density="compact"
                                         hide-details="auto"
@@ -93,6 +95,7 @@
                                         type="number"
                                         min="0"
                                         max="9999"
+                                        placeholder="0"
                                         variant="plain"
                                         density="compact"
                                         hide-details="auto"
@@ -104,6 +107,7 @@
                                         type="number"
                                         min="0"
                                         max="99999"
+                                        placeholder="0"
                                         variant="plain"
                                         density="compact"
                                         hide-details="auto"
@@ -176,10 +180,10 @@ function getTicketCategories(uuid?: string) {
 function addEntry() {
     form.config.push({
         value: getTicketCategories()[0]?.uuid ?? "",
-        initial_weight: 0,
-        weight_increment: 0,
-        complexity: 0,
-        delay: 0,
+        initial_weight: null,
+        weight_increment: null,
+        complexity: null,
+        delay: null,
     });
 }
 
