@@ -14,8 +14,8 @@
             >
                 <v-card width="400" :prepend-icon="ticket.meta?.icon" :title="cardTitle" :subtitle="cardSubtitle">
                     <v-tabs v-model="tab">
-                        <v-tab value="properties">{{ trans("properties") }}</v-tab>
-                        <v-tab value="metrics">{{ trans("metrics") }}</v-tab>
+                        <v-tab value="properties">{{ $t("properties") }}</v-tab>
+                        <v-tab value="metrics">{{ $t("metrics") }}</v-tab>
                     </v-tabs>
                     <v-card-text>
                         <v-window v-model="tab">
@@ -41,7 +41,6 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { trans } from "laravel-vue-i18n";
 import MarkdownIt from "markdown-it";
 import { usePage } from "@inertiajs/vue3";
 import Ticket from "@/models/Ticket";

@@ -1,9 +1,9 @@
 <template>
-    <Head :title="trans('dashboard')" />
+    <Head :title="$t('dashboard')" />
 
     <DefaultLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ trans("dashboard") }}</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t("dashboard") }}</h2>
         </template>
 
         <div>
@@ -56,7 +56,7 @@
             <v-table density="compact" class="ticket-monitor">
                 <tbody class="align-text-top">
                     <TicketRow :tickets="sortedTickets">
-                        <template #name>{{ trans("ticket_pool") }}</template>
+                        <template #name>{{ $t("ticket_pool") }}</template>
                     </TicketRow>
                     <TransitionGroup name="operator-pool">
                         <OperatorRow v-for="operator in sortedOperators" :key="operator.uuid" :operator="operator" />
@@ -73,7 +73,6 @@ import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
 import { Head } from "@inertiajs/vue3";
 import { computed, ref, onMounted } from "vue";
-import { trans } from "laravel-vue-i18n";
 import { refThrottled } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
 import { useDropZone } from "@/composables";

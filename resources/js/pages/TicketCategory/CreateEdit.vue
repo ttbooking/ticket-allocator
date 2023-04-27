@@ -1,10 +1,10 @@
 <template>
-    <Head :title="trans(ticketCategory ? 'edit_category' : 'new_category')" />
+    <Head :title="$t(ticketCategory ? 'edit_category' : 'new_category')" />
 
     <DefaultLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ trans(ticketCategory ? "edit_category" : "new_category") }}
+                {{ $t(ticketCategory ? "edit_category" : "new_category") }}
             </h2>
         </template>
 
@@ -17,7 +17,7 @@
                                 v-model="form.name"
                                 required
                                 maxlength="255"
-                                :label="trans('name')"
+                                :label="$t('name')"
                                 :error-messages="errors.name"
                             />
                         </v-col>
@@ -26,7 +26,7 @@
                                 v-model="form.short"
                                 required
                                 maxlength="32"
-                                :label="trans('short_name')"
+                                :label="$t('short_name')"
                                 :error-messages="errors.short"
                             />
                         </v-col>
@@ -39,7 +39,7 @@
                                 required
                                 min="0"
                                 max="9999999"
-                                :label="trans('initial_weight')"
+                                :label="$t('initial_weight')"
                                 :error-messages="errors.initial_weight"
                             />
                         </v-col>
@@ -50,7 +50,7 @@
                                 required
                                 min="0"
                                 max="99999"
-                                :label="trans('weight_increment')"
+                                :label="$t('weight_increment')"
                                 :error-messages="errors.weight_increment"
                             />
                         </v-col>
@@ -61,7 +61,7 @@
                                 required
                                 min="0"
                                 max="9999"
-                                :label="trans('complexity')"
+                                :label="$t('complexity')"
                                 :error-messages="errors.complexity"
                             />
                         </v-col>
@@ -72,7 +72,7 @@
                                 required
                                 min="0"
                                 max="99999"
-                                :label="trans('delay')"
+                                :label="$t('delay')"
                                 :error-messages="errors.delay"
                             />
                         </v-col>
@@ -80,10 +80,10 @@
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">
-                                {{ trans("save") }}
+                                {{ $t("save") }}
                             </v-btn>
                             <Link :href="route('ticket-allocator.ticket-categories.index')" class="mr-3">
-                                <v-btn>{{ trans("cancel") }}</v-btn>
+                                <v-btn>{{ $t("cancel") }}</v-btn>
                             </Link>
                         </v-col>
                     </v-row>
@@ -97,7 +97,6 @@
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import type { TicketCategory } from "@/types";
-import { trans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 const props = defineProps<{

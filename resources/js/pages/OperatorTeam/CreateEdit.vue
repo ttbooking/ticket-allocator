@@ -1,10 +1,10 @@
 <template>
-    <Head :title="trans(team ? 'edit_team' : 'new_team')" />
+    <Head :title="$t(team ? 'edit_team' : 'new_team')" />
 
     <DefaultLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ trans(team ? "edit_team" : "new_team") }}
+                {{ $t(team ? "edit_team" : "new_team") }}
             </h2>
         </template>
 
@@ -13,7 +13,7 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-checkbox v-model="form.active" :label="trans('active')" />
+                            <v-checkbox v-model="form.active" :label="$t('active')" />
                         </v-col>
                     </v-row>
                     <v-row>
@@ -22,7 +22,7 @@
                                 v-model="form.name"
                                 required
                                 maxlength="255"
-                                :label="trans('name')"
+                                :label="$t('name')"
                                 :error-messages="errors.name"
                             />
                         </v-col>
@@ -31,7 +31,7 @@
                         <v-col cols="12" md="12">
                             <v-textarea
                                 v-model="form.description"
-                                :label="trans('description')"
+                                :label="$t('description')"
                                 :error-messages="errors.description"
                             />
                         </v-col>
@@ -44,7 +44,7 @@
                                 clearable
                                 chips
                                 closable-chips
-                                :label="trans('operators')"
+                                :label="$t('operators')"
                                 :items="operators"
                                 item-title="name"
                                 item-value="uuid"
@@ -60,7 +60,7 @@
                                 clearable
                                 chips
                                 closable-chips
-                                :label="trans('ticket_categories')"
+                                :label="$t('ticket_categories')"
                                 :items="ticketCategories"
                                 item-title="name"
                                 item-value="uuid"
@@ -71,10 +71,10 @@
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">
-                                {{ trans("save") }}
+                                {{ $t("save") }}
                             </v-btn>
                             <Link :href="route('ticket-allocator.teams.index')" class="mr-3">
-                                <v-btn>{{ trans("cancel") }}</v-btn>
+                                <v-btn>{{ $t("cancel") }}</v-btn>
                             </Link>
                         </v-col>
                     </v-row>
@@ -88,7 +88,6 @@
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import type { OperatorTeam, Operator, TicketCategory } from "@/types";
-import { trans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 const props = defineProps<{

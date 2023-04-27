@@ -1,10 +1,10 @@
 <template>
-    <Head :title="trans(factor ? 'edit_factor' : 'new_factor')" />
+    <Head :title="$t(factor ? 'edit_factor' : 'new_factor')" />
 
     <DefaultLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ trans(factor ? "edit_factor" : "new_factor") }}
+                {{ $t(factor ? "edit_factor" : "new_factor") }}
             </h2>
         </template>
 
@@ -13,7 +13,7 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-checkbox v-model="form.active" :label="trans('active')" />
+                            <v-checkbox v-model="form.active" :label="$t('active')" />
                         </v-col>
                     </v-row>
                     <v-row>
@@ -22,7 +22,7 @@
                                 v-model="form.name"
                                 required
                                 maxlength="255"
-                                :label="trans('name')"
+                                :label="$t('name')"
                                 :error-messages="errors.name"
                             />
                         </v-col>
@@ -31,7 +31,7 @@
                         <v-col cols="12" md="12">
                             <v-textarea
                                 v-model="form.description"
-                                :label="trans('description')"
+                                :label="$t('description')"
                                 :error-messages="errors.description"
                             />
                         </v-col>
@@ -41,7 +41,7 @@
                             <v-data-table :headers="headers" :items="form.config" density="compact">
                                 <template #top>
                                     <v-toolbar flat>
-                                        <v-toolbar-title>{{ trans("entries") }}</v-toolbar-title>
+                                        <v-toolbar-title>{{ $t("entries") }}</v-toolbar-title>
                                         <v-divider class="mx-4" inset vertical />
                                         <v-spacer />
                                         <v-btn
@@ -50,7 +50,7 @@
                                             :disabled="getTicketCategories().length === 0"
                                             @click="addEntry"
                                         >
-                                            {{ trans("new_entry") }}
+                                            {{ $t("new_entry") }}
                                         </v-btn>
                                     </v-toolbar>
                                 </template>
@@ -112,7 +112,7 @@
                                 <template #[`item.actions`]="{ item }">
                                     <v-btn
                                         icon="mdi-delete"
-                                        :title="trans('remove')"
+                                        :title="$t('remove')"
                                         size="small"
                                         variant="plain"
                                         @click="removeEntry(item.raw.value)"
@@ -124,10 +124,10 @@
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">
-                                {{ trans("save") }}
+                                {{ $t("save") }}
                             </v-btn>
                             <Link :href="route('ticket-allocator.factors.index')" class="mr-3">
-                                <v-btn>{{ trans("cancel") }}</v-btn>
+                                <v-btn>{{ $t("cancel") }}</v-btn>
                             </Link>
                         </v-col>
                     </v-row>
@@ -141,7 +141,7 @@
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import type { Factor, TicketCategory } from "@/types";
-import { trans, wTrans } from "laravel-vue-i18n";
+import { wTrans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 const props = defineProps<{

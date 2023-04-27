@@ -1,10 +1,10 @@
 <template>
-    <Head :title="trans(operator ? 'edit_operator' : 'new_operator')" />
+    <Head :title="$t(operator ? 'edit_operator' : 'new_operator')" />
 
     <DefaultLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ trans(operator ? "edit_operator" : "new_operator") }}
+                {{ $t(operator ? "edit_operator" : "new_operator") }}
             </h2>
         </template>
 
@@ -16,13 +16,13 @@
                             <v-text-field
                                 v-if="operator"
                                 :model-value="operator.user?.name"
-                                :label="trans('user')"
+                                :label="$t('user')"
                                 readonly
                             />
                             <v-autocomplete
                                 v-else
                                 v-model="form.user"
-                                :label="trans('user')"
+                                :label="$t('user')"
                                 :items="users"
                                 item-title="name"
                                 item-value="id"
@@ -35,7 +35,7 @@
                             <v-text-field
                                 v-model="form.name"
                                 maxlength="255"
-                                :label="trans('display_name')"
+                                :label="$t('display_name')"
                                 :placeholder="name"
                                 :persistent-placeholder="!!name.length"
                                 :error-messages="errors.name"
@@ -49,7 +49,7 @@
                                 type="number"
                                 min="1"
                                 max="100"
-                                :label="trans('ticket_limit')"
+                                :label="$t('ticket_limit')"
                                 placeholder="&infin;"
                                 persistent-placeholder
                                 :error-messages="errors.ticket_limit"
@@ -61,7 +61,7 @@
                                 type="number"
                                 min="1"
                                 max="1000"
-                                :label="trans('complexity_limit')"
+                                :label="$t('complexity_limit')"
                                 placeholder="&infin;"
                                 persistent-placeholder
                                 :error-messages="errors.complexity_limit"
@@ -76,7 +76,7 @@
                                 clearable
                                 chips
                                 closable-chips
-                                :label="trans('teams')"
+                                :label="$t('teams')"
                                 :items="teams"
                                 item-title="name"
                                 item-value="uuid"
@@ -87,10 +87,10 @@
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">
-                                {{ trans("save") }}
+                                {{ $t("save") }}
                             </v-btn>
                             <Link :href="route('ticket-allocator.operators.index')" class="mr-3">
-                                <v-btn>{{ trans("cancel") }}</v-btn>
+                                <v-btn>{{ $t("cancel") }}</v-btn>
                             </Link>
                         </v-col>
                     </v-row>
@@ -105,7 +105,6 @@ import DefaultLayout from "@/layouts/Default.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import { computed } from "vue";
 import type { User, Operator, OperatorTeam } from "@/types";
-import { trans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 const props = defineProps<{
