@@ -10,8 +10,10 @@ declare global {
         axios: AxiosInstance;
         Echo: Echo;
         ticketAllocatorChannel: PusherChannel;
-        Ziggy: ZiggyConfig;
     }
+
+    const route: typeof ziggyRoute;
+    const Ziggy: ZiggyConfig;
 }
 
 declare module "vue" {
