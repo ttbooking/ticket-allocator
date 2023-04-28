@@ -801,7 +801,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/server-renderer@npm:3.2.47":
+"@vue/server-renderer@npm:3.2.47, @vue/server-renderer@npm:^3.2.47":
   version: 3.2.47
   resolution: "@vue/server-renderer@npm:3.2.47"
   dependencies:
@@ -3235,6 +3235,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.59.1
     "@typescript-eslint/parser": ^5.59.1
     "@vitejs/plugin-vue": ^4.2.1
+    "@vue/server-renderer": ^3.2.47
     "@vueuse/core": ^10.1.0
     autoprefixer: ^10.4.14
     axios: ^1.4.0

@@ -67,10 +67,10 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     protected function registerViteAliases(): void
     {
         /** @var \Illuminate\Foundation\Vite $this */
-        Vite::macro('ticketAllocatorEntryPoint', fn () => $this
+        Vite::macro('ticketAllocatorEntryPoint', fn (array $page) => $this
             ->useHotFile('vendor/ticket-allocator/hot')
             ->useBuildDirectory('vendor/ticket-allocator/build')
-            ->withEntryPoints(['resources/js/app.ts'])
+            ->withEntryPoints(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         );
 
         /** @var \Illuminate\Foundation\Vite $this */
@@ -126,6 +126,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/ticket-allocator'),
+            __DIR__.'/../bootstrap' => base_path('bootstrap/vendor/ticket-allocator'),
         ], ['ticket-allocator', 'assets', 'ticket-allocator-assets']);
     }
 
