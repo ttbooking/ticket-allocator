@@ -1,5 +1,5 @@
 import { Model } from "pinia-orm";
-import { Attr, Bool, Num, Str, Uid, BelongsToMany, HasMany, OnDelete } from "pinia-orm/dist/decorators";
+import { Attr, Bool, Num, Str, Uid, BelongsToMany, HasMany, OnDelete } from "pinia-orm/dist/decorators.js";
 import OperatorTeam from "./OperatorTeam";
 import TeamOperator from "./TeamOperator";
 import Ticket from "./Ticket";

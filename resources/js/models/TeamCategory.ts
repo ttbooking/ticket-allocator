@@ -1,5 +1,5 @@
 import { Model } from "pinia-orm";
-import { Uid } from "pinia-orm/dist/decorators";
+import { Uid } from "pinia-orm/dist/decorators.js";
 
 export default class TeamCategory extends Model {
     static entity = "teamCategory";

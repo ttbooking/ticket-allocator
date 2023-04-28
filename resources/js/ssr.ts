@@ -1,8 +1,12 @@
+import pinia from "./plugins/pinia";
+import vuetify from "./plugins/vuetify";
+
 import { createSSRApp, h, DefineComponent } from "vue";
 import { renderToString } from "@vue/server-renderer";
 import { createInertiaApp } from "@inertiajs/vue3";
 import createServer from "@inertiajs/vue3/server";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import { i18nVue } from "laravel-vue-i18n";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 
 const name = "Laravel";
@@ -17,6 +21,11 @@ createServer((page) =>
         setup({ App, props, plugin }) {
             return createSSRApp({ name, render: () => h(App, props) })
                 .use(plugin)
+                .use(pinia)
+                .use(vuetify)
+                .use(i18nVue, {
+                    resolve: (lang: string) => import(`../../lang/${lang}.json`),
+                })
                 .use(ZiggyVue, {
                     // @ts-expect-error
                     ...page.props.ziggy,

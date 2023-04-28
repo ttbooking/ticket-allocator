@@ -82,7 +82,7 @@ import * as Events from "@/types/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
 
 import { useRepo } from "pinia-orm";
-import { useCollect } from "pinia-orm/dist/helpers";
+import { useCollect } from "pinia-orm/dist/helpers.js";
 import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
 import TicketCategoryRepository from "@/models/TicketCategory";

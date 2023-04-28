@@ -1,5 +1,5 @@
 import { Model } from "pinia-orm";
-import { Attr, Num, Str, Uid, Cast, BelongsTo } from "pinia-orm/dist/decorators";
+import { Attr, Num, Str, Uid, Cast, BelongsTo } from "pinia-orm/dist/decorators.js";
 import { DateCast } from "pinia-orm/dist/casts";
 import { useSharedTimestamp } from "@/shared";
 import TicketCategory from "./TicketCategory";

@@ -33,4 +33,7 @@ export default defineConfig({
             "ziggy-js": path.resolve("vendor/tightenco/ziggy/dist/index.m"),
         },
     },
+    ssr: {
+        noExternal: ["vuetify"],
+    },
 });
