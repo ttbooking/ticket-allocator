@@ -9,7 +9,7 @@
         "@inertiajs/vue3": "^1.0.6",
         "@mdi/font": "7.2.96",
         "@tailwindcss/typography": "^0.5.9",
-        "@vueuse/core": "^10.1.0",
+        "@vueuse/core": "^10.1.2",
         "axios": "^1.4.0",
         "laravel-echo": "^1.15.1",
         "laravel-vue-i18n": "^2.4.3",
@@ -43,9 +43,9 @@
         "prettier": "^2.8.8",
         "sass": "^1.62.1",
         "typescript": "^5.0.4",
-        "vite": "^4.3.3",
+        "vite": "^4.3.4",
         "vite-plugin-vuetify": "^1.0.2",
-        "vue-tsc": "^1.6.2"
+        "vue-tsc": "^1.6.3"
     },
     "packageManager": "yarn@3.5.1"
 }
