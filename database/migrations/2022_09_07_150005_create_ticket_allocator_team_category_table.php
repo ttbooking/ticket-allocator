@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        /*Schema::create('ticket_allocator_team_category', function (Blueprint $table) {
+        Schema::create('ticket_allocator_team_category', function (Blueprint $table) {
             $table->foreignUuid('team_uuid')->constrained('ticket_allocator_operator_teams', 'uuid')->cascadeOnDelete();
             $table->foreignUuid('category_uuid')->constrained('ticket_allocator_ticket_categories', 'uuid')->cascadeOnDelete();
 
             $table->primary(['team_uuid', 'category_uuid']);
-        });*/
+        });
     }
 
     /**
