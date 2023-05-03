@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "ext-json": "*",
         "inertiajs/inertia-laravel": "^0.6.9",
         "laravel/framework": "^9.31 || ^10.0",

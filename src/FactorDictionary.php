@@ -22,10 +22,28 @@ class FactorDictionary implements FactorDictionaryContract
     {
         return $this->dictionary ??= collect(config('ticket-allocator.factors', []))
             ->filter(static fn (string $class) => is_subclass_of($class, FactorContract::class))
-            ->mapWithKeys(static function (string $class, string|int $alias) {
-                is_string($alias) && $class::setAlias($alias);
+            ->mapWithKeys(self::mapFactor(...))
+            ->sortBy(self::factorName(...));
+    }
 
-                return [$class::getAlias() => $class];
-            });
+    /**
+     * @param  class-string<FactorContract>  $class
+     * @param  array-key  $alias
+     * @return array<string, class-string<FactorContract>>
+     */
+    private static function mapFactor(string $class, string|int $alias): array
+    {
+        is_string($alias) && $class::setAlias($alias);
+
+        return [$class::getAlias() => $class];
+    }
+
+    /**
+     * @param  class-string<FactorContract>  $class
+     * @return string
+     */
+    private static function factorName(string $class): string
+    {
+        return $class::getName();
     }
 }
