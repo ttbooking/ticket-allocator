@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Contracts;
 
+use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
+
 interface Factor
 {
-    /**
-     * @param  mixed[]  $config
-     * @return $this
-     */
-    public function configure(array $config): static;
+    public static function getAlias(): string;
 
-    /**
-     * @return mixed[]
-     */
+    public static function getName(): string;
+
+    public static function isSingular(): bool;
+
+    public function getProps(): array;
+
     public function getConfig(): array;
 
-    //public function when(ShouldAffect $event): bool;
-
-    //public function then(ShouldAffect $event): void;
+    public function getAdjustments(TicketAggregateRoot $ticket): array;
 }

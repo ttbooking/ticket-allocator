@@ -47,8 +47,9 @@ return [
     'ticket_origin' => '', // TODO: Enter your class from which tickets originate
 
     'factors' => [
-        'expressive' => TTBooking\TicketAllocator\Domain\Ticket\Factors\ExpressiveFactor::class,
-        'ticket.category' => TTBooking\TicketAllocator\Domain\Ticket\Factors\Category::class,
+        //'expressive' => TTBooking\TicketAllocator\Domain\Ticket\Factors\ExpressiveFactor::class,
+        //'ticket.category' => TTBooking\TicketAllocator\Domain\Ticket\Factors\Category::class,
+        TTBooking\TicketAllocator\Factors\Category::class,
     ],
 
     /*
