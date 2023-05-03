@@ -8,6 +8,8 @@ use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 
 interface Factor
 {
+    public static function setAlias(string $alias): void;
+
     public static function getAlias(): string;
 
     public static function getName(): string;

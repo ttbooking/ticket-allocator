@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Spatie\EventSourcing\Facades\Projectionist;
-use TTBooking\TicketAllocator\Contracts\Factor;
-use TTBooking\TicketAllocator\Contracts\FactorRepository as FactorRepositoryContract;
+//use TTBooking\TicketAllocator\Contracts\Factor;
+use TTBooking\TicketAllocator\Contracts\FactorDictionary as FactorDictionaryContract;
+//use TTBooking\TicketAllocator\Contracts\FactorRepository as FactorRepositoryContract;
 use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorProjector;
 use TTBooking\TicketAllocator\Domain\Operator\Reactors\SyncTicketCategories;
-use TTBooking\TicketAllocator\Domain\Support\FactorRepository;
-use TTBooking\TicketAllocator\Domain\Ticket\Factors\Category;
-use TTBooking\TicketAllocator\Domain\Ticket\Factors\ExpressiveFactor;
+//use TTBooking\TicketAllocator\Domain\Support\FactorRepository;
+//use TTBooking\TicketAllocator\Domain\Ticket\Factors\Category;
+//use TTBooking\TicketAllocator\Domain\Ticket\Factors\ExpressiveFactor;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
 //use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
 use TTBooking\TicketAllocator\Jobs\Triage;
@@ -155,12 +156,13 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     protected function registerServices(): void
     {
-        $this->app->bind(Category::class, config('ticket-allocator.factors.category'));
+        //$this->app->bind(Category::class, config('ticket-allocator.factors.category'));
 
-        $this->app->alias(Factor::class, 'factor.expressive');
-        $this->app->bind('factor.expressive', ExpressiveFactor::class);
+        //$this->app->alias(Factor::class, 'factor.expressive');
+        //$this->app->bind('factor.expressive', ExpressiveFactor::class);
 
-        $this->app->singleton(FactorRepositoryContract::class, FactorRepository::class);
+        $this->app->singleton(FactorDictionaryContract::class, FactorDictionary::class);
+        //$this->app->singleton(FactorRepositoryContract::class, FactorRepository::class);
     }
 
     protected function scheduleTasks(): void
