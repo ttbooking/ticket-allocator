@@ -68,6 +68,7 @@ export interface TicketCategoryFactorConfig {
 
 export interface Factor {
     uuid: string;
+    priority: number;
     name: string;
     description: string | null;
     config: TicketCategoryFactorConfig[];

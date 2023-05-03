@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ticket_allocator_factors', function (Blueprint $table) {
             $table->uuid()->primary();
+            $table->increments('priority')->index();
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('class')->index();

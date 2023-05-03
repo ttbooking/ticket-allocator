@@ -29,6 +29,7 @@ class FactorResource extends JsonResource
     {
         return [
             'uuid' => $this->uuid,
+            'priority' => $this->priority,
             'name' => $this->name,
             'description' => $this->description,
             'config' => $this->config,

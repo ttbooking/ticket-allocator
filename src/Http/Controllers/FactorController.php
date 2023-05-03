@@ -23,7 +23,7 @@ class FactorController extends Controller
      */
     public function index(): InertiaResponse
     {
-        $factors = FactorResource::collection(Factor::withTrashed()->get())->resolve();
+        $factors = FactorResource::collection(Factor::withTrashed()->orderBy('priority')->get())->resolve();
 
         return Inertia::render('Factor/Index', compact('factors'));
     }
@@ -91,6 +91,38 @@ class FactorController extends Controller
     public function destroy(Factor $factor): RedirectResponse
     {
         $factor->forceDelete();
+
+        return Response::redirectToRoute('ticket-allocator.factors.index', status: 303);
+    }
+
+    /**
+     * Raise the specified factor's priority.
+     */
+    public function raisePriority(Factor $factor): RedirectResponse
+    {
+        /** @var Factor|null $neighbor */
+        $neighbor = Factor::withTrashed()->where('priority', '<', $factor->priority)->orderByDesc('priority')->first();
+
+        if (! is_null($neighborPriority = $neighbor?->priority)) {
+            $neighbor->update(['priority' => $factor->priority]);
+            $factor->update(['priority' => $neighborPriority]);
+        }
+
+        return Response::redirectToRoute('ticket-allocator.factors.index', status: 303);
+    }
+
+    /**
+     * Lower the specified factor's priority.
+     */
+    public function lowerPriority(Factor $factor): RedirectResponse
+    {
+        /** @var Factor|null $neighbor */
+        $neighbor = Factor::withTrashed()->where('priority', '>', $factor->priority)->orderBy('priority')->first();
+
+        if (! is_null($neighborPriority = $neighbor?->priority)) {
+            $neighbor->update(['priority' => $factor->priority]);
+            $factor->update(['priority' => $neighborPriority]);
+        }
 
         return Response::redirectToRoute('ticket-allocator.factors.index', status: 303);
     }

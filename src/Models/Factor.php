@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static static create(array $parameters = [])
  * @method static static|null find(string $uuid)
  * @property non-empty-string $uuid
+ * @property int $priority
  * @property string $name
  * @property string $description
  * @property class-string $class
@@ -33,7 +34,7 @@ class Factor extends Model
 
     public $incrementing = false;
 
-    protected $fillable = ['uuid', 'name', 'description', 'class', 'config'];
+    protected $fillable = ['uuid', 'priority', 'name', 'description', 'class', 'config'];
 
     /** @var array<string, string> */
     protected $casts = [

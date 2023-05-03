@@ -32,6 +32,20 @@
                     <Link :href="route('ticket-allocator.factors.edit', item.raw.uuid)">
                         <v-btn icon="mdi-pencil" :title="$t('edit')" size="small" variant="plain" />
                     </Link>
+                    <Link
+                        as="span"
+                        :href="route('ticket-allocator.factors.raise-priority', item.raw.uuid)"
+                        method="put"
+                    >
+                        <v-btn icon="mdi-arrow-up-thick" :title="$t('raise_priority')" size="small" variant="plain" />
+                    </Link>
+                    <Link
+                        as="span"
+                        :href="route('ticket-allocator.factors.lower-priority', item.raw.uuid)"
+                        method="put"
+                    >
+                        <v-btn icon="mdi-arrow-down-thick" :title="$t('lower_priority')" size="small" variant="plain" />
+                    </Link>
                     <Link as="span" :href="route('ticket-allocator.factors.destroy', item.raw.uuid)" method="delete">
                         <v-btn icon="mdi-delete" :title="$t('remove')" size="small" variant="plain" />
                     </Link>
@@ -54,8 +68,8 @@ defineProps<{
 
 const headers = [
     { title: wTrans("active"), key: "active", sortable: false },
-    { title: wTrans("name"), key: "name" },
-    { title: wTrans("description"), key: "description" },
+    { title: wTrans("name"), key: "name", sortable: false },
+    { title: wTrans("description"), key: "description", sortable: false },
     { title: wTrans("actions"), key: "actions", sortable: false },
 ];
 </script>

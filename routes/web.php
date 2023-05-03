@@ -25,6 +25,8 @@ Route::resource('teams', TeamController::class)->withTrashed(['show', 'edit', 'u
 Route::resource('ticket-categories', TicketCategoryController::class);
 
 Route::resource('factors', FactorController::class)->withTrashed(['show', 'edit', 'update', 'destroy']);
+Route::put('/factors/{factor}/raise-priority', 'FactorController@raisePriority')->withTrashed()->name('factors.raise-priority');
+Route::put('/factors/{factor}/lower-priority', 'FactorController@lowerPriority')->withTrashed()->name('factors.lower-priority');
 
 Route::prefix('tickets/{ticket}')->name('tickets.')->group(function () {
     Route::patch('/weight', 'TicketController@weight')->name('weight');

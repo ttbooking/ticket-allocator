@@ -1,6 +1,6 @@
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
-import { capitalize, reactive, computed, watchEffect, toRefs, watch, onScopeDispose, effectScope, ref, unref, provide, inject as inject$1, shallowRef, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, toRaw, createVNode, mergeProps, isRef, onBeforeUnmount, readonly, nextTick, TransitionGroup, Transition, toRef, onBeforeMount, onMounted, Text, withDirectives, resolveDirective, Fragment, resolveDynamicComponent, createTextVNode, withModifiers, vShow, cloneVNode, warn, toHandlers, Teleport, createSSRApp } from "vue";
+import { capitalize, reactive, computed, watchEffect, toRefs, watch, onScopeDispose, effectScope, ref, unref, provide, inject as inject$1, shallowRef, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, toRaw, createVNode, mergeProps, onBeforeUnmount, readonly, nextTick, TransitionGroup, Transition, isRef, toRef, onBeforeMount, onMounted, Text, withDirectives, resolveDirective, Fragment, resolveDynamicComponent, createTextVNode, withModifiers, vShow, cloneVNode, warn, toHandlers, Teleport, createSSRApp } from "vue";
 import { renderToString } from "@vue/server-renderer";
 import { createInertiaApp } from "@inertiajs/vue3";
 import createServer from "@inertiajs/vue3/server";
@@ -2024,7 +2024,7 @@ const useIcon = (props) => {
     throw new Error("Missing Vuetify Icons provide!");
   const iconData = computed(() => {
     var _a;
-    const iconAlias = isRef(props) ? props.value : props.icon;
+    const iconAlias = unref(props);
     if (!iconAlias)
       return {
         component: VComponentIcon
@@ -2484,7 +2484,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.2.1";
+const version = "3.2.2";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -3334,22 +3334,13 @@ const VIcon = genericComponent()({
       attrs,
       slots
     } = _ref;
-    let slotIcon;
-    if (slots.default) {
-      slotIcon = computed(() => {
-        var _a, _b;
-        const slot = (_a = slots.default) == null ? void 0 : _a.call(slots);
-        if (!slot)
-          return;
-        return (_b = slot.filter((node) => node.type === Text && node.children && typeof node.children === "string")[0]) == null ? void 0 : _b.children;
-      });
-    }
+    const slotIcon = ref();
     const {
       themeClasses
     } = provideTheme(props);
     const {
       iconData
-    } = useIcon(slotIcon || props);
+    } = useIcon(computed(() => slotIcon.value || props.icon));
     const {
       sizeClasses
     } = useSize(props);
@@ -3357,27 +3348,31 @@ const VIcon = genericComponent()({
       textColorClasses,
       textColorStyles
     } = useTextColor(toRef(props, "color"));
-    useRender(() => createVNode(iconData.value.component, {
-      "tag": props.tag,
-      "icon": iconData.value.icon,
-      "class": ["v-icon", "notranslate", themeClasses.value, sizeClasses.value, textColorClasses.value, {
-        "v-icon--clickable": !!attrs.onClick,
-        "v-icon--start": props.start,
-        "v-icon--end": props.end
-      }, props.class],
-      "style": [!sizeClasses.value ? {
-        fontSize: convertToUnit(props.size),
-        height: convertToUnit(props.size),
-        width: convertToUnit(props.size)
-      } : void 0, textColorStyles.value, props.style],
-      "role": attrs.onClick ? "button" : void 0,
-      "aria-hidden": !attrs.onClick
-    }, {
-      default: () => {
-        var _a;
-        return [(_a = slots.default) == null ? void 0 : _a.call(slots)];
+    useRender(() => {
+      var _a, _b;
+      const slotValue = (_a = slots.default) == null ? void 0 : _a.call(slots);
+      if (slotValue) {
+        slotIcon.value = (_b = slotValue.filter((node) => node.type === Text && node.children && typeof node.children === "string")[0]) == null ? void 0 : _b.children;
       }
-    }));
+      return createVNode(iconData.value.component, {
+        "tag": props.tag,
+        "icon": iconData.value.icon,
+        "class": ["v-icon", "notranslate", themeClasses.value, sizeClasses.value, textColorClasses.value, {
+          "v-icon--clickable": !!attrs.onClick,
+          "v-icon--start": props.start,
+          "v-icon--end": props.end
+        }, props.class],
+        "style": [!sizeClasses.value ? {
+          fontSize: convertToUnit(props.size),
+          height: convertToUnit(props.size),
+          width: convertToUnit(props.size)
+        } : void 0, textColorStyles.value, props.style],
+        "role": attrs.onClick ? "button" : void 0,
+        "aria-hidden": !attrs.onClick
+      }, {
+        default: () => [slotValue]
+      });
+    });
     return {};
   }
 });
@@ -4141,7 +4136,6 @@ const VCheckboxBtn = genericComponent()({
       "class": ["v-checkbox-btn", props.class],
       "style": props.style,
       "type": "checkbox",
-      "inline": true,
       "falseIcon": falseIcon.value,
       "trueIcon": trueIcon.value,
       "aria-checked": props.indeterminate ? "mixed" : void 0
@@ -5670,7 +5664,7 @@ const makeVBtnProps = propsFactory({
   ...makeVariantProps({
     variant: "elevated"
   })
-}, "VBtn");
+}, "v-btn");
 const VBtn = genericComponent()({
   name: "VBtn",
   directives: {
@@ -5742,6 +5736,13 @@ const VBtn = genericComponent()({
         return void 0;
       return Object(props.value) === props.value ? JSON.stringify(props.value, null, 0) : props.value;
     });
+    function onClick(e2) {
+      var _a;
+      if (isDisabled.value)
+        return;
+      (_a = link.navigate) == null ? void 0 : _a.call(link, e2);
+      group == null ? void 0 : group.toggle();
+    }
     useSelectLink(link, group == null ? void 0 : group.select);
     useRender(() => {
       var _a, _b;
@@ -5765,13 +5766,7 @@ const VBtn = genericComponent()({
         "style": [hasColor ? colorStyles.value : void 0, dimensionStyles.value, locationStyles.value, sizeStyles.value, props.style],
         "disabled": isDisabled.value || void 0,
         "href": link.href.value,
-        "onClick": (e2) => {
-          var _a2;
-          if (isDisabled.value)
-            return;
-          (_a2 = link.navigate) == null ? void 0 : _a2.call(link, e2);
-          group == null ? void 0 : group.toggle();
-        },
+        "onClick": onClick,
         "value": valueAttr.value
       }, {
         default: () => {
@@ -6779,7 +6774,7 @@ const VTextField = genericComponent()({
     const vInputRef = ref();
     const vFieldRef = ref();
     const inputRef = ref();
-    const isActive = computed(() => activeTypes.includes(props.type) || props.persistentPlaceholder || isFocused.value);
+    const isActive = computed(() => activeTypes.includes(props.type) || props.persistentPlaceholder || isFocused.value || props.active);
     function onFocus() {
       var _a;
       if (inputRef.value !== document.activeElement) {
@@ -10466,11 +10461,13 @@ const VSelect = genericComponent()({
                     let {
                       isSelected
                     } = _ref2;
-                    return props.multiple && !props.hideSelected ? createVNode(VCheckboxBtn, {
+                    return createVNode(Fragment, null, [props.multiple && !props.hideSelected ? createVNode(VCheckboxBtn, {
                       "modelValue": isSelected,
                       "ripple": false,
                       "tabindex": "-1"
-                    }, null) : void 0;
+                    }, null) : void 0, item.props.prependIcon && createVNode(VIcon, {
+                      "icon": item.props.prependIcon
+                    }, null)]);
                   }
                 });
               }), (_c = slots["append-item"]) == null ? void 0 : _c.call(slots)];
@@ -10485,6 +10482,10 @@ const VSelect = genericComponent()({
           }
           const slotProps = {
             "onClick:close": onChipClose,
+            onMousedown(e2) {
+              e2.preventDefault();
+              e2.stopPropagation();
+            },
             modelValue: true,
             "onUpdate:modelValue": void 0
           };
@@ -10571,6 +10572,11 @@ function providePagination(options) {
     if (itemsPerPage.value === -1 || itemsLength.value === 0)
       return 1;
     return Math.ceil(itemsLength.value / itemsPerPage.value);
+  });
+  watchEffect(() => {
+    if (page.value > pageCount.value) {
+      page.value = pageCount.value;
+    }
   });
   function setItemsPerPage(value) {
     itemsPerPage.value = value;
@@ -11554,10 +11560,10 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-6ee1b64a.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-c516d1d2.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-17c102d6.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-6aa4d8ea.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-18a154c1.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-f96ddef8.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-fb3ddcb9.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-5ed77479.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-e14050cc.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-d784e7bf.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-f2440b64.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-046caad0.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-604ec8ff.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-0e138033.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-985cd71b.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-af25680c.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-25a6007d.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-e718ad10.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
-        resolve: (lang) => __variableDynamicImportRuntimeHelper(/* @__PURE__ */ Object.assign({ "../../lang/en.json": () => import("./assets/en-85e98b66.mjs"), "../../lang/php_en.json": () => import("./assets/php_en-8bfd7776.mjs"), "../../lang/php_ru.json": () => import("./assets/php_ru-f50d8bc0.mjs"), "../../lang/ru.json": () => import("./assets/ru-889b8ad7.mjs") }), `../../lang/${lang}.json`)
+        resolve: (lang) => __variableDynamicImportRuntimeHelper(/* @__PURE__ */ Object.assign({ "../../lang/en.json": () => import("./assets/en-c6ca7cc9.mjs"), "../../lang/php_en.json": () => import("./assets/php_en-8bfd7776.mjs"), "../../lang/php_ru.json": () => import("./assets/php_ru-f50d8bc0.mjs"), "../../lang/ru.json": () => import("./assets/ru-bd612e50.mjs") }), `../../lang/${lang}.json`)
       }).use(I, {
         // @ts-expect-error
         ...page.props.ziggy,
