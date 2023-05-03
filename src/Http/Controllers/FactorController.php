@@ -98,10 +98,13 @@ class FactorController extends Controller
     /**
      * Raise the specified factor's priority.
      */
-    public function raisePriority(Factor $factor): RedirectResponse
+    public function raisePriority(Factor $factor, bool $lower = false): RedirectResponse
     {
         /** @var Factor|null $neighbor */
-        $neighbor = Factor::withTrashed()->where('priority', '<', $factor->priority)->orderByDesc('priority')->first();
+        $neighbor = Factor::withTrashed()
+            ->where('priority', $lower ? '>' : '<', $factor->priority)
+            ->orderBy('priority', $lower ? 'asc' : 'desc')
+            ->first();
 
         if (! is_null($neighborPriority = $neighbor?->priority)) {
             $neighbor->update(['priority' => $factor->priority]);
@@ -116,14 +119,6 @@ class FactorController extends Controller
      */
     public function lowerPriority(Factor $factor): RedirectResponse
     {
-        /** @var Factor|null $neighbor */
-        $neighbor = Factor::withTrashed()->where('priority', '>', $factor->priority)->orderBy('priority')->first();
-
-        if (! is_null($neighborPriority = $neighbor?->priority)) {
-            $neighbor->update(['priority' => $factor->priority]);
-            $factor->update(['priority' => $neighborPriority]);
-        }
-
-        return Response::redirectToRoute('ticket-allocator.factors.index', status: 303);
+        return $this->raisePriority($factor, true);
     }
 }
