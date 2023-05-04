@@ -27,6 +27,15 @@ class FactorDictionary implements FactorDictionaryContract
     }
 
     /**
+     * @param  string  $alias
+     * @return class-string<FactorContract>|false
+     */
+    public function getClass(string $alias): string|false
+    {
+        return $this->getDictionary()->get($alias, false);
+    }
+
+    /**
      * @param  class-string<FactorContract>  $class
      * @param  array-key  $alias
      * @return array<string, class-string<FactorContract>>

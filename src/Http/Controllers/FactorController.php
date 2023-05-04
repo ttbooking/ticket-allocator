@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
@@ -34,11 +35,12 @@ class FactorController extends Controller
     /**
      * Show the form for creating a new factor.
      */
-    public function create(): InertiaResponse
+    public function create(FactorDictionary $factorDictionary, Request $request): InertiaResponse
     {
+        $factorType = new FactorTypeResource($factorDictionary->getClass($request->query('type')));
         $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
 
-        return Inertia::render('Factor/CreateEdit', compact('ticketCategories'));
+        return Inertia::render('Factor/CreateEdit', compact('factorType', 'ticketCategories'));
     }
 
     /**

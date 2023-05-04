@@ -13,4 +13,10 @@ interface FactorDictionary
      * @return Collection<string, class-string<FactorContract>>
      */
     public function getDictionary(): Collection;
+
+    /**
+     * @param  string  $alias
+     * @return class-string<FactorContract>|false
+     */
+    public function getClass(string $alias): string|false;
 }

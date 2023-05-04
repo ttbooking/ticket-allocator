@@ -26,6 +26,7 @@
                                         <v-row>
                                             <v-col cols="12" md="12">
                                                 <v-select
+                                                    v-model="factorType"
                                                     :label="$t('factor_type')"
                                                     :items="factorDictionary"
                                                     item-title="name"
@@ -37,12 +38,14 @@
                                 </v-card-text>
                                 <v-card-actions>
                                     <v-spacer />
-                                    <v-btn color="blue-darken-1" variant="text" @click="close">
-                                        {{ $t("cancel") }}
-                                    </v-btn>
-                                    <v-btn color="blue-darken-1" variant="text" @click="close">
-                                        {{ $t("create") }}
-                                    </v-btn>
+                                    <v-btn color="primary" dark @click="close">{{ $t("cancel") }}</v-btn>
+                                    <Link
+                                        v-if="!!factorType"
+                                        :href="route('ticket-allocator.factors.create', { type: factorType })"
+                                    >
+                                        <v-btn color="primary" dark @click="close">{{ $t("create") }}</v-btn>
+                                    </Link>
+                                    <v-btn v-else color="primary" dark disabled>{{ $t("create") }}</v-btn>
                                 </v-card-actions>
                             </v-card>
                         </v-dialog>
@@ -106,6 +109,7 @@ const headers = [
 ];
 
 const dialog = ref();
+const factorType = ref();
 
 function close() {
     dialog.value = null;

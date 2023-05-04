@@ -10,6 +10,7 @@ use TTBooking\TicketAllocator\Contracts\FactorDictionary as FactorDictionaryCont
 
 /**
  * @method static Collection getDictionary()
+ * @method static string|false getClass(string $alias)
  */
 class Factor extends Facade
 {

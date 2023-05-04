@@ -25,6 +25,7 @@ return [
         'teams' => 'команды',
         'ticket_categories' => 'категории тикетов',
         'ticket_limit' => 'максимальное число тикетов',
+        'type' => 'тип',
         'user' => 'пользователь',
         'weight_increment' => 'приращение веса',
     ],

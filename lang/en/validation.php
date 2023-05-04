@@ -25,6 +25,7 @@ return [
         'teams' => 'teams',
         'ticket_categories' => 'ticket categories',
         'ticket_limit' => 'ticket limit',
+        'type' => 'type',
         'user' => 'user',
         'weight_increment' => 'weight increment',
     ],

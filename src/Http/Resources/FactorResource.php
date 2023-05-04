@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use TTBooking\TicketAllocator\Facades\Factor as FactorDictionary;
 use TTBooking\TicketAllocator\Models\Factor;
 
 /**
@@ -30,7 +31,7 @@ class FactorResource extends JsonResource
         return [
             'uuid' => $this->uuid,
             'priority' => $this->priority,
-            'type' => $this->type,
+            'type' => new FactorTypeResource(FactorDictionary::getClass($this->type)),
             'name' => $this->name,
             'description' => $this->description,
             'config' => $this->config,

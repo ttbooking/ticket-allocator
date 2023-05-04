@@ -19,6 +19,16 @@
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-text-field
+                                :model-value="factor?.type.name ?? factorType?.name"
+                                :label="$t('factor_type')"
+                                readonly
+                            />
+                            <input v-model="form.type" type="hidden" />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="12">
+                            <v-text-field
                                 v-model="form.name"
                                 required
                                 maxlength="255"
@@ -144,12 +154,13 @@
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import type { Factor, TicketCategory } from "@/types";
+import type { Factor, FactorType, TicketCategory } from "@/types";
 import { wTrans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 const props = defineProps<{
     factor?: Factor;
+    factorType?: FactorType;
     ticketCategories: TicketCategory[];
     errors: Record<string, string>;
 }>();
@@ -165,6 +176,7 @@ const headers = [
 
 const form = useForm({
     active: !props.factor?.deleted_at,
+    type: props.factor?.type.alias ?? props.factorType?.alias ?? "",
     name: props.factor?.name ?? "",
     description: props.factor?.description ?? "",
     config: props.factor?.config ?? [],
