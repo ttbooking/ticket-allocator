@@ -26,7 +26,7 @@ class UpdateFactorRequest extends FormRequest
         return [
             'active' => 'sometimes|required|boolean',
             'type' => 'sometimes|required|string|max:255',
-            'name' => 'sometimes|required|string|max:255',
+            'name' => 'sometimes|nullable|string|max:255',
             'description' => 'sometimes|nullable|string|max:65535',
             'config' => 'sometimes|array',
         ];

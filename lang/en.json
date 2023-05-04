@@ -41,6 +41,7 @@
     "ticket_pool": "Ticket pool",
     "tickets": "Tickets",
     "title": "Ticket Allocator",
+    "type": "Type",
     "user": "User",
     "value": "Value",
     "weight_increment": "Weight increment"

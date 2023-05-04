@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->increments('priority')->index();
             $table->string('type')->index();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->json('config')->nullable();
             $table->timestamp('created_at')->useCurrent();

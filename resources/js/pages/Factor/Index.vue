@@ -103,6 +103,7 @@ defineProps<{
 
 const headers = [
     { title: wTrans("active"), key: "active", sortable: false },
+    { title: wTrans("type"), key: "type.name", sortable: false },
     { title: wTrans("name"), key: "name", sortable: false },
     { title: wTrans("description"), key: "description", sortable: false },
     { title: wTrans("actions"), key: "actions", sortable: false },

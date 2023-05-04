@@ -18,11 +18,7 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-text-field
-                                :model-value="factor?.type.name ?? factorType?.name"
-                                :label="$t('factor_type')"
-                                readonly
-                            />
+                            <v-text-field :model-value="factorTypeName" :label="$t('factor_type')" readonly />
                             <input v-model="form.type" type="hidden" />
                         </v-col>
                     </v-row>
@@ -30,9 +26,10 @@
                         <v-col cols="12" md="12">
                             <v-text-field
                                 v-model="form.name"
-                                required
                                 maxlength="255"
                                 :label="$t('name')"
+                                :placeholder="factorTypeName"
+                                :persistent-placeholder="!!factorTypeName.length"
                                 :error-messages="errors.name"
                             />
                         </v-col>
@@ -157,6 +154,7 @@ import { Head, Link, useForm } from "@inertiajs/vue3";
 import type { Factor, FactorType, TicketCategory } from "@/types";
 import { wTrans } from "laravel-vue-i18n";
 import route from "ziggy-js";
+import { computed } from "vue";
 
 const props = defineProps<{
     factor?: Factor;
@@ -177,10 +175,12 @@ const headers = [
 const form = useForm({
     active: !props.factor?.deleted_at,
     type: props.factor?.type.alias ?? props.factorType?.alias ?? "",
-    name: props.factor?.name ?? "",
+    name: props.factor?.display_name ?? "",
     description: props.factor?.description ?? "",
     config: props.factor?.config ?? [],
 });
+
+const factorTypeName = computed(() => props.factor?.type.name ?? props.factorType?.name ?? "");
 
 function getTicketCategories(uuid?: string) {
     return props.ticketCategories.filter(

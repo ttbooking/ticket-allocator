@@ -26,7 +26,7 @@ class StoreFactorRequest extends FormRequest
         return [
             'active' => 'required|boolean',
             'type' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:65535',
             'config' => 'array',
         ];

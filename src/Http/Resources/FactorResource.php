@@ -33,6 +33,7 @@ class FactorResource extends JsonResource
             'priority' => $this->priority,
             'type' => new FactorTypeResource(FactorDictionary::getClass($this->type)),
             'name' => $this->name,
+            'display_name' => $this->getRawOriginal('name'),
             'description' => $this->description,
             'config' => $this->config,
             'created_at' => $this->created_at,

@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
+use TTBooking\TicketAllocator\Facades\Factor as FactorDictionary;
 
 /**
  * @method static static create(array $parameters = [])
  * @method static static|null find(string $uuid)
  * @property non-empty-string $uuid
  * @property int $priority
- * @property string $type
+ * @property class-string<FactorContract> $type
  * @property string $name
  * @property string $description
  * @property array $config
@@ -40,4 +43,20 @@ class Factor extends Model
     protected $casts = [
         'config' => 'array',
     ];
+
+    /**
+     * @return Attribute<class-string<FactorContract>, never>
+     */
+    protected function type(): Attribute
+    {
+        return Attribute::get(fn ($type) => FactorDictionary::getClass($type));
+    }
+
+    /**
+     * @return Attribute<string, never>
+     */
+    protected function name(): Attribute
+    {
+        return Attribute::get(fn ($value) => $value ?? $this->type::getName());
+    }
 }

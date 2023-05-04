@@ -77,6 +77,7 @@ export interface Factor {
     priority: number;
     type: FactorType;
     name: string;
+    display_name: string | null;
     description: string | null;
     config: TicketCategoryFactorConfig[];
     created_at: string;

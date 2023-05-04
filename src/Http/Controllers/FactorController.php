@@ -49,7 +49,7 @@ class FactorController extends Controller
     public function store(StoreFactorRequest $request): RedirectResponse
     {
         /** @var Factor $factor */
-        $factor = Factor::query()->create($request->safe(['name', 'description', 'config']));
+        $factor = Factor::query()->create($request->safe(['type', 'name', 'description', 'config']));
         $request->validated('active') ? $factor->restore() : $factor->delete();
 
         return Response::redirectToRoute('ticket-allocator.factors.index', status: 303);
