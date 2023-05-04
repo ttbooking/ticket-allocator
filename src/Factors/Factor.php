@@ -21,7 +21,7 @@ abstract class Factor implements FactorContract
     public static function getAlias(): string
     {
         return static::$alias
-            ?? (new \ReflectionClass(static::class))->getAttributes(Alias::class)[0]?->newInstance()->alias
+            ?? ((new \ReflectionClass(static::class))->getAttributes(Alias::class)[0] ?? null)?->newInstance()->alias
             ?? Str::snake(class_basename(static::class));
     }
 

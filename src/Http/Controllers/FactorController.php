@@ -9,9 +9,11 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use TTBooking\TicketAllocator\Contracts\FactorDictionary;
 use TTBooking\TicketAllocator\Http\Requests\StoreFactorRequest;
 use TTBooking\TicketAllocator\Http\Requests\UpdateFactorRequest;
 use TTBooking\TicketAllocator\Http\Resources\FactorResource;
+use TTBooking\TicketAllocator\Http\Resources\FactorTypeResource;
 use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
 use TTBooking\TicketAllocator\Models\Factor;
 use TTBooking\TicketAllocator\Models\TicketCategory;
@@ -21,11 +23,12 @@ class FactorController extends Controller
     /**
      * Display a listing of the factors.
      */
-    public function index(): InertiaResponse
+    public function index(FactorDictionary $factorDictionary): InertiaResponse
     {
         $factors = FactorResource::collection(Factor::withTrashed()->orderBy('priority')->get())->resolve();
+        $factorDictionary = FactorTypeResource::collection($factorDictionary->getDictionary()->values())->resolve();
 
-        return Inertia::render('Factor/Index', compact('factors'));
+        return Inertia::render('Factor/Index', compact('factors', 'factorDictionary'));
     }
 
     /**

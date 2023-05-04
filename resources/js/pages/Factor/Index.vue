@@ -13,9 +13,39 @@
                         <v-toolbar-title>{{ $t("factors") }}</v-toolbar-title>
                         <v-divider class="mx-4" inset vertical />
                         <v-spacer />
-                        <Link :href="route('ticket-allocator.factors.create')">
-                            <v-btn color="primary" dark>{{ $t("new_factor") }}</v-btn>
-                        </Link>
+                        <v-dialog v-model="dialog" max-width="500px">
+                            <template #activator="{ props }">
+                                <v-btn color="primary" dark v-bind="props">{{ $t("new_factor") }}</v-btn>
+                            </template>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="text-h5">{{ $t("choose_factor_type") }}</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col cols="12" md="12">
+                                                <v-select
+                                                    :label="$t('factor_type')"
+                                                    :items="factorDictionary"
+                                                    item-title="name"
+                                                    item-value="alias"
+                                                />
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer />
+                                    <v-btn color="blue-darken-1" variant="text" @click="close">
+                                        {{ $t("cancel") }}
+                                    </v-btn>
+                                    <v-btn color="blue-darken-1" variant="text" @click="close">
+                                        {{ $t("create") }}
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
                     </v-toolbar>
                 </template>
                 <template #[`item.active`]="{ item }">
@@ -57,13 +87,15 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
+import { ref } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
-import type { Factor } from "@/types";
+import type { Factor, FactorType } from "@/types";
 import { wTrans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 defineProps<{
     factors: Factor[];
+    factorDictionary: FactorType[];
 }>();
 
 const headers = [
@@ -72,4 +104,10 @@ const headers = [
     { title: wTrans("description"), key: "description", sortable: false },
     { title: wTrans("actions"), key: "actions", sortable: false },
 ];
+
+const dialog = ref();
+
+function close() {
+    dialog.value = null;
+}
 </script>

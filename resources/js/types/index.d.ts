@@ -69,12 +69,19 @@ export interface TicketCategoryFactorConfig {
 export interface Factor {
     uuid: string;
     priority: number;
+    type: string;
     name: string;
     description: string | null;
     config: TicketCategoryFactorConfig[];
     created_at: string;
     updated_at: string;
     deleted_at: string | null;
+}
+
+export interface FactorType {
+    alias: string;
+    name: string;
+    singular: boolean;
 }
 
 export interface DisplayOptions {

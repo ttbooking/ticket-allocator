@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('ticket_allocator_factors', function (Blueprint $table) {
             $table->uuid()->primary();
             $table->increments('priority')->index();
+            $table->string('type')->index();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('class')->index();
             $table->json('config')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
