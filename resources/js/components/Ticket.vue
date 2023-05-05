@@ -30,7 +30,27 @@
                                     </tbody>
                                 </table>
                             </v-window-item>
-                            <v-window-item value="metrics">Window Two</v-window-item>
+                            <v-window-item value="metrics">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>{{ $t("initial_weight") }}</th>
+                                            <th>{{ $t("weight_increment") }}</th>
+                                            <th>{{ $t("complexity") }}</th>
+                                            <th>{{ $t("delay") }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(adjustments, factorUuid) in ticket.metrics ?? []" :key="factorUuid">
+                                            <th>{{ factorUuid }}</th>
+                                            <td v-for="(adjustment, metric) in adjustments" :key="metric">
+                                                {{ adjustment }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </v-window-item>
                         </v-window>
                     </v-card-text>
                 </v-card>
