@@ -13,6 +13,8 @@ abstract class Factor implements FactorContract
 {
     protected static string $alias;
 
+    protected array $config = [];
+
     public static function setAlias(string $alias): void
     {
         static::$alias = $alias;
@@ -33,5 +35,17 @@ abstract class Factor implements FactorContract
     public static function isSingular(): bool
     {
         return ! empty((new \ReflectionClass(static::class))->getAttributes(Singular::class));
+    }
+
+    public function configure(array $config): static
+    {
+        $this->config = $config;
+
+        return $this;
+    }
+
+    public function getConfig(): array
+    {
+        return $this->config;
     }
 }

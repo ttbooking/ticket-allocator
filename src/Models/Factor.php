@@ -18,6 +18,7 @@ use TTBooking\TicketAllocator\Facades\Factor as FactorDictionary;
  * @property non-empty-string $uuid
  * @property int $priority
  * @property class-string<FactorContract> $type
+ * @property-read FactorContract $instance
  * @property string $name
  * @property string $description
  * @property array $config
@@ -49,7 +50,15 @@ class Factor extends Model
      */
     protected function type(): Attribute
     {
-        return Attribute::get(fn ($type) => FactorDictionary::getClass($type));
+        return Attribute::get(static fn ($type) => FactorDictionary::getClass($type));
+    }
+
+    /**
+     * @return Attribute<FactorContract, never>
+     */
+    protected function instance(): Attribute
+    {
+        return Attribute::get(fn ($type) => app($this->type)->configure($this->config));
     }
 
     /**

@@ -15,9 +15,7 @@ use TTBooking\TicketAllocator\Http\Requests\StoreFactorRequest;
 use TTBooking\TicketAllocator\Http\Requests\UpdateFactorRequest;
 use TTBooking\TicketAllocator\Http\Resources\FactorResource;
 use TTBooking\TicketAllocator\Http\Resources\FactorTypeResource;
-use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
 use TTBooking\TicketAllocator\Models\Factor;
-use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class FactorController extends Controller
 {
@@ -37,10 +35,10 @@ class FactorController extends Controller
      */
     public function create(FactorDictionary $factorDictionary, Request $request): InertiaResponse
     {
-        $factorType = new FactorTypeResource($factorDictionary->getClass($request->query('type')));
-        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
+        $factorClass = $factorDictionary->getClass($request->query('type'));
+        $factorType = new FactorTypeResource($factorClass);
 
-        return Inertia::render('Factor/CreateEdit', compact('factorType', 'ticketCategories'));
+        return Inertia::render('Factor/CreateEdit', compact('factorType') + app($factorClass)->getProps());
     }
 
     /**
@@ -71,9 +69,8 @@ class FactorController extends Controller
     public function edit(Factor $factor): InertiaResponse
     {
         $factor = new FactorResource($factor);
-        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
 
-        return Inertia::render('Factor/CreateEdit', compact('factor', 'ticketCategories'));
+        return Inertia::render('Factor/CreateEdit', compact('factor') + $factor->instance->getProps());
     }
 
     /**

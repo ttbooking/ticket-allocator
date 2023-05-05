@@ -18,6 +18,12 @@ interface Factor
 
     public function getProps(): array;
 
+    /**
+     * @param  array  $config
+     * @return $this
+     */
+    public function configure(array $config): static;
+
     public function getConfig(): array;
 
     public function getAdjustments(TicketAggregateRoot $ticket): array;
