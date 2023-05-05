@@ -1,7 +1,7 @@
 <template>
     <div class="d-inline-block">
         <v-btn size="small" class="ticket justify-start px-2" :class="{ overflow }" :ripple="false" flat width="100">
-            <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon" color="white" />
+            <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon ?? ''" color="white" />
             <span class="text-white overflow-hidden">
                 <span class="title inline-block relative">{{ title() }}</span>
             </span>
@@ -12,7 +12,7 @@
                 location="bottom center"
                 origin="auto"
             >
-                <v-card width="400" :prepend-icon="ticket.meta?.icon" :title="cardTitle" :subtitle="cardSubtitle">
+                <v-card width="500" :prepend-icon="ticket.meta?.icon ?? ''" :title="cardTitle" :subtitle="cardSubtitle">
                     <v-tabs v-model="tab">
                         <v-tab value="properties">{{ $t("properties") }}</v-tab>
                         <v-tab value="metrics">{{ $t("metrics") }}</v-tab>
@@ -30,11 +30,11 @@
                                     </tbody>
                                 </table>
                             </v-window-item>
-                            <v-window-item value="metrics">
+                            <v-window-item value="metrics" class="prose">
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th></th>
+                                            <th>{{ $t("factor") }}</th>
                                             <th>{{ $t("initial_weight") }}</th>
                                             <th>{{ $t("weight_increment") }}</th>
                                             <th>{{ $t("complexity") }}</th>
@@ -49,6 +49,15 @@
                                             </td>
                                         </tr>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>{{ $t("total") }}</th>
+                                            <td>{{ ticket.initial_weight }}</td>
+                                            <td>{{ ticket.weight_increment }}</td>
+                                            <td>{{ ticket.complexity }}</td>
+                                            <td>{{ ticket.delay }}</td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </v-window-item>
                         </v-window>
