@@ -66,6 +66,7 @@ class TicketAggregateRoot extends AggregateRoot
     {
         Factor::query()
             ->orderBy('priority')
+            ->get(['uuid', 'type', 'config'])
             ->pluck('instance', 'uuid')
             ->each(function (FactorContract $factor, string $uuid) {
                 $adjustments = $factor->getAdjustments($this);

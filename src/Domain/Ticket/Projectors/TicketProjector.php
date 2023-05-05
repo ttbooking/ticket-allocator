@@ -18,10 +18,6 @@ class TicketProjector extends Projector
             'uuid' => $event->uuid,
             'category_uuid' => $event->categoryUuid,
             'handler_uuid' => $event->operatorUuid,
-            'initial_weight' => $event->initialWeight,
-            'weight_increment' => $event->weightIncrement,
-            'complexity' => $event->complexity,
-            'delay' => $event->delay,
             'meta' => $event->meta,
         ]);
     }
