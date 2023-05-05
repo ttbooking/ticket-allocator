@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Factors;
 
+use Illuminate\Support\Arr;
 use TTBooking\TicketAllocator\Attributes\Factors\Singular;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
@@ -21,8 +22,11 @@ class Category extends Factor
 
     public function getAdjustments(TicketAggregateRoot $ticket): array
     {
-        return collect($this->getConfig())->firstWhere('value', $ticket->categoryUuid)
-            ?? [
+        $adjustments = collect($this->getConfig())->firstWhere('value', $ticket->categoryUuid);
+
+        return $adjustments
+            ? Arr::except($adjustments, 'value')
+            : [
                 'initial_weight' => 0,
                 'weight_increment' => 0,
                 'complexity' => 0,
