@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use TTBooking\TicketAllocator\Models\Factor;
 
 class UpdateFactorRequest extends FormRequest
 {
@@ -26,7 +27,7 @@ class UpdateFactorRequest extends FormRequest
         return [
             'active' => 'sometimes|required|boolean',
             'type' => 'sometimes|required|string|max:255',
-            'name' => 'sometimes|nullable|string|max:255',
+            'name' => 'sometimes|nullable|string|max:255|unique:'.Factor::class,
             'description' => 'sometimes|nullable|string|max:65535',
             'config' => 'sometimes|array',
         ];
