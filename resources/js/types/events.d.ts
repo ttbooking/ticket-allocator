@@ -1,3 +1,5 @@
+import type { TicketMetrics } from "@/types";
+
 export const Channel = "ticket-allocator";
 
 export enum Operator {
@@ -133,7 +135,7 @@ declare namespace Ticket {
     export interface MetricsAdjustedPayload {
         uuid: string;
         factorUuid: string;
-        adjustments: Record<string, number>;
+        adjustments: TicketMetrics;
     }
 
     export interface ClosedPayload {

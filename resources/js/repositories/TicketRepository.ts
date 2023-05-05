@@ -48,13 +48,15 @@ export default class TicketRepository extends Repository<Ticket> {
     };
 
     adjustMetrics = ({ uuid, factorUuid, adjustments }: Events.Ticket.MetricsAdjustedPayload) => {
-        const perFactorMetrics = this.find(uuid)?.metrics ?? {};
-        perFactorMetrics[factorUuid] = adjustments;
-        const metrics: Record<string, number> = {};
-        for (const [metric, adjustment] of Object.entries(adjustments)) {
-            metrics[metric] = Math.max(0, (this.find(uuid)?.[metric] ?? 0) + adjustment);
-        }
-        this.where("uuid", uuid).update({ metrics: perFactorMetrics, ...metrics });
+        const metrics = this.find(uuid)?.metrics ?? {};
+        metrics[factorUuid] = adjustments;
+        this.where("uuid", uuid).update({
+            metrics,
+            initial_weight: Math.max(0, (this.find(uuid)?.initial_weight ?? 0) + adjustments.initial_weight),
+            weight_increment: Math.max(0, (this.find(uuid)?.weight_increment ?? 0) + adjustments.weight_increment),
+            complexity: Math.max(0, (this.find(uuid)?.complexity ?? 0) + adjustments.complexity),
+            delay: Math.max(0, (this.find(uuid)?.delay ?? 0) + adjustments.delay),
+        });
     };
 
     unbound() {

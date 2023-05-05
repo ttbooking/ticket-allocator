@@ -1,6 +1,7 @@
 import { Model } from "pinia-orm";
 import { Attr, Num, Str, Uid, Cast, BelongsTo } from "pinia-orm/dist/decorators.js";
 import { DateCast } from "pinia-orm/dist/casts";
+import type { TicketMetrics } from "@/types";
 import { useSharedTimestamp } from "@/shared";
 import TicketCategory from "./TicketCategory";
 import Operator from "./Operator";
@@ -14,7 +15,7 @@ export default class Ticket extends Model {
     @Str("") declare category_uuid: string;
     @Str(null) declare handler_uuid: string | null;
     @Attr() declare meta: Record<string, string> | null;
-    @Attr() declare metrics: Record<string, Record<string, number>> | null;
+    @Attr() declare metrics: Record<string, TicketMetrics> | null;
     @Num(0) declare initial_weight: number;
     @Num(0) declare weight_increment: number;
     @Num(0) declare complexity: number;

@@ -31,31 +31,40 @@
                                 </table>
                             </v-window-item>
                             <v-window-item value="metrics" class="prose">
-                                <table>
+                                <table class="table-fixed">
                                     <thead>
                                         <tr>
-                                            <th>{{ $t("factor") }}</th>
-                                            <th>{{ $t("initial_weight") }}</th>
-                                            <th>{{ $t("weight_increment") }}</th>
-                                            <th>{{ $t("complexity") }}</th>
-                                            <th>{{ $t("delay") }}</th>
+                                            <th class="w-1/3">{{ $t("factor") }}</th>
+                                            <th class="text-center">
+                                                <em class="metric" :title="$t('initial_weight')">W<sub>0</sub></em>
+                                            </th>
+                                            <th class="text-center">
+                                                <em class="metric" :title="$t('weight_increment')">W<sub>i</sub></em>
+                                            </th>
+                                            <th class="text-center">
+                                                <em class="metric" :title="$t('complexity')">C</em>
+                                            </th>
+                                            <th class="text-center">
+                                                <em class="metric" :title="$t('delay')">D</em>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(adjustments, factorUuid) in ticket.metrics ?? []" :key="factorUuid">
+                                        <tr v-for="(adjustments, factorUuid) in ticket.metrics ?? {}" :key="factorUuid">
                                             <th>{{ factorUuid }}</th>
-                                            <td v-for="(adjustment, metric) in adjustments" :key="metric">
-                                                {{ adjustment }}
-                                            </td>
+                                            <td class="text-right">{{ adjustments.initial_weight ?? 0 }}</td>
+                                            <td class="text-right">{{ adjustments.weight_increment ?? 0 }}</td>
+                                            <td class="text-right">{{ adjustments.complexity ?? 0 }}</td>
+                                            <td class="text-right">{{ adjustments.delay ?? 0 }}</td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <th>{{ $t("total") }}</th>
-                                            <td>{{ ticket.initial_weight }}</td>
-                                            <td>{{ ticket.weight_increment }}</td>
-                                            <td>{{ ticket.complexity }}</td>
-                                            <td>{{ ticket.delay }}</td>
+                                            <td class="text-right">{{ ticket.initial_weight }}</td>
+                                            <td class="text-right">{{ ticket.weight_increment }}</td>
+                                            <td class="text-right">{{ ticket.complexity }}</td>
+                                            <td class="text-right">{{ ticket.delay }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -140,5 +149,9 @@ const animation = computed(() => ({
         left: 100%;
         transform: translateX(-100%);
     }
+}
+
+.metric {
+    @apply border-b-[1px] border-dotted border-black cursor-help;
 }
 </style>

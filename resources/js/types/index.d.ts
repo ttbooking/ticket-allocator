@@ -23,12 +23,19 @@ export interface Operator {
     teams: OperatorTeam[];
 }
 
+export interface TicketMetrics {
+    initial_weight: number;
+    weight_increment: number;
+    complexity: number;
+    delay: number;
+}
+
 export interface Ticket {
     uuid: string;
     category_uuid: string;
     handler_uuid: string | null;
     meta: Record<string, string> | null;
-    metrics: Record<string, Record<string, number>> | null;
+    metrics: Record<string, TicketMetrics> | null;
     initial_weight: number;
     weight_increment: number;
     complexity: number;
