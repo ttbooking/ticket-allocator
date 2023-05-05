@@ -61,7 +61,7 @@ class TicketProjector extends Projector
 
         $metrics = [];
         foreach ($event->adjustments as $metric => $adjustment) {
-            $metrics[$metric] = min(0, $ticket->$metric + $adjustment);
+            $metrics[$metric] = max(0, $ticket->$metric + $adjustment);
         }
 
         $ticket->update(

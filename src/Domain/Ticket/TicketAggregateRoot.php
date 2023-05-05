@@ -141,7 +141,7 @@ class TicketAggregateRoot extends AggregateRoot
         $this->perFactorMetrics[$event->factorUuid] = $event->adjustments;
 
         foreach ($event->adjustments as $metric => $adjustment) {
-            $this->metrics[$metric] = min(0, ($this->metrics[$metric] ?? 0) + $adjustment);
+            $this->metrics[$metric] = max(0, ($this->metrics[$metric] ?? 0) + $adjustment);
         }
     }
 

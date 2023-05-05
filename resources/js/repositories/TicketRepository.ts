@@ -52,7 +52,7 @@ export default class TicketRepository extends Repository<Ticket> {
         perFactorMetrics[factorUuid] = adjustments;
         const metrics: Record<string, number> = {};
         for (const [metric, adjustment] of Object.entries(adjustments)) {
-            metrics[metric] = Math.min(0, (this.find(uuid)?.[metric] ?? 0) + adjustment);
+            metrics[metric] = Math.max(0, (this.find(uuid)?.[metric] ?? 0) + adjustment);
         }
         this.where("uuid", uuid).update({ metrics: perFactorMetrics, ...metrics });
     };
