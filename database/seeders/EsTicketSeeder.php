@@ -31,10 +31,6 @@ class EsTicketSeeder extends Seeder
             $createTicket(
                 category: fake()->randomElement($ticketCategories),
                 operator: fake()->boolean(20) ? fake()->randomElement($operators) : null,
-                initialWeight: fake()->numberBetween(0, 100000),
-                weightIncrement: fake()->numberBetween(0, 100),
-                complexity: fake()->randomElement([5, 10, 25, 50]),
-                delay: fake()->boolean(10) ? fake()->numberBetween(1, 10) * 60 : 0,
                 meta: [
                     Ticket::META_ICON => fake()->randomElement(['mdi-airplane', 'mdi-train', 'mdi-bus', 'mdi-car']),
                     Ticket::META_TITLE => $order = fake()->numberBetween(100, 1000),

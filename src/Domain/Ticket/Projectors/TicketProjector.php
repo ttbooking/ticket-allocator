@@ -63,7 +63,12 @@ class TicketProjector extends Projector
             return;
         }
 
-        $ticket->update(['metrics' => array_merge($ticket->metrics, $event->adjustments)]);
+        $metrics = [];
+        foreach ($event->adjustments as $metric => $adjustment) {
+            $metrics[$metric] = min(0, $ticket->$metric + $adjustment);
+        }
+
+        $ticket->update(['metrics' => $ticket->metrics + [$event->factorUuid => $event->adjustments]] + $metrics);
     }
 
     public function onTicketBound(Events\TicketBound $event): void

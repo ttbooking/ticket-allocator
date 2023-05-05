@@ -10,10 +10,6 @@ export default class TicketRepository extends Repository<Ticket> {
             uuid: payload.uuid,
             category_uuid: payload.categoryUuid,
             handler_uuid: payload.operatorUuid,
-            initial_weight: payload.initialWeight,
-            weight_increment: payload.weightIncrement,
-            complexity: payload.complexity,
-            delay: payload.delay,
             meta: payload.meta,
             created_at: new Date().toISOString(),
         });
@@ -52,9 +48,13 @@ export default class TicketRepository extends Repository<Ticket> {
     };
 
     adjustMetrics = ({ uuid, factorUuid, adjustments }: Events.Ticket.MetricsAdjustedPayload) => {
-        let metrics = this.find(uuid)?.metrics ?? {};
-        metrics = { ...metrics, ...adjustments };
-        this.where("uuid", uuid).update({ metrics });
+        const perFactorMetrics = this.find(uuid)?.metrics ?? {};
+        perFactorMetrics[factorUuid] = adjustments;
+        const metrics: Record<string, number> = {};
+        for (const [metric, adjustment] of Object.entries(adjustments)) {
+            metrics[metric] = Math.min(0, (this.find(uuid)?.[metric] ?? 0) + adjustment);
+        }
+        this.where("uuid", uuid).update({ metrics: perFactorMetrics, ...metrics });
     };
 
     unbound() {

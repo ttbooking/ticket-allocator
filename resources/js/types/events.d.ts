@@ -133,7 +133,7 @@ declare namespace Ticket {
     export interface MetricsAdjustedPayload {
         uuid: string;
         factorUuid: string;
-        adjustments: Record<string, Record<string, number>>;
+        adjustments: Record<string, number>;
     }
 
     export interface ClosedPayload {
@@ -144,10 +144,6 @@ declare namespace Ticket {
         uuid: string;
         categoryUuid: string;
         operatorUuid: string | null;
-        initialWeight: number;
-        weightIncrement: number;
-        complexity: number;
-        delay: number;
         meta: Record<string, string>;
     }
 

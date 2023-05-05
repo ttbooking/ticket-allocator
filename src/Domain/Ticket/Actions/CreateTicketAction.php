@@ -16,10 +16,6 @@ class CreateTicketAction extends Action
     public function __invoke(
         TicketCategory|string $category,
         Operator|string $operator = null,
-        int $initialWeight = 0,
-        int $weightIncrement = 0,
-        int $complexity = 0,
-        int $delay = 0,
         array $meta = [],
     ): ?Ticket {
         $uuid = (string) Str::orderedUuid();
@@ -28,10 +24,6 @@ class CreateTicketAction extends Action
             uuid: $uuid,
             categoryUuid: is_string($category) ? $category : $category->getKey(),
             operatorUuid: is_string($operator) ? $operator : $operator?->getKey(),
-            initialWeight: $initialWeight,
-            weightIncrement: $weightIncrement,
-            complexity: $complexity,
-            delay: $delay,
             meta: $meta,
         ));
 

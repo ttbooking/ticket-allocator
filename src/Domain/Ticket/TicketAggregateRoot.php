@@ -6,6 +6,8 @@ namespace TTBooking\TicketAllocator\Domain\Ticket;
 
 use Illuminate\Support\Arr;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
+use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
+use TTBooking\TicketAllocator\Models\Factor;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class TicketAggregateRoot extends AggregateRoot
@@ -34,17 +36,12 @@ class TicketAggregateRoot extends AggregateRoot
     public array $meta = [];
 
     /** @var array<string, array<string, int>> */
+    public array $perFactorMetrics = [];
+
+    /** @var array<string, int> */
     public array $metrics = [];
 
     public ?string $operatorUuid;
-
-    public int $initialWeight = 0;
-
-    public int $weightIncrement = 0;
-
-    public int $complexity = 0;
-
-    public int $delay = 0;
 
     public function create(Commands\CreateTicket $command): static
     {
@@ -52,10 +49,6 @@ class TicketAggregateRoot extends AggregateRoot
             uuid: $this->uuid(),
             categoryUuid: $command->categoryUuid,
             operatorUuid: $command->operatorUuid,
-            initialWeight: $command->initialWeight,
-            weightIncrement: $command->weightIncrement,
-            complexity: $command->complexity,
-            delay: $command->delay,
             meta: $command->meta + static::getCategoryData($command->categoryUuid),
         ));
     }
@@ -64,11 +57,20 @@ class TicketAggregateRoot extends AggregateRoot
     {
         $this->categoryUuid = $event->categoryUuid;
         $this->operatorUuid = $event->operatorUuid;
-        $this->initialWeight = $event->initialWeight;
-        $this->weightIncrement = $event->weightIncrement;
-        $this->complexity = $event->complexity;
-        $this->delay = $event->delay;
         $this->meta = $event->meta;
+
+        $this->applyFactors();
+    }
+
+    protected function applyFactors(): void
+    {
+        Factor::query()
+            ->orderBy('priority')
+            ->pluck('instance', 'uuid')
+            ->each(function (FactorContract $factor, string $uuid) {
+                $adjustments = $factor->getAdjustments($this);
+                $this->adjustMetrics(new Commands\AdjustTicketMetrics($this->uuid(), $uuid, $adjustments));
+            });
     }
 
     public function close(Commands\CloseTicket $command): static
@@ -135,7 +137,11 @@ class TicketAggregateRoot extends AggregateRoot
 
     protected function applyTicketMetricsAdjusted(Events\TicketMetricsAdjusted $event): void
     {
-        $this->metrics[$event->factorUuid] = $event->adjustments;
+        $this->perFactorMetrics[$event->factorUuid] = $event->adjustments;
+
+        foreach ($event->adjustments as $metric => $adjustment) {
+            $this->metrics[$metric] = min(0, ($this->metrics[$metric] ?? 0) + $adjustment);
+        }
     }
 
     public function bind(Commands\BindTicket $command): static
