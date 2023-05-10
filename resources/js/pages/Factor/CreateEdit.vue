@@ -45,91 +45,7 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-data-table :headers="headers" :items="form.config" density="compact">
-                                <template #top>
-                                    <v-toolbar flat>
-                                        <v-toolbar-title>{{ $t("entries") }}</v-toolbar-title>
-                                        <v-divider class="mx-4" inset vertical />
-                                        <v-spacer />
-                                        <v-btn
-                                            color="primary"
-                                            dark
-                                            :disabled="getTicketCategories().length === 0"
-                                            @click="addEntry"
-                                        >
-                                            {{ $t("new_entry") }}
-                                        </v-btn>
-                                    </v-toolbar>
-                                </template>
-                                <template #[`item.value`]="{ item }">
-                                    <v-autocomplete
-                                        v-model="item.raw.value"
-                                        :items="getTicketCategories(item.raw.value)"
-                                        item-title="name"
-                                        item-value="uuid"
-                                        variant="plain"
-                                        density="compact"
-                                        hide-details="auto"
-                                    />
-                                </template>
-                                <template #[`item.initial_weight`]="{ item }">
-                                    <v-text-field
-                                        v-model.number="item.raw.initial_weight"
-                                        type="number"
-                                        min="0"
-                                        max="9999999"
-                                        placeholder="0"
-                                        variant="plain"
-                                        density="compact"
-                                        hide-details="auto"
-                                    />
-                                </template>
-                                <template #[`item.weight_increment`]="{ item }">
-                                    <v-text-field
-                                        v-model.number="item.raw.weight_increment"
-                                        type="number"
-                                        min="0"
-                                        max="99999"
-                                        placeholder="0"
-                                        variant="plain"
-                                        density="compact"
-                                        hide-details="auto"
-                                    />
-                                </template>
-                                <template #[`item.complexity`]="{ item }">
-                                    <v-text-field
-                                        v-model.number="item.raw.complexity"
-                                        type="number"
-                                        min="0"
-                                        max="9999"
-                                        placeholder="0"
-                                        variant="plain"
-                                        density="compact"
-                                        hide-details="auto"
-                                    />
-                                </template>
-                                <template #[`item.delay`]="{ item }">
-                                    <v-text-field
-                                        v-model.number="item.raw.delay"
-                                        type="number"
-                                        min="0"
-                                        max="99999"
-                                        placeholder="0"
-                                        variant="plain"
-                                        density="compact"
-                                        hide-details="auto"
-                                    />
-                                </template>
-                                <template #[`item.actions`]="{ item }">
-                                    <v-btn
-                                        icon="mdi-delete"
-                                        :title="$t('remove')"
-                                        size="small"
-                                        variant="plain"
-                                        @click="removeEntry(item.raw.value)"
-                                    />
-                                </template>
-                            </v-data-table>
+                            <AssociationForm v-model="form.config" :entries="entries" />
                         </v-col>
                     </v-row>
                     <v-row>
@@ -150,27 +66,18 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
+import AssociationForm from "./Partials/AssociationForm.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
-import type { Factor, FactorType, TicketCategory } from "@/types";
-import { wTrans } from "laravel-vue-i18n";
+import type { Entry, Factor, FactorType } from "@/types";
 import route from "ziggy-js";
 import { computed } from "vue";
 
 const props = defineProps<{
     factor?: Factor;
     factorType?: FactorType;
-    ticketCategories: TicketCategory[];
+    entries: Entry[];
     errors: Record<string, string>;
 }>();
-
-const headers = [
-    { title: wTrans("value"), key: "value" },
-    { title: wTrans("initial_weight"), key: "initial_weight" },
-    { title: wTrans("weight_increment"), key: "weight_increment" },
-    { title: wTrans("complexity"), key: "complexity" },
-    { title: wTrans("delay"), key: "delay" },
-    { title: wTrans("actions"), key: "actions", sortable: false },
-];
 
 const form = useForm({
     active: !props.factor?.deleted_at,
@@ -181,27 +88,6 @@ const form = useForm({
 });
 
 const factorTypeName = computed(() => props.factor?.type.name ?? props.factorType?.name ?? "");
-
-function getTicketCategories(uuid?: string) {
-    return props.ticketCategories.filter(
-        (ticketCategory) =>
-            ticketCategory.uuid === uuid || !form.config.map((item) => item.value).includes(ticketCategory.uuid)
-    );
-}
-
-function addEntry() {
-    form.config.push({
-        value: getTicketCategories()[0]?.uuid ?? "",
-        initial_weight: null,
-        weight_increment: null,
-        complexity: null,
-        delay: null,
-    });
-}
-
-function removeEntry(id: number | string) {
-    form.config = form.config.filter((entry) => entry.value !== id);
-}
 
 function submit() {
     props.factor

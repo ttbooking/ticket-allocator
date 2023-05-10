@@ -16,7 +16,7 @@ class Category extends Factor
     public function getProps(): array
     {
         return [
-            'ticketCategories' => TicketCategoryResource::collection(TicketCategory::all())->resolve(),
+            'entries' => TicketCategoryResource::collection(TicketCategory::all())->resolve(),
         ];
     }
 

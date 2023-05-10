@@ -54,6 +54,11 @@ export interface OperatorTeam {
     ticket_categories: TicketCategory[];
 }
 
+export interface Entry {
+    uuid: string;
+    name: string;
+}
+
 export interface TicketCategory {
     uuid: string;
     name: string;
@@ -66,13 +71,13 @@ export interface TicketCategory {
     updated_at: string;
 }
 
-export interface TicketCategoryFactorConfig {
+export type AssociativeFactorConfig = Array<{
     value: string;
     initial_weight: number | null;
     weight_increment: number | null;
     complexity: number | null;
     delay: number | null;
-}
+}>;
 
 export interface FactorType {
     alias: string;
@@ -87,7 +92,7 @@ export interface Factor {
     name: string;
     display_name: string | null;
     description: string | null;
-    config: TicketCategoryFactorConfig[];
+    config: AssociativeFactorConfig;
     created_at: string;
     updated_at: string;
     deleted_at: string | null;
