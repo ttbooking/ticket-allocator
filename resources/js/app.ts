@@ -29,6 +29,7 @@ createInertiaApp({
             .use(i18nVue, {
                 resolve: (lang: string) => import(`../../lang/${lang}.json`),
             })
+            .provide("appProps", props)
             .mount(el);
     },
     progress: { color: "#4B5563" },
