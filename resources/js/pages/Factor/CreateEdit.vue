@@ -45,7 +45,12 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <AssociationForm v-model="form.config" :entries="entries" />
+                            <component
+                                :is="formComponent"
+                                v-if="!!formComponent"
+                                v-model="form.config"
+                                :entries="entries"
+                            />
                         </v-col>
                     </v-row>
                     <v-row>
@@ -66,11 +71,10 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
-import AssociationForm from "./Partials/AssociationForm.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, router } from "@inertiajs/vue3";
 import type { Entry, Factor, FactorType } from "@/types";
 import route from "ziggy-js";
-import { computed } from "vue";
+import { computed, ref, onBeforeMount } from "vue";
 
 const props = defineProps<{
     factor?: Factor;
@@ -88,6 +92,15 @@ const form = useForm({
 });
 
 const factorTypeName = computed(() => props.factor?.type.name ?? props.factorType?.name ?? "");
+const factorTypeComponent = computed(() => props.factor?.type.component ?? props.factorType?.component ?? null);
+
+const formComponent = ref();
+onBeforeMount(async () => {
+    const componentName = factorTypeComponent.value;
+    if (componentName !== null) {
+        formComponent.value = await router.resolveComponent(componentName);
+    }
+});
 
 function submit() {
     props.factor

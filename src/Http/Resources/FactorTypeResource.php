@@ -32,6 +32,7 @@ class FactorTypeResource extends JsonResource
             'alias' => $this->resource::getAlias(),
             'name' => $this->resource::getName(),
             'singular' => $this->resource::isSingular(),
+            'component' => $this->resource::getComponentName(),
         ];
     }
 }

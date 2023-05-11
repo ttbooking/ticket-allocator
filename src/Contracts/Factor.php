@@ -16,6 +16,8 @@ interface Factor
 
     public static function isSingular(): bool;
 
+    public static function getComponentName(): ?string;
+
     public function getProps(): array;
 
     /**

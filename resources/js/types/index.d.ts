@@ -83,6 +83,7 @@ export interface FactorType {
     alias: string;
     name: string;
     singular: boolean;
+    component: string | null;
 }
 
 export interface Factor {

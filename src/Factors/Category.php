@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Factors;
 
 use Illuminate\Support\Arr;
+use TTBooking\TicketAllocator\Attributes\Factors\Component;
 use TTBooking\TicketAllocator\Attributes\Factors\Singular;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
 #[Singular]
+#[Component('Factor/Partials/AssociationForm')]
 class Category extends Factor
 {
     public function getProps(): array
