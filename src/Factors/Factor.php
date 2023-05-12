@@ -44,6 +44,11 @@ abstract class Factor implements FactorContract
             ?? null;
     }
 
+    public function getProps(): array
+    {
+        return [];
+    }
+
     public function configure(array $config): static
     {
         $this->config = $config;

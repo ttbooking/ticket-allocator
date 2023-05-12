@@ -4,10 +4,12 @@
     "cancel": "Cancel",
     "choose_factor_type": "Choose factor type",
     "complexity": "Complexity",
+    "complexity_expression": "Complexity expression",
     "complexity_limit": "Complexity limit",
     "create": "Create",
     "dashboard": "Dashboard",
     "delay": "Delay, sec",
+    "delay_expression": "Delay expression",
     "description": "Description",
     "discover": "Discover",
     "display_name": "Display name",
@@ -21,6 +23,7 @@
     "factor_type": "Factor type",
     "factors": "Factors",
     "initial_weight": "Initial weight",
+    "initial_weight_expression": "Initial weight expression",
     "lower_priority": "lower priority",
     "metrics": "Metrics",
     "name": "Name",
@@ -46,5 +49,7 @@
     "type": "Type",
     "user": "User",
     "value": "Value",
-    "weight_increment": "Weight increment"
+    "variables": "Variables",
+    "weight_increment": "Weight increment",
+    "weight_increment_expression": "Weight increment expression"
 }

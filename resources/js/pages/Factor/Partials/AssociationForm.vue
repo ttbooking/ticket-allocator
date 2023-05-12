@@ -1,84 +1,88 @@
 <template>
-    <v-data-table :headers="headers" :items="config" density="compact">
-        <template #top>
-            <v-toolbar flat>
-                <v-toolbar-title>{{ $t("entries") }}</v-toolbar-title>
-                <v-divider class="mx-4" inset vertical />
-                <v-spacer />
-                <v-btn color="primary" dark :disabled="getEntries().length === 0" @click="addEntry">
-                    {{ $t("new_entry") }}
-                </v-btn>
-            </v-toolbar>
-        </template>
-        <template #[`item.value`]="{ item }">
-            <v-autocomplete
-                v-model="item.raw.value"
-                :items="getEntries(item.raw.value)"
-                item-title="name"
-                item-value="uuid"
-                variant="plain"
-                density="compact"
-                hide-details="auto"
-            />
-        </template>
-        <template #[`item.initial_weight`]="{ item }">
-            <v-text-field
-                v-model.number="item.raw.initial_weight"
-                type="number"
-                min="0"
-                max="9999999"
-                placeholder="0"
-                variant="plain"
-                density="compact"
-                hide-details="auto"
-            />
-        </template>
-        <template #[`item.weight_increment`]="{ item }">
-            <v-text-field
-                v-model.number="item.raw.weight_increment"
-                type="number"
-                min="0"
-                max="99999"
-                placeholder="0"
-                variant="plain"
-                density="compact"
-                hide-details="auto"
-            />
-        </template>
-        <template #[`item.complexity`]="{ item }">
-            <v-text-field
-                v-model.number="item.raw.complexity"
-                type="number"
-                min="0"
-                max="9999"
-                placeholder="0"
-                variant="plain"
-                density="compact"
-                hide-details="auto"
-            />
-        </template>
-        <template #[`item.delay`]="{ item }">
-            <v-text-field
-                v-model.number="item.raw.delay"
-                type="number"
-                min="0"
-                max="99999"
-                placeholder="0"
-                variant="plain"
-                density="compact"
-                hide-details="auto"
-            />
-        </template>
-        <template #[`item.actions`]="{ item }">
-            <v-btn
-                icon="mdi-delete"
-                :title="$t('remove')"
-                size="small"
-                variant="plain"
-                @click="removeEntry(item.raw.value)"
-            />
-        </template>
-    </v-data-table>
+    <v-row>
+        <v-col cols="12" md="12">
+            <v-data-table :headers="headers" :items="config" density="compact">
+                <template #top>
+                    <v-toolbar flat>
+                        <v-toolbar-title>{{ $t("entries") }}</v-toolbar-title>
+                        <v-divider class="mx-4" inset vertical />
+                        <v-spacer />
+                        <v-btn color="primary" dark :disabled="getEntries().length === 0" @click="addEntry">
+                            {{ $t("new_entry") }}
+                        </v-btn>
+                    </v-toolbar>
+                </template>
+                <template #[`item.value`]="{ item }">
+                    <v-autocomplete
+                        v-model="item.raw.value"
+                        :items="getEntries(item.raw.value)"
+                        item-title="name"
+                        item-value="uuid"
+                        variant="plain"
+                        density="compact"
+                        hide-details="auto"
+                    />
+                </template>
+                <template #[`item.initial_weight`]="{ item }">
+                    <v-text-field
+                        v-model.number="item.raw.initial_weight"
+                        type="number"
+                        min="0"
+                        max="9999999"
+                        placeholder="0"
+                        variant="plain"
+                        density="compact"
+                        hide-details="auto"
+                    />
+                </template>
+                <template #[`item.weight_increment`]="{ item }">
+                    <v-text-field
+                        v-model.number="item.raw.weight_increment"
+                        type="number"
+                        min="0"
+                        max="99999"
+                        placeholder="0"
+                        variant="plain"
+                        density="compact"
+                        hide-details="auto"
+                    />
+                </template>
+                <template #[`item.complexity`]="{ item }">
+                    <v-text-field
+                        v-model.number="item.raw.complexity"
+                        type="number"
+                        min="0"
+                        max="9999"
+                        placeholder="0"
+                        variant="plain"
+                        density="compact"
+                        hide-details="auto"
+                    />
+                </template>
+                <template #[`item.delay`]="{ item }">
+                    <v-text-field
+                        v-model.number="item.raw.delay"
+                        type="number"
+                        min="0"
+                        max="99999"
+                        placeholder="0"
+                        variant="plain"
+                        density="compact"
+                        hide-details="auto"
+                    />
+                </template>
+                <template #[`item.actions`]="{ item }">
+                    <v-btn
+                        icon="mdi-delete"
+                        :title="$t('remove')"
+                        size="small"
+                        variant="plain"
+                        @click="removeEntry(item.raw.value)"
+                    />
+                </template>
+            </v-data-table>
+        </v-col>
+    </v-row>
 </template>
 
 <script setup lang="ts">

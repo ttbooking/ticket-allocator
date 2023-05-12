@@ -43,16 +43,7 @@
                             />
                         </v-col>
                     </v-row>
-                    <v-row>
-                        <v-col cols="12" md="12">
-                            <component
-                                :is="formComponent"
-                                v-if="!!formComponent"
-                                v-model="form.config"
-                                :entries="entries"
-                            />
-                        </v-col>
-                    </v-row>
+                    <component :is="formComponent" v-if="!!formComponent" v-model="form.config" :entries="entries" />
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">

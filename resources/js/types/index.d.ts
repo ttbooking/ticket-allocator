@@ -79,6 +79,16 @@ export type AssociativeFactorConfig = Array<{
     delay: number | null;
 }>;
 
+export interface ExpressiveFactorConfig {
+    variables: object;
+    expressions: {
+        initial_weight: string;
+        weight_increment: string;
+        complexity: string;
+        delay: string;
+    };
+}
+
 export interface FactorType {
     alias: string;
     name: string;
