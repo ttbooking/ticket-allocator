@@ -93,7 +93,7 @@ import DefaultLayout from "@/layouts/Default.vue";
 import { ref } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import type { Factor, FactorType } from "@/types";
-import { wTrans } from "laravel-vue-i18n";
+import { trans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 defineProps<{
@@ -102,11 +102,11 @@ defineProps<{
 }>();
 
 const headers = [
-    { title: wTrans("active"), key: "active", sortable: false },
-    { title: wTrans("type"), key: "type.name", sortable: false },
-    { title: wTrans("name"), key: "name", sortable: false },
-    { title: wTrans("description"), key: "description", sortable: false },
-    { title: wTrans("actions"), key: "actions", sortable: false },
+    { title: trans("active"), key: "active", sortable: false },
+    { title: trans("type"), key: "type.name", sortable: false },
+    { title: trans("name"), key: "name", sortable: false },
+    { title: trans("description"), key: "description", sortable: false },
+    { title: trans("actions"), key: "actions", sortable: false },
 ];
 
 const dialog = ref();

@@ -45,7 +45,7 @@
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head, Link } from "@inertiajs/vue3";
 import type { OperatorTeam } from "@/types";
-import { wTrans } from "laravel-vue-i18n";
+import { trans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 defineProps<{
@@ -53,9 +53,9 @@ defineProps<{
 }>();
 
 const headers = [
-    { title: wTrans("active"), key: "active", sortable: false },
-    { title: wTrans("name"), key: "name" },
-    { title: wTrans("description"), key: "description" },
-    { title: wTrans("actions"), key: "actions", sortable: false },
+    { title: trans("active"), key: "active", sortable: false },
+    { title: trans("name"), key: "name" },
+    { title: trans("description"), key: "description" },
+    { title: trans("actions"), key: "actions", sortable: false },
 ];
 </script>

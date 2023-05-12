@@ -39,7 +39,7 @@
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head, Link } from "@inertiajs/vue3";
 import type { TicketCategory } from "@/types";
-import { wTrans } from "laravel-vue-i18n";
+import { trans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 defineProps<{
@@ -47,11 +47,11 @@ defineProps<{
 }>();
 
 const headers = [
-    { title: wTrans("name"), key: "name" },
-    { title: wTrans("initial_weight"), key: "initial_weight" },
-    { title: wTrans("weight_increment"), key: "weight_increment" },
-    { title: wTrans("complexity"), key: "complexity" },
-    { title: wTrans("delay"), key: "delay" },
-    { title: wTrans("actions"), key: "actions", sortable: false },
+    { title: trans("name"), key: "name" },
+    { title: trans("initial_weight"), key: "initial_weight" },
+    { title: trans("weight_increment"), key: "weight_increment" },
+    { title: trans("complexity"), key: "complexity" },
+    { title: trans("delay"), key: "delay" },
+    { title: trans("actions"), key: "actions", sortable: false },
 ];
 </script>

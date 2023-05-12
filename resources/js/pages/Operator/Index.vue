@@ -41,7 +41,7 @@
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head, Link } from "@inertiajs/vue3";
 import type { Operator } from "@/types";
-import { wTrans } from "laravel-vue-i18n";
+import { trans } from "laravel-vue-i18n";
 import route from "ziggy-js";
 
 defineProps<{
@@ -49,9 +49,9 @@ defineProps<{
 }>();
 
 const headers = [
-    { title: wTrans("name"), key: "name" },
-    { title: wTrans("tickets"), key: "ticket_limit" },
-    { title: wTrans("complexity"), key: "complexity_limit" },
-    { title: wTrans("actions"), key: "actions", sortable: false },
+    { title: trans("name"), key: "name" },
+    { title: trans("tickets"), key: "ticket_limit" },
+    { title: trans("complexity"), key: "complexity_limit" },
+    { title: trans("actions"), key: "actions", sortable: false },
 ];
 </script>

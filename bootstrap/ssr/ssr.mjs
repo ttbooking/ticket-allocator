@@ -1172,8 +1172,8 @@ function createProvideFunction(state) {
   };
 }
 function createVuetifyAdapter(options) {
-  const current = ref((options == null ? void 0 : options.locale) ?? "en");
-  const fallback = ref((options == null ? void 0 : options.fallback) ?? "en");
+  const current = shallowRef((options == null ? void 0 : options.locale) ?? "en");
+  const fallback = shallowRef((options == null ? void 0 : options.fallback) ?? "en");
   const messages = ref({
     en,
     ...options == null ? void 0 : options.messages
@@ -1811,10 +1811,10 @@ function createDisplay(options, ssr) {
     thresholds,
     mobileBreakpoint
   } = parseDisplayOptions(options);
-  const height = ref(getClientHeight(ssr));
+  const height = shallowRef(getClientHeight(ssr));
   const platform = shallowRef(getPlatform(ssr));
   const state = reactive({});
-  const width = ref(getClientWidth(ssr));
+  const width = shallowRef(getClientWidth(ssr));
   function updateSize() {
     height.value = getClientHeight();
     width.value = getClientWidth();
@@ -2484,7 +2484,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.2.3";
+const version = "3.2.4";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -3104,7 +3104,7 @@ const VIcon = genericComponent()({
 const VProgressCircular$1 = "";
 function useIntersectionObserver(callback, options) {
   const intersectionRef = ref();
-  const isIntersecting = ref(false);
+  const isIntersecting = shallowRef(false);
   if (SUPPORTS_INTERSECTION) {
     const observer = new IntersectionObserver((entries) => {
       callback == null ? void 0 : callback(entries, observer);
@@ -4811,6 +4811,7 @@ const MaybeTransition = (props, _ref) => {
   } = _ref;
   const {
     transition,
+    disabled,
     ...rest
   } = props;
   const {
@@ -4818,8 +4819,10 @@ const MaybeTransition = (props, _ref) => {
     ...customProps
   } = typeof transition === "object" ? transition : {};
   return h$1(component, mergeProps(typeof transition === "string" ? {
-    name: transition
-  } : customProps, rest), slots);
+    name: disabled ? "" : transition
+  } : customProps, rest, {
+    disabled
+  }), slots);
 };
 const makeVMessagesProps = propsFactory({
   active: Boolean,
@@ -4885,7 +4888,7 @@ function createForm(props) {
   const model = useProxiedModel(props, "modelValue");
   const isDisabled = computed(() => props.disabled);
   const isReadonly = computed(() => props.readonly);
-  const isValidating = ref(false);
+  const isValidating = shallowRef(false);
   const items = ref([]);
   const errors = ref([]);
   async function validate() {
@@ -5022,7 +5025,7 @@ function useValidation(props) {
   const validationModel = computed(() => props.validationValue === void 0 ? model.value : props.validationValue);
   const form = useForm();
   const internalErrorMessages = ref([]);
-  const isPristine = ref(true);
+  const isPristine = shallowRef(true);
   const isDirty = computed(() => !!(wrapInArray(model.value === "" ? null : model.value).length || wrapInArray(validationModel.value === "" ? null : validationModel.value).length));
   const isDisabled = computed(() => !!(props.disabled || (form == null ? void 0 : form.isDisabled.value)));
   const isReadonly = computed(() => !!(props.readonly || (form == null ? void 0 : form.isReadonly.value)));
@@ -5036,7 +5039,7 @@ function useValidation(props) {
       return true;
     return isPristine.value ? null : true;
   });
-  const isValidating = ref(false);
+  const isValidating = shallowRef(false);
   const validationClasses = computed(() => {
     return {
       [`${name2}--error`]: isValid2.value === false,
@@ -5787,8 +5790,8 @@ const VSelectionControl = genericComponent()({
     } = useSelectionControl(props);
     const uid = getUid();
     const id = computed(() => props.id || `input-${uid}`);
-    const isFocused = ref(false);
-    const isFocusVisible = ref(false);
+    const isFocused = shallowRef(false);
+    const isFocusVisible = shallowRef(false);
     const input = ref();
     group == null ? void 0 : group.onForceUpdate(() => {
       if (input.value) {
@@ -6013,11 +6016,11 @@ const VImg = genericComponent()({
       emit,
       slots
     } = _ref;
-    const currentSrc = ref("");
+    const currentSrc = shallowRef("");
     const image = ref();
-    const state = ref(props.eager ? "loading" : "idle");
-    const naturalWidth = ref();
-    const naturalHeight = ref();
+    const state = shallowRef(props.eager ? "loading" : "idle");
+    const naturalWidth = shallowRef();
+    const naturalHeight = shallowRef();
     const normalisedSrc = computed(() => {
       return props.src && typeof props.src === "object" ? {
         src: props.src.src,
@@ -6183,7 +6186,7 @@ const VImg = genericComponent()({
         }
       }, null);
     };
-    const isBooted = ref(false);
+    const isBooted = shallowRef(false);
     {
       const stop = watch(aspectRatio, (val) => {
         if (val) {
@@ -6651,11 +6654,11 @@ const VDivider = genericComponent()({
 const ListKey = Symbol.for("vuetify:list");
 function createList() {
   const parent = inject$1(ListKey, {
-    hasPrepend: ref(false),
+    hasPrepend: shallowRef(false),
     updateHasPrepend: () => null
   });
   const data = {
-    hasPrepend: ref(false),
+    hasPrepend: shallowRef(false),
     updateHasPrepend: (value) => {
       if (value)
         data.hasPrepend.value = value;
@@ -6922,7 +6925,7 @@ const classicSelectStrategy = (mandatory) => {
 };
 const VNestedSymbol = Symbol.for("vuetify:nested");
 const emptyNested = {
-  id: ref(),
+  id: shallowRef(),
   root: {
     register: () => null,
     unregister: () => null,
@@ -6993,7 +6996,7 @@ const useNested = (props) => {
   }
   const vm = getCurrentInstance("nested");
   const nested = {
-    id: ref(),
+    id: shallowRef(),
     root: {
       opened,
       selected,
@@ -7110,7 +7113,7 @@ const useNestedGroupActivator = () => {
   });
 };
 function useSsrBoot() {
-  const isBooted = ref(false);
+  const isBooted = shallowRef(false);
   onMounted(() => {
     window.requestAnimationFrame(() => {
       isBooted.value = true;
@@ -7821,7 +7824,7 @@ const VList = genericComponent()({
         variant: toRef(props, "variant")
       }
     });
-    const isFocused = ref(false);
+    const isFocused = shallowRef(false);
     const contentRef = ref();
     function onFocusin(e2) {
       isFocused.value = true;
@@ -8159,7 +8162,7 @@ const makeLazyProps = propsFactory({
   eager: Boolean
 }, "lazy");
 function useLazy(props, active) {
-  const isBooted = ref(false);
+  const isBooted = shallowRef(false);
   const hasContent = computed(() => isBooted.value || props.eager || active.value);
   watch(active, () => isBooted.value = true);
   function onAfterLeave() {
@@ -8286,7 +8289,7 @@ function connectedLocationStrategy(data, props, contentStyles) {
     Object.assign(contentStyles.value, {
       position: "fixed",
       top: 0,
-      left: 0
+      [data.isRtl.value ? "right" : "left"]: 0
     });
   }
   const {
@@ -8712,18 +8715,18 @@ function bindScroll(el, onScroll) {
 }
 function useHydration() {
   if (!IN_BROWSER)
-    return ref(false);
+    return shallowRef(false);
   const {
     ssr
   } = useDisplay();
   if (ssr) {
-    const isMounted = ref(false);
+    const isMounted = shallowRef(false);
     onMounted(() => {
       isMounted.value = true;
     });
     return isMounted;
   } else {
-    return ref(true);
+    return shallowRef(true);
   }
 }
 function useScopeId() {
@@ -8745,7 +8748,7 @@ function useStack(isActive, zIndex, disableGlobalStack) {
     activeChildren: /* @__PURE__ */ new Set()
   });
   provide(StackSymbol, stack);
-  const _zIndex = ref(+zIndex.value);
+  const _zIndex = shallowRef(+zIndex.value);
   useToggleScope(isActive, () => {
     var _a;
     const lastZIndex = (_a = globalStack.at(-1)) == null ? void 0 : _a[1];
@@ -8762,7 +8765,7 @@ function useStack(isActive, zIndex, disableGlobalStack) {
       parent == null ? void 0 : parent.activeChildren.delete(vm.uid);
     });
   });
-  const globalTop = ref(true);
+  const globalTop = shallowRef(true);
   if (createStackEntry) {
     watchEffect(() => {
       var _a;
@@ -9169,7 +9172,7 @@ const VMenu = genericComponent()({
     const id = computed(() => props.id || `v-menu-${uid}`);
     const overlay = ref();
     const parent = inject$1(VMenuSymbol, null);
-    const openChildren = ref(0);
+    const openChildren = shallowRef(0);
     provide(VMenuSymbol, {
       register() {
         ++openChildren.value;
@@ -9314,7 +9317,7 @@ const VSelect = genericComponent()({
       });
     });
     const selected = computed(() => selections.value.map((selection) => selection.props.value));
-    const isFocused = ref(false);
+    const isFocused = shallowRef(false);
     let keyboardLookupPrefix = "";
     let keyboardLookupLastTime;
     const displayItems = computed(() => {
@@ -11076,7 +11079,8 @@ const VDataTable = genericComponent()({
       return createVNode(VTable, mergeProps({
         "class": ["v-data-table", {
           "v-data-table--show-select": props.showSelect
-        }]
+        }, props.class],
+        "style": props.style
       }, tableProps), {
         top: slots.top,
         default: slots.default ?? (() => {
@@ -11601,7 +11605,7 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-199d09d9.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-d29b7bef.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-700c1dbc.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-8fa5e090.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-ab26bb7a.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-4c07814e.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-07a19ae2.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-53d84909.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-5fe46693.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-859d5727.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-909a4aa9.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-18124311.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-5f204b03.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-fcae2450.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-ff15e438.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-8cc2336e.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-9de173a0.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-24ae215c.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-e5521496.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-a6b05f88.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => __variableDynamicImportRuntimeHelper(/* @__PURE__ */ Object.assign({ "../../lang/en.json": () => import("./assets/en-3e9d02a7.mjs"), "../../lang/php_en.json": () => import("./assets/php_en-ba4202a0.mjs"), "../../lang/php_ru.json": () => import("./assets/php_ru-28f51547.mjs"), "../../lang/ru.json": () => import("./assets/ru-ce602377.mjs") }), `../../lang/${lang}.json`)
