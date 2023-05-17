@@ -148,7 +148,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     protected function factors(): array
     {
-        return $this->app['config']['ticket_allocator.factors'] ?? [];
+        return $this->app['config']['ticket-allocator.factors'] ?? [];
     }
 
     protected function discoveredFactors(): array
@@ -158,7 +158,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     protected function shouldDiscoverFactors(): bool
     {
-        return $this->app['config']['ticket_allocator.enable_factor_discovery'] ?? true;
+        return $this->app['config']['ticket-allocator.enable_factor_discovery'] ?? true;
     }
 
     protected function discoverFactors(): array
@@ -172,12 +172,12 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     protected function discoverFactorsWithin(): array
     {
-        return $this->app['config']['ticket_allocator.discover_factors_within'] ?? [];
+        return $this->app['config']['ticket-allocator.discover_factors_within'] ?? [];
     }
 
     protected function factorDiscoveryBasePath(): string
     {
-        return $this->app['config']['ticket_allocator.factor_discovery_base_path'] ?? base_path();
+        return $this->app['config']['ticket-allocator.factor_discovery_base_path'] ?? base_path();
     }
 
     protected function offerPublishing(): void
