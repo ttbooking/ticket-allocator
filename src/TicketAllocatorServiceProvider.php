@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Spatie\EventSourcing\Facades\Projectionist;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
-use TTBooking\TicketAllocator\Contracts\FactorDictionary as FactorDictionaryContract;
 use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorProjector;
 use TTBooking\TicketAllocator\Domain\Operator\Reactors\SyncTicketCategories;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
 //use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
+use TTBooking\TicketAllocator\Facades\Factor;
 use TTBooking\TicketAllocator\Jobs\Triage;
 use TTBooking\TicketAllocator\Support\DiscoverFactors;
 
@@ -104,7 +104,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     protected function registerFactors(): void
     {
         foreach ($this->getFactors() as $alias => $factor) {
-            // TODO: add to dictionary
+            Factor::put($alias, $factor);
         }
     }
 
@@ -225,7 +225,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     protected function registerServices(): void
     {
-        $this->app->singleton(FactorDictionaryContract::class, FactorDictionary::class);
+        $this->app->singleton(Support\FactorDictionary::class);
     }
 
     protected function scheduleTasks(): void

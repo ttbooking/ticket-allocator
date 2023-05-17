@@ -50,7 +50,7 @@ class Factor extends Model
      */
     protected function type(): Attribute
     {
-        return Attribute::get(static fn ($type) => FactorDictionary::getClass($type));
+        return Attribute::get(static fn ($type) => FactorDictionary::get($type, false));
     }
 
     /**

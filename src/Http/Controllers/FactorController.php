@@ -10,7 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
-use TTBooking\TicketAllocator\Contracts\FactorDictionary;
+use TTBooking\TicketAllocator\Support\FactorDictionary;
 use TTBooking\TicketAllocator\Http\Requests\StoreFactorRequest;
 use TTBooking\TicketAllocator\Http\Requests\UpdateFactorRequest;
 use TTBooking\TicketAllocator\Http\Resources\FactorResource;
@@ -25,7 +25,7 @@ class FactorController extends Controller
     public function index(FactorDictionary $factorDictionary): InertiaResponse
     {
         $factors = FactorResource::collection(Factor::withTrashed()->orderBy('priority')->get())->resolve();
-        $factorDictionary = FactorTypeResource::collection($factorDictionary->getDictionary()->values())->resolve();
+        $factorDictionary = FactorTypeResource::collection($factorDictionary->values())->resolve();
 
         return Inertia::render('Factor/Index', compact('factors', 'factorDictionary'));
     }
@@ -35,7 +35,7 @@ class FactorController extends Controller
      */
     public function create(FactorDictionary $factorDictionary, Request $request): InertiaResponse
     {
-        $factorClass = $factorDictionary->getClass($request->query('type'));
+        $factorClass = $factorDictionary->get($request->query('type'), false);
         $factorType = new FactorTypeResource($factorClass);
 
         return Inertia::render('Factor/CreateEdit', compact('factorType') + app($factorClass)->getProps());
