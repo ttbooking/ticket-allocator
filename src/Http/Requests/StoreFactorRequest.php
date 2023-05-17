@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use TTBooking\TicketAllocator\Facades\Factor as FactorDictionary;
 use TTBooking\TicketAllocator\Models\Factor;
 
 class StoreFactorRequest extends FormRequest
@@ -26,7 +28,7 @@ class StoreFactorRequest extends FormRequest
     {
         return [
             'active' => 'required|boolean',
-            'type' => 'required|string|max:255',
+            'type' => 'required|string|max:255|'.Rule::in(FactorDictionary::keys()),
             'name' => 'nullable|string|max:255|unique:'.Factor::class,
             'description' => 'nullable|string|max:65535',
             'config' => 'array',
