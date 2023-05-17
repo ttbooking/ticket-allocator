@@ -13,6 +13,8 @@ class DiscoverFactors
 {
     /**
      * Get all the ticket metric factors by searching the given factor directory.
+     *
+     * @return list<class-string<FactorContract>>
      */
     public static function within(string $factorPath, string $basePath): array
     {

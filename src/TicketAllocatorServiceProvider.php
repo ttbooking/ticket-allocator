@@ -146,11 +146,17 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         return $class::getName();
     }
 
+    /**
+     * @return array<class-string<FactorContract>>
+     */
     protected function factors(): array
     {
         return $this->app['config']['ticket-allocator.factors'] ?? [];
     }
 
+    /**
+     * @return list<class-string<FactorContract>>
+     */
     protected function discoveredFactors(): array
     {
         return $this->shouldDiscoverFactors() ? $this->discoverFactors() : [];
@@ -161,15 +167,21 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         return $this->app['config']['ticket-allocator.enable_factor_discovery'] ?? true;
     }
 
+    /**
+     * @return list<class-string<FactorContract>>
+     */
     protected function discoverFactors(): array
     {
         return collect($this->discoverFactorsWithin())
-            ->filter('is_dir')
-            ->reduce(function ($discovered, $directory) {
+            ->filter(static fn (string $filename) => is_dir($filename))
+            ->reduce(function (array $discovered, string $directory) {
                 return array_merge($discovered, DiscoverFactors::within($directory, $this->factorDiscoveryBasePath()));
             }, []);
     }
 
+    /**
+     * @return string[]
+     */
     protected function discoverFactorsWithin(): array
     {
         return $this->app['config']['ticket-allocator.discover_factors_within'] ?? [];
