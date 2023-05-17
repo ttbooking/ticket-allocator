@@ -44,7 +44,19 @@ return [
 
     'snapshot_schedule' => env('TA_SNAPSHOT_SCHEDULE', '0 0 * * *'),
 
-    'ticket_origin' => '', // TODO: Enter your class from which tickets originate
+    /*
+    |--------------------------------------------------------------------------
+    | Ticket Allocator Metric Factors
+    |--------------------------------------------------------------------------
+    */
+
+    'enable_factor_discovery' => env('TA_DISCOVER_FACTORS', true),
+
+    'discover_factors_within' => [
+        app_path('Factors'),
+    ],
+
+    'factor_discovery_base_path' => base_path(),
 
     'factors' => [
         TTBooking\TicketAllocator\Factors\Category::class,

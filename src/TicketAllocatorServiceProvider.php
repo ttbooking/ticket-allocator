@@ -10,17 +10,14 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Spatie\EventSourcing\Facades\Projectionist;
-//use TTBooking\TicketAllocator\Contracts\Factor;
+use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 use TTBooking\TicketAllocator\Contracts\FactorDictionary as FactorDictionaryContract;
-//use TTBooking\TicketAllocator\Contracts\FactorRepository as FactorRepositoryContract;
 use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorProjector;
 use TTBooking\TicketAllocator\Domain\Operator\Reactors\SyncTicketCategories;
-//use TTBooking\TicketAllocator\Domain\Support\FactorRepository;
-//use TTBooking\TicketAllocator\Domain\Ticket\Factors\Category;
-//use TTBooking\TicketAllocator\Domain\Ticket\Factors\ExpressiveFactor;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
 //use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
 use TTBooking\TicketAllocator\Jobs\Triage;
+use TTBooking\TicketAllocator\Support\DiscoverFactors;
 
 class TicketAllocatorServiceProvider extends ServiceProvider
 {
@@ -35,6 +32,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         $this->registerCommands();
         $this->registerObservers();
         $this->registerEventHandlers();
+        $this->registerFactors();
 
         if ($this->app->runningInConsole()) {
             $this->offerPublishing();
@@ -103,6 +101,85 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         ]);
     }
 
+    protected function registerFactors(): void
+    {
+        foreach ($this->getFactors() as $alias => $factor) {
+            // TODO: add to dictionary
+        }
+    }
+
+    /**
+     * @param  bool  $ignoreCache
+     * @return array<string, class-string<FactorContract>>
+     */
+    public function getFactors(bool $ignoreCache = false): array
+    {
+        if (! $ignoreCache && $this->app->factorsAreCached()) {
+            return require $this->app->getCachedFactorsPath();
+        }
+
+        return collect(array_merge($this->discoveredFactors(), $this->factors()))
+            ->filter(static fn (string $class) => is_subclass_of($class, FactorContract::class))
+            ->mapWithKeys(self::mapFactor(...))
+            ->sortBy(self::factorName(...))
+            ->all();
+    }
+
+    /**
+     * @param  class-string<FactorContract>  $class
+     * @param  array-key  $alias
+     * @return array<string, class-string<FactorContract>>
+     */
+    private static function mapFactor(string $class, string|int $alias): array
+    {
+        is_string($alias) && $class::setAlias($alias);
+
+        return [$class::getAlias() => $class];
+    }
+
+    /**
+     * @param  class-string<FactorContract>  $class
+     * @return string
+     */
+    private static function factorName(string $class): string
+    {
+        return $class::getName();
+    }
+
+    protected function factors(): array
+    {
+        return $this->app['config']['ticket_allocator.factors'] ?? [];
+    }
+
+    protected function discoveredFactors(): array
+    {
+        return $this->shouldDiscoverFactors() ? $this->discoverFactors() : [];
+    }
+
+    protected function shouldDiscoverFactors(): bool
+    {
+        return $this->app['config']['ticket_allocator.enable_factor_discovery'] ?? true;
+    }
+
+    protected function discoverFactors(): array
+    {
+        return collect($this->discoverFactorsWithin())
+            ->filter('is_dir')
+            ->reduce(function ($discovered, $directory) {
+                return array_merge($discovered, DiscoverFactors::within($directory, $this->factorDiscoveryBasePath()));
+            }, []);
+    }
+
+    protected function discoverFactorsWithin(): array
+    {
+        return $this->app['config']['ticket_allocator.discover_factors_within'] ?? [];
+    }
+
+    protected function factorDiscoveryBasePath(): string
+    {
+        return $this->app['config']['ticket_allocator.factor_discovery_base_path'] ?? base_path();
+    }
+
     protected function offerPublishing(): void
     {
         $this->publishes([
@@ -148,13 +225,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     protected function registerServices(): void
     {
-        //$this->app->bind(Category::class, config('ticket-allocator.factors.category'));
-
-        //$this->app->alias(Factor::class, 'factor.expressive');
-        //$this->app->bind('factor.expressive', ExpressiveFactor::class);
-
         $this->app->singleton(FactorDictionaryContract::class, FactorDictionary::class);
-        //$this->app->singleton(FactorRepositoryContract::class, FactorRepository::class);
     }
 
     protected function scheduleTasks(): void

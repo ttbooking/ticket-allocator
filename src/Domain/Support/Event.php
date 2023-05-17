@@ -13,9 +13,8 @@ use Illuminate\Support\Str;
 use ReflectionClass;
 use ReflectionProperty;
 use Spatie\EventSourcing\StoredEvents\ShouldBeStored;
-use TTBooking\TicketAllocator\Contracts\ShouldAffect;
 
-abstract class Event extends ShouldBeStored implements ShouldAffect, ShouldBroadcast
+abstract class Event extends ShouldBeStored implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

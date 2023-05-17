@@ -1,5 +1,21 @@
 <?php
 
+namespace Illuminate\Contracts\Foundation
+{
+    class Application
+    {
+        public function factorsAreCached(): bool
+        {
+            return true;
+        }
+
+        public function getCachedFactorsPath(): string
+        {
+            return '';
+        }
+    }
+}
+
 namespace Illuminate\Foundation
 {
     class Application

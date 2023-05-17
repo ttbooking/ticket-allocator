@@ -6,6 +6,7 @@ namespace TTBooking\TicketAllocator\Console;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
+use TTBooking\TicketAllocator\TicketAllocatorServiceProvider;
 
 #[AsCommand(name: 'factor:cache')]
 class FactorCacheCommand extends Command
@@ -55,6 +56,6 @@ class FactorCacheCommand extends Command
      */
     protected function getFactors(): array
     {
-        return [];
+        return $this->laravel->getProvider(TicketAllocatorServiceProvider::class)->getFactors(true);
     }
 }
