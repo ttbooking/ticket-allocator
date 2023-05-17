@@ -2,13 +2,37 @@
 
 declare(strict_types=1);
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
+use TTBooking\TicketAllocator\Attributes\Factors\Component;
+use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 use TTBooking\TicketAllocator\Factors\Factor;
 
-class DummyClass extends Factor
+#[Component('Factor/Partials/AssociationForm')]
+class {{ class }} extends Factor
 {
-    public function handle(object $event): void
+    /**
+     * Create a new factor instance.
+     */
+    public function __construct()
     {
+        //
+    }
+
+    public function getProps(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public function getAdjustments(TicketAggregateRoot $ticket): array
+    {
+        return [
+            'initial_weight' => 0,
+            'weight_increment' => 0,
+            'complexity' => 0,
+            'delay' => 0,
+        ];
     }
 }

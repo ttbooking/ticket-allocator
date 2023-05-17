@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -30,7 +31,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->registerRoutes();
         $this->registerResources();
-        $this->registerViteAliases();
+        $this->registerMixins();
         $this->registerCommands();
         $this->registerObservers();
         $this->registerEventHandlers();
@@ -65,21 +66,10 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'ticket-allocator');
     }
 
-    protected function registerViteAliases(): void
+    protected function registerMixins(): void
     {
-        /** @var \Illuminate\Foundation\Vite $this */
-        Vite::macro('ticketAllocatorEntryPoint', fn (array $page) => $this
-            ->useHotFile('vendor/ticket-allocator/hot')
-            ->useBuildDirectory('vendor/ticket-allocator/build')
-            ->withEntryPoints(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
-        );
-
-        /** @var \Illuminate\Foundation\Vite $this */
-        Vite::macro('ticketAllocatorImage', fn ($asset) => $this
-            ->useHotFile('vendor/ticket-allocator/hot')
-            ->useBuildDirectory('vendor/ticket-allocator/build')
-            ->asset("resources/images/$asset")
-        );
+        Application::mixin(new Support\FactorCacheMixin);
+        Vite::mixin(new Support\ViteAliasMixin);
     }
 
     protected function registerCommands(): void
@@ -88,7 +78,9 @@ class TicketAllocatorServiceProvider extends ServiceProvider
             Console\SeedCommand::class,
             Console\ReapCommand::class,
             Console\CleanCommand::class,
-            Console\MakeFactorCommand::class,
+            Console\FactorCacheCommand::class,
+            Console\FactorClearCommand::class,
+            Console\FactorMakeCommand::class,
             Console\SnapshotOperatorCommand::class,
         ]);
     }
