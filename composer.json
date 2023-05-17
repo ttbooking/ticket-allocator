@@ -24,7 +24,6 @@
         "inertiajs/inertia-laravel": "^0.6.9",
         "laravel/framework": "^9.31 || ^10.0",
         "spatie/laravel-event-sourcing": "^7.3.4",
-        "spatie/laravel-query-builder": "^5.0",
         "tightenco/ziggy": "^1.5"
     },
     "require-dev": {
