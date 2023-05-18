@@ -43,10 +43,7 @@
             "TTBooking\\TicketAllocator\\": "src/",
             "TTBooking\\TicketAllocator\\Database\\Factories\\": "database/factories/",
             "TTBooking\\TicketAllocator\\Database\\Seeders\\": "database/seeders/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
