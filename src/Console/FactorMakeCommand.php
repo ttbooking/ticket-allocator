@@ -43,16 +43,43 @@ class FactorMakeCommand extends GeneratorCommand
      */
     protected $type = 'Factor';
 
-    protected function getStub(): string
+    /**
+     * Determine if the class already exists.
+     */
+    protected function alreadyExists($rawName): bool
     {
-        return __DIR__.'/../../stubs/factor.stub';
+        return class_exists($rawName) || parent::alreadyExists($rawName);
     }
 
+    /**
+     * Get the stub file for the generator.
+     */
+    protected function getStub(): string
+    {
+        return $this->resolveStubPath('/stubs/factor.stub');
+    }
+
+    /**
+     * Resolve the fully-qualified path to the stub.
+     */
+    protected function resolveStubPath(string $stub): string
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : __DIR__.'/../..'.$stub;
+    }
+
+    /**
+     * Get the default namespace for the class.
+     */
     protected function getDefaultNamespace($rootNamespace): string
     {
         return $rootNamespace.'\Factors';
     }
 
+    /**
+     * Get the console command options.
+     */
     protected function getOptions(): array
     {
         return [

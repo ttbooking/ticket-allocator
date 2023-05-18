@@ -6,6 +6,8 @@ namespace TTBooking\TicketAllocator;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Events\PublishingStubs;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -186,7 +188,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     protected function factorDiscoveryBasePath(): string
     {
-        return $this->app['config']['ticket-allocator.factor_discovery_base_path'] ?? base_path();
+        return $this->app['config']['ticket-allocator.factor_discovery_base_path'] ?? $this->app->basePath();
     }
 
     protected function offerPublishing(): void
@@ -204,9 +206,17 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         ], ['ticket-allocator', 'views', 'ticket-allocator-views']);
 
         $this->publishes([
-            __DIR__.'/../public' => public_path('vendor/ticket-allocator'),
-            __DIR__.'/../bootstrap' => base_path('bootstrap/vendor/ticket-allocator'),
+            __DIR__.'/../public' => $this->app->publicPath('vendor/ticket-allocator'),
+            __DIR__.'/../bootstrap' => $this->app->basePath('bootstrap/vendor/ticket-allocator'),
         ], ['ticket-allocator', 'assets', 'ticket-allocator-assets']);
+
+        $this->publishes([
+            __DIR__.'/../stubs' => $this->app->basePath('stubs')
+        ], ['ticket-allocator', 'stubs', 'ticket-allocator-stubs']);
+
+        Event::listen(PublishingStubs::class, static function (PublishingStubs $stubs) {
+            $stubs->add(__DIR__.'/../stubs/factor.stub', 'factor.stub');
+        });
     }
 
     protected function registerMigrations(): void
