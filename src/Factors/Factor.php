@@ -13,18 +13,18 @@ use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 abstract class Factor implements FactorContract
 {
     /** @var array<class-string<static>, string> */
-    protected static array $alias = [];
+    protected static array $aliases = [];
 
     protected array $config = [];
 
     public static function setAlias(string $alias): void
     {
-        static::$alias[static::class] = $alias;
+        static::$aliases[static::class] = $alias;
     }
 
     public static function getAlias(): string
     {
-        return static::$alias[static::class]
+        return static::$aliases[static::class]
             ?? static::attribute(Alias::class)?->alias
             ?? Str::snake(class_basename(static::class));
     }
