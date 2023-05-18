@@ -12,19 +12,20 @@ use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 
 abstract class Factor implements FactorContract
 {
-    protected static string $alias;
+    /** @var array<class-string<static>, string> */
+    protected static array $alias = [];
 
     protected array $config = [];
 
     public static function setAlias(string $alias): void
     {
-        static::$alias = $alias;
+        static::$alias[static::class] = $alias;
     }
 
     public static function getAlias(): string
     {
-        return static::$alias
-            ?? ((new \ReflectionClass(static::class))->getAttributes(Alias::class)[0] ?? null)?->newInstance()->alias
+        return static::$alias[static::class]
+            ?? static::attribute(Alias::class)?->alias
             ?? Str::snake(class_basename(static::class));
     }
 
@@ -40,8 +41,7 @@ abstract class Factor implements FactorContract
 
     public static function getComponentName(): ?string
     {
-        return ((new \ReflectionClass(static::class))->getAttributes(Component::class)[0] ?? null)?->newInstance()->name
-            ?? null;
+        return static::attribute(Component::class)?->name;
     }
 
     public function getProps(): array
@@ -59,5 +59,16 @@ abstract class Factor implements FactorContract
     public function getConfig(): array
     {
         return $this->config;
+    }
+
+    /**
+     * @template TAttribute of object
+     *
+     * @param  class-string<TAttribute>  $attribute
+     * @return TAttribute|null
+     */
+    private static function attribute(string $attribute)
+    {
+        return ((new \ReflectionClass(static::class))->getAttributes($attribute)[0] ?? null)?->newInstance();
     }
 }
