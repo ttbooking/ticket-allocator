@@ -15,7 +15,6 @@ use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorProjector;
 use TTBooking\TicketAllocator\Domain\Operator\Reactors\SyncTicketCategories;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
 //use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
-use TTBooking\TicketAllocator\Facades\Factor;
 use TTBooking\TicketAllocator\Jobs\Triage;
 use TTBooking\TicketAllocator\Support\DiscoverFactors;
 
@@ -103,9 +102,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     protected function registerFactors(): void
     {
-        foreach ($this->getFactors() as $alias => $factor) {
-            Factor::put($alias, $factor);
-        }
+        TicketAllocator::setFactors($this->getFactors());
     }
 
     /**
@@ -237,7 +234,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     protected function registerServices(): void
     {
-        $this->app->singleton(Support\FactorDictionary::class);
+        //
     }
 
     protected function scheduleTasks(): void

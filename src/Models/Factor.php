@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
-use TTBooking\TicketAllocator\Facades\Factor as FactorDictionary;
+use TTBooking\TicketAllocator\TicketAllocator;
 
 /**
  * @method static static create(array $parameters = [])
@@ -50,7 +50,7 @@ class Factor extends Model
      */
     protected function type(): Attribute
     {
-        return Attribute::get(static fn ($type) => FactorDictionary::get($type, false));
+        return Attribute::get(static fn ($type) => TicketAllocator::factors()->get($type, false));
     }
 
     /**

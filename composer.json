@@ -62,7 +62,7 @@
                 "TTBooking\\TicketAllocator\\TicketAllocatorServiceProvider"
             ],
             "aliases": {
-                "Factor": "TTBooking\\TicketAllocator\\Facades\\Factor"
+                "TicketAllocator": "TTBooking\\TicketAllocator\\TicketAllocator"
             }
         }
     },
