@@ -9,6 +9,9 @@ use Illuminate\Validation\Rule;
 use TTBooking\TicketAllocator\Models\Factor;
 use TTBooking\TicketAllocator\TicketAllocator;
 
+/**
+ * @property-read Factor $factor
+ */
 class UpdateFactorRequest extends FormRequest
 {
     /**
@@ -29,7 +32,7 @@ class UpdateFactorRequest extends FormRequest
         return [
             'active' => 'sometimes|required|boolean',
             'type' => 'sometimes|required|string|max:255|'.Rule::in(TicketAllocator::factors()->keys()),
-            'name' => 'sometimes|nullable|string|max:255|unique:'.Factor::class,
+            'name' => 'sometimes|nullable|string|max:255|'.Rule::unique(Factor::class)->ignore($this->factor),
             'description' => 'sometimes|nullable|string|max:65535',
             'config' => 'sometimes|array',
         ];

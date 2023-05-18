@@ -18,7 +18,12 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12" md="12">
-                            <v-text-field :model-value="factorTypeName" :label="$t('factor_type')" readonly />
+                            <v-text-field
+                                :model-value="factorTypeName"
+                                :label="$t('factor_type')"
+                                :error-messages="errors.type"
+                                readonly
+                            />
                             <input v-model="form.type" type="hidden" />
                         </v-col>
                     </v-row>
