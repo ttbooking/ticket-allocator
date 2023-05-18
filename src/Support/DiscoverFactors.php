@@ -21,6 +21,7 @@ class DiscoverFactors
         return collect((new Finder)->files()->in($factorPath))
             ->map(static fn (SplFileInfo $file) => static::classFromFile($file, $basePath))
             ->filter(static fn (string $class) => is_subclass_of($class, FactorContract::class))
+            ->values()
             ->all();
     }
 
