@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use TTBooking\TicketAllocator\Factors\Unknown;
 use TTBooking\TicketAllocator\Http\Requests\StoreFactorRequest;
 use TTBooking\TicketAllocator\Http\Requests\UpdateFactorRequest;
 use TTBooking\TicketAllocator\Http\Resources\FactorResource;
@@ -35,7 +36,7 @@ class FactorController extends Controller
      */
     public function create(Request $request): InertiaResponse
     {
-        $factorClass = TicketAllocator::factors()->get($request->query('type'), false);
+        $factorClass = TicketAllocator::factors()->get($request->query('type'), Unknown::class);
         $factorType = new FactorTypeResource($factorClass);
 
         return Inertia::render('Factor/CreateEdit', compact('factorType') + app($factorClass)->getProps());

@@ -25,7 +25,7 @@ class FactorTypeResource extends JsonResource
     public function toArray($request = null): array
     {
         if (! is_subclass_of($this->resource, FactorContract::class)) {
-            return [];
+            throw new \UnexpectedValueException('Given resource does not implement Factor contract.');
         }
 
         return [
