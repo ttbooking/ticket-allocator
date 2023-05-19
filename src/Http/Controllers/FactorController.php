@@ -26,7 +26,7 @@ class FactorController extends Controller
     public function index(): InertiaResponse
     {
         $factors = FactorResource::collection(Factor::withTrashed()->orderBy('priority')->get())->resolve();
-        $factorDictionary = FactorTypeResource::collection(TicketAllocator::factors()->values())->resolve();
+        $factorDictionary = FactorTypeResource::collection(TicketAllocator::factors()->allowed()->values())->resolve();
 
         return Inertia::render('Factor/Index', compact('factors', 'factorDictionary'));
     }
