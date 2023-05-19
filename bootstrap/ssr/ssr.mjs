@@ -1,6 +1,6 @@
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
-import { capitalize, reactive, computed, watchEffect, toRefs, watch, onScopeDispose, effectScope, ref, unref, provide, inject as inject$1, shallowRef, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, toRaw, createVNode, mergeProps, onBeforeUnmount, readonly, nextTick, isRef, Fragment, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, vShow, onBeforeMount, cloneVNode, warn, toHandlers, Teleport, createTextVNode, withModifiers, createSSRApp } from "vue";
+import { capitalize, reactive, computed, watchEffect, toRefs, warn, watch, onScopeDispose, effectScope, ref, unref, provide, inject as inject$1, shallowRef, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, toRaw, createVNode, mergeProps, onBeforeUnmount, readonly, nextTick, isRef, Fragment, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, vShow, onBeforeMount, cloneVNode, toHandlers, Teleport, createTextVNode, withModifiers, createSSRApp } from "vue";
 import { renderToString } from "@vue/server-renderer";
 import { createInertiaApp } from "@inertiajs/vue3";
 import createServer from "@inertiajs/vue3/server";
@@ -158,6 +158,9 @@ const keyCodes = Object.freeze({
 });
 function keys(o2) {
   return Object.keys(o2);
+}
+function has(obj, key) {
+  return key.every((k2) => obj.hasOwnProperty(k2));
 }
 function pick(obj, paths, exclude) {
   const found = /* @__PURE__ */ Object.create(null);
@@ -337,6 +340,8 @@ function focusChild(el, location) {
       focusChild(el, location === "next" ? "first" : "last");
   }
 }
+function noop() {
+}
 const block = ["top", "bottom"];
 const inline = ["start", "end", "left", "right"];
 function parseAnchor(anchor, isRtl) {
@@ -485,70 +490,15 @@ function animate(el, keyframes, options) {
   }
   return animation;
 }
-function createMessage(message, vm, parent) {
-  if (parent) {
-    vm = {
-      __isVue: true,
-      $parent: parent,
-      $options: vm
-    };
-  }
-  if (vm) {
-    vm.$_alreadyWarned = vm.$_alreadyWarned || [];
-    if (vm.$_alreadyWarned.includes(message))
-      return;
-    vm.$_alreadyWarned.push(message);
-  }
-  return `[Vuetify] ${message}` + (vm ? generateComponentTrace(vm) : "");
+function consoleWarn(message) {
+  warn(`Vuetify: ${message}`);
 }
-function consoleWarn(message, vm, parent) {
-  const newMessage = createMessage(message, vm, parent);
-  newMessage != null && console.warn(newMessage);
+function consoleError(message) {
+  warn(`Vuetify error: ${message}`);
 }
-function consoleError(message, vm, parent) {
-  const newMessage = createMessage(message, vm, parent);
-  newMessage != null && console.error(newMessage);
-}
-const classifyRE = /(?:^|[-_])(\w)/g;
-const classify = (str) => str.replace(classifyRE, (c2) => c2.toUpperCase()).replace(/[-_]/g, "");
-function formatComponentName(vm, includeFile) {
-  if (vm.$root === vm) {
-    return "<Root>";
-  }
-  const options = typeof vm === "function" && vm.cid != null ? vm.options : vm.__isVue ? vm.$options || vm.constructor.options : vm || {};
-  let name2 = options.name || options._componentTag;
-  const file = options.__file;
-  if (!name2 && file) {
-    const match = file.match(/([^/\\]+)\.vue$/);
-    name2 = match == null ? void 0 : match[1];
-  }
-  return (name2 ? `<${classify(name2)}>` : `<Anonymous>`) + (file && includeFile !== false ? ` at ${file}` : "");
-}
-function generateComponentTrace(vm) {
-  if (vm.__isVue && vm.$parent) {
-    const tree = [];
-    let currentRecursiveSequence = 0;
-    while (vm) {
-      if (tree.length > 0) {
-        const last = tree[tree.length - 1];
-        if (last.constructor === vm.constructor) {
-          currentRecursiveSequence++;
-          vm = vm.$parent;
-          continue;
-        } else if (currentRecursiveSequence > 0) {
-          tree[tree.length - 1] = [last, currentRecursiveSequence];
-          currentRecursiveSequence = 0;
-        }
-      }
-      tree.push(vm);
-      vm = vm.$parent;
-    }
-    return "\n\nfound in\n\n" + tree.map((vm2, i2) => `${i2 === 0 ? "---> " : " ".repeat(5 + i2 * 2)}${Array.isArray(vm2) ? `${formatComponentName(vm2[0])}... (${vm2[1]} recursive calls)` : formatComponentName(vm2)}`).join("\n");
-  } else {
-    return `
-
-(found in ${formatComponentName(vm)})`;
-  }
+function deprecate(original, replacement) {
+  replacement = Array.isArray(replacement) ? replacement.slice(0, -1).map((s2) => `'${s2}'`).join(", ") + ` or '${replacement.at(-1)}'` : `'${replacement}'`;
+  warn(`[Vuetify UPGRADE] '${original}' is deprecated, use ${replacement} instead.`);
 }
 const srgbForwardMatrix = [[3.2406, -1.5372, -0.4986], [-0.9689, 1.8758, 0.0415], [0.0557, -0.204, 1.057]];
 const srgbForwardTransform = (C2) => C2 <= 31308e-7 ? C2 * 12.92 : 1.055 * C2 ** (1 / 2.4) - 0.055;
@@ -600,6 +550,45 @@ function toXYZ(lab) {
 function isCssColor(color) {
   return !!color && /^(#|var\(--|(rgb|hsl)a?\()/.test(color);
 }
+const cssColorRe = /^(?<fn>(?:rgb|hsl)a?)\((?<values>.+)\)/;
+const mappers = {
+  rgb: (r2, g2, b2, a2) => ({
+    r: r2,
+    g: g2,
+    b: b2,
+    a: a2
+  }),
+  rgba: (r2, g2, b2, a2) => ({
+    r: r2,
+    g: g2,
+    b: b2,
+    a: a2
+  }),
+  hsl: (h2, s2, l2, a2) => HSLtoRGB({
+    h: h2,
+    s: s2,
+    l: l2,
+    a: a2
+  }),
+  hsla: (h2, s2, l2, a2) => HSLtoRGB({
+    h: h2,
+    s: s2,
+    l: l2,
+    a: a2
+  }),
+  hsv: (h2, s2, v2, a2) => HSVtoRGB({
+    h: h2,
+    s: s2,
+    v: v2,
+    a: a2
+  }),
+  hsva: (h2, s2, v2, a2) => HSVtoRGB({
+    h: h2,
+    s: s2,
+    v: v2,
+    a: a2
+  })
+};
 function parseColor(color) {
   if (typeof color === "number") {
     if (isNaN(color) || color < 0 || color > 16777215) {
@@ -610,6 +599,22 @@ function parseColor(color) {
       g: (color & 65280) >> 8,
       b: color & 255
     };
+  } else if (typeof color === "string" && cssColorRe.test(color)) {
+    const {
+      groups
+    } = color.match(cssColorRe);
+    const {
+      fn,
+      values
+    } = groups;
+    const realValues = values.split(/,\s*/).map((v2) => {
+      if (v2.endsWith("%") && ["hsl", "hsla", "hsv", "hsva"].includes(fn)) {
+        return parseFloat(v2) / 100;
+      } else {
+        return parseFloat(v2);
+      }
+    });
+    return mappers[fn](...realValues);
   } else if (typeof color === "string") {
     let hex = color.startsWith("#") ? color.slice(1) : color;
     if ([3, 4].includes(hex.length)) {
@@ -622,9 +627,55 @@ function parseColor(color) {
       consoleWarn(`'${color}' is not a valid hex(a) color`);
     }
     return HexToRGB(hex);
-  } else {
-    throw new TypeError(`Colors can only be numbers or strings, recieved ${color == null ? color : color.constructor.name} instead`);
+  } else if (typeof color === "object") {
+    if (has(color, ["r", "g", "b"])) {
+      return color;
+    } else if (has(color, ["h", "s", "l"])) {
+      return HSVtoRGB(HSLtoHSV(color));
+    } else if (has(color, ["h", "s", "v"])) {
+      return HSVtoRGB(color);
+    }
   }
+  throw new TypeError(`Invalid color: ${color == null ? color : String(color) || color.constructor.name}
+Expected #hex, #hexa, rgb(), rgba(), hsl(), hsla(), object or number`);
+}
+function HSVtoRGB(hsva) {
+  const {
+    h: h2,
+    s: s2,
+    v: v2,
+    a: a2
+  } = hsva;
+  const f2 = (n2) => {
+    const k2 = (n2 + h2 / 60) % 6;
+    return v2 - v2 * s2 * Math.max(Math.min(k2, 4 - k2, 1), 0);
+  };
+  const rgb = [f2(5), f2(3), f2(1)].map((v3) => Math.round(v3 * 255));
+  return {
+    r: rgb[0],
+    g: rgb[1],
+    b: rgb[2],
+    a: a2
+  };
+}
+function HSLtoRGB(hsla) {
+  return HSVtoRGB(HSLtoHSV(hsla));
+}
+function HSLtoHSV(hsl) {
+  const {
+    h: h2,
+    s: s2,
+    l: l2,
+    a: a2
+  } = hsl;
+  const v2 = l2 + s2 * Math.min(l2, 1 - l2);
+  const sprime = v2 === 0 ? 0 : 2 - 2 * l2 / v2;
+  return {
+    h: h2,
+    s: sprime,
+    v: v2,
+    a: a2
+  };
 }
 function toHex(v2) {
   const h2 = Math.round(v2).toString(16);
@@ -1768,14 +1819,14 @@ const parseDisplayOptions = function() {
   let options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : defaultDisplayOptions;
   return mergeDeep(defaultDisplayOptions, options);
 };
-function getClientWidth(isHydrate) {
-  return IN_BROWSER && !isHydrate ? window.innerWidth : 0;
+function getClientWidth(ssr) {
+  return IN_BROWSER && !ssr ? window.innerWidth : typeof ssr === "object" && ssr.clientWidth || 0;
 }
-function getClientHeight(isHydrate) {
-  return IN_BROWSER && !isHydrate ? window.innerHeight : 0;
+function getClientHeight(ssr) {
+  return IN_BROWSER && !ssr ? window.innerHeight : typeof ssr === "object" && ssr.clientHeight || 0;
 }
-function getPlatform(isHydrate) {
-  const userAgent = IN_BROWSER && !isHydrate ? window.navigator.userAgent : "ssr";
+function getPlatform(ssr) {
+  const userAgent = IN_BROWSER && !ssr ? window.navigator.userAgent : "ssr";
   function match(regexp) {
     return Boolean(userAgent.match(regexp));
   }
@@ -2484,7 +2535,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.2.5";
+const version = "3.3.0";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -2909,26 +2960,26 @@ function getItemIndex(items, value) {
 }
 function getIds(items, modelValue) {
   const ids = [];
-  for (let i2 = 0; i2 < items.length; i2++) {
-    const item = items[i2];
-    if (item.value != null) {
-      if (modelValue.find((value) => deepEqual(value, item.value)) != null) {
-        ids.push(item.id);
-      }
-    } else if (modelValue.includes(i2)) {
+  modelValue.forEach((value) => {
+    const item = items.find((item2) => deepEqual(value, item2.value));
+    const itemByIndex = items[value];
+    if ((item == null ? void 0 : item.value) != null) {
       ids.push(item.id);
+    } else if (itemByIndex != null) {
+      ids.push(itemByIndex.id);
     }
-  }
+  });
   return ids;
 }
 function getValues(items, ids) {
   const values = [];
-  for (let i2 = 0; i2 < items.length; i2++) {
-    const item = items[i2];
-    if (ids.includes(item.id)) {
-      values.push(item.value != null ? item.value : i2);
+  ids.forEach((id) => {
+    const itemIndex = items.findIndex((item) => item.id === id);
+    if (~itemIndex) {
+      const item = items[itemIndex];
+      values.push(item.value != null ? item.value : itemIndex);
     }
-  }
+  });
   return values;
 }
 const VBtnToggleSymbol = Symbol.for("vuetify:v-btn-toggle");
@@ -4548,10 +4599,17 @@ const makeVFieldProps = propsFactory({
     default: "$clear"
   },
   active: Boolean,
+  centerAffix: {
+    type: Boolean,
+    default: void 0
+  },
   color: String,
   baseColor: String,
   dirty: Boolean,
-  disabled: Boolean,
+  disabled: {
+    type: Boolean,
+    default: null
+  },
   error: Boolean,
   flat: Boolean,
   label: String,
@@ -4619,6 +4677,7 @@ const VField = genericComponent()({
     const labelRef = ref();
     const floatingLabelRef = ref();
     const controlRef = ref();
+    const isPlainOrUnderlined = computed(() => ["plain", "underlined"].includes(props.variant));
     const {
       backgroundColorClasses,
       backgroundColorStyles
@@ -4685,6 +4744,7 @@ const VField = genericComponent()({
       const hasClear = !!(props.clearable || slots.clear);
       const hasAppend = !!(slots["append-inner"] || props.appendInnerIcon || hasClear);
       const label = slots.label ? slots.label({
+        ...slotProps.value,
         label: props.label,
         props: {
           for: id.value
@@ -4694,6 +4754,7 @@ const VField = genericComponent()({
         "class": ["v-field", {
           "v-field--active": isActive.value,
           "v-field--appended": hasAppend,
+          "v-field--center-affix": props.centerAffix ?? !isPlainOrUnderlined.value,
           "v-field--disabled": props.disabled,
           "v-field--dirty": props.dirty,
           "v-field--error": props.error,
@@ -4779,7 +4840,7 @@ const VField = genericComponent()({
         default: () => [label]
       })]), createVNode("div", {
         "class": "v-field__outline__end"
-      }, null)]), ["plain", "underlined"].includes(props.variant) && hasLabel.value && createVNode(VFieldLabel, {
+      }, null)]), isPlainOrUnderlined.value && hasLabel.value && createVNode(VFieldLabel, {
         "ref": floatingLabelRef,
         "floating": true,
         "for": id.value
@@ -4917,12 +4978,9 @@ function createForm(props) {
   }
   function reset() {
     items.value.forEach((item) => item.reset());
-    model.value = null;
   }
   function resetValidation() {
     items.value.forEach((item) => item.resetValidation());
-    errors.value = [];
-    model.value = null;
   }
   watch(items, () => {
     let valid = 0;
@@ -4978,6 +5036,7 @@ function createForm(props) {
     isDisabled,
     isReadonly,
     isValidating,
+    isValid: model,
     items,
     validateOn: toRef(props, "validateOn")
   });
@@ -4986,6 +5045,7 @@ function createForm(props) {
     isDisabled,
     isReadonly,
     isValidating,
+    isValid: model,
     items,
     validate,
     reset,
@@ -4996,7 +5056,10 @@ function useForm() {
   return inject$1(FormKey, null);
 }
 const makeValidationProps = propsFactory({
-  disabled: Boolean,
+  disabled: {
+    type: Boolean,
+    default: null
+  },
   error: Boolean,
   errorMessages: {
     type: [Array, String],
@@ -5008,7 +5071,10 @@ const makeValidationProps = propsFactory({
   },
   name: String,
   label: String,
-  readonly: Boolean,
+  readonly: {
+    type: Boolean,
+    default: null
+  },
   rules: {
     type: Array,
     default: () => []
@@ -5027,17 +5093,33 @@ function useValidation(props) {
   const internalErrorMessages = ref([]);
   const isPristine = shallowRef(true);
   const isDirty = computed(() => !!(wrapInArray(model.value === "" ? null : model.value).length || wrapInArray(validationModel.value === "" ? null : validationModel.value).length));
-  const isDisabled = computed(() => !!(props.disabled || (form == null ? void 0 : form.isDisabled.value)));
-  const isReadonly = computed(() => !!(props.readonly || (form == null ? void 0 : form.isReadonly.value)));
+  const isDisabled = computed(() => !!(props.disabled ?? (form == null ? void 0 : form.isDisabled.value)));
+  const isReadonly = computed(() => !!(props.readonly ?? (form == null ? void 0 : form.isReadonly.value)));
   const errorMessages = computed(() => {
     return props.errorMessages.length ? wrapInArray(props.errorMessages).slice(0, Math.max(0, +props.maxErrors)) : internalErrorMessages.value;
   });
+  const validateOn = computed(() => {
+    let value = (props.validateOn ?? (form == null ? void 0 : form.validateOn.value)) || "input";
+    if (value === "lazy")
+      value = "input lazy";
+    const set = new Set((value == null ? void 0 : value.split(" ")) ?? []);
+    return {
+      blur: set.has("blur") || set.has("input"),
+      input: set.has("input"),
+      submit: set.has("submit"),
+      lazy: set.has("lazy")
+    };
+  });
   const isValid2 = computed(() => {
-    if (props.error || errorMessages.value.length)
+    if (props.error || props.errorMessages.length)
       return false;
     if (!props.rules.length)
       return true;
-    return isPristine.value ? null : true;
+    if (isPristine.value) {
+      return internalErrorMessages.value.length || validateOn.value.lazy ? null : true;
+    } else {
+      return !internalErrorMessages.value.length;
+    }
   });
   const isValidating = shallowRef(false);
   const validationClasses = computed(() => {
@@ -5060,9 +5142,13 @@ function useValidation(props) {
   onBeforeUnmount(() => {
     form == null ? void 0 : form.unregister(uid.value);
   });
-  const validateOn = computed(() => props.validateOn || (form == null ? void 0 : form.validateOn.value) || "input");
-  onMounted(() => form == null ? void 0 : form.update(uid.value, isValid2.value, errorMessages.value));
-  useToggleScope(() => validateOn.value === "input", () => {
+  onMounted(async () => {
+    if (!validateOn.value.lazy) {
+      await validate(true);
+    }
+    form == null ? void 0 : form.update(uid.value, isValid2.value, errorMessages.value);
+  });
+  useToggleScope(() => validateOn.value.input, () => {
     watch(validationModel, () => {
       if (validationModel.value != null) {
         validate();
@@ -5075,7 +5161,7 @@ function useValidation(props) {
       }
     });
   });
-  useToggleScope(() => validateOn.value === "blur", () => {
+  useToggleScope(() => validateOn.value.blur, () => {
     watch(() => props.focused, (val) => {
       if (!val)
         validate();
@@ -5085,14 +5171,19 @@ function useValidation(props) {
     form == null ? void 0 : form.update(uid.value, isValid2.value, errorMessages.value);
   });
   function reset() {
-    resetValidation();
     model.value = null;
+    nextTick(resetValidation);
   }
   function resetValidation() {
     isPristine.value = true;
-    internalErrorMessages.value = [];
+    if (!validateOn.value.lazy) {
+      validate(true);
+    } else {
+      internalErrorMessages.value = [];
+    }
   }
   async function validate() {
+    let silent = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : false;
     const results = [];
     isValidating.value = true;
     for (const rule of props.rules) {
@@ -5111,7 +5202,7 @@ function useValidation(props) {
     }
     internalErrorMessages.value = results;
     isValidating.value = false;
-    isPristine.value = false;
+    isPristine.value = silent;
     return internalErrorMessages.value;
   }
   return {
@@ -5131,6 +5222,10 @@ function useValidation(props) {
 const makeVInputProps = propsFactory({
   id: String,
   appendIcon: IconValue,
+  centerAffix: {
+    type: Boolean,
+    default: true
+  },
   prependIcon: IconValue,
   hideDetails: [Boolean, String],
   hint: String,
@@ -5200,7 +5295,7 @@ const VInput = genericComponent()({
       validate
     }));
     const messages = computed(() => {
-      if (errorMessages.value.length > 0) {
+      if (!isPristine.value && errorMessages.value.length > 0) {
         return errorMessages.value;
       } else if (props.hint && (props.persistentHint || props.focused)) {
         return props.hint;
@@ -5215,7 +5310,9 @@ const VInput = genericComponent()({
       const hasMessages = messages.value.length > 0;
       const hasDetails = !props.hideDetails || props.hideDetails === "auto" && (hasMessages || !!slots.details);
       return createVNode("div", {
-        "class": ["v-input", `v-input--${props.direction}`, densityClasses.value, validationClasses.value, props.class],
+        "class": ["v-input", `v-input--${props.direction}`, {
+          "v-input--center-affix": props.centerAffix
+        }, densityClasses.value, validationClasses.value, props.class],
         "style": props.style
       }, [hasPrepend && createVNode("div", {
         "key": "prepend",
@@ -5466,6 +5563,7 @@ const VTextField = genericComponent()({
         return void 0;
       return props.counter;
     });
+    const isPlainOrUnderlined = computed(() => ["plain", "underlined"].includes(props.variant));
     function onIntersect(isIntersecting, entries) {
       var _a, _b;
       if (!props.autofocus || !isIntersecting)
@@ -5531,10 +5629,11 @@ const VTextField = genericComponent()({
         "class": ["v-text-field", {
           "v-text-field--prefixed": props.prefix,
           "v-text-field--suffixed": props.suffix,
-          "v-text-field--flush-details": ["plain", "underlined"].includes(props.variant)
+          "v-text-field--plain-underlined": ["plain", "underlined"].includes(props.variant)
         }, props.class],
         "style": props.style
       }, rootAttrs, inputProps, {
+        "centerAffix": !isPlainOrUnderlined.value,
         "focused": isFocused.value
       }), {
         ...slots,
@@ -5907,10 +6006,10 @@ const VCheckboxBtn = genericComponent()({
       }
     }
     const falseIcon = computed(() => {
-      return props.indeterminate ? props.indeterminateIcon : props.falseIcon;
+      return indeterminate.value ? props.indeterminateIcon : props.falseIcon;
     });
     const trueIcon = computed(() => {
-      return props.indeterminate ? props.indeterminateIcon : props.trueIcon;
+      return indeterminate.value ? props.indeterminateIcon : props.trueIcon;
     });
     useRender(() => createVNode(VSelectionControl, mergeProps(props, {
       "modelValue": model.value,
@@ -5920,7 +6019,7 @@ const VCheckboxBtn = genericComponent()({
       "type": "checkbox",
       "falseIcon": falseIcon.value,
       "trueIcon": trueIcon.value,
-      "aria-checked": props.indeterminate ? "mixed" : void 0
+      "aria-checked": indeterminate.value ? "mixed" : void 0
     }), slots));
     return {};
   }
@@ -5942,6 +6041,7 @@ function useAspectStyles(props) {
 const makeVResponsiveProps = propsFactory({
   aspectRatio: [String, Number],
   contentClass: String,
+  inline: Boolean,
   ...makeComponentProps(),
   ...makeDimensionProps()
 }, "v-responsive");
@@ -5961,7 +6061,9 @@ const VResponsive = genericComponent()({
     useRender(() => {
       var _a;
       return createVNode("div", {
-        "class": ["v-responsive", props.class],
+        "class": ["v-responsive", {
+          "v-responsive--inline": props.inline
+        }, props.class],
         "style": [dimensionStyles.value, props.style]
       }, [createVNode("div", {
         "class": "v-responsive__sizer",
@@ -5974,7 +6076,6 @@ const VResponsive = genericComponent()({
   }
 });
 const makeVImgProps = propsFactory({
-  aspectRatio: [String, Number],
   alt: String,
   cover: Boolean,
   eager: Boolean,
@@ -5996,7 +6097,7 @@ const makeVImgProps = propsFactory({
     default: ""
   },
   srcset: String,
-  width: [String, Number],
+  ...makeVResponsiveProps(),
   ...makeComponentProps(),
   ...makeTransitionProps()
 }, "v-img");
@@ -6199,25 +6300,27 @@ const VImg = genericComponent()({
         }
       });
     }
-    useRender(() => withDirectives(createVNode(VResponsive, {
-      "class": ["v-img", {
-        "v-img--booting": !isBooted.value
-      }, props.class],
-      "style": [{
-        width: convertToUnit(props.width === "auto" ? naturalWidth.value : props.width)
-      }, props.style],
-      "aspectRatio": aspectRatio.value,
-      "aria-label": props.alt,
-      "role": props.alt ? "img" : void 0
-    }, {
-      additional: () => createVNode(Fragment, null, [createVNode(__image, null, null), createVNode(__preloadImage, null, null), createVNode(__gradient, null, null), createVNode(__placeholder, null, null), createVNode(__error, null, null)]),
-      default: slots.default
-    }), [[resolveDirective("intersect"), {
-      handler: init,
-      options: props.options
-    }, null, {
-      once: true
-    }]]));
+    useRender(() => {
+      const [responsiveProps] = VResponsive.filterProps(props);
+      return withDirectives(createVNode(VResponsive, mergeProps({
+        "class": ["v-img", {
+          "v-img--booting": !isBooted.value
+        }, props.class],
+        "style": props.style
+      }, responsiveProps, {
+        "aspectRatio": aspectRatio.value,
+        "aria-label": props.alt,
+        "role": props.alt ? "img" : void 0
+      }), {
+        additional: () => createVNode(Fragment, null, [createVNode(__image, null, null), createVNode(__preloadImage, null, null), createVNode(__gradient, null, null), createVNode(__placeholder, null, null), createVNode(__error, null, null)]),
+        default: slots.default
+      }), [[resolveDirective("intersect"), {
+        handler: init,
+        options: props.options
+      }, null, {
+        once: true
+      }]]);
+    });
     return {
       currentSrc,
       image,
@@ -7141,7 +7244,9 @@ const VListGroupActivator = defineComponent({
   }
 });
 const makeVListGroupProps = propsFactory({
+  /* @deprecated */
   activeColor: String,
+  baseColor: String,
   color: String,
   collapseIcon: {
     type: IconValue,
@@ -7190,6 +7295,7 @@ const VListGroup = genericComponent()({
       VListItem: {
         active: isOpen.value,
         activeColor: props.activeColor,
+        baseColor: props.baseColor,
         color: props.color,
         prependIcon: props.prependIcon || props.subgroup && toggleIcon.value,
         appendIcon: props.appendIcon || !props.subgroup && toggleIcon.value,
@@ -7243,9 +7349,11 @@ const makeVListItemProps = propsFactory({
     default: void 0
   },
   activeClass: String,
+  /* @deprecated */
   activeColor: String,
   appendAvatar: String,
   appendIcon: IconValue,
+  baseColor: String,
   disabled: Boolean,
   lines: String,
   link: {
@@ -7311,8 +7419,9 @@ const VListItem = genericComponent()({
     const isLink = computed(() => props.link !== false && link.isLink.value);
     const isClickable = computed(() => !props.disabled && props.link !== false && (props.link || link.isClickable.value || props.value != null && !!list));
     const roundedProps = computed(() => props.rounded || props.nav);
+    const color = computed(() => props.color ?? props.activeColor);
     const variantProps = computed(() => ({
-      color: isActive.value ? props.activeColor ?? props.color : props.color,
+      color: isActive.value ? color.value ?? props.baseColor : props.baseColor,
       variant: props.variant
     }));
     watch(() => {
@@ -7374,7 +7483,6 @@ const VListItem = genericComponent()({
     }
     useRender(() => {
       const Tag = isLink.value ? "a" : props.tag;
-      const hasColor = !list || isSelected.value || isActive.value;
       const hasTitle = slots.title || props.title;
       const hasSubtitle = slots.subtitle || props.subtitle;
       const hasAppendMedia = !!(props.appendAvatar || props.appendIcon);
@@ -7382,6 +7490,9 @@ const VListItem = genericComponent()({
       const hasPrependMedia = !!(props.prependAvatar || props.prependIcon);
       const hasPrepend = !!(hasPrependMedia || slots.prepend);
       list == null ? void 0 : list.updateHasPrepend(hasPrepend);
+      if (props.activeColor) {
+        deprecate("active-color", ["color", "base-color"]);
+      }
       return withDirectives(createVNode(Tag, {
         "class": ["v-list-item", {
           "v-list-item--active": isActive.value,
@@ -7390,10 +7501,10 @@ const VListItem = genericComponent()({
           "v-list-item--nav": props.nav,
           "v-list-item--prepend": !hasPrepend && (list == null ? void 0 : list.hasPrepend.value),
           [`${props.activeClass}`]: props.activeClass && isActive.value
-        }, themeClasses.value, borderClasses.value, hasColor ? colorClasses.value : void 0, densityClasses.value, elevationClasses.value, lineClasses.value, roundedClasses.value, variantClasses.value, props.class],
-        "style": [hasColor ? colorStyles.value : void 0, dimensionStyles.value, props.style],
+        }, themeClasses.value, borderClasses.value, colorClasses.value, densityClasses.value, elevationClasses.value, lineClasses.value, roundedClasses.value, variantClasses.value, props.class],
+        "style": [colorStyles.value, dimensionStyles.value, props.style],
         "href": link.href.value,
-        "tabindex": isClickable.value ? 0 : void 0,
+        "tabindex": isClickable.value ? list ? -2 : 0 : void 0,
         "onClick": onClick,
         "onKeydown": isClickable.value && !isLink.value && onKeyDown
       }, {
@@ -7561,9 +7672,7 @@ const VListChildren = genericComponent()({
         if (type === "subheader") {
           return ((_b2 = slots.subheader) == null ? void 0 : _b2.call(slots, {
             props: itemProps
-          })) ?? createVNode(VListSubheader, itemProps, {
-            default: slots.subheader
-          });
+          })) ?? createVNode(VListSubheader, itemProps, null);
         }
         const slotsWithItem = {
           subtitle: slots.subtitle ? (slotProps) => {
@@ -7583,13 +7692,6 @@ const VListChildren = genericComponent()({
           append: slots.append ? (slotProps) => {
             var _a3;
             return (_a3 = slots.append) == null ? void 0 : _a3.call(slots, {
-              ...slotProps,
-              item
-            });
-          } : void 0,
-          default: slots.default ? (slotProps) => {
-            var _a3;
-            return (_a3 = slots.default) == null ? void 0 : _a3.call(slots, {
               ...slotProps,
               item
             });
@@ -7620,7 +7722,9 @@ const VListChildren = genericComponent()({
           default: () => createVNode(VListChildren, {
             "items": children
           }, slots)
-        }) : slots.item ? slots.item(itemProps) : createVNode(VListItem, itemProps, slotsWithItem);
+        }) : slots.item ? slots.item({
+          props: itemProps
+        }) : createVNode(VListItem, itemProps, slotsWithItem);
       }));
     };
   }
@@ -7647,8 +7751,8 @@ const makeItemsProps = propsFactory({
     default: "props"
   },
   returnObject: Boolean
-}, "item");
-function transformItem$1(props, item) {
+}, "list-items");
+function transformItem$2(props, item) {
   const title = getPropertyFromItem(item, props.itemTitle, item);
   const value = props.returnObject ? item : getPropertyFromItem(item, props.itemValue, title);
   const children = getPropertyFromItem(item, props.itemChildren);
@@ -7662,31 +7766,34 @@ function transformItem$1(props, item) {
     title: String(_props.title ?? ""),
     value: _props.value,
     props: _props,
-    children: Array.isArray(children) ? transformItems$1(props, children) : void 0,
+    children: Array.isArray(children) ? transformItems$2(props, children) : void 0,
     raw: item
   };
 }
-function transformItems$1(props, items) {
+function transformItems$2(props, items) {
   const array = [];
   for (const item of items) {
-    array.push(transformItem$1(props, item));
+    array.push(transformItem$2(props, item));
   }
   return array;
 }
 function useItems(props) {
-  const items = computed(() => transformItems$1(props, props.items));
+  const items = computed(() => transformItems$2(props, props.items));
+  return useTransformItems(items, (value) => transformItem$2(props, value));
+}
+function useTransformItems(items, transform2) {
   function transformIn(value) {
     return value.map((v2) => {
       const existingItem = items.value.find((item) => deepEqual(v2, item.value));
-      return existingItem ?? transformItem$1(props, v2);
+      return existingItem ?? transform2(v2);
     });
   }
   function transformOut(value) {
     return value.map((_ref) => {
       let {
-        props: props2
+        value: value2
       } = _ref;
-      return props2.value;
+      return value2;
     });
   }
   return {
@@ -7698,7 +7805,7 @@ function useItems(props) {
 function isPrimitive(value) {
   return typeof value === "string" || typeof value === "number" || typeof value === "boolean";
 }
-function transformItem(props, item) {
+function transformItem$1(props, item) {
   const type = getPropertyFromItem(item, props.itemType, "item");
   const title = isPrimitive(item) ? item : getPropertyFromItem(item, props.itemTitle);
   const value = getPropertyFromItem(item, props.itemValue, void 0);
@@ -7714,24 +7821,26 @@ function transformItem(props, item) {
     title: _props.title,
     value: _props.value,
     props: _props,
-    children: type === "item" && children ? transformItems(props, children) : void 0,
+    children: type === "item" && children ? transformItems$1(props, children) : void 0,
     raw: item
   };
 }
-function transformItems(props, items) {
+function transformItems$1(props, items) {
   const array = [];
   for (const item of items) {
-    array.push(transformItem(props, item));
+    array.push(transformItem$1(props, item));
   }
   return array;
 }
 function useListItems(props) {
-  const items = computed(() => transformItems(props, props.items));
+  const items = computed(() => transformItems$1(props, props.items));
   return {
     items
   };
 }
 const makeVListProps = propsFactory({
+  baseColor: String,
+  /* @deprecated */
   activeColor: String,
   activeClass: String,
   bgColor: String,
@@ -7806,16 +7915,19 @@ const VList = genericComponent()({
     } = useNested(props);
     const lineClasses = computed(() => props.lines ? `v-list--${props.lines}-line` : void 0);
     const activeColor = toRef(props, "activeColor");
+    const baseColor = toRef(props, "baseColor");
     const color = toRef(props, "color");
     createList();
     provideDefaults({
       VListGroup: {
         activeColor,
+        baseColor,
         color
       },
       VListItem: {
         activeClass: toRef(props, "activeClass"),
         activeColor,
+        baseColor,
         color,
         density: toRef(props, "density"),
         disabled: toRef(props, "disabled"),
@@ -9430,10 +9542,10 @@ const VSelect = genericComponent()({
           "v-select--active-menu": menu.value,
           "v-select--chips": !!props.chips,
           [`v-select--${props.multiple ? "multiple" : "single"}`]: true,
-          "v-select--selected": model.value.length
+          "v-select--selected": model.value.length,
+          "v-select--selection-slot": !!slots.selection
         }, props.class],
         "style": props.style,
-        "appendInnerIcon": props.menuIcon,
         "readonly": true,
         "placeholder": placeholder,
         "onClick:clear": onClear,
@@ -9468,25 +9580,21 @@ const VSelect = genericComponent()({
                 "title": t4(props.noDataText)
               }, null)), (_b = slots["prepend-item"]) == null ? void 0 : _b.call(slots), displayItems.value.map((item, index) => {
                 var _a2;
-                if (slots.item) {
-                  return (_a2 = slots.item) == null ? void 0 : _a2.call(slots, {
-                    item,
-                    index,
-                    props: mergeProps(item.props, {
-                      onClick: () => select(item)
-                    })
-                  });
-                }
-                return createVNode(VListItem, mergeProps({
-                  "key": index
-                }, item.props, {
-                  "onClick": () => select(item)
-                }), {
+                const itemProps = mergeProps(item.props, {
+                  key: index,
+                  onClick: () => select(item)
+                });
+                return ((_a2 = slots.item) == null ? void 0 : _a2.call(slots, {
+                  item,
+                  index,
+                  props: itemProps
+                })) ?? createVNode(VListItem, itemProps, {
                   prepend: (_ref2) => {
                     let {
                       isSelected
                     } = _ref2;
                     return createVNode(Fragment, null, [props.multiple && !props.hideSelected ? createVNode(VCheckboxBtn, {
+                      "key": item.value,
                       "modelValue": isSelected,
                       "ripple": false,
                       "tabindex": "-1"
@@ -9548,7 +9656,17 @@ const VSelect = genericComponent()({
           }, [item.title, props.multiple && index < selections.value.length - 1 && createVNode("span", {
             "class": "v-select__selection-comma"
           }, [createTextVNode(",")])])]);
-        })])
+        })]),
+        "append-inner": function() {
+          var _a;
+          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+          }
+          return createVNode(Fragment, null, [(_a = slots["append-inner"]) == null ? void 0 : _a.call(slots, ...args), props.menuIcon ? createVNode(VIcon, {
+            "class": "v-select__menu-icon",
+            "icon": props.menuIcon
+          }, null) : void 0]);
+        }
       });
     });
     return forwardRefs({
@@ -9607,13 +9725,25 @@ function providePagination(options) {
     itemsPerPage.value = value;
     page.value = 1;
   }
+  function nextPage() {
+    page.value = clamp(page.value + 1, 1, pageCount.value);
+  }
+  function prevPage() {
+    page.value = clamp(page.value - 1, 1, pageCount.value);
+  }
+  function setPage(value) {
+    page.value = clamp(value, 1, pageCount.value);
+  }
   const data = {
     page,
     itemsPerPage,
-    itemsLength,
     startIndex,
     stopIndex,
     pageCount,
+    itemsLength,
+    nextPage,
+    prevPage,
+    setPage,
     setItemsPerPage
   };
   provide(VDataTablePaginationSymbol, data);
@@ -9914,17 +10044,16 @@ function createHeaders(props, options) {
     }
     const fixedRows = createRange(rowCount).map(() => []);
     const fixedOffsets = createRange(rowCount).fill(0);
-    let count = 0;
     flat.forEach((_ref4) => {
       let {
         column,
         row
       } = _ref4;
-      const id = column.key ?? `data-table-column-${count++}`;
+      const key = column.key;
       for (let i2 = row; i2 <= row + (column.rowspan ?? 1) - 1; i2++) {
         fixedRows[i2].push({
           ...column,
-          key: id,
+          key,
           fixedOffset: fixedOffsets[i2],
           sortable: column.sortable ?? !!column.key
         });
@@ -9983,10 +10112,10 @@ function provideSelection(props, allItems) {
     return [...v2.values()];
   });
   function isSelected(items) {
-    return items.every((item) => selected.value.has(item.value));
+    return wrapInArray(items).every((item) => selected.value.has(item.value));
   }
   function isSomeSelected(items) {
-    return items.some((item) => selected.value.has(item.value));
+    return wrapInArray(items).some((item) => selected.value.has(item.value));
   }
   function select(items, value) {
     const newSelected = new Set(selected.value);
@@ -10029,6 +10158,7 @@ const makeDataTableSortProps = propsFactory({
     type: Array,
     default: () => []
   },
+  customKeySort: Object,
   multiSort: Boolean,
   mustSort: Boolean
 }, "v-data-table-sort");
@@ -10050,27 +10180,27 @@ function provideSort(options) {
     multiSort,
     page
   } = options;
-  const toggleSort = (key) => {
+  const toggleSort = (column) => {
     let newSortBy = sortBy.value.map((x2) => ({
       ...x2
     })) ?? [];
-    const item = newSortBy.find((x2) => x2.key === key);
+    const item = newSortBy.find((x2) => x2.key === column.key);
     if (!item) {
       if (multiSort.value)
         newSortBy = [...newSortBy, {
-          key,
+          key: column.key,
           order: "asc"
         }];
       else
         newSortBy = [{
-          key,
+          key: column.key,
           order: "asc"
         }];
     } else if (item.order === "desc") {
       if (mustSort.value) {
         item.order = "asc";
       } else {
-        newSortBy = newSortBy.filter((x2) => x2.key !== key);
+        newSortBy = newSortBy.filter((x2) => x2.key !== column.key);
       }
     } else {
       item.order = "desc";
@@ -10079,9 +10209,13 @@ function provideSort(options) {
     if (page)
       page.value = 1;
   };
+  function isSorted(column) {
+    return !!sortBy.value.find((item) => item.key === column.key);
+  }
   const data = {
     sortBy,
-    toggleSort
+    toggleSort,
+    isSorted
   };
   provide(VDataTableSortSymbol, data);
   return data;
@@ -10092,18 +10226,12 @@ function useSort() {
     throw new Error("Missing sort!");
   return data;
 }
-function useSortedItems(items, sortBy, columns) {
-  const customSorters = computed(() => {
-    return columns.value.reduce((obj, item) => {
-      if (item.sort)
-        obj[item.key] = item.sort;
-      return obj;
-    }, {});
-  });
+function useSortedItems(props, items, sortBy) {
+  const locale = useLocale();
   const sortedItems = computed(() => {
     if (!sortBy.value.length)
       return items.value;
-    return sortItems(items.value, sortBy.value, "en", customSorters.value);
+    return sortItems(items.value, sortBy.value, locale.current.value, props.customKeySort);
   });
   return {
     sortedItems
@@ -10117,7 +10245,7 @@ function sortItems(items, sortByItems, locale, customSorters) {
   return [...items].sort((a2, b2) => {
     for (let i2 = 0; i2 < sortByItems.length; i2++) {
       const sortKey = sortByItems[i2].key;
-      const sortOrder = sortByItems[i2].order;
+      const sortOrder = sortByItems[i2].order ?? "asc";
       if (sortOrder === false)
         continue;
       let sortA = getObjectValueByPath(a2.raw, sortKey);
@@ -10171,7 +10299,8 @@ const VDataTableHeaders = genericComponent()({
     } = _ref;
     const {
       toggleSort,
-      sortBy
+      sortBy,
+      isSorted
     } = useSort();
     const {
       someSelected,
@@ -10187,7 +10316,7 @@ const VDataTableHeaders = genericComponent()({
     } = useLoader(props);
     const getFixedStyles = (column, y2) => {
       if (!props.sticky && !column.fixed)
-        return null;
+        return void 0;
       return {
         position: "sticky",
         zIndex: column.fixed ? 4 : props.sticky ? 3 : void 0,
@@ -10197,8 +10326,8 @@ const VDataTableHeaders = genericComponent()({
         top: props.sticky ? `calc(var(--v-table-header-height) * ${y2})` : void 0
       };
     };
-    function getSortIcon(id) {
-      const item = sortBy.value.find((item2) => item2.key === id);
+    function getSortIcon(column) {
+      const item = sortBy.value.find((item2) => item2.key === column.key);
       if (!item)
         return props.sortAscIcon;
       return item.order === "asc" ? props.sortAscIcon : props.sortDescIcon;
@@ -10211,6 +10340,7 @@ const VDataTableHeaders = genericComponent()({
       headers: headers.value,
       columns: columns.value,
       toggleSort,
+      isSorted,
       sortBy: sortBy.value,
       someSelected: someSelected.value,
       allSelected: allSelected.value,
@@ -10224,14 +10354,13 @@ const VDataTableHeaders = genericComponent()({
         x: x2,
         y: y2
       } = _ref2;
-      const isSorted = !!sortBy.value.find((x3) => x3.key === column.key);
       const noPadding = column.key === "data-table-select" || column.key === "data-table-expand";
       return createVNode(VDataTableColumn, {
         "tag": "th",
         "align": column.align,
         "class": ["v-data-table__th", {
           "v-data-table__th--sortable": column.sortable,
-          "v-data-table__th--sorted": isSorted
+          "v-data-table__th--sorted": isSorted(column)
         }, loaderClasses.value],
         "style": {
           width: convertToUnit(column.width),
@@ -10240,7 +10369,7 @@ const VDataTableHeaders = genericComponent()({
         },
         "colspan": column.colspan,
         "rowspan": column.rowspan,
-        "onClick": column.sortable ? () => toggleSort(column.key) : void 0,
+        "onClick": column.sortable ? () => toggleSort(column) : void 0,
         "lastFixed": column.lastFixed,
         "noPadding": noPadding
       }, {
@@ -10249,7 +10378,13 @@ const VDataTableHeaders = genericComponent()({
           const columnSlotName = `column.${column.key}`;
           const columnSlotProps = {
             column,
-            selectAll
+            selectAll,
+            isSorted,
+            toggleSort,
+            sortBy: sortBy.value,
+            someSelected: someSelected.value,
+            allSelected: allSelected.value,
+            getSortIcon
           };
           if (slots[columnSlotName])
             return slots[columnSlotName](columnSlotProps);
@@ -10265,8 +10400,8 @@ const VDataTableHeaders = genericComponent()({
           }, [createVNode("span", null, [column.title]), column.sortable && createVNode(VIcon, {
             "key": "icon",
             "class": "v-data-table-header__sort-icon",
-            "icon": getSortIcon(column.key)
-          }, null), props.multiSort && isSorted && createVNode("div", {
+            "icon": getSortIcon(column)
+          }, null), props.multiSort && isSorted(column) && createVNode("div", {
             "key": "badge",
             "class": ["v-data-table-header__sort-badge", ...backgroundColorClasses.value],
             "style": backgroundColorStyles.value
@@ -10334,16 +10469,16 @@ function provideGroupBy(options) {
     function dive(group) {
       const arr = [];
       for (const item of group.items) {
-        if (item.type === "item")
-          arr.push(item);
-        else {
+        if ("type" in item && item.type === "group") {
           arr.push(...dive(item));
+        } else {
+          arr.push(item);
         }
       }
       return arr;
     }
     return dive({
-      type: "group-header",
+      type: "group",
       items,
       id: "dummy",
       key: "dummy",
@@ -10398,7 +10533,7 @@ function groupItems(items, groupBy) {
       key,
       value,
       items: rest.length ? groupItems(items2, rest, depth + 1, id) : items2,
-      type: "group-header"
+      type: "group"
     });
   });
   return groups;
@@ -10406,7 +10541,7 @@ function groupItems(items, groupBy) {
 function flattenItems(items, opened) {
   const flatItems = [];
   for (const item of items) {
-    if (item.type === "group-header") {
+    if ("type" in item && item.type === "group") {
       if (item.value != null) {
         flatItems.push(item);
       }
@@ -10689,7 +10824,7 @@ const VDataTableRows = genericComponent()({
       }
       return createVNode(Fragment, null, [props.items.map((item, index) => {
         var _a2;
-        if (item.type === "group-header") {
+        if (item.type === "group") {
           return slots["group-header"] ? slots["group-header"]({
             index,
             item,
@@ -10782,41 +10917,40 @@ const VTable = genericComponent()({
   }
 });
 const makeDataTableItemProps = propsFactory({
-  // TODO: Worth it to make specific datatable implementation
-  // without title, children?
-  ...makeItemsProps({
-    itemValue: "id"
-  })
+  items: {
+    type: Array,
+    default: () => []
+  },
+  itemValue: {
+    type: [String, Array, Function],
+    default: "value"
+  },
+  returnObject: Boolean
 }, "v-data-table-item");
-function add(obj, key, value) {
-  const path = key.split(".");
-  while (path.length > 1) {
-    const part = path.shift();
-    if (obj[part] == null) {
-      obj[part] = {};
-    }
-    if (typeof obj[part] === "object") {
-      obj = obj[part];
-    }
+function transformItem(props, item, columns) {
+  const value = props.returnObject ? item : getPropertyFromItem(item, props.itemValue);
+  const itemColumns = columns.reduce((obj, column) => {
+    obj[column.key] = getPropertyFromItem(item, column.value ?? column.key);
+    return obj;
+  }, {});
+  return {
+    type: "item",
+    value,
+    columns: itemColumns,
+    raw: item
+  };
+}
+function transformItems(props, items, columns) {
+  const array = [];
+  for (const item of items) {
+    array.push(transformItem(props, item, columns));
   }
-  obj[path[0]] = value;
+  return array;
 }
 function useDataTableItems(props, columns) {
-  const {
-    items
-  } = useItems(props);
-  const dataTableItems = computed(() => items.value.map((item) => {
-    return {
-      ...item,
-      type: "item",
-      columns: columns.value.reduce((obj, column) => {
-        add(obj, column.key, getPropertyFromItem(item.raw, column.value ?? column.key));
-        return obj;
-      }, {})
-    };
-  }));
+  const items = computed(() => transformItems(props, props.items, columns.value));
   return {
-    items: dataTableItems
+    items
   };
 }
 const defaultFilter = (value, query, item) => {
@@ -10893,23 +11027,24 @@ function useFilter(props, items, query, options) {
   const strQuery = computed(() => typeof (query == null ? void 0 : query.value) !== "string" && typeof (query == null ? void 0 : query.value) !== "number" ? "" : String(query.value));
   const filteredItems = ref([]);
   const filteredMatches = ref(/* @__PURE__ */ new Map());
+  const transformedItems = computed(() => (options == null ? void 0 : options.transform) ? unref(items).map(options == null ? void 0 : options.transform) : unref(items));
   watchEffect(() => {
     filteredItems.value = [];
     filteredMatches.value = /* @__PURE__ */ new Map();
-    const transformedItems = unref(items);
-    const results = filterItems(transformedItems, strQuery.value, {
+    const results = filterItems(transformedItems.value, strQuery.value, {
       customKeyFilter: props.customKeyFilter,
       default: props.customFilter,
-      filterKeys: unref(options == null ? void 0 : options.filterKeys) ?? props.filterKeys,
+      filterKeys: props.filterKeys,
       filterMode: props.filterMode,
       noFilter: props.noFilter
     });
+    const originalItems = unref(items);
     results.forEach((_ref) => {
       let {
         index,
         matches
       } = _ref;
-      const item = transformedItems[index];
+      const item = originalItems[index];
       filteredItems.value.push(item);
       filteredMatches.value.set(item.value, matches);
     });
@@ -11002,7 +11137,8 @@ const VDataTable = genericComponent()({
       itemsPerPage
     } = createPagination(props);
     const {
-      columns
+      columns,
+      headers
     } = createHeaders(props, {
       groupBy,
       showSelect: toRef(props, "showSelect"),
@@ -11011,14 +11147,15 @@ const VDataTable = genericComponent()({
     const {
       items
     } = useDataTableItems(props, columns);
-    const filterKeys = computed(() => columns.value.map((c2) => "columns." + c2.key));
     const search = toRef(props, "search");
     const {
       filteredItems
     } = useFilter(props, items, search, {
-      filterKeys
+      transform: (item) => item.columns
     });
-    provideSort({
+    const {
+      toggleSort
+    } = provideSort({
       sortBy,
       multiSort,
       mustSort,
@@ -11027,21 +11164,25 @@ const VDataTable = genericComponent()({
     const {
       sortByWithGroups,
       opened,
-      extractRows
+      extractRows,
+      isGroupOpen,
+      toggleGroup
     } = provideGroupBy({
       groupBy,
       sortBy
     });
     const {
       sortedItems
-    } = useSortedItems(filteredItems, sortByWithGroups, columns);
+    } = useSortedItems(props, filteredItems, sortByWithGroups);
     const {
       flatItems
     } = useGroupedItems(sortedItems, groupBy, opened);
     const itemsLength = computed(() => flatItems.value.length);
     const {
       startIndex,
-      stopIndex
+      stopIndex,
+      pageCount,
+      setItemsPerPage
     } = providePagination({
       page,
       itemsPerPage,
@@ -11056,8 +11197,18 @@ const VDataTable = genericComponent()({
       itemsPerPage
     });
     const paginatedItemsWithoutGroups = computed(() => extractRows(paginatedItems.value));
-    provideSelection(props, paginatedItemsWithoutGroups);
-    provideExpanded(props);
+    const {
+      isSelected,
+      select,
+      selectAll,
+      toggleSelect,
+      someSelected,
+      allSelected
+    } = provideSelection(props, paginatedItemsWithoutGroups);
+    const {
+      isExpanded,
+      toggleExpand
+    } = provideExpanded(props);
     useOptions({
       page,
       itemsPerPage,
@@ -11068,9 +11219,33 @@ const VDataTable = genericComponent()({
     provideDefaults({
       VDataTableRows: {
         hideNoData: toRef(props, "hideNoData"),
-        noDataText: toRef(props, "noDataText")
+        noDataText: toRef(props, "noDataText"),
+        loading: toRef(props, "loading"),
+        loadingText: toRef(props, "loadingText")
       }
     });
+    const slotProps = computed(() => ({
+      page: page.value,
+      itemsPerPage: itemsPerPage.value,
+      sortBy: sortBy.value,
+      pageCount: pageCount.value,
+      toggleSort,
+      setItemsPerPage,
+      someSelected: someSelected.value,
+      allSelected: allSelected.value,
+      isSelected,
+      select,
+      selectAll,
+      toggleSelect,
+      isExpanded,
+      toggleExpand,
+      isGroupOpen,
+      toggleGroup,
+      items: paginatedItems.value,
+      groupedItems: flatItems.value,
+      columns: columns.value,
+      headers: headers.value
+    }));
     useRender(() => {
       const [dataTableFooterProps] = VDataTableFooter.filterProps(props);
       const [dataTableHeadersProps] = VDataTableHeaders.filterProps(props);
@@ -11078,22 +11253,24 @@ const VDataTable = genericComponent()({
       const [tableProps] = VTable.filterProps(props);
       return createVNode(VTable, mergeProps({
         "class": ["v-data-table", {
-          "v-data-table--show-select": props.showSelect
+          "v-data-table--show-select": props.showSelect,
+          "v-data-table--loading": props.loading
         }, props.class],
         "style": props.style
       }, tableProps), {
-        top: slots.top,
-        default: slots.default ?? (() => {
+        top: () => {
+          var _a;
+          return (_a = slots.top) == null ? void 0 : _a.call(slots, slotProps.value);
+        },
+        default: () => {
           var _a, _b, _c, _d;
-          return createVNode(Fragment, null, [(_a = slots.colgroup) == null ? void 0 : _a.call(slots, {
-            columns
-          }), createVNode("thead", null, [createVNode(VDataTableHeaders, dataTableHeadersProps, slots)]), (_b = slots.thead) == null ? void 0 : _b.call(slots), createVNode("tbody", null, [slots.body ? slots.body() : createVNode(VDataTableRows, mergeProps(dataTableRowsProps, {
+          return slots.default ? slots.default(slotProps.value) : createVNode(Fragment, null, [(_a = slots.colgroup) == null ? void 0 : _a.call(slots, slotProps.value), createVNode("thead", null, [createVNode(VDataTableHeaders, dataTableHeadersProps, slots)]), (_b = slots.thead) == null ? void 0 : _b.call(slots, slotProps.value), createVNode("tbody", null, [slots.body ? slots.body(slotProps.value) : createVNode(VDataTableRows, mergeProps(dataTableRowsProps, {
             "items": paginatedItems.value
-          }), slots)]), (_c = slots.tbody) == null ? void 0 : _c.call(slots), (_d = slots.tfoot) == null ? void 0 : _d.call(slots)]);
-        }),
-        bottom: slots.bottom ?? (() => createVNode(VDataTableFooter, dataTableFooterProps, {
+          }), slots)]), (_c = slots.tbody) == null ? void 0 : _c.call(slots, slotProps.value), (_d = slots.tfoot) == null ? void 0 : _d.call(slots, slotProps.value)]);
+        },
+        bottom: () => slots.bottom ? slots.bottom(slotProps.value) : createVNode(Fragment, null, [createVNode(VDataTableFooter, dataTableFooterProps, {
           prepend: slots["footer.prepend"]
-        }))
+        })])
       });
     });
     return {};
@@ -11606,7 +11783,7 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-c0e3a406.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-275d893c.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-cbee1124.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-2508df34.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-dd4ac6c9.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-d9661785.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-2576ba7c.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-ffeecfac.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-80048ff7.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-f38644e1.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-e4927713.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-077ad99e.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-1c707409.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-f8d11ff8.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-c946bf10.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9d9ef5ff.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-6538799e.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-2eaf3200.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-3e9cb90e.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-f6f03ab7.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-8ae00a2b.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-a9885365.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => __variableDynamicImportRuntimeHelper(/* @__PURE__ */ Object.assign({ "../../lang/en.json": () => import("./assets/en-00d993b4.mjs"), "../../lang/php_en.json": () => import("./assets/php_en-c3a84203.mjs"), "../../lang/php_ru.json": () => import("./assets/php_ru-d548d840.mjs"), "../../lang/ru.json": () => import("./assets/ru-0e6104f9.mjs") }), `../../lang/${lang}.json`)
@@ -11670,16 +11847,17 @@ export {
   VList as aI,
   VListItem as aJ,
   VChip as aK,
-  wrapInArray as aL,
-  makeFormProps as aM,
-  createForm as aN,
-  breakpoints as aO,
-  VExpandTransition as aP,
-  getCurrentInstance as aQ,
-  findChildrenWithProvide as aR,
-  CircularBuffer as aS,
-  useRouter as aT,
-  toPhysical as aU,
+  noop as aL,
+  wrapInArray as aM,
+  makeFormProps as aN,
+  createForm as aO,
+  breakpoints as aP,
+  VExpandTransition as aQ,
+  getCurrentInstance as aR,
+  findChildrenWithProvide as aS,
+  CircularBuffer as aT,
+  useRouter as aU,
+  toPhysical as aV,
   makeDimensionProps as aa,
   makeElevationProps as ab,
   makeLoaderProps as ac,
