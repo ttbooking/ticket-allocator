@@ -7,6 +7,7 @@ namespace TTBooking\TicketAllocator\Support;
 use Illuminate\Support\Collection;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 use TTBooking\TicketAllocator\Factors\Unknown;
+use TTBooking\TicketAllocator\Models\Factor;
 
 /**
  * @template TKey of string
@@ -17,6 +18,13 @@ use TTBooking\TicketAllocator\Factors\Unknown;
  */
 class FactorDictionary extends Collection
 {
+    public function allowed(): static
+    {
+        $appliedSingulars = Factor::all()->pluck('type')->filter(static fn (string $factor) => $factor::isSingular());
+
+        return $this->diff($appliedSingulars);
+    }
+
     /**
      * @template TFirstDefault of TDefault
      */
@@ -47,6 +55,11 @@ class FactorDictionary extends Collection
     public function pull($key, $default = null): string
     {
         return parent::pull($key, static::default($default));
+    }
+
+    public function offsetGet($key): mixed
+    {
+        return parent::offsetGet($key) ?? static::default();
     }
 
     /**
