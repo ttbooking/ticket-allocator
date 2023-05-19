@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Domain\Ticket\Reactors;
 
+use Spatie\EventSourcing\EventHandlers\Reactors\Reactor;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 use TTBooking\TicketAllocator\Domain\Ticket\Actions\AdjustTicketMetricsAction;
 use TTBooking\TicketAllocator\Domain\Ticket\Events\TicketCreated;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 use TTBooking\TicketAllocator\Models\Factor;
 
-class ApplyFactors
+class ApplyFactors extends Reactor
 {
     public function __construct(protected AdjustTicketMetricsAction $adjustTicketMetrics)
     {
