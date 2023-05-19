@@ -33,17 +33,17 @@ abstract class Factor implements FactorContract
 
     public static function isExcluded(): bool
     {
-        return ! empty((new \ReflectionClass(static::class))->getAttributes(Attributes\Excluded::class));
+        return self::flagSet(Attributes\Excluded::class);
     }
 
     public static function isHidden(): bool
     {
-        return ! empty((new \ReflectionClass(static::class))->getAttributes(Attributes\Hidden::class));
+        return self::flagSet(Attributes\Hidden::class);
     }
 
     public static function isSingular(): bool
     {
-        return ! empty((new \ReflectionClass(static::class))->getAttributes(Attributes\Singular::class));
+        return self::flagSet(Attributes\Singular::class);
     }
 
     public static function getComponentName(): ?string
@@ -66,6 +66,15 @@ abstract class Factor implements FactorContract
     public function getConfig(): array
     {
         return $this->config;
+    }
+
+    /**
+     * @param  class-string  $flagAttribute
+     * @return bool
+     */
+    private static function flagSet(string $flagAttribute): bool
+    {
+        return ! empty((new \ReflectionClass(static::class))->getAttributes($flagAttribute));
     }
 
     /**
