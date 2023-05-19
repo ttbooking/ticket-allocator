@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Collection;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
+use TTBooking\TicketAllocator\Support\FactorDictionary;
 
 /**
  * @template TFactor of class-string<FactorContract>
  */
 class TicketAllocator
 {
-    /** @var Collection<string, TFactor> */
-    protected static Collection $factors;
+    protected static FactorDictionary $factors;
 
     /**
      * @param  Arrayable<string, TFactor>|iterable<string, TFactor>|null  $factors
@@ -22,14 +21,11 @@ class TicketAllocator
      */
     public static function setFactors(Arrayable|iterable|null $factors): void
     {
-        static::$factors = collect($factors);
+        static::$factors = new FactorDictionary($factors);
     }
 
-    /**
-     * @return Collection<string, TFactor>
-     */
-    public static function factors(): Collection
+    public static function factors(): FactorDictionary
     {
-        return static::$factors ??= collect();
+        return static::$factors ??= new FactorDictionary;
     }
 }
