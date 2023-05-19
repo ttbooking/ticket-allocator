@@ -6,8 +6,6 @@ namespace TTBooking\TicketAllocator\Domain\Ticket;
 
 use Illuminate\Support\Arr;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
-use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
-use TTBooking\TicketAllocator\Models\Factor;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class TicketAggregateRoot extends AggregateRoot
@@ -58,20 +56,6 @@ class TicketAggregateRoot extends AggregateRoot
         $this->categoryUuid = $event->categoryUuid;
         $this->operatorUuid = $event->operatorUuid;
         $this->meta = $event->meta;
-
-        $this->applyFactors();
-    }
-
-    protected function applyFactors(): void
-    {
-        Factor::query()
-            ->orderBy('priority')
-            ->get(['uuid', 'type', 'config'])
-            ->pluck('instance', 'uuid')
-            ->each(function (FactorContract $factor, string $uuid) {
-                $adjustments = $factor->getAdjustments($this);
-                $this->adjustMetrics(new Commands\AdjustTicketMetrics($this->uuid(), $uuid, $adjustments));
-            });
     }
 
     public function close(Commands\CloseTicket $command): static

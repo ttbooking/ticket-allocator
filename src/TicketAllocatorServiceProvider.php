@@ -17,6 +17,7 @@ use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorProjector;
 use TTBooking\TicketAllocator\Domain\Operator\Reactors\SyncTicketCategories;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
 //use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
+use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyFactors;
 use TTBooking\TicketAllocator\Jobs\Triage;
 use TTBooking\TicketAllocator\Support\DiscoverFactors;
 
@@ -98,6 +99,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
             OperatorProjector::class,
             TicketProjector::class,
             SyncTicketCategories::class,
+            ApplyFactors::class,
             //ApplyCategoryInfo::class,
         ]);
     }
