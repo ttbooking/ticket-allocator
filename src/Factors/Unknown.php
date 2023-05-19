@@ -6,6 +6,7 @@ namespace TTBooking\TicketAllocator\Factors;
 
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 
+#[Attributes\Excluded]
 class Unknown extends Factor
 {
     public function getAdjustments(TicketAggregateRoot $ticket): array

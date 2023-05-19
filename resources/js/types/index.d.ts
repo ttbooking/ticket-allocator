@@ -92,6 +92,7 @@ export interface ExpressiveFactorConfig {
 export interface FactorType {
     alias: string;
     name: string;
+    excluded: boolean;
     hidden: boolean;
     singular: boolean;
     component: string | null;

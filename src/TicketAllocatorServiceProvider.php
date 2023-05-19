@@ -119,30 +119,40 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
         return collect(array_merge($this->discoveredFactors(), $this->factors()))
             ->filter(static fn (string $class) => is_subclass_of($class, FactorContract::class))
+            ->reject(self::factorExcluded(...))
             ->mapWithKeys(self::mapFactor(...))
             ->sortBy(self::factorName(...))
             ->all();
     }
 
     /**
-     * @param  class-string<FactorContract>  $class
-     * @param  array-key  $alias
-     * @return array<string, class-string<FactorContract>>
+     * @param  class-string<FactorContract>  $factor
+     * @return bool
      */
-    private static function mapFactor(string $class, string|int $alias): array
+    private static function factorExcluded(string $factor): bool
     {
-        is_string($alias) && $class::setAlias($alias);
-
-        return [$class::getAlias() => $class];
+        return $factor::isExcluded();
     }
 
     /**
-     * @param  class-string<FactorContract>  $class
+     * @param  class-string<FactorContract>  $factor
+     * @param  array-key  $alias
+     * @return array<string, class-string<FactorContract>>
+     */
+    private static function mapFactor(string $factor, string|int $alias): array
+    {
+        is_string($alias) && $factor::setAlias($alias);
+
+        return [$factor::getAlias() => $factor];
+    }
+
+    /**
+     * @param  class-string<FactorContract>  $factor
      * @return string
      */
-    private static function factorName(string $class): string
+    private static function factorName(string $factor): string
     {
-        return $class::getName();
+        return $factor::getName();
     }
 
     /**

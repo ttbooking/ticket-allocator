@@ -31,6 +31,11 @@ abstract class Factor implements FactorContract
         return trans('ticket-allocator::factor.'.static::getAlias());
     }
 
+    public static function isExcluded(): bool
+    {
+        return ! empty((new \ReflectionClass(static::class))->getAttributes(Attributes\Excluded::class));
+    }
+
     public static function isHidden(): bool
     {
         return ! empty((new \ReflectionClass(static::class))->getAttributes(Attributes\Hidden::class));

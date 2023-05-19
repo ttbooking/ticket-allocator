@@ -14,6 +14,11 @@ class Expression extends Factor
     {
     }
 
+    public static function isExcluded(): bool
+    {
+        return ! class_exists(ExpressionLanguage::class);
+    }
+
     public function getAdjustments(TicketAggregateRoot $ticket): array
     {
         $eval = function (string $metric) use ($ticket) {
