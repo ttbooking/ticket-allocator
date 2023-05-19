@@ -38,6 +38,9 @@ class Expression extends Factor
             return $adjustment;
         };
 
-        return array_map($eval, ['initial_weight', 'weight_increment', 'complexity', 'delay']);
+        return array_combine(
+            $metrics = ['initial_weight', 'weight_increment', 'complexity', 'delay'],
+            array_map($eval, $metrics)
+        );
     }
 }
