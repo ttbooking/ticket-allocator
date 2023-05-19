@@ -61,6 +61,14 @@
                         <v-checkbox-btn :model-value="!item.raw.deleted_at" />
                     </Link>
                 </template>
+                <template #[`item.type.name`]="{ item }">
+                    <span :class="{ italic: item.raw.type.excluded }">{{ item.raw.type.name }}</span>
+                </template>
+                <template #[`item.name`]="{ item }">
+                    <span :class="{ italic: item.raw.type.excluded && !item.raw.display_name }">
+                        {{ item.raw.name }}
+                    </span>
+                </template>
                 <template #[`item.actions`]="{ item }">
                     <Link :href="route('ticket-allocator.factors.edit', item.raw.uuid)">
                         <v-btn icon="mdi-pencil" :title="$t('edit')" size="small" variant="plain" />
