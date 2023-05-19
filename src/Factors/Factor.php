@@ -7,6 +7,7 @@ namespace TTBooking\TicketAllocator\Factors;
 use Illuminate\Support\Str;
 use TTBooking\TicketAllocator\Attributes\Factors\Alias;
 use TTBooking\TicketAllocator\Attributes\Factors\Component;
+use TTBooking\TicketAllocator\Attributes\Factors\Hidden;
 use TTBooking\TicketAllocator\Attributes\Factors\Singular;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 
@@ -32,6 +33,11 @@ abstract class Factor implements FactorContract
     public static function getName(): string
     {
         return trans('ticket-allocator::factor.'.static::getAlias());
+    }
+
+    public static function isHidden(): bool
+    {
+        return ! empty((new \ReflectionClass(static::class))->getAttributes(Hidden::class));
     }
 
     public static function isSingular(): bool

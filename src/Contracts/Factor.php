@@ -14,6 +14,8 @@ interface Factor
 
     public static function getName(): string;
 
+    public static function isHidden(): bool;
+
     public static function isSingular(): bool;
 
     public static function getComponentName(): ?string;

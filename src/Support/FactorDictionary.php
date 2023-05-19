@@ -18,11 +18,20 @@ use TTBooking\TicketAllocator\Models\Factor;
  */
 class FactorDictionary extends Collection
 {
+    public function visible(): static
+    {
+        return $this->reject(
+            /** @param class-string<FactorContract> $factor */
+            static fn (string $factor) => $factor::isHidden()
+        );
+    }
+
     public function allowed(): static
     {
-        $appliedSingulars = Factor::all()->pluck('type')->filter(static fn (string $factor) => $factor::isSingular());
-
-        return $this->diff($appliedSingulars);
+        return $this->visible()->diff(Factor::all()->pluck('type')->filter(
+            /** @param class-string<FactorContract> $factor */
+            static fn (string $factor) => $factor::isSingular()
+        ));
     }
 
     /**
