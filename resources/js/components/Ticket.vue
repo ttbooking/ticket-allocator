@@ -51,7 +51,7 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="(adjustments, factorUuid) in ticket.metrics ?? {}" :key="factorUuid">
-                                            <th>{{ factorUuid }}</th>
+                                            <th>{{ factors[factorUuid]?.name ?? factorUuid }}</th>
                                             <td class="text-right">{{ adjustments.initial_weight ?? 0 }}</td>
                                             <td class="text-right">{{ adjustments.weight_increment ?? 0 }}</td>
                                             <td class="text-right">{{ adjustments.complexity ?? 0 }}</td>
@@ -82,12 +82,18 @@ import { computed, ref } from "vue";
 import MarkdownIt from "markdown-it";
 import { usePage } from "@inertiajs/vue3";
 import Ticket from "@/models/Ticket";
-import { DisplayOptions } from "@/types";
+import { Factor, DisplayOptions } from "@/types";
 import { useSharedOptions, useSharedDisplayMode } from "@/shared";
+//import { useRepo } from "pinia-orm";
+//import FactorRepository from "@/models/Factor";
 
 const props = defineProps<{
     ticket: Ticket;
 }>();
+
+//const factorRepo = computed(() => useRepo(FactorRepository));
+//const factors = computed(() => factorRepo.value.all());
+const factors = computed(() => usePage().props.factors as Record<string, Factor>);
 
 const tab = ref(null);
 

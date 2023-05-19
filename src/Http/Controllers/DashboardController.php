@@ -10,6 +10,8 @@ use Inertia\Inertia;
 use Inertia\Response;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
+use TTBooking\TicketAllocator\Http\Resources\FactorResource;
+use TTBooking\TicketAllocator\Models\Factor;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class DashboardController extends Controller
@@ -27,7 +29,8 @@ class DashboardController extends Controller
         $operators = Operator::all()->toArray();
         $tickets = Ticket::all()->toArray();
         $ticketCategories = TicketCategory::all()->toArray();
+        $factors = FactorResource::collection(Factor::withTrashed()->orderBy('priority')->get())->resolve();
 
-        return Inertia::render('Dashboard', compact('operators', 'tickets', 'ticketCategories'));
+        return Inertia::render('Dashboard', compact('operators', 'tickets', 'ticketCategories', 'factors'));
     }
 }

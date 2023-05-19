@@ -76,7 +76,7 @@ import { computed, ref, onMounted } from "vue";
 import { refThrottled } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
 import { useDropZone } from "@/composables";
-import type { Operator, Ticket, TicketCategory } from "@/types";
+import type { Operator, Ticket, TicketCategory, Factor } from "@/types";
 import { useSharedOptions, useSharedDisplayMode, useSharedOperatorSorting } from "@/shared";
 import * as Events from "@/types/events.d";
 import { PusherChannel } from "laravel-echo/dist/channel";
@@ -86,11 +86,13 @@ import { useCollect } from "pinia-orm/dist/helpers.js";
 import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
 import TicketCategoryRepository from "@/models/TicketCategory";
+//import FactorRepository from "@/models/Factor";
 
 const props = defineProps<{
     operators: Operator[];
     tickets: Ticket[];
     ticketCategories: TicketCategory[];
+    factors: Record<string, Factor>;
 }>();
 
 const options = useSharedOptions();
@@ -100,6 +102,7 @@ const oprSort = useSharedOperatorSorting();
 const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
 const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
+//const factorRepo = computed(() => useRepo(FactorRepository));
 
 const sortedOperators = refThrottled(
     computed(() =>
@@ -142,6 +145,7 @@ onMounted(() => {
     operatorRepo.value.fresh(props.operators);
     ticketRepo.value.fresh(props.tickets);
     ticketCategoryRepo.value.fresh(props.ticketCategories);
+    //factorRepo.value.fresh(props.factors);
 
     window.ticketAllocatorChannel = <PusherChannel>window.Echo.channel(Events.Channel);
 
