@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Factors;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use TTBooking\TicketAllocator\Attributes\Factors\Component;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 
-#[Component('Factor/Partials/ExpressionForm')]
+#[Attributes\Component('Factor/Partials/ExpressionForm')]
 class Expression extends Factor
 {
     public function __construct(protected ExpressionLanguage $expression)

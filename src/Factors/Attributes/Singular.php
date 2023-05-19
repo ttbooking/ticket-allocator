@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TTBooking\TicketAllocator\Attributes\Factors;
+namespace TTBooking\TicketAllocator\Factors\Attributes;
 
 use Attribute;
 

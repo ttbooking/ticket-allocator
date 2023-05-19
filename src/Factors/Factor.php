@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Factors;
 
 use Illuminate\Support\Str;
-use TTBooking\TicketAllocator\Attributes\Factors\Alias;
-use TTBooking\TicketAllocator\Attributes\Factors\Component;
-use TTBooking\TicketAllocator\Attributes\Factors\Hidden;
-use TTBooking\TicketAllocator\Attributes\Factors\Singular;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 
 abstract class Factor implements FactorContract
@@ -26,7 +22,7 @@ abstract class Factor implements FactorContract
     public static function getAlias(): string
     {
         return static::$aliases[static::class]
-            ?? static::attribute(Alias::class)?->alias
+            ?? static::attribute(Attributes\Alias::class)?->alias
             ?? Str::snake(class_basename(static::class));
     }
 
@@ -37,17 +33,17 @@ abstract class Factor implements FactorContract
 
     public static function isHidden(): bool
     {
-        return ! empty((new \ReflectionClass(static::class))->getAttributes(Hidden::class));
+        return ! empty((new \ReflectionClass(static::class))->getAttributes(Attributes\Hidden::class));
     }
 
     public static function isSingular(): bool
     {
-        return ! empty((new \ReflectionClass(static::class))->getAttributes(Singular::class));
+        return ! empty((new \ReflectionClass(static::class))->getAttributes(Attributes\Singular::class));
     }
 
     public static function getComponentName(): ?string
     {
-        return static::attribute(Component::class)?->name;
+        return static::attribute(Attributes\Component::class)?->name;
     }
 
     public function getProps(): array
