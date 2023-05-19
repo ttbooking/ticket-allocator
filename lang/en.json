@@ -47,6 +47,7 @@
     "title": "Ticket Allocator",
     "total": "Total",
     "type": "Type",
+    "unknown": "Unknown",
     "user": "User",
     "value": "Value",
     "variables": "Variables",

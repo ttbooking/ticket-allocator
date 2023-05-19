@@ -29,7 +29,9 @@ class DashboardController extends Controller
         $operators = Operator::all()->toArray();
         $tickets = Ticket::all()->toArray();
         $ticketCategories = TicketCategory::all()->toArray();
-        $factors = FactorResource::collection(Factor::withTrashed()->orderBy('priority')->get())->resolve();
+        $factors = FactorResource::collection(
+            Factor::withTrashed()->orderBy('priority')->get()->keyBy('uuid')
+        )->resolve();
 
         return Inertia::render('Dashboard', compact('operators', 'tickets', 'ticketCategories', 'factors'));
     }
