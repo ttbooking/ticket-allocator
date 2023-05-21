@@ -71,7 +71,7 @@
 import DefaultLayout from "@/layouts/Default.vue";
 import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
-import { Head } from "@inertiajs/vue3";
+import { Head, router } from "@inertiajs/vue3";
 import { computed, ref, onMounted } from "vue";
 import { refThrottled } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
@@ -151,6 +151,7 @@ onMounted(() => {
     });
 
     window.ticketAllocatorChannel
+        .listen(Events.Common.PropsInvalidated, router.reload)
         .listen(Events.Operator.Enrolled, operatorRepo.value.enroll)
         .listen(Events.Operator.Resigned, operatorRepo.value.resign)
         .listen(Events.Operator.NameChanged, operatorRepo.value.changeName)

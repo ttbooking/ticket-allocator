@@ -2,6 +2,10 @@ import type { TicketMetrics } from "@/types";
 
 export const Channel = "ticket-allocator";
 
+export enum Common {
+    PropsInvalidated = ".props-invalidated",
+}
+
 export enum Operator {
     Commented = ".operator.commented",
     ComplexityLimitAdjusted = ".operator.complexity-limit-adjusted",
