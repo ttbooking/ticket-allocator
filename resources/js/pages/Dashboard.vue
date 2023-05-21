@@ -151,7 +151,7 @@ onMounted(() => {
     });
 
     window.ticketAllocatorChannel
-        .listen(Events.Common.PropsInvalidated, router.reload)
+        .listen(Events.Common.PropsInvalidated, () => router.reload())
         .listen(Events.Operator.Enrolled, operatorRepo.value.enroll)
         .listen(Events.Operator.Resigned, operatorRepo.value.resign)
         .listen(Events.Operator.NameChanged, operatorRepo.value.changeName)
