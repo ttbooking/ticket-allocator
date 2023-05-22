@@ -6,6 +6,7 @@ namespace TTBooking\TicketAllocator\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use TTBooking\TicketAllocator\Domain\Operator\Actions\EnrollOperatorAction;
+use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
 
 class EsOperatorSeeder extends Seeder
@@ -19,14 +20,15 @@ class EsOperatorSeeder extends Seeder
             return;
         }
 
+        $fromUserId = Operator::query()->max('user_id');
         $operatorTeams = OperatorTeam::all()->all();
 
         $bar = $this->command->getOutput()->createProgressBar($count);
         $bar->start();
 
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 1; $i <= $count; $i++) {
             $operator = $enrollOperator(
-                user: $i + 1,
+                user: $fromUserId + $i,
                 name: fake()->lastName(),
                 online: fake()->boolean(90),
                 ready: fake()->boolean(70),
