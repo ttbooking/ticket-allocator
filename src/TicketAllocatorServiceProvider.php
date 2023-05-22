@@ -88,10 +88,11 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     protected function registerObservers(): void
     {
-        Models\OperatorTeam::observe(Observers\OperatorTeamObserver::class);
+        Models\Factor::observe(Observers\InvalidatingObserver::class);
+        Models\OperatorTeam::observe([Observers\OperatorTeamObserver::class, Observers\InvalidatingObserver::class]);
+        Models\TicketCategory::observe([Observers\TicketCategoryObserver::class, Observers\InvalidatingObserver::class]);
         Models\TeamCategory::observe(Observers\TeamCategoryObserver::class);
         Models\TeamOperator::observe(Observers\TeamOperatorObserver::class);
-        Models\TicketCategory::observe(Observers\TicketCategoryObserver::class);
     }
 
     protected function registerEventHandlers(): void
