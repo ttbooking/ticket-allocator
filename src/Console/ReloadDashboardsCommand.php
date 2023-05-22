@@ -42,5 +42,7 @@ class ReloadDashboardsCommand extends Command
     public function handle(): void
     {
         broadcast(new PropsInvalidated);
+
+        $this->components->info('All dashboards has been notified on property changes.');
     }
 }

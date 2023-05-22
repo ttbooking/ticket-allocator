@@ -44,6 +44,19 @@ class FactorMakeCommand extends GeneratorCommand
     protected $type = 'Factor';
 
     /**
+     * Execute the console command.
+     */
+    public function handle(): ?bool
+    {
+        if (false !== $result = parent::handle()) {
+            $this->laravel->factorsAreCached() && $this->call('factor:cache');
+            $this->call('ticket-allocator:reload-dashboards');
+        }
+
+        return $result;
+    }
+
+    /**
      * Determine if the class already exists.
      */
     protected function alreadyExists($rawName): bool
