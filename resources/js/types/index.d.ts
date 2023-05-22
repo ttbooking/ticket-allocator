@@ -89,6 +89,13 @@ export interface ExpressiveFactorConfig {
     };
 }
 
+export interface RandomFactorConfig {
+    initial_weight: [number, number];
+    weight_increment: [number, number];
+    complexity: [number, number];
+    delay: [number, number];
+}
+
 export interface FactorType {
     alias: string;
     name: string;
