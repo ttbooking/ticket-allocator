@@ -24,7 +24,10 @@ createServer((page) =>
                 .use(pinia)
                 .use(vuetify)
                 .use(i18nVue, {
-                    resolve: (lang: string) => import(`../../lang/${lang}.json`),
+                    resolve: (lang: string) => {
+                        const languages = import.meta.glob<any>("../../lang/*.json", { eager: true });
+                        return languages[`../../lang/${lang}.json`].default;
+                    },
                 })
                 .use(ZiggyVue, {
                     // @ts-expect-error

@@ -27,7 +27,10 @@ createInertiaApp({
             .use(vuetify)
             //.use(ZiggyVue, window.Ziggy ?? {})
             .use(i18nVue, {
-                resolve: (lang: string) => import(`../../lang/${lang}.json`),
+                resolve: async (lang: string) => {
+                    const languages = import.meta.glob<object>("../../lang/*.json");
+                    return await languages[`../../lang/${lang}.json`]();
+                },
             })
             .provide("appProps", props)
             .mount(el);

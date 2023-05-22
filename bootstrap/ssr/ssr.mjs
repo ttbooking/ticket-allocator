@@ -5,40 +5,547 @@ import { renderToString } from "@vue/server-renderer";
 import { createInertiaApp } from "@inertiajs/vue3";
 import createServer from "@inertiajs/vue3/server";
 import { i18nVue } from "laravel-vue-i18n";
-const __variableDynamicImportRuntimeHelper = (glob, path) => {
-  const v2 = glob[path];
-  if (v2) {
-    return typeof v2 === "function" ? v2() : Promise.resolve(v2);
-  }
-  return new Promise((_, reject) => {
-    (typeof queueMicrotask === "function" ? queueMicrotask : setTimeout)(reject.bind(null, new Error("Unknown variable dynamic import: " + path)));
-  });
+const actions$1 = "Actions";
+const active$1 = "Active";
+const cancel$1 = "Cancel";
+const choose_factor_type$1 = "Choose factor type";
+const complexity$1 = "Complexity";
+const complexity_expression$1 = "Complexity expression";
+const complexity_limit$1 = "Complexity limit";
+const create$1 = "Create";
+const dashboard$1 = "Dashboard";
+const delay$1 = "Delay, sec";
+const delay_expression$1 = "Delay expression";
+const description$1 = "Description";
+const discover$1 = "Discover";
+const display_name$1 = "Display name";
+const edit$1 = "edit";
+const edit_category$1 = "Edit Category";
+const edit_factor$1 = "Edit Factor";
+const edit_operator$1 = "Edit Operator";
+const edit_team$1 = "Edit Team";
+const entries$1 = "Entries";
+const factor$1 = "Factor";
+const factor_type$1 = "Factor type";
+const factors$1 = "Factors";
+const initial_weight$1 = "Initial weight";
+const initial_weight_expression$1 = "Initial weight expression";
+const lower_priority$1 = "lower priority";
+const metrics$1 = "Metrics";
+const name$2 = "Name";
+const new_category$1 = "New Category";
+const new_entry$1 = "New Entry";
+const new_factor$1 = "New Factor";
+const new_operator$1 = "New Operator";
+const new_team$1 = "New Team";
+const operator_teams$1 = "Operator teams";
+const operators$1 = "Operators";
+const properties$1 = "Properties";
+const raise_priority$1 = "raise priority";
+const remove$1 = "remove";
+const save$1 = "Save";
+const short_name$1 = "Short name";
+const teams$1 = "Teams";
+const ticket_categories$1 = "Ticket categories";
+const ticket_limit$1 = "Ticket limit";
+const ticket_pool$1 = "Ticket pool";
+const tickets$1 = "Tickets";
+const title$1 = "Ticket Allocator";
+const total$1 = "Total";
+const type$1 = "Type";
+const unknown$1 = "Unknown";
+const user$1 = "User";
+const value$1 = "Value";
+const variables$1 = "Variables";
+const weight_increment$1 = "Weight increment";
+const weight_increment_expression$1 = "Weight increment expression";
+const en$1 = {
+  actions: actions$1,
+  active: active$1,
+  cancel: cancel$1,
+  choose_factor_type: choose_factor_type$1,
+  complexity: complexity$1,
+  complexity_expression: complexity_expression$1,
+  complexity_limit: complexity_limit$1,
+  create: create$1,
+  dashboard: dashboard$1,
+  delay: delay$1,
+  delay_expression: delay_expression$1,
+  description: description$1,
+  discover: discover$1,
+  display_name: display_name$1,
+  edit: edit$1,
+  edit_category: edit_category$1,
+  edit_factor: edit_factor$1,
+  edit_operator: edit_operator$1,
+  edit_team: edit_team$1,
+  entries: entries$1,
+  factor: factor$1,
+  factor_type: factor_type$1,
+  factors: factors$1,
+  initial_weight: initial_weight$1,
+  initial_weight_expression: initial_weight_expression$1,
+  lower_priority: lower_priority$1,
+  metrics: metrics$1,
+  name: name$2,
+  new_category: new_category$1,
+  new_entry: new_entry$1,
+  new_factor: new_factor$1,
+  new_operator: new_operator$1,
+  new_team: new_team$1,
+  operator_teams: operator_teams$1,
+  operators: operators$1,
+  properties: properties$1,
+  raise_priority: raise_priority$1,
+  remove: remove$1,
+  save: save$1,
+  short_name: short_name$1,
+  teams: teams$1,
+  ticket_categories: ticket_categories$1,
+  ticket_limit: ticket_limit$1,
+  ticket_pool: ticket_pool$1,
+  tickets: tickets$1,
+  title: title$1,
+  total: total$1,
+  type: type$1,
+  unknown: unknown$1,
+  user: user$1,
+  value: value$1,
+  variables: variables$1,
+  weight_increment: weight_increment$1,
+  weight_increment_expression: weight_increment_expression$1
 };
+const __vite_glob_1_0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  actions: actions$1,
+  active: active$1,
+  cancel: cancel$1,
+  choose_factor_type: choose_factor_type$1,
+  complexity: complexity$1,
+  complexity_expression: complexity_expression$1,
+  complexity_limit: complexity_limit$1,
+  create: create$1,
+  dashboard: dashboard$1,
+  default: en$1,
+  delay: delay$1,
+  delay_expression: delay_expression$1,
+  description: description$1,
+  discover: discover$1,
+  display_name: display_name$1,
+  edit: edit$1,
+  edit_category: edit_category$1,
+  edit_factor: edit_factor$1,
+  edit_operator: edit_operator$1,
+  edit_team: edit_team$1,
+  entries: entries$1,
+  factor: factor$1,
+  factor_type: factor_type$1,
+  factors: factors$1,
+  initial_weight: initial_weight$1,
+  initial_weight_expression: initial_weight_expression$1,
+  lower_priority: lower_priority$1,
+  metrics: metrics$1,
+  name: name$2,
+  new_category: new_category$1,
+  new_entry: new_entry$1,
+  new_factor: new_factor$1,
+  new_operator: new_operator$1,
+  new_team: new_team$1,
+  operator_teams: operator_teams$1,
+  operators: operators$1,
+  properties: properties$1,
+  raise_priority: raise_priority$1,
+  remove: remove$1,
+  save: save$1,
+  short_name: short_name$1,
+  teams: teams$1,
+  ticket_categories: ticket_categories$1,
+  ticket_limit: ticket_limit$1,
+  ticket_pool: ticket_pool$1,
+  tickets: tickets$1,
+  title: title$1,
+  total: total$1,
+  type: type$1,
+  unknown: unknown$1,
+  user: user$1,
+  value: value$1,
+  variables: variables$1,
+  weight_increment: weight_increment$1,
+  weight_increment_expression: weight_increment_expression$1
+}, Symbol.toStringTag, { value: "Module" }));
+const php_en = {
+  "auth.failed": "These credentials do not match our records.",
+  "auth.password": "The provided password is incorrect.",
+  "auth.throttle": "Too many login attempts. Please try again in :seconds seconds.",
+  "pagination.previous": "&laquo; Previous",
+  "pagination.next": "Next &raquo;",
+  "passwords.reset": "Your password has been reset.",
+  "passwords.sent": "We have emailed your password reset link.",
+  "passwords.throttled": "Please wait before retrying.",
+  "passwords.token": "This password reset token is invalid.",
+  "passwords.user": "We can't find a user with that email address.",
+  "validation.accepted": "The :attribute field must be accepted.",
+  "validation.accepted_if": "The :attribute field must be accepted when :other is :value.",
+  "validation.active_url": "The :attribute field must be a valid URL.",
+  "validation.after": "The :attribute field must be a date after :date.",
+  "validation.after_or_equal": "The :attribute field must be a date after or equal to :date.",
+  "validation.alpha": "The :attribute field must only contain letters.",
+  "validation.alpha_dash": "The :attribute field must only contain letters, numbers, dashes, and underscores.",
+  "validation.alpha_num": "The :attribute field must only contain letters and numbers.",
+  "validation.array": "The :attribute field must be an array.",
+  "validation.ascii": "The :attribute field must only contain single-byte alphanumeric characters and symbols.",
+  "validation.before": "The :attribute field must be a date before :date.",
+  "validation.before_or_equal": "The :attribute field must be a date before or equal to :date.",
+  "validation.between.array": "The :attribute field must have between :min and :max items.",
+  "validation.between.file": "The :attribute field must be between :min and :max kilobytes.",
+  "validation.between.numeric": "The :attribute field must be between :min and :max.",
+  "validation.between.string": "The :attribute field must be between :min and :max characters.",
+  "validation.boolean": "The :attribute field must be true or false.",
+  "validation.confirmed": "The :attribute field confirmation does not match.",
+  "validation.current_password": "The password is incorrect.",
+  "validation.date": "The :attribute field must be a valid date.",
+  "validation.date_equals": "The :attribute field must be a date equal to :date.",
+  "validation.date_format": "The :attribute field must match the format :format.",
+  "validation.decimal": "The :attribute field must have :decimal decimal places.",
+  "validation.declined": "The :attribute field must be declined.",
+  "validation.declined_if": "The :attribute field must be declined when :other is :value.",
+  "validation.different": "The :attribute field and :other must be different.",
+  "validation.digits": "The :attribute field must be :digits digits.",
+  "validation.digits_between": "The :attribute field must be between :min and :max digits.",
+  "validation.dimensions": "The :attribute field has invalid image dimensions.",
+  "validation.distinct": "The :attribute field has a duplicate value.",
+  "validation.doesnt_end_with": "The :attribute field must not end with one of the following: :values.",
+  "validation.doesnt_start_with": "The :attribute field must not start with one of the following: :values.",
+  "validation.email": "The :attribute field must be a valid email address.",
+  "validation.ends_with": "The :attribute field must end with one of the following: :values.",
+  "validation.enum": "The selected :attribute is invalid.",
+  "validation.exists": "The selected :attribute is invalid.",
+  "validation.file": "The :attribute field must be a file.",
+  "validation.filled": "The :attribute field must have a value.",
+  "validation.gt.array": "The :attribute field must have more than :value items.",
+  "validation.gt.file": "The :attribute field must be greater than :value kilobytes.",
+  "validation.gt.numeric": "The :attribute field must be greater than :value.",
+  "validation.gt.string": "The :attribute field must be greater than :value characters.",
+  "validation.gte.array": "The :attribute field must have :value items or more.",
+  "validation.gte.file": "The :attribute field must be greater than or equal to :value kilobytes.",
+  "validation.gte.numeric": "The :attribute field must be greater than or equal to :value.",
+  "validation.gte.string": "The :attribute field must be greater than or equal to :value characters.",
+  "validation.image": "The :attribute field must be an image.",
+  "validation.in": "The selected :attribute is invalid.",
+  "validation.in_array": "The :attribute field must exist in :other.",
+  "validation.integer": "The :attribute field must be an integer.",
+  "validation.ip": "The :attribute field must be a valid IP address.",
+  "validation.ipv4": "The :attribute field must be a valid IPv4 address.",
+  "validation.ipv6": "The :attribute field must be a valid IPv6 address.",
+  "validation.json": "The :attribute field must be a valid JSON string.",
+  "validation.lowercase": "The :attribute field must be lowercase.",
+  "validation.lt.array": "The :attribute field must have less than :value items.",
+  "validation.lt.file": "The :attribute field must be less than :value kilobytes.",
+  "validation.lt.numeric": "The :attribute field must be less than :value.",
+  "validation.lt.string": "The :attribute field must be less than :value characters.",
+  "validation.lte.array": "The :attribute field must not have more than :value items.",
+  "validation.lte.file": "The :attribute field must be less than or equal to :value kilobytes.",
+  "validation.lte.numeric": "The :attribute field must be less than or equal to :value.",
+  "validation.lte.string": "The :attribute field must be less than or equal to :value characters.",
+  "validation.mac_address": "The :attribute field must be a valid MAC address.",
+  "validation.max.array": "The :attribute field must not have more than :max items.",
+  "validation.max.file": "The :attribute field must not be greater than :max kilobytes.",
+  "validation.max.numeric": "The :attribute field must not be greater than :max.",
+  "validation.max.string": "The :attribute field must not be greater than :max characters.",
+  "validation.max_digits": "The :attribute field must not have more than :max digits.",
+  "validation.mimes": "The :attribute field must be a file of type: :values.",
+  "validation.mimetypes": "The :attribute field must be a file of type: :values.",
+  "validation.min.array": "The :attribute field must have at least :min items.",
+  "validation.min.file": "The :attribute field must be at least :min kilobytes.",
+  "validation.min.numeric": "The :attribute field must be at least :min.",
+  "validation.min.string": "The :attribute field must be at least :min characters.",
+  "validation.min_digits": "The :attribute field must have at least :min digits.",
+  "validation.missing": "The :attribute field must be missing.",
+  "validation.missing_if": "The :attribute field must be missing when :other is :value.",
+  "validation.missing_unless": "The :attribute field must be missing unless :other is :value.",
+  "validation.missing_with": "The :attribute field must be missing when :values is present.",
+  "validation.missing_with_all": "The :attribute field must be missing when :values are present.",
+  "validation.multiple_of": "The :attribute field must be a multiple of :value.",
+  "validation.not_in": "The selected :attribute is invalid.",
+  "validation.not_regex": "The :attribute field format is invalid.",
+  "validation.numeric": "The :attribute field must be a number.",
+  "validation.password.letters": "The :attribute field must contain at least one letter.",
+  "validation.password.mixed": "The :attribute field must contain at least one uppercase and one lowercase letter.",
+  "validation.password.numbers": "The :attribute field must contain at least one number.",
+  "validation.password.symbols": "The :attribute field must contain at least one symbol.",
+  "validation.password.uncompromised": "The given :attribute has appeared in a data leak. Please choose a different :attribute.",
+  "validation.present": "The :attribute field must be present.",
+  "validation.prohibited": "The :attribute field is prohibited.",
+  "validation.prohibited_if": "The :attribute field is prohibited when :other is :value.",
+  "validation.prohibited_unless": "The :attribute field is prohibited unless :other is in :values.",
+  "validation.prohibits": "The :attribute field prohibits :other from being present.",
+  "validation.regex": "The :attribute field format is invalid.",
+  "validation.required": "The :attribute field is required.",
+  "validation.required_array_keys": "The :attribute field must contain entries for: :values.",
+  "validation.required_if": "The :attribute field is required when :other is :value.",
+  "validation.required_if_accepted": "The :attribute field is required when :other is accepted.",
+  "validation.required_unless": "The :attribute field is required unless :other is in :values.",
+  "validation.required_with": "The :attribute field is required when :values is present.",
+  "validation.required_with_all": "The :attribute field is required when :values are present.",
+  "validation.required_without": "The :attribute field is required when :values is not present.",
+  "validation.required_without_all": "The :attribute field is required when none of :values are present.",
+  "validation.same": "The :attribute field must match :other.",
+  "validation.size.array": "The :attribute field must contain :size items.",
+  "validation.size.file": "The :attribute field must be :size kilobytes.",
+  "validation.size.numeric": "The :attribute field must be :size.",
+  "validation.size.string": "The :attribute field must be :size characters.",
+  "validation.starts_with": "The :attribute field must start with one of the following: :values.",
+  "validation.string": "The :attribute field must be a string.",
+  "validation.timezone": "The :attribute field must be a valid timezone.",
+  "validation.unique": "The :attribute has already been taken.",
+  "validation.uploaded": "The :attribute failed to upload.",
+  "validation.uppercase": "The :attribute field must be uppercase.",
+  "validation.url": "The :attribute field must be a valid URL.",
+  "validation.ulid": "The :attribute field must be a valid ULID.",
+  "validation.uuid": "The :attribute field must be a valid UUID.",
+  "validation.custom.attribute-name.rule-name": "custom-message",
+  "factor.category": "Ticket category",
+  "factor.expression": "Expression",
+  "factor.fixed": "Fixed",
+  "factor.random": "Random",
+  "factor.unknown": "Unknown",
+  "validation.attributes.complexity": "complexity",
+  "validation.attributes.complexity_limit": "complexity limit",
+  "validation.attributes.delay": "delay",
+  "validation.attributes.description": "description",
+  "validation.attributes.initial_weight": "initial weight",
+  "validation.attributes.name": "name",
+  "validation.attributes.operators": "operators",
+  "validation.attributes.short": "short",
+  "validation.attributes.teams": "teams",
+  "validation.attributes.ticket_categories": "ticket categories",
+  "validation.attributes.ticket_limit": "ticket limit",
+  "validation.attributes.type": "type",
+  "validation.attributes.user": "user",
+  "validation.attributes.weight_increment": "weight increment"
+};
+const __vite_glob_1_1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: php_en
+}, Symbol.toStringTag, { value: "Module" }));
+const php_ru = {
+  "factor.category": "Категория тикета",
+  "factor.expression": "Выражение",
+  "factor.fixed": "Фиксированный",
+  "factor.random": "Случайный",
+  "factor.unknown": "Неизвестный",
+  "validation.attributes.complexity": "сложность",
+  "validation.attributes.complexity_limit": "ограничение по суммарной сложности",
+  "validation.attributes.delay": "задержка",
+  "validation.attributes.description": "описание",
+  "validation.attributes.initial_weight": "начальный вес",
+  "validation.attributes.name": "имя",
+  "validation.attributes.operators": "операторы",
+  "validation.attributes.short": "короткое имя",
+  "validation.attributes.teams": "команды",
+  "validation.attributes.ticket_categories": "категории тикетов",
+  "validation.attributes.ticket_limit": "максимальное число тикетов",
+  "validation.attributes.type": "тип",
+  "validation.attributes.user": "пользователь",
+  "validation.attributes.weight_increment": "приращение веса"
+};
+const __vite_glob_1_2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: php_ru
+}, Symbol.toStringTag, { value: "Module" }));
+const actions = "Действия";
+const active = "Активна";
+const cancel = "Отменить";
+const choose_factor_type = "Выберите тип фактора";
+const complexity = "Сложность";
+const complexity_expression = "Выражение для вычисления сложности тикета";
+const complexity_limit = "Ограничение по сложности";
+const create = "Создать";
+const dashboard = "Мониторинг";
+const delay = "Задержка, с";
+const delay_expression = "Выражение для вычисления задержки тикета";
+const description = "Описание";
+const discover = "Обнаружить";
+const display_name = "Отображаемое имя";
+const edit = "редактировать";
+const edit_category = "Редактировать категорию";
+const edit_factor = "Редактировать фактор";
+const edit_operator = "Редактировать оператора";
+const edit_team = "Редактировать команду";
+const entries = "Записи";
+const factor = "Фактор";
+const factor_type = "Тип фактора";
+const factors = "Факторы";
+const initial_weight = "Начальный вес";
+const initial_weight_expression = "Выражение для вычисления начального веса тикета";
+const lower_priority = "понизить приоритет";
+const metrics = "Метрики";
+const name$1 = "Имя";
+const new_category = "Новая категория";
+const new_entry = "Новая запись";
+const new_factor = "Новый фактор";
+const new_operator = "Новый оператор";
+const new_team = "Новая команда";
+const operator_teams = "Команды операторов";
+const operators = "Операторы";
+const properties = "Свойства";
+const raise_priority = "повысить приоритет";
+const remove = "удалить";
+const save = "Сохранить";
+const short_name = "Короткое имя";
+const teams = "Команды";
+const ticket_categories = "Категории тикетов";
+const ticket_limit = "Ограничение по числу тикетов";
+const ticket_pool = "Пул тикетов";
+const tickets = "Тикеты";
+const title = "Распределитель Заявок";
+const total = "Итого";
+const type = "Тип";
+const unknown = "Неизвестный";
+const user = "Пользователь";
+const value = "Значение";
+const variables = "Переменные";
+const weight_increment = "Приращение веса";
+const weight_increment_expression = "Выражение для вычисления приращения веса тикета";
+const ru$1 = {
+  actions,
+  active,
+  cancel,
+  choose_factor_type,
+  complexity,
+  complexity_expression,
+  complexity_limit,
+  create,
+  dashboard,
+  delay,
+  delay_expression,
+  description,
+  discover,
+  display_name,
+  edit,
+  edit_category,
+  edit_factor,
+  edit_operator,
+  edit_team,
+  entries,
+  factor,
+  factor_type,
+  factors,
+  initial_weight,
+  initial_weight_expression,
+  lower_priority,
+  metrics,
+  name: name$1,
+  new_category,
+  new_entry,
+  new_factor,
+  new_operator,
+  new_team,
+  operator_teams,
+  operators,
+  properties,
+  raise_priority,
+  remove,
+  save,
+  short_name,
+  teams,
+  ticket_categories,
+  ticket_limit,
+  ticket_pool,
+  tickets,
+  title,
+  total,
+  type,
+  unknown,
+  user,
+  value,
+  variables,
+  weight_increment,
+  weight_increment_expression
+};
+const __vite_glob_1_3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  actions,
+  active,
+  cancel,
+  choose_factor_type,
+  complexity,
+  complexity_expression,
+  complexity_limit,
+  create,
+  dashboard,
+  default: ru$1,
+  delay,
+  delay_expression,
+  description,
+  discover,
+  display_name,
+  edit,
+  edit_category,
+  edit_factor,
+  edit_operator,
+  edit_team,
+  entries,
+  factor,
+  factor_type,
+  factors,
+  initial_weight,
+  initial_weight_expression,
+  lower_priority,
+  metrics,
+  name: name$1,
+  new_category,
+  new_entry,
+  new_factor,
+  new_operator,
+  new_team,
+  operator_teams,
+  operators,
+  properties,
+  raise_priority,
+  remove,
+  save,
+  short_name,
+  teams,
+  ticket_categories,
+  ticket_limit,
+  ticket_pool,
+  tickets,
+  title,
+  total,
+  type,
+  unknown,
+  user,
+  value,
+  variables,
+  weight_increment,
+  weight_increment_expression
+}, Symbol.toStringTag, { value: "Module" }));
 const pinia = createPinia().use(createORM());
 const materialdesignicons = "";
 const main = "";
-function _classPrivateFieldInitSpec(obj, privateMap, value) {
+function _classPrivateFieldInitSpec(obj, privateMap, value2) {
   _checkPrivateRedeclaration(obj, privateMap);
-  privateMap.set(obj, value);
+  privateMap.set(obj, value2);
 }
 function _checkPrivateRedeclaration(obj, privateCollection) {
   if (privateCollection.has(obj)) {
     throw new TypeError("Cannot initialize the same private elements twice on an object");
   }
 }
-function _classPrivateFieldSet(receiver, privateMap, value) {
+function _classPrivateFieldSet(receiver, privateMap, value2) {
   var descriptor = _classExtractFieldDescriptor(receiver, privateMap, "set");
-  _classApplyDescriptorSet(receiver, descriptor, value);
-  return value;
+  _classApplyDescriptorSet(receiver, descriptor, value2);
+  return value2;
 }
-function _classApplyDescriptorSet(receiver, descriptor, value) {
+function _classApplyDescriptorSet(receiver, descriptor, value2) {
   if (descriptor.set) {
-    descriptor.set.call(receiver, value);
+    descriptor.set.call(receiver, value2);
   } else {
     if (!descriptor.writable) {
       throw new TypeError("attempted to set read only private field");
     }
-    descriptor.value = value;
+    descriptor.value = value2;
   }
 }
 function _classPrivateFieldGet(receiver, privateMap) {
@@ -101,8 +608,8 @@ function getPropertyFromItem(item, property, fallback) {
   if (item !== Object(item)) {
     if (typeof property !== "function")
       return fallback;
-    const value2 = property(item, fallback);
-    return typeof value2 === "undefined" ? fallback : value2;
+    const value3 = property(item, fallback);
+    return typeof value3 === "undefined" ? fallback : value3;
   }
   if (typeof property === "string")
     return getObjectValueByPath(item, property, fallback);
@@ -110,8 +617,8 @@ function getPropertyFromItem(item, property, fallback) {
     return getNestedValue(item, property, fallback);
   if (typeof property !== "function")
     return fallback;
-  const value = property(item, fallback);
-  return typeof value === "undefined" ? fallback : value;
+  const value2 = property(item, fallback);
+  return typeof value2 === "undefined" ? fallback : value2;
 }
 function createRange(length) {
   let start = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
@@ -187,10 +694,10 @@ function filterInputAttrs(attrs) {
 function wrapInArray(v2) {
   return v2 == null ? [] : Array.isArray(v2) ? v2 : [v2];
 }
-function clamp(value) {
+function clamp(value2) {
   let min = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
   let max = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 1;
-  return Math.max(min, Math.min(max, value));
+  return Math.max(min, Math.min(max, value2));
 }
 function padEnd(str, length) {
   let char = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "0";
@@ -714,13 +1221,13 @@ function parseHex(hex) {
   }
   return hex;
 }
-function lighten(value, amount) {
-  const lab = fromXYZ(toXYZ$1(value));
+function lighten(value2, amount) {
+  const lab = fromXYZ(toXYZ$1(value2));
   lab[0] = lab[0] + amount * 10;
   return fromXYZ$1(toXYZ(lab));
 }
-function darken(value, amount) {
-  const lab = fromXYZ(toXYZ$1(value));
+function darken(value2, amount) {
+  const lab = fromXYZ(toXYZ$1(value2));
   lab[0] = lab[0] - amount * 10;
   return fromXYZ$1(toXYZ(lab));
 }
@@ -766,10 +1273,10 @@ function useToggleScope(source, fn) {
       start();
     }) : fn());
   }
-  watch(source, (active) => {
-    if (active && !scope) {
+  watch(source, (active2) => {
+    if (active2 && !scope) {
       start();
-    } else if (!active) {
+    } else if (!active2) {
       scope == null ? void 0 : scope.stop();
       scope = void 0;
     }
@@ -800,22 +1307,22 @@ function provideDefaults(defaults, options) {
     const scoped = unref(options == null ? void 0 : options.scoped);
     const reset = unref(options == null ? void 0 : options.reset);
     const root = unref(options == null ? void 0 : options.root);
-    let properties = mergeDeep(providedDefaults.value, {
+    let properties2 = mergeDeep(providedDefaults.value, {
       prev: injectedDefaults.value
     });
     if (scoped)
-      return properties;
+      return properties2;
     if (reset || root) {
       const len = Number(reset || Infinity);
       for (let i2 = 0; i2 <= len; i2++) {
-        if (!properties || !("prev" in properties)) {
+        if (!properties2 || !("prev" in properties2)) {
           break;
         }
-        properties = properties.prev;
+        properties2 = properties2.prev;
       }
-      return properties;
+      return properties2;
     }
-    return properties.prev ? mergeDeep(properties.prev, properties) : properties;
+    return properties2.prev ? mergeDeep(properties2.prev, properties2) : properties2;
   });
   provide(DefaultsSymbol, newDefaults);
   return newDefaults;
@@ -1059,8 +1566,8 @@ function useProxiedModel(props, prop, defaultValue) {
     },
     set(internalValue) {
       const newValue = transformOut(internalValue);
-      const value = toRaw(isControlled.value ? props[prop] : internal.value);
-      if (value === newValue || transformIn(value) === internalValue) {
+      const value2 = toRaw(isControlled.value ? props[prop] : internal.value);
+      if (value2 === newValue || transformIn(value2) === internalValue) {
         return;
       }
       internal.value = newValue;
@@ -1187,9 +1694,9 @@ const createTranslateFunction = (current, fallback, messages) => {
   };
 };
 function createNumberFunction(current, fallback) {
-  return (value, options) => {
+  return (value2, options) => {
     const numberFormat = new Intl.NumberFormat([current.value, fallback.value], options);
-    return numberFormat.format(value);
+    return numberFormat.format(value2);
   };
 }
 function useProvided(props, prop, provided) {
@@ -1431,13 +1938,13 @@ function startOfMonth(date2) {
 function endOfMonth(date2) {
   return new Date(date2.getFullYear(), date2.getMonth() + 1, 0);
 }
-function date(value) {
-  if (value == null)
+function date(value2) {
+  if (value2 == null)
     return null;
-  if (value instanceof Date)
-    return value;
-  if (typeof value === "string") {
-    const parsed = Date.parse(value);
+  if (value2 instanceof Date)
+    return value2;
+  if (typeof value2 === "string") {
+    const parsed = Date.parse(value2);
     if (!isNaN(parsed))
       return new Date(parsed);
   }
@@ -1607,8 +2114,8 @@ function getWeekdays(locale) {
     }).format(weekday);
   });
 }
-function format(value, formatString, locale) {
-  const date2 = new Date(value);
+function format(value2, formatString, locale) {
+  const date2 = new Date(value2);
   let options = {};
   switch (formatString) {
     case "fullDateWithWeekday":
@@ -1732,8 +2239,8 @@ class VuetifyDateAdapter {
     let locale = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : "en";
     this.locale = locale;
   }
-  date(value) {
-    return date(value);
+  date(value2) {
+    return date(value2);
   }
   addDays(date2, amount) {
     return addDays(date2, amount);
@@ -2407,30 +2914,30 @@ function createCssClass(lines, selector, content) {
 function genCssVariables(theme) {
   const lightOverlay = theme.dark ? 2 : 1;
   const darkOverlay = theme.dark ? 1 : 2;
-  const variables = [];
-  for (const [key, value] of Object.entries(theme.colors)) {
-    const rgb = parseColor(value);
-    variables.push(`--v-theme-${key}: ${rgb.r},${rgb.g},${rgb.b}`);
+  const variables2 = [];
+  for (const [key, value2] of Object.entries(theme.colors)) {
+    const rgb = parseColor(value2);
+    variables2.push(`--v-theme-${key}: ${rgb.r},${rgb.g},${rgb.b}`);
     if (!key.startsWith("on-")) {
-      variables.push(`--v-theme-${key}-overlay-multiplier: ${getLuma(value) > 0.18 ? lightOverlay : darkOverlay}`);
+      variables2.push(`--v-theme-${key}-overlay-multiplier: ${getLuma(value2) > 0.18 ? lightOverlay : darkOverlay}`);
     }
   }
-  for (const [key, value] of Object.entries(theme.variables)) {
-    const color = typeof value === "string" && value.startsWith("#") ? parseColor(value) : void 0;
+  for (const [key, value2] of Object.entries(theme.variables)) {
+    const color = typeof value2 === "string" && value2.startsWith("#") ? parseColor(value2) : void 0;
     const rgb = color ? `${color.r}, ${color.g}, ${color.b}` : void 0;
-    variables.push(`--v-${key}: ${rgb ?? value}`);
+    variables2.push(`--v-${key}: ${rgb ?? value2}`);
   }
-  return variables;
+  return variables2;
 }
 function useResizeObserver(callback) {
   const resizeRef = ref();
   const contentRect = ref();
   if (IN_BROWSER) {
-    const observer = new ResizeObserver((entries) => {
-      callback == null ? void 0 : callback(entries, observer);
-      if (!entries.length)
+    const observer = new ResizeObserver((entries2) => {
+      callback == null ? void 0 : callback(entries2, observer);
+      if (!entries2.length)
         return;
-      contentRect.value = entries[0].contentRect;
+      contentRect.value = entries2[0].contentRect;
     });
     onBeforeUnmount(() => {
       observer.disconnect();
@@ -2561,8 +3068,8 @@ function useBorder(props) {
     if (border === true || border === "") {
       classes.push(`${name2}--border`);
     } else if (typeof border === "string" || border === 0) {
-      for (const value of String(border).split(" ")) {
-        classes.push(`border-${value}`);
+      for (const value2 of String(border).split(" ")) {
+        classes.push(`border-${value2}`);
       }
     }
     return classes;
@@ -2592,10 +3099,10 @@ const makeElevationProps = propsFactory({
   elevation: {
     type: [Number, String],
     validator(v2) {
-      const value = parseInt(v2);
-      return !isNaN(value) && value >= 0 && // Material Design has a maximum elevation of 24
+      const value2 = parseInt(v2);
+      return !isNaN(value2) && value2 >= 0 && // Material Design has a maximum elevation of 24
       // https://material.io/design/environment/elevation.html#default-elevations
-      value <= 24;
+      value2 <= 24;
     }
   }
 }, "elevation");
@@ -2626,8 +3133,8 @@ function useRounded(props) {
     if (rounded === true || rounded === "") {
       classes.push(`${name2}--rounded`);
     } else if (typeof rounded === "string" || rounded === 0) {
-      for (const value of String(rounded).split(" ")) {
-        classes.push(`rounded-${value}`);
+      for (const value2 of String(rounded).split(" ")) {
+        classes.push(`rounded-${value2}`);
       }
     }
     return classes;
@@ -2819,11 +3326,11 @@ function useGroupItem(props, injectKey) {
       return group;
     throw new Error(`[Vuetify] Could not find useGroup injection with symbol ${injectKey.description}`);
   }
-  const value = toRef(props, "value");
+  const value2 = toRef(props, "value");
   const disabled = computed(() => group.disabled.value || props.disabled);
   group.register({
     id,
-    value,
+    value: value2,
     disabled
   }, vm);
   onBeforeUnmount(() => {
@@ -2833,18 +3340,18 @@ function useGroupItem(props, injectKey) {
     return group.isSelected(id);
   });
   const selectedClass = computed(() => isSelected.value && [group.selectedClass.value, props.selectedClass]);
-  watch(isSelected, (value2) => {
+  watch(isSelected, (value3) => {
     vm.emit("group:selected", {
-      value: value2
+      value: value3
     });
   });
   return {
     id,
     isSelected,
     toggle: () => group.select(id, !isSelected.value),
-    select: (value2) => group.select(id, value2),
+    select: (value3) => group.select(id, value3),
     selectedClass,
-    value,
+    value: value2,
     disabled,
     group
   };
@@ -2891,29 +3398,29 @@ function useGroup(props, injectKey) {
   onBeforeUnmount(() => {
     isUnmounted = true;
   });
-  function select(id, value) {
+  function select(id, value2) {
     const item = items.find((item2) => item2.id === id);
-    if (value && (item == null ? void 0 : item.disabled))
+    if (value2 && (item == null ? void 0 : item.disabled))
       return;
     if (props.multiple) {
       const internalValue = selected.value.slice();
       const index = internalValue.findIndex((v2) => v2 === id);
       const isSelected = ~index;
-      value = value ?? !isSelected;
+      value2 = value2 ?? !isSelected;
       if (isSelected && props.mandatory && internalValue.length <= 1)
         return;
       if (!isSelected && props.max != null && internalValue.length + 1 > props.max)
         return;
-      if (index < 0 && value)
+      if (index < 0 && value2)
         internalValue.push(id);
-      else if (index >= 0 && !value)
+      else if (index >= 0 && !value2)
         internalValue.splice(index, 1);
       selected.value = internalValue;
     } else {
       const isSelected = selected.value.includes(id);
       if (props.mandatory && isSelected)
         return;
-      selected.value = value ?? !isSelected ? [id] : [];
+      selected.value = value2 ?? !isSelected ? [id] : [];
     }
   }
   function step(offset) {
@@ -2947,22 +3454,22 @@ function useGroup(props, injectKey) {
     isSelected: (id) => selected.value.includes(id),
     selectedClass: computed(() => props.selectedClass),
     items: computed(() => items),
-    getItemIndex: (value) => getItemIndex(items, value)
+    getItemIndex: (value2) => getItemIndex(items, value2)
   };
   provide(injectKey, state);
   return state;
 }
-function getItemIndex(items, value) {
-  const ids = getIds(items, [value]);
+function getItemIndex(items, value2) {
+  const ids = getIds(items, [value2]);
   if (!ids.length)
     return -1;
   return items.findIndex((item) => item.id === ids[0]);
 }
 function getIds(items, modelValue) {
   const ids = [];
-  modelValue.forEach((value) => {
-    const item = items.find((item2) => deepEqual(value, item2.value));
-    const itemByIndex = items[value];
+  modelValue.forEach((value2) => {
+    const item = items.find((item2) => deepEqual(value2, item2.value));
+    const itemByIndex = items[value2];
     if ((item == null ? void 0 : item.value) != null) {
       ids.push(item.id);
     } else if (itemByIndex != null) {
@@ -2991,7 +3498,7 @@ const VBtnToggle = genericComponent()({
   name: "VBtnToggle",
   props: makeVBtnToggleProps(),
   emits: {
-    "update:modelValue": (value) => true
+    "update:modelValue": (value2) => true
   },
   setup(props, _ref) {
     let {
@@ -3157,9 +3664,9 @@ function useIntersectionObserver(callback, options) {
   const intersectionRef = ref();
   const isIntersecting = shallowRef(false);
   if (SUPPORTS_INTERSECTION) {
-    const observer = new IntersectionObserver((entries) => {
-      callback == null ? void 0 : callback(entries, observer);
-      isIntersecting.value = !!entries.find((entry) => entry.isIntersecting);
+    const observer = new IntersectionObserver((entries2) => {
+      callback == null ? void 0 : callback(entries2, observer);
+      isIntersecting.value = !!entries2.find((entry) => entry.isIntersecting);
     }, options);
     onBeforeUnmount(() => {
       observer.disconnect();
@@ -3298,9 +3805,9 @@ const VProgressCircular = genericComponent()({
 const VRipple = "";
 const stopSymbol = Symbol("rippleStop");
 const DELAY_RIPPLE = 80;
-function transform(el, value) {
-  el.style.transform = value;
-  el.style.webkitTransform = value;
+function transform(el, value2) {
+  el.style.transform = value2;
+  el.style.webkitTransform = value2;
 }
 function isTouchEvent(e2) {
   return e2.constructor.name === "TouchEvent";
@@ -3310,7 +3817,7 @@ function isKeyboardEvent(e2) {
 }
 const calculate = function(e2, el) {
   var _a;
-  let value = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
+  let value2 = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
   let localX = 0;
   let localY = 0;
   if (!isKeyboardEvent(e2)) {
@@ -3324,14 +3831,14 @@ const calculate = function(e2, el) {
   if ((_a = el._ripple) == null ? void 0 : _a.circle) {
     scale = 0.15;
     radius = el.clientWidth / 2;
-    radius = value.center ? radius : radius + Math.sqrt((localX - radius) ** 2 + (localY - radius) ** 2) / 4;
+    radius = value2.center ? radius : radius + Math.sqrt((localX - radius) ** 2 + (localY - radius) ** 2) / 4;
   } else {
     radius = Math.sqrt(el.clientWidth ** 2 + el.clientHeight ** 2) / 2;
   }
   const centerX = `${(el.clientWidth - radius * 2) / 2}px`;
   const centerY = `${(el.clientHeight - radius * 2) / 2}px`;
-  const x2 = value.center ? centerX : `${localX - radius}px`;
-  const y2 = value.center ? centerY : `${localY - radius}px`;
+  const x2 = value2.center ? centerX : `${localX - radius}px`;
+  const y2 = value2.center ? centerY : `${localY - radius}px`;
   return {
     radius,
     scale,
@@ -3345,7 +3852,7 @@ const ripples = {
   /* eslint-disable max-statements */
   show(e2, el) {
     var _a;
-    let value = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
+    let value2 = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
     if (!((_a = el == null ? void 0 : el._ripple) == null ? void 0 : _a.enabled)) {
       return;
     }
@@ -3353,8 +3860,8 @@ const ripples = {
     const animation = document.createElement("span");
     container.appendChild(animation);
     container.className = "v-ripple__container";
-    if (value.class) {
-      container.className += ` ${value.class}`;
+    if (value2.class) {
+      container.className += ` ${value2.class}`;
     }
     const {
       radius,
@@ -3363,7 +3870,7 @@ const ripples = {
       y: y2,
       centerX,
       centerY
-    } = calculate(e2, el, value);
+    } = calculate(e2, el, value2);
     const size = `${radius * 2}px`;
     animation.className = "v-ripple__animation";
     animation.style.width = size;
@@ -3397,7 +3904,7 @@ const ripples = {
     else
       animation.dataset.isHiding = "true";
     const diff = performance.now() - Number(animation.dataset.activated);
-    const delay = Math.max(250 - diff, 0);
+    const delay2 = Math.max(250 - diff, 0);
     setTimeout(() => {
       animation.classList.remove("v-ripple__animation--in");
       animation.classList.add("v-ripple__animation--out");
@@ -3411,14 +3918,14 @@ const ripples = {
         if (((_a2 = animation.parentNode) == null ? void 0 : _a2.parentNode) === el)
           el.removeChild(animation.parentNode);
       }, 300);
-    }, delay);
+    }, delay2);
   }
 };
-function isRippleEnabled(value) {
-  return typeof value === "undefined" || !!value;
+function isRippleEnabled(value2) {
+  return typeof value2 === "undefined" || !!value2;
 }
 function rippleShow(e2) {
-  const value = {};
+  const value2 = {};
   const element = e2.currentTarget;
   if (!(element == null ? void 0 : element._ripple) || element._ripple.touched || e2[stopSymbol])
     return;
@@ -3430,15 +3937,15 @@ function rippleShow(e2) {
     if (element._ripple.isTouch)
       return;
   }
-  value.center = element._ripple.centered || isKeyboardEvent(e2);
+  value2.center = element._ripple.centered || isKeyboardEvent(e2);
   if (element._ripple.class) {
-    value.class = element._ripple.class;
+    value2.class = element._ripple.class;
   }
   if (isTouchEvent(e2)) {
     if (element._ripple.showTimerCommit)
       return;
     element._ripple.showTimerCommit = () => {
-      ripples.show(e2, element, value);
+      ripples.show(e2, element, value2);
     };
     element._ripple.showTimer = window.setTimeout(() => {
       var _a;
@@ -3448,7 +3955,7 @@ function rippleShow(e2) {
       }
     }, DELAY_RIPPLE);
   } else {
-    ripples.show(e2, element, value);
+    ripples.show(e2, element, value2);
   }
 }
 function rippleStop(e2) {
@@ -3502,10 +4009,10 @@ function focusRippleHide(e2) {
 }
 function updateRipple(el, binding, wasEnabled) {
   const {
-    value,
+    value: value2,
     modifiers
   } = binding;
-  const enabled = isRippleEnabled(value);
+  const enabled = isRippleEnabled(value2);
   if (!enabled) {
     ripples.hide(el);
   }
@@ -3513,8 +4020,8 @@ function updateRipple(el, binding, wasEnabled) {
   el._ripple.enabled = enabled;
   el._ripple.centered = modifiers.center;
   el._ripple.circle = modifiers.circle;
-  if (isObject(value) && value.class) {
-    el._ripple.class = value.class;
+  if (isObject(value2) && value2.class) {
+    el._ripple.class = value2.class;
   }
   if (enabled && !wasEnabled) {
     if (modifiers.stop) {
@@ -3707,7 +4214,7 @@ const VProgressLinear = genericComponent()({
   name: "VProgressLinear",
   props: makeVProgressLinearProps(),
   emits: {
-    "update:modelValue": (value) => true
+    "update:modelValue": (value2) => true
   },
   setup(props, _ref) {
     let {
@@ -3760,8 +4267,8 @@ const VProgressLinear = genericComponent()({
         right,
         width
       } = intersectionRef.value.getBoundingClientRect();
-      const value = isReversed.value ? width - e2.clientX + (right - width) : e2.clientX - left;
-      progress.value = Math.round(value / width * max.value);
+      const value2 = isReversed.value ? width - e2.clientX + (right - width) : e2.clientX - left;
+      progress.value = Math.round(value2 / width * max.value);
     }
     useRender(() => createVNode(props.tag, {
       "ref": intersectionRef,
@@ -5099,10 +5606,10 @@ function useValidation(props) {
     return props.errorMessages.length ? wrapInArray(props.errorMessages).slice(0, Math.max(0, +props.maxErrors)) : internalErrorMessages.value;
   });
   const validateOn = computed(() => {
-    let value = (props.validateOn ?? (form == null ? void 0 : form.validateOn.value)) || "input";
-    if (value === "lazy")
-      value = "input lazy";
-    const set = new Set((value == null ? void 0 : value.split(" ")) ?? []);
+    let value2 = (props.validateOn ?? (form == null ? void 0 : form.validateOn.value)) || "input";
+    if (value2 === "lazy")
+      value2 = "input lazy";
+    const set = new Set((value2 == null ? void 0 : value2.split(" ")) ?? []);
     return {
       blur: set.has("blur") || set.has("input"),
       input: set.has("input"),
@@ -5390,24 +5897,24 @@ function mounted(el, binding) {
   if (!SUPPORTS_INTERSECTION)
     return;
   const modifiers = binding.modifiers || {};
-  const value = binding.value;
+  const value2 = binding.value;
   const {
     handler,
     options
-  } = typeof value === "object" ? value : {
-    handler: value,
+  } = typeof value2 === "object" ? value2 : {
+    handler: value2,
     options: {}
   };
   const observer = new IntersectionObserver(function() {
     var _a;
-    let entries = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : [];
+    let entries2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : [];
     let observer2 = arguments.length > 1 ? arguments[1] : void 0;
     const _observe = (_a = el._observe) == null ? void 0 : _a[binding.instance.$.uid];
     if (!_observe)
       return;
-    const isIntersecting = entries.some((entry) => entry.isIntersecting);
+    const isIntersecting = entries2.some((entry) => entry.isIntersecting);
     if (handler && (!modifiers.quiet || _observe.init) && (!modifiers.once || isIntersecting || _observe.init)) {
-      handler(isIntersecting, entries, observer2);
+      handler(isIntersecting, entries2, observer2);
     }
     if (isIntersecting && modifiers.once)
       unmounted(el, binding);
@@ -5564,11 +6071,11 @@ const VTextField = genericComponent()({
       return props.counter;
     });
     const isPlainOrUnderlined = computed(() => ["plain", "underlined"].includes(props.variant));
-    function onIntersect(isIntersecting, entries) {
+    function onIntersect(isIntersecting, entries2) {
       var _a, _b;
       if (!props.autofocus || !isIntersecting)
         return;
-      (_b = (_a = entries[0].target) == null ? void 0 : _a.focus) == null ? void 0 : _b.call(_a);
+      (_b = (_a = entries2[0].target) == null ? void 0 : _a.focus) == null ? void 0 : _b.call(_a);
     }
     const vInputRef = ref();
     const vFieldRef = ref();
@@ -5991,7 +6498,7 @@ const VCheckboxBtn = genericComponent()({
   name: "VCheckboxBtn",
   props: makeVCheckboxBtnProps(),
   emits: {
-    "update:modelValue": (value) => true,
+    "update:modelValue": (value2) => true,
     "update:indeterminate": (val) => true
   },
   setup(props, _ref) {
@@ -6108,9 +6615,9 @@ const VImg = genericComponent()({
   },
   props: makeVImgProps(),
   emits: {
-    loadstart: (value) => true,
-    load: (value) => true,
-    error: (value) => true
+    loadstart: (value2) => true,
+    load: (value2) => true,
+    error: (value2) => true
   },
   setup(props, _ref) {
     let {
@@ -6416,7 +6923,7 @@ genericComponent()({
   name: "VChipGroup",
   props: makeVChipGroupProps(),
   emits: {
-    "update:modelValue": (value) => true
+    "update:modelValue": (value2) => true
   },
   setup(props, _ref) {
     let {
@@ -6522,7 +7029,7 @@ const VChip = genericComponent()({
   props: makeVChipProps(),
   emits: {
     "click:close": (e2) => true,
-    "update:modelValue": (value) => true,
+    "update:modelValue": (value2) => true,
     "group:selected": (val) => true,
     click: (e2) => true
   },
@@ -6762,9 +7269,9 @@ function createList() {
   });
   const data = {
     hasPrepend: shallowRef(false),
-    updateHasPrepend: (value) => {
-      if (value)
-        data.hasPrepend.value = value;
+    updateHasPrepend: (value2) => {
+      if (value2)
+        data.hasPrepend.value = value2;
     }
   };
   provide(ListKey, data);
@@ -6777,11 +7284,11 @@ const singleOpenStrategy = {
   open: (_ref) => {
     let {
       id,
-      value,
+      value: value2,
       opened,
       parents
     } = _ref;
-    if (value) {
+    if (value2) {
       const newOpened = /* @__PURE__ */ new Set();
       newOpened.add(id);
       let parent = parents.get(id);
@@ -6801,11 +7308,11 @@ const multipleOpenStrategy = {
   open: (_ref2) => {
     let {
       id,
-      value,
+      value: value2,
       opened,
       parents
     } = _ref2;
-    if (value) {
+    if (value2) {
       let parent = parents.get(id);
       opened.add(id);
       while (parent != null && parent !== id) {
@@ -6825,11 +7332,11 @@ const listOpenStrategy = {
   select: (_ref3) => {
     let {
       id,
-      value,
+      value: value2,
       opened,
       parents
     } = _ref3;
-    if (!value)
+    if (!value2)
       return opened;
     const path = [];
     let parent = parents.get(id);
@@ -6845,19 +7352,19 @@ const independentSelectStrategy = (mandatory) => {
     select: (_ref) => {
       let {
         id,
-        value,
+        value: value2,
         selected
       } = _ref;
       id = toRaw(id);
-      if (mandatory && !value) {
+      if (mandatory && !value2) {
         const on = Array.from(selected.entries()).reduce((arr, _ref2) => {
-          let [key, value2] = _ref2;
-          return value2 === "on" ? [...arr, key] : arr;
+          let [key, value3] = _ref2;
+          return value3 === "on" ? [...arr, key] : arr;
         }, []);
         if (on.length === 1 && on[0] === id)
           return selected;
       }
-      selected.set(id, value ? "on" : "off");
+      selected.set(id, value2 ? "on" : "off");
       return selected;
     },
     in: (v2, children, parents) => {
@@ -6875,8 +7382,8 @@ const independentSelectStrategy = (mandatory) => {
     },
     out: (v2) => {
       const arr = [];
-      for (const [key, value] of v2.entries()) {
-        if (value === "on")
+      for (const [key, value2] of v2.entries()) {
+        if (value2 === "on")
           arr.push(key);
       }
       return arr;
@@ -6969,7 +7476,7 @@ const classicSelectStrategy = (mandatory) => {
     select: (_ref6) => {
       let {
         id,
-        value,
+        value: value2,
         selected,
         children,
         parents
@@ -6979,7 +7486,7 @@ const classicSelectStrategy = (mandatory) => {
       const items = [id];
       while (items.length) {
         const item = items.shift();
-        selected.set(item, value ? "on" : "off");
+        selected.set(item, value2 ? "on" : "off");
         if (children.has(item)) {
           items.push(...children.get(item));
         }
@@ -6992,10 +7499,10 @@ const classicSelectStrategy = (mandatory) => {
         selected.set(parent, everySelected ? "on" : noneSelected ? "off" : "indeterminate");
         parent = parents.get(parent);
       }
-      if (mandatory && !value) {
+      if (mandatory && !value2) {
         const on = Array.from(selected.entries()).reduce((arr, _ref7) => {
-          let [key, value2] = _ref7;
-          return value2 === "on" ? [...arr, key] : arr;
+          let [key, value3] = _ref7;
+          return value3 === "on" ? [...arr, key] : arr;
         }, []);
         if (on.length === 0)
           return original;
@@ -7017,8 +7524,8 @@ const classicSelectStrategy = (mandatory) => {
     },
     out: (v2, children) => {
       const arr = [];
-      for (const [key, value] of v2.entries()) {
-        if (value === "on" && !children.has(key))
+      for (const [key, value2] of v2.entries()) {
+        if (value2 === "on" && !children.has(key))
           arr.push(key);
       }
       return arr;
@@ -7105,8 +7612,8 @@ const useNested = (props) => {
       selected,
       selectedValues: computed(() => {
         const arr = [];
-        for (const [key, value] of selected.value.entries()) {
-          if (value === "on")
+        for (const [key, value2] of selected.value.entries()) {
+          if (value2 === "on")
             arr.push(key);
         }
         return arr;
@@ -7130,16 +7637,16 @@ const useNested = (props) => {
         parents.value.delete(id);
         opened.value.delete(id);
       },
-      open: (id, value, event) => {
+      open: (id, value2, event) => {
         vm.emit("click:open", {
           id,
-          value,
+          value: value2,
           path: getPath(id),
           event
         });
         const newOpened = openStrategy.value.open({
           id,
-          value,
+          value: value2,
           opened: new Set(opened.value),
           children: children.value,
           parents: parents.value,
@@ -7147,10 +7654,10 @@ const useNested = (props) => {
         });
         newOpened && (opened.value = newOpened);
       },
-      openOnSelect: (id, value, event) => {
+      openOnSelect: (id, value2, event) => {
         const newOpened = openStrategy.value.select({
           id,
-          value,
+          value: value2,
           selected: new Map(selected.value),
           opened: new Set(opened.value),
           children: children.value,
@@ -7159,23 +7666,23 @@ const useNested = (props) => {
         });
         newOpened && (opened.value = newOpened);
       },
-      select: (id, value, event) => {
+      select: (id, value2, event) => {
         vm.emit("click:select", {
           id,
-          value,
+          value: value2,
           path: getPath(id),
           event
         });
         const newSelected = selectStrategy.value.select({
           id,
-          value,
+          value: value2,
           selected: new Map(selected.value),
           children: children.value,
           parents: parents.value,
           event
         });
         newSelected && (selected.value = newSelected);
-        nested.root.openOnSelect(id, value, event);
+        nested.root.openOnSelect(id, value2, event);
       },
       children,
       parents
@@ -7661,15 +8168,15 @@ const VListChildren = genericComponent()({
         let {
           children,
           props: itemProps,
-          type,
+          type: type2,
           raw: item
         } = _ref2;
-        if (type === "divider") {
+        if (type2 === "divider") {
           return ((_a2 = slots.divider) == null ? void 0 : _a2.call(slots, {
             props: itemProps
           })) ?? createVNode(VDivider, itemProps, null);
         }
-        if (type === "subheader") {
+        if (type2 === "subheader") {
           return ((_b2 = slots.subheader) == null ? void 0 : _b2.call(slots, {
             props: itemProps
           })) ?? createVNode(VListSubheader, itemProps, null);
@@ -7753,13 +8260,13 @@ const makeItemsProps = propsFactory({
   returnObject: Boolean
 }, "list-items");
 function transformItem$2(props, item) {
-  const title = getPropertyFromItem(item, props.itemTitle, item);
-  const value = props.returnObject ? item : getPropertyFromItem(item, props.itemValue, title);
+  const title2 = getPropertyFromItem(item, props.itemTitle, item);
+  const value2 = props.returnObject ? item : getPropertyFromItem(item, props.itemValue, title2);
   const children = getPropertyFromItem(item, props.itemChildren);
   const itemProps = props.itemProps === true ? typeof item === "object" && item != null && !Array.isArray(item) ? "children" in item ? pick(item, ["children"])[1] : item : void 0 : getPropertyFromItem(item, props.itemProps);
   const _props = {
-    title,
-    value,
+    title: title2,
+    value: value2,
     ...itemProps
   };
   return {
@@ -7779,21 +8286,21 @@ function transformItems$2(props, items) {
 }
 function useItems(props) {
   const items = computed(() => transformItems$2(props, props.items));
-  return useTransformItems(items, (value) => transformItem$2(props, value));
+  return useTransformItems(items, (value2) => transformItem$2(props, value2));
 }
 function useTransformItems(items, transform2) {
-  function transformIn(value) {
-    return value.map((v2) => {
+  function transformIn(value2) {
+    return value2.map((v2) => {
       const existingItem = items.value.find((item) => deepEqual(v2, item.value));
       return existingItem ?? transform2(v2);
     });
   }
-  function transformOut(value) {
-    return value.map((_ref) => {
+  function transformOut(value2) {
+    return value2.map((_ref) => {
       let {
-        value: value2
+        value: value3
       } = _ref;
-      return value2;
+      return value3;
     });
   }
   return {
@@ -7802,26 +8309,26 @@ function useTransformItems(items, transform2) {
     transformOut
   };
 }
-function isPrimitive(value) {
-  return typeof value === "string" || typeof value === "number" || typeof value === "boolean";
+function isPrimitive(value2) {
+  return typeof value2 === "string" || typeof value2 === "number" || typeof value2 === "boolean";
 }
 function transformItem$1(props, item) {
-  const type = getPropertyFromItem(item, props.itemType, "item");
-  const title = isPrimitive(item) ? item : getPropertyFromItem(item, props.itemTitle);
-  const value = getPropertyFromItem(item, props.itemValue, void 0);
+  const type2 = getPropertyFromItem(item, props.itemType, "item");
+  const title2 = isPrimitive(item) ? item : getPropertyFromItem(item, props.itemTitle);
+  const value2 = getPropertyFromItem(item, props.itemValue, void 0);
   const children = getPropertyFromItem(item, props.itemChildren);
   const itemProps = props.itemProps === true ? pick(item, ["children"])[1] : getPropertyFromItem(item, props.itemProps);
   const _props = {
-    title,
-    value,
+    title: title2,
+    value: value2,
     ...itemProps
   };
   return {
-    type,
+    type: type2,
     title: _props.title,
     value: _props.value,
     props: _props,
-    children: type === "item" && children ? transformItems$1(props, children) : void 0,
+    children: type2 === "item" && children ? transformItems$1(props, children) : void 0,
     raw: item
   };
 }
@@ -7877,8 +8384,8 @@ const VList = genericComponent()({
   emits: {
     "update:selected": (val) => true,
     "update:opened": (val) => true,
-    "click:open": (value) => true,
-    "click:select": (value) => true
+    "click:open": (value2) => true,
+    "click:select": (value2) => true
   },
   setup(props, _ref) {
     let {
@@ -8008,17 +8515,17 @@ function useDelay(props, cb) {
   const runDelayFactory = (prop) => () => {
     if (!IN_BROWSER)
       return Promise.resolve(true);
-    const active = prop === "openDelay";
+    const active2 = prop === "openDelay";
     delays.closeDelay && window.clearTimeout(delays.closeDelay);
     delete delays.closeDelay;
     delays.openDelay && window.clearTimeout(delays.openDelay);
     delete delays.openDelay;
     return new Promise((resolve) => {
-      const delay = parseInt(props[prop] ?? 0, 10);
+      const delay2 = parseInt(props[prop] ?? 0, 10);
       delays[prop] = window.setTimeout(() => {
-        cb == null ? void 0 : cb(active);
-        resolve(active);
-      }, delay);
+        cb == null ? void 0 : cb(active2);
+        resolve(active2);
+      }, delay2);
     });
   };
   return {
@@ -8059,12 +8566,12 @@ function useActivator(props, _ref) {
   const {
     runOpenDelay,
     runCloseDelay
-  } = useDelay(props, (value) => {
-    if (value === (props.openOnHover && isHovered || openOnFocus.value && isFocused) && !(props.openOnHover && isActive.value && !isTop.value)) {
-      if (isActive.value !== value) {
+  } = useDelay(props, (value2) => {
+    if (value2 === (props.openOnHover && isHovered || openOnFocus.value && isFocused) && !(props.openOnHover && isActive.value && !isTop.value)) {
+      if (isActive.value !== value2) {
         firstEnter = true;
       }
-      isActive.value = value;
+      isActive.value = value2;
     }
   });
   const availableEvents = {
@@ -8273,10 +8780,10 @@ function _useActivator(props, vm, _ref2) {
 const makeLazyProps = propsFactory({
   eager: Boolean
 }, "lazy");
-function useLazy(props, active) {
+function useLazy(props, active2) {
   const isBooted = shallowRef(false);
-  const hasContent = computed(() => isBooted.value || props.eager || active.value);
-  watch(active, () => isBooted.value = true);
+  const hasContent = computed(() => isBooted.value || props.eager || active2.value);
+  watch(active2, () => isBooted.value = true);
   function onAfterLeave() {
     if (!props.eager)
       isBooted.value = false;
@@ -9047,7 +9554,7 @@ const VOverlay = genericComponent()({
   },
   emits: {
     "click:outside": (e2) => true,
-    "update:modelValue": (value) => true,
+    "update:modelValue": (value2) => true,
     afterLeave: () => true
   },
   setup(props, _ref) {
@@ -9270,7 +9777,7 @@ const VMenu = genericComponent()({
   name: "VMenu",
   props: makeVMenuProps(),
   emits: {
-    "update:modelValue": (value) => true
+    "update:modelValue": (value2) => true
   },
   setup(props, _ref) {
     let {
@@ -9496,9 +10003,9 @@ const VSelect = genericComponent()({
         if (index === -1) {
           model.value = [...model.value, item];
         } else {
-          const value = [...model.value];
-          value.splice(index, 1);
-          model.value = value;
+          const value2 = [...model.value];
+          value2.splice(index, 1);
+          model.value = value2;
         }
       } else {
         model.value = [item];
@@ -9688,8 +10195,8 @@ const makeDataTablePaginateProps = propsFactory({
 }, "v-data-table-paginate");
 const VDataTablePaginationSymbol = Symbol.for("vuetify:data-table-pagination");
 function createPagination(props) {
-  const page = useProxiedModel(props, "page", void 0, (value) => +(value ?? 1));
-  const itemsPerPage = useProxiedModel(props, "itemsPerPage", void 0, (value) => +(value ?? 10));
+  const page = useProxiedModel(props, "page", void 0, (value2) => +(value2 ?? 1));
+  const itemsPerPage = useProxiedModel(props, "itemsPerPage", void 0, (value2) => +(value2 ?? 10));
   return {
     page,
     itemsPerPage
@@ -9721,8 +10228,8 @@ function providePagination(options) {
       page.value = pageCount.value;
     }
   });
-  function setItemsPerPage(value) {
-    itemsPerPage.value = value;
+  function setItemsPerPage(value2) {
+    itemsPerPage.value = value2;
     page.value = 1;
   }
   function nextPage() {
@@ -9731,8 +10238,8 @@ function providePagination(options) {
   function prevPage() {
     page.value = clamp(page.value - 1, 1, pageCount.value);
   }
-  function setPage(value) {
-    page.value = clamp(value, 1, pageCount.value);
+  function setPage(value2) {
+    page.value = clamp(value2, 1, pageCount.value);
   }
   const data = {
     page,
@@ -10117,10 +10624,10 @@ function provideSelection(props, allItems) {
   function isSomeSelected(items) {
     return wrapInArray(items).some((item) => selected.value.has(item.value));
   }
-  function select(items, value) {
+  function select(items, value2) {
     const newSelected = new Set(selected.value);
     for (const item of items) {
-      if (value)
+      if (value2)
         newSelected.add(item.value);
       else
         newSelected.delete(item.value);
@@ -10130,8 +10637,8 @@ function provideSelection(props, allItems) {
   function toggleSelect(item) {
     select([item], !isSelected([item]));
   }
-  function selectAll(value) {
-    select(allItems.value, value);
+  function selectAll(value2) {
+    select(allItems.value, value2);
   }
   const someSelected = computed(() => selected.value.size > 0);
   const allSelected = computed(() => isSelected(allItems.value));
@@ -10508,11 +11015,11 @@ function groupItemsByProperty(items, groupBy) {
     return [];
   const groups = /* @__PURE__ */ new Map();
   for (const item of items) {
-    const value = getObjectValueByPath(item.raw, groupBy);
-    if (!groups.has(value)) {
-      groups.set(value, []);
+    const value2 = getObjectValueByPath(item.raw, groupBy);
+    if (!groups.has(value2)) {
+      groups.set(value2, []);
     }
-    groups.get(value).push(item);
+    groups.get(value2).push(item);
   }
   return groups;
 }
@@ -10524,14 +11031,14 @@ function groupItems(items, groupBy) {
   const groupedItems = groupItemsByProperty(items, groupBy[0]);
   const groups = [];
   const rest = groupBy.slice(1);
-  groupedItems.forEach((items2, value) => {
+  groupedItems.forEach((items2, value2) => {
     const key = groupBy[0];
-    const id = `${prefix}_${key}_${value}`;
+    const id = `${prefix}_${key}_${value2}`;
     groups.push({
       depth,
       id,
       key,
-      value,
+      value: value2,
       items: rest.length ? groupItems(items2, rest, depth + 1, id) : items2,
       type: "group"
     });
@@ -10658,9 +11165,9 @@ function provideExpanded(props) {
   }, (v2) => {
     return [...v2.values()];
   });
-  function expand(item, value) {
+  function expand(item, value2) {
     const newExpanded = new Set(expanded.value);
-    if (!value) {
+    if (!value2) {
       newExpanded.delete(item.value);
     } else {
       newExpanded.add(item.value);
@@ -10928,14 +11435,14 @@ const makeDataTableItemProps = propsFactory({
   returnObject: Boolean
 }, "v-data-table-item");
 function transformItem(props, item, columns) {
-  const value = props.returnObject ? item : getPropertyFromItem(item, props.itemValue);
+  const value2 = props.returnObject ? item : getPropertyFromItem(item, props.itemValue);
   const itemColumns = columns.reduce((obj, column) => {
     obj[column.key] = getPropertyFromItem(item, column.value ?? column.key);
     return obj;
   }, {});
   return {
     type: "item",
-    value,
+    value: value2,
     columns: itemColumns,
     raw: item
   };
@@ -10953,10 +11460,10 @@ function useDataTableItems(props, columns) {
     items
   };
 }
-const defaultFilter = (value, query, item) => {
-  if (value == null || query == null)
+const defaultFilter = (value2, query, item) => {
+  if (value2 == null || query == null)
     return -1;
-  return value.toString().toLocaleLowerCase().indexOf(query.toString().toLocaleLowerCase());
+  return value2.toString().toLocaleLowerCase().indexOf(query.toString().toLocaleLowerCase());
 };
 const makeFilterProps = propsFactory({
   customFilter: Function,
@@ -10986,9 +11493,9 @@ function filterItems(items, query, options) {
         if (typeof item === "object") {
           const filterKeys = keys2 || Object.keys(item);
           for (const key of filterKeys) {
-            const value = getPropertyFromItem(item, key, item);
+            const value2 = getPropertyFromItem(item, key, item);
             const keyFilter = (_a = options == null ? void 0 : options.customKeyFilter) == null ? void 0 : _a[key];
-            match = keyFilter ? keyFilter(value, query, item) : filter(value, query, item);
+            match = keyFilter ? keyFilter(value2, query, item) : filter(value2, query, item);
             if (match !== -1 && match !== false) {
               if (keyFilter)
                 customMatches[key] = match;
@@ -11111,13 +11618,13 @@ const VDataTable = genericComponent()({
   name: "VDataTable",
   props: makeVDataTableProps(),
   emits: {
-    "update:modelValue": (value) => true,
-    "update:page": (value) => true,
-    "update:itemsPerPage": (value) => true,
-    "update:sortBy": (value) => true,
-    "update:options": (value) => true,
-    "update:groupBy": (value) => true,
-    "update:expanded": (value) => true
+    "update:modelValue": (value2) => true,
+    "update:page": (value2) => true,
+    "update:itemsPerPage": (value2) => true,
+    "update:sortBy": (value2) => true,
+    "update:options": (value2) => true,
+    "update:groupBy": (value2) => true,
+    "update:expanded": (value2) => true
   },
   setup(props, _ref) {
     let {
@@ -11782,11 +12289,14 @@ createServer(
   (page) => createInertiaApp({
     page,
     render: renderToString,
-    title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-bf96e5ba.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-1c707409.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-f8d11ff8.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-c946bf10.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9d9ef5ff.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-6538799e.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-2eaf3200.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-3e9cb90e.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-f6f03ab7.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-f19037b0.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-5211549a.mjs") })),
+    title: (title2) => `${title2} - ${name}`,
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-9091fb00.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-1c707409.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-f8d11ff8.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-c946bf10.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9d9ef5ff.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-6538799e.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-2eaf3200.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-3e9cb90e.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-f6f03ab7.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-f19037b0.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-5211549a.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
-        resolve: (lang) => __variableDynamicImportRuntimeHelper(/* @__PURE__ */ Object.assign({ "../../lang/en.json": () => import("./assets/en-21ab1eec.mjs"), "../../lang/php_en.json": () => import("./assets/php_en-4f333012.mjs"), "../../lang/php_ru.json": () => import("./assets/php_ru-b78a6eb6.mjs"), "../../lang/ru.json": () => import("./assets/ru-422d8d45.mjs") }), `../../lang/${lang}.json`)
+        resolve: (lang) => {
+          const languages = /* @__PURE__ */ Object.assign({ "../../lang/en.json": __vite_glob_1_0, "../../lang/php_en.json": __vite_glob_1_1, "../../lang/php_ru.json": __vite_glob_1_2, "../../lang/ru.json": __vite_glob_1_3 });
+          return languages[`../../lang/${lang}.json`].default;
+        }
       }).use($, {
         // @ts-expect-error
         ...page.props.ziggy,
