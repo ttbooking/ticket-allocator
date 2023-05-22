@@ -31,7 +31,7 @@ class UpdateFactorRequest extends FormRequest
     {
         return [
             'active' => 'sometimes|required|boolean',
-            'type' => 'sometimes|required|string|max:255|'.Rule::in(TicketAllocator::factors()->keys()),
+            'type' => 'sometimes|required|string|max:255|'.Rule::in(TicketAllocator::factors()->visible()->keys()),
             'name' => 'sometimes|nullable|string|max:255|'.Rule::unique(Factor::class)->ignore($this->factor),
             'description' => 'sometimes|nullable|string|max:65535',
             'config' => 'sometimes|array',

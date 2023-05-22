@@ -28,7 +28,7 @@ class StoreFactorRequest extends FormRequest
     {
         return [
             'active' => 'required|boolean',
-            'type' => 'required|string|max:255|'.Rule::in(TicketAllocator::factors()->keys()),
+            'type' => 'required|string|max:255|'.Rule::in(TicketAllocator::factors()->allowed()->keys()),
             'name' => 'nullable|string|max:255|unique:'.Factor::class,
             'description' => 'nullable|string|max:65535',
             'config' => 'array',
