@@ -31,10 +31,6 @@ class TicketCategoryResource extends JsonResource
             'uuid' => $this->uuid,
             'name' => $this->name,
             'short' => $this->short,
-            'initial_weight' => $this->initial_weight,
-            'weight_increment' => $this->weight_increment,
-            'complexity' => $this->complexity,
-            'delay' => $this->delay,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

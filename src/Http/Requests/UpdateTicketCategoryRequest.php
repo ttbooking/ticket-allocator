@@ -26,10 +26,6 @@ class UpdateTicketCategoryRequest extends FormRequest
         return [
             'name' => 'sometimes|required|string|max:255',
             'short' => 'sometimes|required|string|max:32',
-            'initial_weight' => 'sometimes|required|integer|between:0,9999999',
-            'weight_increment' => 'sometimes|required|integer|between:0,99999',
-            'complexity' => 'sometimes|required|integer|between:0,9999',
-            'delay' => 'sometimes|required|integer|between:0,99999',
         ];
     }
 

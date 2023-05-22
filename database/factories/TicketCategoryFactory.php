@@ -31,10 +31,6 @@ class TicketCategoryFactory extends Factory
             'uuid' => fake()->uuid(),
             'name' => Str::ucfirst(implode(' ', $name = fake()->words())),
             'short' => $name[0],
-            'initial_weight' => fake()->numberBetween(0, 100000),
-            'weight_increment' => fake()->numberBetween(0, 1000),
-            'complexity' => fake()->randomElement([10, 25, 50, 75, 100]),
-            'delay' => fake()->optional(.1, 0)->numberBetween(1, 10) * 60,
         ];
     }
 }

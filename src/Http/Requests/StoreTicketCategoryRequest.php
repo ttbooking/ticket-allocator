@@ -26,10 +26,6 @@ class StoreTicketCategoryRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'short' => 'required|string|max:32',
-            'initial_weight' => 'required|integer|between:0,9999999',
-            'weight_increment' => 'required|integer|between:0,99999',
-            'complexity' => 'required|integer|between:0,9999',
-            'delay' => 'required|integer|between:0,99999',
         ];
     }
 

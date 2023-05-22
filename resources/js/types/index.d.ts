@@ -63,10 +63,6 @@ export interface TicketCategory {
     uuid: string;
     name: string;
     short: string;
-    initial_weight: number;
-    weight_increment: number;
-    complexity: number;
-    delay: number;
     created_at: string;
     updated_at: string;
 }

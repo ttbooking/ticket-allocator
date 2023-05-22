@@ -32,52 +32,6 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="3">
-                            <v-text-field
-                                v-model.number="form.initial_weight"
-                                type="number"
-                                required
-                                min="0"
-                                max="9999999"
-                                :label="$t('initial_weight')"
-                                :error-messages="errors.initial_weight"
-                            />
-                        </v-col>
-                        <v-col cols="12" md="3">
-                            <v-text-field
-                                v-model.number="form.weight_increment"
-                                type="number"
-                                required
-                                min="0"
-                                max="99999"
-                                :label="$t('weight_increment')"
-                                :error-messages="errors.weight_increment"
-                            />
-                        </v-col>
-                        <v-col cols="12" md="3">
-                            <v-text-field
-                                v-model.number="form.complexity"
-                                type="number"
-                                required
-                                min="0"
-                                max="9999"
-                                :label="$t('complexity')"
-                                :error-messages="errors.complexity"
-                            />
-                        </v-col>
-                        <v-col cols="12" md="3">
-                            <v-text-field
-                                v-model.number="form.delay"
-                                type="number"
-                                required
-                                min="0"
-                                max="99999"
-                                :label="$t('delay')"
-                                :error-messages="errors.delay"
-                            />
-                        </v-col>
-                    </v-row>
-                    <v-row>
                         <v-col cols="12" md="12">
                             <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">
                                 {{ $t("save") }}
@@ -107,17 +61,9 @@ const props = defineProps<{
 const form = useForm<{
     name: string;
     short: string;
-    initial_weight: number;
-    weight_increment: number;
-    complexity: number;
-    delay: number;
 }>({
     name: props.ticketCategory?.name ?? "",
     short: props.ticketCategory?.short ?? "",
-    initial_weight: props.ticketCategory?.initial_weight ?? 0,
-    weight_increment: props.ticketCategory?.weight_increment ?? 0,
-    complexity: props.ticketCategory?.complexity ?? 0,
-    delay: props.ticketCategory?.delay ?? 0,
 });
 
 function submit() {
