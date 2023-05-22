@@ -9,7 +9,10 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use TTBooking\TicketAllocator\Domain\Operator\OperatorAggregateRoot;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 
-#[AsCommand(name: 'ticket-allocator:snapshot-operator')]
+#[AsCommand(
+    name: 'ticket-allocator:snapshot-operator',
+    description: 'Make snapshot(s) of operator aggregate root(s)',
+)]
 class SnapshotOperatorCommand extends Command
 {
     /**
@@ -18,17 +21,6 @@ class SnapshotOperatorCommand extends Command
      * @var string
      */
     protected $signature = 'ticket-allocator:snapshot-operator {uuid?* : Operator UUID(s)}';
-
-    /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'ticket-allocator:snapshot-operator';
 
     /**
      * The console command description.

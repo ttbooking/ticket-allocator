@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'ticket-allocator:clean')]
+#[AsCommand(
+    name: 'ticket-allocator:clean',
+    description: 'Clean up ticket allocator tables',
+)]
 class CleanCommand extends Command
 {
     /**
@@ -18,17 +21,6 @@ class CleanCommand extends Command
      * @var string
      */
     protected $name = 'ticket-allocator:clean';
-
-    /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'ticket-allocator:clean';
 
     /**
      * The console command description.

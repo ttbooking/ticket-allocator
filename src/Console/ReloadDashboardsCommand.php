@@ -8,7 +8,10 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
 use TTBooking\TicketAllocator\Events\PropsInvalidated;
 
-#[AsCommand(name: 'ticket-allocator:reload-dashboards')]
+#[AsCommand(
+    name: 'ticket-allocator:reload-dashboards',
+    description: 'Reload all monitoring dashboards',
+)]
 class ReloadDashboardsCommand extends Command
 {
     /**
@@ -17,17 +20,6 @@ class ReloadDashboardsCommand extends Command
      * @var string
      */
     protected $name = 'ticket-allocator:reload-dashboards';
-
-    /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'ticket-allocator:reload-dashboards';
 
     /**
      * The console command description.

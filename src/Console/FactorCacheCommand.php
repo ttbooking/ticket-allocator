@@ -8,7 +8,10 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
 use TTBooking\TicketAllocator\TicketAllocatorServiceProvider;
 
-#[AsCommand(name: 'factor:cache')]
+#[AsCommand(
+    name: 'factor:cache',
+    description: 'Discover and cache ticket metric factors',
+)]
 class FactorCacheCommand extends Command
 {
     /**
@@ -17,17 +20,6 @@ class FactorCacheCommand extends Command
      * @var string
      */
     protected $name = 'factor:cache';
-
-    /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'factor:cache';
 
     /**
      * The console command description.

@@ -13,7 +13,10 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Actions\CloseTicketAction;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 
-#[AsCommand(name: 'ticket-allocator:reap')]
+#[AsCommand(
+    name: 'ticket-allocator:reap',
+    description: 'Clean up ticket allocator tables using event sourced approach',
+)]
 class ReapCommand extends Command
 {
     /**
@@ -22,17 +25,6 @@ class ReapCommand extends Command
      * @var string
      */
     protected $name = 'ticket-allocator:reap';
-
-    /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'ticket-allocator:reap';
 
     /**
      * The console command description.

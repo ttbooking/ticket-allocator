@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-#[AsCommand(name: 'make:factor')]
+#[AsCommand(
+    name: 'make:factor',
+    description: 'Create a new ticket metric factor class',
+)]
 class FactorMakeCommand extends GeneratorCommand
 {
     /**
@@ -17,17 +21,6 @@ class FactorMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'make:factor';
-
-    /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'make:factor';
 
     /**
      * The console command description.
@@ -45,6 +38,10 @@ class FactorMakeCommand extends GeneratorCommand
 
     /**
      * Execute the console command.
+     *
+     * @return false|null
+     *
+     * @throws FileNotFoundException
      */
     public function handle(): ?bool
     {

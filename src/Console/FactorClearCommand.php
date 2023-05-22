@@ -8,7 +8,10 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'factor:clear')]
+#[AsCommand(
+    name: 'factor:clear',
+    description: 'Clear all cached ticket metric factors',
+)]
 class FactorClearCommand extends Command
 {
     /**
@@ -17,17 +20,6 @@ class FactorClearCommand extends Command
      * @var string
      */
     protected $name = 'factor:clear';
-
-    /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'factor:clear';
 
     /**
      * The console command description.
