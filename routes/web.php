@@ -6,10 +6,6 @@ use TTBooking\TicketAllocator\Http\Controllers\OperatorController;
 use TTBooking\TicketAllocator\Http\Controllers\TeamController;
 use TTBooking\TicketAllocator\Http\Controllers\TicketCategoryController;
 
-/*Route::prefix('api/v1')->name('api.')->group(function () {
-    Route::apiResource('factors', 'FactorController');
-});*/
-
 Route::get('/', 'DashboardController@index')->name('index');
 
 Route::prefix('dashboard')->name('dashboard.')->group(function () {

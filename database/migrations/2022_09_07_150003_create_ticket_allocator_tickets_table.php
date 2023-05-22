@@ -20,7 +20,6 @@ return new class extends Migration
             $table->foreignUuid('handler_uuid')->nullable()->constrained('ticket_allocator_operators', 'uuid')->nullOnDelete();
 
             // inherited properties
-            //$table->json('tags')->nullable();
             $table->json('meta')->nullable();
             $table->json('metrics')->nullable();
 
@@ -39,7 +38,6 @@ return new class extends Migration
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->softDeletes();
 
-            //$table->rawIndex('(CAST(tags AS CHAR(255) ARRAY))', 'ticket_allocator_tickets_tags_index');
             $table->rawIndex('(CAST(meta->"$.order" AS UNSIGNED))', 'ticket_allocator_tickets_meta_order_index');
         });
     }

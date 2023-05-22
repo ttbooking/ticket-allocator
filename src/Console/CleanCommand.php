@@ -37,7 +37,6 @@ class CleanCommand extends Command
         $tables = [
             'snapshots',
             'stored_events',
-            //'ticket_allocator_events',
             'ticket_allocator_factors',
             'ticket_allocator_operators',
             'ticket_allocator_operator_category',
