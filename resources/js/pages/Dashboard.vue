@@ -75,11 +75,10 @@ import { Head, router } from "@inertiajs/vue3";
 import { computed, ref, onMounted } from "vue";
 import { refThrottled } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
-import { useDropZone } from "@/composables";
+import { useDropZone, usePusherChannel } from "@/composables";
 import type { Operator, Ticket, TicketCategory, Factor } from "@/types";
 import { useSharedOptions, useSharedDisplayMode, useSharedOperatorSorting } from "@/shared";
 import * as Events from "@/types/events.d";
-import { PusherChannel } from "laravel-echo/dist/channel";
 
 import { useRepo } from "pinia-orm";
 import { useCollect } from "pinia-orm/dist/helpers.js";
@@ -101,6 +100,7 @@ const oprSort = useSharedOperatorSorting();
 const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
 const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
+const channel = usePusherChannel(Events.Channel);
 
 const sortedOperators = refThrottled(
     computed(() =>
@@ -144,13 +144,7 @@ onMounted(() => {
     ticketRepo.value.fresh(props.tickets);
     ticketCategoryRepo.value.fresh(props.ticketCategories);
 
-    window.ticketAllocatorChannel = <PusherChannel>window.Echo.channel(Events.Channel);
-
-    window.ticketAllocatorChannel.listenToAll((event: string, data: any) => {
-        console.log(event, data);
-    });
-
-    window.ticketAllocatorChannel
+    channel
         .listen(Events.Common.PropsInvalidated, () => router.reload())
         .listen(Events.Operator.Enrolled, operatorRepo.value.enroll)
         .listen(Events.Operator.Resigned, operatorRepo.value.resign)
