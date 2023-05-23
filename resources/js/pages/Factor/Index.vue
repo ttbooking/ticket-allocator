@@ -98,7 +98,7 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import type { Factor, FactorType } from "@/types";
 import { trans } from "laravel-vue-i18n";
@@ -109,13 +109,13 @@ defineProps<{
     factorDictionary: FactorType[];
 }>();
 
-const headers = [
+const headers = computed(() => [
     { title: trans("active"), key: "active", sortable: false },
     { title: trans("type"), key: "type.name", sortable: false },
     { title: trans("name"), key: "name", sortable: false },
     { title: trans("description"), key: "description", sortable: false },
     { title: trans("actions"), key: "actions", sortable: false },
-];
+]);
 
 const dialog = ref();
 const factorType = ref();

@@ -59,7 +59,7 @@ const value$1 = "Value";
 const variables$1 = "Variables";
 const weight_increment$1 = "Weight increment";
 const weight_increment_expression$1 = "Weight increment expression";
-const en$1 = {
+const __vite_glob_1_0 = {
   actions: actions$1,
   active: active$1,
   cancel: cancel$1,
@@ -115,65 +115,7 @@ const en$1 = {
   weight_increment: weight_increment$1,
   weight_increment_expression: weight_increment_expression$1
 };
-const __vite_glob_1_0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  actions: actions$1,
-  active: active$1,
-  cancel: cancel$1,
-  choose_factor_type: choose_factor_type$1,
-  complexity: complexity$1,
-  complexity_expression: complexity_expression$1,
-  complexity_limit: complexity_limit$1,
-  create: create$1,
-  dashboard: dashboard$1,
-  default: en$1,
-  delay: delay$1,
-  delay_expression: delay_expression$1,
-  description: description$1,
-  discover: discover$1,
-  display_name: display_name$1,
-  edit: edit$1,
-  edit_category: edit_category$1,
-  edit_factor: edit_factor$1,
-  edit_operator: edit_operator$1,
-  edit_team: edit_team$1,
-  entries: entries$1,
-  factor: factor$1,
-  factor_type: factor_type$1,
-  factors: factors$1,
-  initial_weight: initial_weight$1,
-  initial_weight_expression: initial_weight_expression$1,
-  lower_priority: lower_priority$1,
-  metrics: metrics$1,
-  name: name$2,
-  new_category: new_category$1,
-  new_entry: new_entry$1,
-  new_factor: new_factor$1,
-  new_operator: new_operator$1,
-  new_team: new_team$1,
-  operator_teams: operator_teams$1,
-  operators: operators$1,
-  properties: properties$1,
-  raise_priority: raise_priority$1,
-  remove: remove$1,
-  save: save$1,
-  short_name: short_name$1,
-  teams: teams$1,
-  ticket_categories: ticket_categories$1,
-  ticket_limit: ticket_limit$1,
-  ticket_pool: ticket_pool$1,
-  tickets: tickets$1,
-  title: title$1,
-  total: total$1,
-  type: type$1,
-  unknown: unknown$1,
-  user: user$1,
-  value: value$1,
-  variables: variables$1,
-  weight_increment: weight_increment$1,
-  weight_increment_expression: weight_increment_expression$1
-}, Symbol.toStringTag, { value: "Module" }));
-const php_en = {
+const __vite_glob_1_1 = {
   "auth.failed": "These credentials do not match our records.",
   "auth.password": "The provided password is incorrect.",
   "auth.throttle": "Too many login attempts. Please try again in :seconds seconds.",
@@ -325,11 +267,7 @@ const php_en = {
   "validation.attributes.user": "user",
   "validation.attributes.weight_increment": "weight increment"
 };
-const __vite_glob_1_1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: php_en
-}, Symbol.toStringTag, { value: "Module" }));
-const php_ru = {
+const __vite_glob_1_2 = {
   "factor.category": "Категория тикета",
   "factor.expression": "Выражение",
   "factor.fixed": "Фиксированный",
@@ -351,10 +289,6 @@ const php_ru = {
   "validation.attributes.user": "пользователь",
   "validation.attributes.weight_increment": "приращение веса"
 };
-const __vite_glob_1_2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: php_ru
-}, Symbol.toStringTag, { value: "Module" }));
 const actions = "Действия";
 const active = "Активна";
 const cancel = "Отменить";
@@ -409,7 +343,7 @@ const value = "Значение";
 const variables = "Переменные";
 const weight_increment = "Приращение веса";
 const weight_increment_expression = "Выражение для вычисления приращения веса тикета";
-const ru$1 = {
+const __vite_glob_1_3 = {
   actions,
   active,
   cancel,
@@ -465,64 +399,6 @@ const ru$1 = {
   weight_increment,
   weight_increment_expression
 };
-const __vite_glob_1_3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  actions,
-  active,
-  cancel,
-  choose_factor_type,
-  complexity,
-  complexity_expression,
-  complexity_limit,
-  create,
-  dashboard,
-  default: ru$1,
-  delay,
-  delay_expression,
-  description,
-  discover,
-  display_name,
-  edit,
-  edit_category,
-  edit_factor,
-  edit_operator,
-  edit_team,
-  entries,
-  factor,
-  factor_type,
-  factors,
-  initial_weight,
-  initial_weight_expression,
-  lower_priority,
-  metrics,
-  name: name$1,
-  new_category,
-  new_entry,
-  new_factor,
-  new_operator,
-  new_team,
-  operator_teams,
-  operators,
-  properties,
-  raise_priority,
-  remove,
-  save,
-  short_name,
-  teams,
-  ticket_categories,
-  ticket_limit,
-  ticket_pool,
-  tickets,
-  title,
-  total,
-  type,
-  unknown,
-  user,
-  value,
-  variables,
-  weight_increment,
-  weight_increment_expression
-}, Symbol.toStringTag, { value: "Module" }));
 const pinia = createPinia().use(createORM());
 const materialdesignicons = "";
 const main = "";
@@ -12292,12 +12168,12 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-268d7627.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-d12d7684.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-ce6ac689.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-c946bf10.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9d9ef5ff.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-45694b6e.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-e4e19ced.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-20b32237.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-eb62c762.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-6726e251.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-47df16bf.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-268d7627.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-d12d7684.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-b3dcf1c1.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-2610581f.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9d9ef5ff.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-45694b6e.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-2e657382.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-20b32237.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-46f1e095.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-6726e251.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-86ff4957.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
           const languages = /* @__PURE__ */ Object.assign({ "../../lang/en.json": __vite_glob_1_0, "../../lang/php_en.json": __vite_glob_1_1, "../../lang/php_ru.json": __vite_glob_1_2, "../../lang/ru.json": __vite_glob_1_3 });
-          return languages[`../../lang/${lang}.json`].default;
+          return languages[`../../lang/${lang}.json`];
         }
       }).use($, {
         // @ts-expect-error

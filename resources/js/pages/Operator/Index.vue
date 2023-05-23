@@ -39,6 +39,7 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
+import { computed } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import type { Operator } from "@/types";
 import { trans } from "laravel-vue-i18n";
@@ -48,10 +49,10 @@ defineProps<{
     operators: Operator[];
 }>();
 
-const headers = [
+const headers = computed(() => [
     { title: trans("name"), key: "name" },
     { title: trans("tickets"), key: "ticket_limit" },
     { title: trans("complexity"), key: "complexity_limit" },
     { title: trans("actions"), key: "actions", sortable: false },
-];
+]);
 </script>

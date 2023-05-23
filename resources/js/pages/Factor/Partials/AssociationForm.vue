@@ -108,14 +108,14 @@ const config = computed<AssociativeFactorConfig>({
     },
 });
 
-const headers = [
+const headers = computed(() => [
     { title: trans("value"), key: "value" },
     { title: trans("initial_weight"), key: "initial_weight" },
     { title: trans("weight_increment"), key: "weight_increment" },
     { title: trans("complexity"), key: "complexity" },
     { title: trans("delay"), key: "delay" },
     { title: trans("actions"), key: "actions", sortable: false },
-];
+]);
 
 function getEntries(uuid?: string) {
     return props.entries.filter(

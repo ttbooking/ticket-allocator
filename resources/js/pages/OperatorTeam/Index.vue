@@ -43,6 +43,7 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
+import { computed } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import type { OperatorTeam } from "@/types";
 import { trans } from "laravel-vue-i18n";
@@ -52,10 +53,10 @@ defineProps<{
     teams: OperatorTeam[];
 }>();
 
-const headers = [
+const headers = computed(() => [
     { title: trans("active"), key: "active", sortable: false },
     { title: trans("name"), key: "name" },
     { title: trans("description"), key: "description" },
     { title: trans("actions"), key: "actions", sortable: false },
-];
+]);
 </script>

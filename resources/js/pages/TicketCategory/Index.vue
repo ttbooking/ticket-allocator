@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
+import { computed } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import type { TicketCategory } from "@/types";
 import { trans } from "laravel-vue-i18n";
@@ -46,9 +47,9 @@ defineProps<{
     ticketCategories: TicketCategory[];
 }>();
 
-const headers = [
+const headers = computed(() => [
     { title: trans("name"), key: "name" },
     { title: trans("short_name"), key: "short" },
     { title: trans("actions"), key: "actions", sortable: false },
-];
+]);
 </script>
