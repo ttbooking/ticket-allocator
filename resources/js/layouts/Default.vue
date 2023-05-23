@@ -5,18 +5,14 @@
                 <Link :href="route('ticket-allocator.index')">
                     <v-list-item prepend-icon="mdi-monitor-dashboard" :title="$t('dashboard')" value="dashboard" />
                 </Link>
-                <Link :href="route('ticket-allocator.ticket-categories.index')">
-                    <v-list-item
-                        prepend-icon="mdi-ticket"
-                        :title="$t('ticket_categories')"
-                        value="ticket-categories"
-                    />
-                </Link>
                 <Link :href="route('ticket-allocator.operators.index')">
                     <v-list-item prepend-icon="mdi-account" :title="$t('operators')" value="operators" />
                 </Link>
                 <Link :href="route('ticket-allocator.teams.index')">
                     <v-list-item prepend-icon="mdi-account-group" :title="$t('teams')" value="teams" />
+                </Link>
+                <Link :href="route('ticket-allocator.ticket-categories.index')">
+                    <v-list-item prepend-icon="mdi-ticket" :title="$t('ticket_categories')" value="ticket-categories" />
                 </Link>
                 <Link :href="route('ticket-allocator.factors.index')">
                     <v-list-item prepend-icon="mdi-tune" :title="$t('factors')" value="factors" />

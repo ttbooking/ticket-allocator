@@ -307,6 +307,7 @@ const php_en = {
   "factor.category": "Ticket category",
   "factor.expression": "Expression",
   "factor.fixed": "Fixed",
+  "factor.manual": "Manual adjustment",
   "factor.random": "Random",
   "factor.unknown": "Unknown",
   "validation.attributes.complexity": "complexity",
@@ -332,6 +333,7 @@ const php_ru = {
   "factor.category": "Категория тикета",
   "factor.expression": "Выражение",
   "factor.fixed": "Фиксированный",
+  "factor.manual": "Ручная подстройка",
   "factor.random": "Случайный",
   "factor.unknown": "Неизвестный",
   "validation.attributes.complexity": "сложность",
@@ -12290,7 +12292,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-9091fb00.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-1c707409.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-f8d11ff8.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-c946bf10.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9d9ef5ff.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-6538799e.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-2eaf3200.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-3e9cb90e.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-f6f03ab7.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-f19037b0.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-5211549a.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-268d7627.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-d12d7684.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-ce6ac689.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-c946bf10.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9d9ef5ff.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-45694b6e.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-e4e19ced.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-20b32237.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-eb62c762.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-6726e251.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-47df16bf.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
