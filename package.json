@@ -21,7 +21,7 @@
         "roboto-fontface": "*",
         "tailwindcss": "^3.3.2",
         "vue": "^3.3.4",
-        "vuetify": "^3.3.0",
+        "vuetify": "^3.3.1",
         "webfontloader": "^1.6.28"
     },
     "devDependencies": {

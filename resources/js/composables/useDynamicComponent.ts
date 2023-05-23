@@ -1,13 +1,14 @@
 import { ref, inject, onBeforeMount, DefineComponent } from "vue";
-import type { InertiaAppProps } from "@inertiajs/vue3/types/app";
+
+type PageResolver = (name: string) => DefineComponent | Promise<DefineComponent>;
 
 export function useDynamicComponent(name: string | null) {
     const component = ref<DefineComponent | null>(null);
-    const props = inject<InertiaAppProps>("appProps");
+    const resolveComponent = inject<PageResolver>("resolveComponent");
 
     onBeforeMount(async () => {
-        if (name && props?.resolveComponent) {
-            component.value = await props.resolveComponent(name);
+        if (name && resolveComponent) {
+            component.value = await resolveComponent(name);
         }
     });
 

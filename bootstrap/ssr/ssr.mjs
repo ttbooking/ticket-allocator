@@ -2920,7 +2920,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.0";
+const version = "3.3.1";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -5680,7 +5680,8 @@ const VInput = genericComponent()({
       validate
     }));
     const messages = computed(() => {
-      if (!isPristine.value && errorMessages.value.length > 0) {
+      var _a;
+      if (((_a = props.errorMessages) == null ? void 0 : _a.length) || !isPristine.value && errorMessages.value.length) {
         return errorMessages.value;
       } else if (props.hint && (props.persistentHint || props.focused)) {
         return props.hint;
@@ -10482,19 +10483,129 @@ function useHeaders() {
     throw new Error("Missing headers!");
   return data;
 }
+const singleSelectStrategy = {
+  showSelectAll: false,
+  allSelected: () => [],
+  select: (_ref) => {
+    var _a;
+    let {
+      items
+    } = _ref;
+    return /* @__PURE__ */ new Set([(_a = items[0]) == null ? void 0 : _a.value]);
+  },
+  selectAll: (_ref2) => {
+    let {
+      selected
+    } = _ref2;
+    return selected;
+  }
+};
+const pageSelectStrategy = {
+  showSelectAll: true,
+  allSelected: (_ref3) => {
+    let {
+      currentPage
+    } = _ref3;
+    return currentPage;
+  },
+  select: (_ref4) => {
+    let {
+      items,
+      value: value2,
+      selected
+    } = _ref4;
+    for (const item of items) {
+      if (value2)
+        selected.add(item.value);
+      else
+        selected.delete(item.value);
+    }
+    return selected;
+  },
+  selectAll: (_ref5) => {
+    let {
+      value: value2,
+      currentPage,
+      selected
+    } = _ref5;
+    return pageSelectStrategy.select({
+      items: currentPage,
+      value: value2,
+      selected
+    });
+  }
+};
+const allSelectStrategy = {
+  showSelectAll: true,
+  allSelected: (_ref6) => {
+    let {
+      allItems
+    } = _ref6;
+    return allItems;
+  },
+  select: (_ref7) => {
+    let {
+      items,
+      value: value2,
+      selected
+    } = _ref7;
+    for (const item of items) {
+      if (value2)
+        selected.add(item.value);
+      else
+        selected.delete(item.value);
+    }
+    return selected;
+  },
+  selectAll: (_ref8) => {
+    let {
+      value: value2,
+      allItems,
+      selected
+    } = _ref8;
+    return allSelectStrategy.select({
+      items: allItems,
+      value: value2,
+      selected
+    });
+  }
+};
 const makeDataTableSelectProps = propsFactory({
   showSelect: Boolean,
+  selectStrategy: {
+    type: [String, Object],
+    default: "page"
+  },
   modelValue: {
     type: Array,
     default: () => []
   }
 }, "v-data-table-select");
 const VDataTableSelectionSymbol = Symbol.for("vuetify:data-table-selection");
-function provideSelection(props, allItems) {
+function provideSelection(props, _ref9) {
+  let {
+    allItems,
+    currentPage
+  } = _ref9;
   const selected = useProxiedModel(props, "modelValue", props.modelValue, (v2) => {
     return new Set(v2);
   }, (v2) => {
     return [...v2.values()];
+  });
+  const allSelectable = computed(() => allItems.value.filter((item) => item.selectable));
+  const currentPageSelectable = computed(() => currentPage.value.filter((item) => item.selectable));
+  const selectStrategy = computed(() => {
+    if (typeof props.selectStrategy === "object")
+      return props.selectStrategy;
+    switch (props.selectStrategy) {
+      case "single":
+        return singleSelectStrategy;
+      case "all":
+        return allSelectStrategy;
+      case "page":
+      default:
+        return pageSelectStrategy;
+    }
   });
   function isSelected(items) {
     return wrapInArray(items).every((item) => selected.value.has(item.value));
@@ -10503,23 +10614,33 @@ function provideSelection(props, allItems) {
     return wrapInArray(items).some((item) => selected.value.has(item.value));
   }
   function select(items, value2) {
-    const newSelected = new Set(selected.value);
-    for (const item of items) {
-      if (value2)
-        newSelected.add(item.value);
-      else
-        newSelected.delete(item.value);
-    }
+    const newSelected = selectStrategy.value.select({
+      items,
+      value: value2,
+      selected: new Set(selected.value)
+    });
     selected.value = newSelected;
   }
   function toggleSelect(item) {
     select([item], !isSelected([item]));
   }
   function selectAll(value2) {
-    select(allItems.value, value2);
+    const newSelected = selectStrategy.value.selectAll({
+      value: value2,
+      allItems: allSelectable.value,
+      currentPage: currentPageSelectable.value,
+      selected: new Set(selected.value)
+    });
+    selected.value = newSelected;
   }
   const someSelected = computed(() => selected.value.size > 0);
-  const allSelected = computed(() => isSelected(allItems.value));
+  const allSelected = computed(() => {
+    const items = selectStrategy.value.allSelected({
+      allItems: allSelectable.value,
+      currentPage: currentPageSelectable.value
+    });
+    return isSelected(items);
+  });
   const data = {
     toggleSelect,
     select,
@@ -10527,7 +10648,8 @@ function provideSelection(props, allItems) {
     isSelected,
     isSomeSelected,
     someSelected,
-    allSelected
+    allSelected,
+    showSelectAll: selectStrategy.value.showSelectAll
   };
   provide(VDataTableSelectionSymbol, data);
   return data;
@@ -10690,7 +10812,8 @@ const VDataTableHeaders = genericComponent()({
     const {
       someSelected,
       allSelected,
-      selectAll
+      selectAll,
+      showSelectAll
     } = useSelection();
     const {
       columns,
@@ -10774,11 +10897,11 @@ const VDataTableHeaders = genericComponent()({
           if (slots[columnSlotName])
             return slots[columnSlotName](columnSlotProps);
           if (column.key === "data-table-select") {
-            return ((_a = slots["column.data-table-select"]) == null ? void 0 : _a.call(slots, columnSlotProps)) ?? createVNode(VCheckboxBtn, {
+            return ((_a = slots["column.data-table-select"]) == null ? void 0 : _a.call(slots, columnSlotProps)) ?? (showSelectAll && createVNode(VCheckboxBtn, {
               "modelValue": allSelected.value,
               "indeterminate": someSelected.value && !allSelected.value,
               "onUpdate:modelValue": selectAll
-            }, null);
+            }, null));
           }
           return createVNode("div", {
             "class": "v-data-table-header__content"
@@ -11127,6 +11250,7 @@ const VDataTableRow = defineComponent({
           return slots[slotName](slotProps);
         if (column.key === "data-table-select") {
           return ((_a = slots["item.data-table-select"]) == null ? void 0 : _a.call(slots, slotProps)) ?? createVNode(VCheckboxBtn, {
+            "disabled": !item.selectable,
             "modelValue": isSelected([item]),
             "onClick": withModifiers(() => toggleSelect(item), ["stop"])
           }, null);
@@ -11308,12 +11432,17 @@ const makeDataTableItemProps = propsFactory({
   },
   itemValue: {
     type: [String, Array, Function],
-    default: "value"
+    default: "id"
+  },
+  itemSelectable: {
+    type: [String, Array, Function],
+    default: null
   },
   returnObject: Boolean
 }, "v-data-table-item");
 function transformItem(props, item, columns) {
   const value2 = props.returnObject ? item : getPropertyFromItem(item, props.itemValue);
+  const selectable = getPropertyFromItem(item, props.itemSelectable, true);
   const itemColumns = columns.reduce((obj, column) => {
     obj[column.key] = getPropertyFromItem(item, column.value ?? column.key);
     return obj;
@@ -11321,6 +11450,7 @@ function transformItem(props, item, columns) {
   return {
     type: "item",
     value: value2,
+    selectable,
     columns: itemColumns,
     raw: item
   };
@@ -11589,7 +11719,10 @@ const VDataTable = genericComponent()({
       toggleSelect,
       someSelected,
       allSelected
-    } = provideSelection(props, paginatedItemsWithoutGroups);
+    } = provideSelection(props, {
+      allItems: items,
+      currentPage: paginatedItemsWithoutGroups
+    });
     const {
       isExpanded,
       toggleExpand
@@ -11626,8 +11759,8 @@ const VDataTable = genericComponent()({
       toggleExpand,
       isGroupOpen,
       toggleGroup,
-      items: paginatedItems.value,
-      groupedItems: flatItems.value,
+      items: paginatedItemsWithoutGroups.value,
+      groupedItems: paginatedItems.value,
       columns: columns.value,
       headers: headers.value
     }));
@@ -12168,7 +12301,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-268d7627.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-d12d7684.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-b3dcf1c1.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-2610581f.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9d9ef5ff.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-45694b6e.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-2e657382.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-20b32237.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-46f1e095.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-6726e251.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-86ff4957.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-84674145.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-129a39d0.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-b3dcf1c1.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-2610581f.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9d9ef5ff.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-45694b6e.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-2e657382.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-20b32237.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-46f1e095.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-6726e251.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-86ff4957.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {

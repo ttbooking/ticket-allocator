@@ -32,7 +32,7 @@ createInertiaApp({
                     return await languages[`../../lang/${lang}.json`]();
                 },
             })
-            .provide("appProps", props)
+            .provide("resolveComponent", props.resolveComponent)
             .mount(el);
     },
     progress: { color: "#4B5563" },
