@@ -43,6 +43,11 @@ class TicketAggregateRoot extends AggregateRoot
 
     public ?string $operatorUuid;
 
+    public function __construct()
+    {
+        $this->metrics ??= new TicketMetrics;
+    }
+
     public function create(Commands\CreateTicket $command): static
     {
         return $this->recordThat(new Events\TicketCreated(
@@ -127,7 +132,7 @@ class TicketAggregateRoot extends AggregateRoot
         $this->perFactorMetrics[$event->factorUuid] = $event->adjustments;
 
         foreach ($event->adjustments as $metric => $adjustment) {
-            $this->metrics[$metric] = max(0, ($this->metrics[$metric] ?? 0) + $adjustment);
+            $this->metrics->$metric = max(0, ($this->metrics->$metric ?? 0) + $adjustment);
         }
     }
 
