@@ -11,6 +11,7 @@ use Inertia\Response;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Actions;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
+use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 
 class TicketController extends Controller
 {
@@ -18,18 +19,19 @@ class TicketController extends Controller
      * Adjust ticket weight.
      */
     public function weight(
-        Actions\IncrementTicketInitialWeightAction $incrementTicketInitialWeight,
-        Actions\DecrementTicketInitialWeightAction $decrementTicketInitialWeight,
+        Actions\SetTicketMetaValueAction $setTicketMetaValue,
         Ticket $ticket,
         Request $request,
     ): JsonResponse {
         $weightPoints = $request->weight_points;
 
-        if ($weightPoints > 0) {
-            $incrementTicketInitialWeight($ticket, $weightPoints);
-        } elseif ($weightPoints < 0) {
-            $decrementTicketInitialWeight($ticket, -$weightPoints);
-        }
+        $setTicketMetaValue($ticket, TicketAggregateRoot::META_METRIC_ADJUSTMENTS, [
+            'initial_weight' => ($ticket->meta[TicketAggregateRoot::META_METRIC_ADJUSTMENTS]['initial_weight'] ?? 0)
+                + $request->weight_points,
+            'weight_increment' => 0,
+            'complexity' => 0,
+            'delay' => 0,
+        ]);
 
         return Response::json($weightPoints);
     }

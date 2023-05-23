@@ -18,6 +18,8 @@ class TicketAggregateRoot extends AggregateRoot
 
     const META_CATEGORY_SHORT = 'category_short';
 
+    const META_METRIC_ADJUSTMENTS = 'metric_adjustments';
+
     const META_TITLE = 'title';
 
     const META_CARD_TITLE = 'card_title';

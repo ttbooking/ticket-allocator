@@ -62,6 +62,7 @@ return [
         TTBooking\TicketAllocator\Factors\Category::class,
         TTBooking\TicketAllocator\Factors\Expression::class,
         TTBooking\TicketAllocator\Factors\Fixed::class,
+        TTBooking\TicketAllocator\Factors\Manual::class,
         TTBooking\TicketAllocator\Factors\Random::class,
     ],
 
