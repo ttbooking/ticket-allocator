@@ -20,9 +20,9 @@ trait Broadcastable
 
     protected string $channel = 'ticket-allocator';
 
-    protected ?string $prefix = null;
+    protected ?string $_prefix = null;
 
-    protected ?string $name = null;
+    protected ?string $_name = null;
 
     public function __sleep()
     {
@@ -47,7 +47,7 @@ trait Broadcastable
         return ltrim($this->prefix().'.'.$this->name(), '.');
     }
 
-    public function broadcastOn()
+    public function broadcastOn(): Channel
     {
         return new Channel($this->channel);
     }
@@ -62,12 +62,12 @@ trait Broadcastable
 
     protected function prefix(): string
     {
-        return $this->prefix ??= '';
+        return $this->_prefix ??= '';
     }
 
     protected function name(): string
     {
-        return $this->name ??= static::transformClassName();
+        return $this->_name ??= static::transformClassName();
     }
 
     protected static function transformClassName(): string

@@ -24,12 +24,12 @@ abstract class Event extends ShouldBeStored implements ShouldBroadcast
 
     protected function prefix(): string
     {
-        return $this->prefix ??= self::parseClassName()[0];
+        return $this->_prefix ??= self::parseClassName()[0];
     }
 
     protected function name(): string
     {
-        return $this->name ??= self::parseClassName()[1];
+        return $this->_name ??= self::parseClassName()[1];
     }
 
     /**
