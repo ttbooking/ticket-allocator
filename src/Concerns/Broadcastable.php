@@ -20,6 +20,8 @@ trait Broadcastable
 
     protected string $channel = 'ticket-allocator';
 
+    protected ?string $prefix = null;
+
     protected ?string $name = null;
 
     public function __sleep()
@@ -42,7 +44,7 @@ trait Broadcastable
 
     public function broadcastAs(): string
     {
-        return $this->name ??= Str::kebab(class_basename(static::class));
+        return ltrim($this->prefix().'.'.$this->name(), '.');
     }
 
     public function broadcastOn()
@@ -56,5 +58,20 @@ trait Broadcastable
             ->reject(fn (ReflectionProperty $property) => property_exists(__CLASS__, $property->name))
             ->mapWithKeys(fn (ReflectionProperty $property) => [$property->name => $property->getValue($this)])
             ->all();
+    }
+
+    protected function prefix(): string
+    {
+        return $this->prefix ??= '';
+    }
+
+    protected function name(): string
+    {
+        return $this->name ??= static::transformClassName();
+    }
+
+    protected static function transformClassName(): string
+    {
+        return Str::kebab(class_basename(static::class));
     }
 }
