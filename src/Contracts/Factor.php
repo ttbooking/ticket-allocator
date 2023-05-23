@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Contracts;
 
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
+use TTBooking\TicketAllocator\DTO\TicketMetrics;
 
+/**
+ * @template TFactorConfig of FactorConfig
+ */
 interface Factor
 {
     public static function setAlias(string $alias): void;
@@ -25,12 +29,15 @@ interface Factor
     public function getProps(): array;
 
     /**
-     * @param  array  $config
+     * @param  TFactorConfig  $config
      * @return $this
      */
-    public function configure(array $config): static;
+    public function configure($config): static;
 
-    public function getConfig(): array;
+    /**
+     * @return TFactorConfig
+     */
+    public function getConfig();
 
-    public function getAdjustments(TicketAggregateRoot $ticket): array;
+    public function getAdjustments(TicketAggregateRoot $ticket): TicketMetrics;
 }

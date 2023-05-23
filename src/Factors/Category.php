@@ -6,6 +6,7 @@ namespace TTBooking\TicketAllocator\Factors;
 
 use Illuminate\Support\Arr;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
+use TTBooking\TicketAllocator\DTO\TicketMetrics;
 use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
@@ -20,17 +21,10 @@ class Category extends Factor
         ];
     }
 
-    public function getAdjustments(TicketAggregateRoot $ticket): array
+    public function getAdjustments(TicketAggregateRoot $ticket): TicketMetrics
     {
-        $adjustments = collect($this->getConfig())->firstWhere('value', $ticket->categoryUuid);
+        $adjustments = collect($this->config)->firstWhere('value', $ticket->categoryUuid);
 
-        return $adjustments
-            ? Arr::except($adjustments, 'value')
-            : [
-                'initial_weight' => 0,
-                'weight_increment' => 0,
-                'complexity' => 0,
-                'delay' => 0,
-            ];
+        return $adjustments ? TicketMetrics::from(Arr::except($adjustments, 'value')) : new TicketMetrics;
     }
 }

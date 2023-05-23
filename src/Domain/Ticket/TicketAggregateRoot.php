@@ -6,6 +6,7 @@ namespace TTBooking\TicketAllocator\Domain\Ticket;
 
 use Illuminate\Support\Arr;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
+use TTBooking\TicketAllocator\DTO\TicketMetrics;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class TicketAggregateRoot extends AggregateRoot
@@ -35,11 +36,10 @@ class TicketAggregateRoot extends AggregateRoot
     /** @var array<string, mixed> */
     public array $meta = [];
 
-    /** @var array<string, array<string, int>> */
+    /** @var array<string, TicketMetrics> */
     public array $perFactorMetrics = [];
 
-    /** @var array<string, int> */
-    public array $metrics = [];
+    public TicketMetrics $metrics;
 
     public ?string $operatorUuid;
 

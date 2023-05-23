@@ -6,7 +6,12 @@ namespace TTBooking\TicketAllocator\Factors;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
+use TTBooking\TicketAllocator\DTO\ExpressionConfig;
+use TTBooking\TicketAllocator\DTO\TicketMetrics;
 
+/**
+ * @extends Factor<ExpressionConfig>
+ */
 #[Attributes\Component('Factor/Partials/ExpressionForm')]
 class Expression extends Factor
 {
@@ -19,12 +24,11 @@ class Expression extends Factor
         return ! class_exists(ExpressionLanguage::class);
     }
 
-    public function getAdjustments(TicketAggregateRoot $ticket): array
+    public function getAdjustments(TicketAggregateRoot $ticket): TicketMetrics
     {
         $eval = function (string $metric) use ($ticket) {
-            $config = $this->getConfig();
-            $variables = $config['variables'] ?? [];
-            $expression = $config['expressions'][$metric] ?? null;
+            $variables = $this->config->variables ?? [];
+            $expression = $this->config->expressions->$metric ?? null;
             $adjustment = 0;
 
             if ($expression) {
@@ -38,9 +42,9 @@ class Expression extends Factor
             return $adjustment;
         };
 
-        return array_combine(
+        return TicketMetrics::from(array_combine(
             $metrics = ['initial_weight', 'weight_increment', 'complexity', 'delay'],
             array_map($eval, $metrics)
-        );
+        ));
     }
 }

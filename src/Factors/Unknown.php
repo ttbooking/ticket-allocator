@@ -5,17 +5,13 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Factors;
 
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
+use TTBooking\TicketAllocator\DTO\TicketMetrics;
 
 #[Attributes\Excluded]
 class Unknown extends Factor
 {
-    public function getAdjustments(TicketAggregateRoot $ticket): array
+    public function getAdjustments(TicketAggregateRoot $ticket): TicketMetrics
     {
-        return [
-            'initial_weight' => 0,
-            'weight_increment' => 0,
-            'complexity' => 0,
-            'delay' => 0,
-        ];
+        return new TicketMetrics;
     }
 }

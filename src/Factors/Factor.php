@@ -6,13 +6,20 @@ namespace TTBooking\TicketAllocator\Factors;
 
 use Illuminate\Support\Str;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
+use TTBooking\TicketAllocator\Contracts\FactorConfig;
 
+/**
+ * @template TFactorConfig of FactorConfig
+ *
+ * @implements FactorContract<TFactorConfig>
+ */
 abstract class Factor implements FactorContract
 {
     /** @var array<class-string<static>, string> */
     protected static array $aliases = [];
 
-    protected array $config = [];
+    /** @var TFactorConfig */
+    protected $config;
 
     public static function setAlias(string $alias): void
     {
@@ -56,14 +63,14 @@ abstract class Factor implements FactorContract
         return [];
     }
 
-    public function configure(array $config): static
+    public function configure($config): static
     {
         $this->config = $config;
 
         return $this;
     }
 
-    public function getConfig(): array
+    public function getConfig()
     {
         return $this->config;
     }

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EventSourcing\Projections\Projection;
 use TTBooking\TicketAllocator\Database\Factories\TicketFactory;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
+use TTBooking\TicketAllocator\DTO\TicketMetrics;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
 /**
@@ -20,7 +21,7 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
  * @property string $category_uuid
  * @property string|null $handler_uuid
  * @property array<string, mixed>|null $meta
- * @property array<string, <string, int>>|null $metrics
+ * @property array<string, TicketMetrics>|null $metrics
  * @property int $initial_weight
  * @property int $weight_increment
  * @property int $complexity
