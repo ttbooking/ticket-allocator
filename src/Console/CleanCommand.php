@@ -55,5 +55,9 @@ class CleanCommand extends Command
         }
 
         Schema::enableForeignKeyConstraints();
+
+        $this->components->info('Clean up finished.');
+
+        $this->call('ticket-allocator:reload-dashboards');
     }
 }

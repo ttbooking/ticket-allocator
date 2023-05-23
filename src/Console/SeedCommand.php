@@ -34,5 +34,7 @@ class SeedCommand extends Command
     public function handle(): void
     {
         $this->call('db:seed', ['class' => DatabaseSeeder::class]);
+
+        $this->components->info('Seeding finished.');
     }
 }

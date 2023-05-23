@@ -111,8 +111,10 @@ class ReapCommand extends Command
 
             $this->bar->finish();
             $this->newLine(2);
+
+            $this->components->info('Reaping finished.');
         } else {
-            $this->warn('Nothing to reap!');
+            $this->components->warn('Nothing to reap!');
         }
 
         if ($this->confirm('Do you want to do clean up afterwards?')) {
