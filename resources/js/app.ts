@@ -28,7 +28,7 @@ createInertiaApp({
             //.use(ZiggyVue, window.Ziggy ?? {})
             .use(i18nVue, {
                 resolve: async (lang: string) => {
-                    const languages = import.meta.glob<object>("../../lang/*.json");
+                    const languages = import.meta.glob("../../lang/*.json");
                     return await languages[`../../lang/${lang}.json`]();
                 },
             })

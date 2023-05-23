@@ -8,6 +8,7 @@
         "isolatedModules": true,
         "target": "ESNext",
         "esModuleInterop": true,
+        "resolveJsonModule": true,
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
         "noEmit": true,

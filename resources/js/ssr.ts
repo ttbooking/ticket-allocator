@@ -25,8 +25,8 @@ createServer((page) =>
                 .use(vuetify)
                 .use(i18nVue, {
                     resolve: (lang: string) => {
-                        const languages = import.meta.glob<any>("../../lang/*.json", { eager: true });
-                        return languages[`../../lang/${lang}.json`].default;
+                        const languages = import.meta.glob("../../lang/*.json", { import: "default", eager: true });
+                        return languages[`../../lang/${lang}.json`];
                     },
                 })
                 .use(ZiggyVue, {
