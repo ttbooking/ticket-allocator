@@ -24,6 +24,11 @@ interface Factor
 
     public static function isSingular(): bool;
 
+    /**
+     * @return class-string<TFactorConfig>
+     */
+    public static function getConfigClass(): string;
+
     public static function getComponentName(): ?string;
 
     public function getProps(): array;

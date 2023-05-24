@@ -10,19 +10,22 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
+use TTBooking\TicketAllocator\Contracts\FactorConfig;
 use TTBooking\TicketAllocator\Factors\Unknown;
 use TTBooking\TicketAllocator\TicketAllocator;
 
 /**
+ * @template TFactorConfig of FactorConfig
+ *
  * @method static static create(array $parameters = [])
  * @method static static|null find(string $uuid)
  * @property non-empty-string $uuid
  * @property int $priority
- * @property class-string<FactorContract> $type
- * @property-read FactorContract $instance
+ * @property class-string<FactorContract<TFactorConfig>> $type
+ * @property-read FactorContract<TFactorConfig> $instance
  * @property string $name
  * @property string $description
- * @property array $config
+ * @property TFactorConfig $config
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon|null $deleted_at

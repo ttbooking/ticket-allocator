@@ -7,6 +7,7 @@ namespace TTBooking\TicketAllocator\Factors;
 use Illuminate\Support\Str;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 use TTBooking\TicketAllocator\Contracts\FactorConfig;
+use TTBooking\TicketAllocator\DTO\UnknownConfig;
 
 /**
  * @template TFactorConfig of FactorConfig
@@ -51,6 +52,15 @@ abstract class Factor implements FactorContract
     public static function isSingular(): bool
     {
         return self::flagSet(Attributes\Singular::class);
+    }
+
+    public static function getConfigClass(): string
+    {
+        $guessedConfigClass = static::attribute(Attributes\Config::class)?->class
+            ?? 'TTBooking\\TicketAllocator\\DTO\\'.class_basename(static::class).'Config';
+
+        return class_exists($guessedConfigClass) && is_subclass_of($guessedConfigClass, FactorConfig::class)
+            ? $guessedConfigClass : UnknownConfig::class;
     }
 
     public static function getComponentName(): ?string
