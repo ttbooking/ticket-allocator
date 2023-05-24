@@ -19,6 +19,9 @@ abstract class Factor implements FactorContract
     /** @var array<class-string<static>, string> */
     protected static array $aliases = [];
 
+    /** @var array<class-string<static>, class-string<FactorConfig>> */
+    protected static array $configClasses = [];
+
     /** @var TFactorConfig */
     protected $config;
 
@@ -56,11 +59,23 @@ abstract class Factor implements FactorContract
 
     public static function getConfigClass(): string
     {
-        $guessedConfigClass = static::attribute(Attributes\Config::class)?->class
-            ?? 'TTBooking\\TicketAllocator\\DTO\\'.class_basename(static::class).'Config';
+        if (isset(static::$configClasses[static::class])) {
+            return static::$configClasses[static::class];
+        }
 
-        return class_exists($guessedConfigClass) && is_subclass_of($guessedConfigClass, FactorConfig::class)
-            ? $guessedConfigClass : UnknownConfig::class;
+        /** @var list<class-string<FactorConfig>> $guesses */
+        $guesses = array_filter([
+            static::attribute(Attributes\Config::class)?->class,
+            'TTBooking\\TicketAllocator\\DTO\\'.class_basename(static::class).'Config',
+        ]);
+
+        foreach ($guesses as $configClass) {
+            if (class_exists($configClass) && is_subclass_of($configClass, FactorConfig::class)) {
+                return static::$configClasses[static::class] ??= $configClass;
+            }
+        }
+
+        return static::$configClasses[static::class] ??= UnknownConfig::class;
     }
 
     public static function getComponentName(): ?string
