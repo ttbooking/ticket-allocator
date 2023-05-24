@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Contracts;
 
+use Illuminate\Support\Enumerable;
+use Spatie\LaravelData\Contracts\DataCollectable;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 use TTBooking\TicketAllocator\DTO\TicketMetrics;
 
@@ -29,18 +31,24 @@ interface Factor
      */
     public static function getConfigClass(): string;
 
+    /**
+     * @param  Enumerable|array  $config
+     * @return TFactorConfig|DataCollectable<array-key, TFactorConfig>
+     */
+    public static function makeConfig(Enumerable|array $config);
+
     public static function getComponentName(): ?string;
 
     public function getProps(): array;
 
     /**
-     * @param  TFactorConfig  $config
+     * @param  TFactorConfig|DataCollectable<array-key, TFactorConfig>  $config
      * @return $this
      */
     public function configure($config): static;
 
     /**
-     * @return TFactorConfig
+     * @return TFactorConfig|DataCollectable<array-key, TFactorConfig>
      */
     public function getConfig();
 

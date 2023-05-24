@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Factors;
 
+use Illuminate\Support\Enumerable;
 use Illuminate\Support\Str;
+use Spatie\LaravelData\Contracts\DataCollectable;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 use TTBooking\TicketAllocator\Contracts\FactorConfig;
 use TTBooking\TicketAllocator\DTO\UnknownConfig;
@@ -22,7 +24,7 @@ abstract class Factor implements FactorContract
     /** @var array<class-string<static>, class-string<FactorConfig>> */
     protected static array $configClasses = [];
 
-    /** @var TFactorConfig */
+    /** @var TFactorConfig|DataCollectable<array-key, TFactorConfig> */
     protected $config;
 
     public static function setAlias(string $alias): void
@@ -76,6 +78,13 @@ abstract class Factor implements FactorContract
         }
 
         return static::$configClasses[static::class] ??= UnknownConfig::class;
+    }
+
+    public static function makeConfig(Enumerable|array $config)
+    {
+        $collection = static::attribute(Attributes\Config::class)?->collection;
+
+        return static::getConfigClass()::{$collection ? 'collection' : 'from'}($config);
     }
 
     public static function getComponentName(): ?string

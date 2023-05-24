@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\LaravelData\Contracts\DataCollectable;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 use TTBooking\TicketAllocator\Contracts\FactorConfig;
 use TTBooking\TicketAllocator\TicketAllocator;
@@ -24,7 +25,7 @@ use TTBooking\TicketAllocator\TicketAllocator;
  * @property-read FactorContract<TFactorConfig> $instance
  * @property string $name
  * @property string $description
- * @property TFactorConfig $config
+ * @property TFactorConfig|DataCollectable<array-key, TFactorConfig> $config
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon|null $deleted_at
@@ -73,10 +74,10 @@ class Factor extends Model
     }
 
     /**
-     * @return Attribute<TFactorConfig, never>
+     * @return Attribute<TFactorConfig|DataCollectable<array-key, TFactorConfig>, never>
      */
     protected function config(): Attribute
     {
-        return Attribute::get(fn ($config) => $this->type::getConfigClass()::from($config));
+        return Attribute::get(fn ($config) => $this->type::makeConfig($config));
     }
 }

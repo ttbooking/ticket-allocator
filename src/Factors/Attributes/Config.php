@@ -11,9 +11,10 @@ use TTBooking\TicketAllocator\Contracts\FactorConfig;
 class Config
 {
     /**
-     * @param class-string<FactorConfig> $class
+     * @param  class-string<FactorConfig>  $class
+     * @param  bool  $collection
      */
-    public function __construct(public string $class)
+    public function __construct(public string $class, public bool $collection = false)
     {
     }
 }
