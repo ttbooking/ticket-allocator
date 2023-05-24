@@ -54,7 +54,7 @@ class Factor extends Model
      */
     protected function type(): Attribute
     {
-        return Attribute::get(static fn ($type) => TicketAllocator::factors()->get($type, Unknown::class));
+        return Attribute::get(static fn ($type) => TicketAllocator::factors()->get($type));
     }
 
     /**

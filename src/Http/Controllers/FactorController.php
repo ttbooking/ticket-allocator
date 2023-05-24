@@ -36,7 +36,7 @@ class FactorController extends Controller
      */
     public function create(Request $request): InertiaResponse
     {
-        $factorClass = TicketAllocator::factors()->get($request->query('type'), Unknown::class);
+        $factorClass = TicketAllocator::factors()->get($request->query('type'));
         $factorType = new FactorTypeResource($factorClass);
 
         return Inertia::render('Factor/CreateEdit', compact('factorType') + app($factorClass)->getProps());
