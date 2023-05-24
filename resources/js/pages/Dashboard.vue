@@ -72,7 +72,7 @@ import DefaultLayout from "@/layouts/Default.vue";
 import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
 import { Head, router } from "@inertiajs/vue3";
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
 import { refThrottled } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
 import { useDropZone, usePusherChannel } from "@/composables";
@@ -140,10 +140,6 @@ const { isOverDropZone } = useDropZone(
 );
 
 onMounted(() => {
-    operatorRepo.value.fresh(props.operators);
-    ticketRepo.value.fresh(props.tickets);
-    ticketCategoryRepo.value.fresh(props.ticketCategories);
-
     channel
         .listen(Events.Common.PropsInvalidated, () => router.reload())
         .listen(Events.Operator.Enrolled, operatorRepo.value.enroll)
@@ -163,6 +159,20 @@ onMounted(() => {
         .listen(Events.Ticket.MetaValueSet, ticketRepo.value.setMetaValue)
         .listen(Events.Ticket.MetaValuesMerged, ticketRepo.value.mergeMetaValues)
         .listen(Events.Ticket.MetricsAdjusted, ticketRepo.value.adjustMetrics);
+});
+
+function refreshRepositories() {
+    operatorRepo.value.fresh(props.operators);
+    ticketRepo.value.fresh(props.tickets);
+    ticketCategoryRepo.value.fresh(props.ticketCategories);
+}
+
+const removeNavigateEventListener = router.on("navigate", refreshRepositories);
+const removeSuccessEventListener = router.on("success", refreshRepositories);
+
+onUnmounted(() => {
+    removeNavigateEventListener();
+    removeSuccessEventListener();
 });
 </script>
 
