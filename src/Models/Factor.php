@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 use TTBooking\TicketAllocator\Contracts\FactorConfig;
-use TTBooking\TicketAllocator\Factors\Unknown;
 use TTBooking\TicketAllocator\TicketAllocator;
 
 /**
