@@ -78,6 +78,6 @@ class Factor extends Model
      */
     protected function config(): Attribute
     {
-        return Attribute::get(fn ($config) => $this->type::makeConfig($config));
+        return Attribute::get(fn ($config) => $this->type::makeConfig(json_decode($config, true)));
     }
 }
