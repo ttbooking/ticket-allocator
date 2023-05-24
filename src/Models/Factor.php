@@ -71,4 +71,12 @@ class Factor extends Model
     {
         return Attribute::get(fn ($value) => $value ?? $this->type::getName());
     }
+
+    /**
+     * @return Attribute<TFactorConfig, never>
+     */
+    protected function config(): Attribute
+    {
+        return Attribute::get(fn ($config) => $this->type::getConfigClass()::from($config));
+    }
 }
