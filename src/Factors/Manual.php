@@ -7,6 +7,9 @@ namespace TTBooking\TicketAllocator\Factors;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot as Ticket;
 use TTBooking\TicketAllocator\DTO\TicketMetrics;
 
+/**
+ * @extends Factor<array{}>
+ */
 #[Attributes\Hidden]
 #[Attributes\Singular]
 class Manual extends Factor

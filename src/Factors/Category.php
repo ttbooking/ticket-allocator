@@ -10,6 +10,17 @@ use TTBooking\TicketAllocator\DTO\TicketMetrics;
 use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
+/**
+ * @template TEntry of array{
+ *     value: string,
+ *     initial_weight: int,
+ *     weight_increment: int,
+ *     complexity: int,
+ *     delay: int,
+ * }
+ *
+ * @extends Factor<TEntry[]>
+ */
 #[Attributes\Singular]
 #[Attributes\Component('Factor/Partials/AssociationForm')]
 class Category extends Factor

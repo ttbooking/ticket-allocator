@@ -7,6 +7,14 @@ namespace TTBooking\TicketAllocator\Factors;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 use TTBooking\TicketAllocator\DTO\TicketMetrics;
 
+/**
+ * @extends Factor<array{
+ *     initial_weight: int,
+ *     weight_increment: int,
+ *     complexity: int,
+ *     delay: int,
+ * }>
+ */
 #[Attributes\Hidden]
 class Fixed extends Factor
 {

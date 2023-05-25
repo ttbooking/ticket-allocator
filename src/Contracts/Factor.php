@@ -7,6 +7,9 @@ namespace TTBooking\TicketAllocator\Contracts;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 use TTBooking\TicketAllocator\DTO\TicketMetrics;
 
+/**
+ * @template TConfig of array
+ */
 interface Factor
 {
     public static function setAlias(string $alias): void;
@@ -26,11 +29,14 @@ interface Factor
     public function getProps(): array;
 
     /**
-     * @param  array  $config
+     * @param  TConfig  $config
      * @return $this
      */
-    public function configure(array $config): static;
+    public function configure($config): static;
 
+    /**
+     * @return TConfig
+     */
     public function getConfig(): array;
 
     public function getAdjustments(TicketAggregateRoot $ticket): TicketMetrics;

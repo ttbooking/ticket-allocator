@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Factors;
 
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
-use TTBooking\TicketAllocator\DTO\RandomConfig;
 use TTBooking\TicketAllocator\DTO\TicketMetrics;
 
 /**
- * @extends Factor<RandomConfig>
+ * @template TRange of array{int, int}|array{min: int, max: int}
+ *
+ * @extends Factor<array{
+ *     initial_weight: TRange,
+ *     weight_increment: TRange,
+ *     complexity: TRange,
+ *     delay: TRange,
+ * }>
  */
 #[Attributes\Hidden]
 class Random extends Factor
