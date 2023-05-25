@@ -34,7 +34,10 @@ abstract class Factor implements FactorContract
 
     public static function getName(): string
     {
-        return trans('ticket-allocator::factor.'.static::getAlias());
+        $key = 'ticket-allocator::factor.'.static::getAlias();
+        $name = trans($key);
+
+        return $name !== $key ? $name : class_basename(static::class);
     }
 
     public static function isExcluded(): bool
