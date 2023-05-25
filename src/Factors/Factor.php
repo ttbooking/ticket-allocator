@@ -39,22 +39,22 @@ abstract class Factor implements FactorContract
 
     public static function isExcluded(): bool
     {
-        return (bool) self::attribute(Attributes\Excluded::class);
+        return (bool) self::attribute(Attributes\Excluded::class, true);
     }
 
     public static function isHidden(): bool
     {
-        return (bool) self::attribute(Attributes\Hidden::class);
+        return (bool) self::attribute(Attributes\Hidden::class, true);
     }
 
     public static function isSingular(): bool
     {
-        return (bool) self::attribute(Attributes\Singular::class);
+        return (bool) self::attribute(Attributes\Singular::class, true);
     }
 
     public static function getComponentName(): ?string
     {
-        return static::attribute(Attributes\Component::class)?->name;
+        return static::attribute(Attributes\Component::class, true)?->name;
     }
 
     public function getProps(): array
@@ -85,15 +85,16 @@ abstract class Factor implements FactorContract
      * @template TAttribute of object
      *
      * @param  class-string<TAttribute>  $attribute
+     * @param  bool  $ascend
      * @return TAttribute|null
      */
-    private static function attribute(string $attribute)
+    private static function attribute(string $attribute, bool $ascend = false)
     {
         $classRef = new \ReflectionClass(static::class);
 
         do {
             $attrRef = $classRef->getAttributes($attribute)[0] ?? null;
-        } while (! $attrRef && false !== $classRef = $classRef->getParentClass());
+        } while ($ascend && ! $attrRef && false !== $classRef = $classRef->getParentClass());
 
         return $attrRef?->newInstance();
     }
@@ -102,11 +103,13 @@ abstract class Factor implements FactorContract
      * @template TAttribute of object
      *
      * @param  class-string<TAttribute>  $attribute
+     * @param  bool  $ascend
      * @return TAttribute|null
      */
-    private static function attributeAlt(string $attribute)
+    private static function attributeAlt(string $attribute, bool $ascend = false)
     {
-        $inheritanceStack = [static::class => static::class] + class_parents(static::class);
+        $inheritanceStack = [static::class => static::class];
+        $ascend && $inheritanceStack += class_parents(static::class);
 
         foreach ($inheritanceStack as $class) {
             if ($instance = ((new \ReflectionClass($class))->getAttributes($attribute)[0] ?? null)?->newInstance()) {
