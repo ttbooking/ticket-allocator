@@ -39,17 +39,17 @@ abstract class Factor implements FactorContract
 
     public static function isExcluded(): bool
     {
-        return self::flagSet(Attributes\Excluded::class);
+        return (bool) self::attribute(Attributes\Excluded::class);
     }
 
     public static function isHidden(): bool
     {
-        return self::flagSet(Attributes\Hidden::class);
+        return (bool) self::attribute(Attributes\Hidden::class);
     }
 
     public static function isSingular(): bool
     {
-        return self::flagSet(Attributes\Singular::class);
+        return (bool) self::attribute(Attributes\Singular::class);
     }
 
     public static function getComponentName(): ?string
@@ -82,12 +82,20 @@ abstract class Factor implements FactorContract
     }
 
     /**
-     * @param  class-string  $flagAttribute
-     * @return bool
+     * @template TAttribute of object
+     *
+     * @param  class-string<TAttribute>  $attribute
+     * @return TAttribute|null
      */
-    private static function flagSet(string $flagAttribute): bool
+    private static function attribute(string $attribute)
     {
-        return ! empty((new \ReflectionClass(static::class))->getAttributes($flagAttribute));
+        $classRef = new \ReflectionClass(static::class);
+
+        do {
+            $attrRef = $classRef->getAttributes($attribute)[0] ?? null;
+        } while (! $attrRef && false !== $classRef = $classRef->getParentClass());
+
+        return $attrRef?->newInstance();
     }
 
     /**
@@ -96,8 +104,16 @@ abstract class Factor implements FactorContract
      * @param  class-string<TAttribute>  $attribute
      * @return TAttribute|null
      */
-    private static function attribute(string $attribute)
+    private static function attributeAlt(string $attribute)
     {
-        return ((new \ReflectionClass(static::class))->getAttributes($attribute)[0] ?? null)?->newInstance();
+        $inheritanceStack = [static::class => static::class] + class_parents(static::class);
+
+        foreach ($inheritanceStack as $class) {
+            if ($instance = ((new \ReflectionClass($class))->getAttributes($attribute)[0] ?? null)?->newInstance()) {
+                return $instance;
+            }
+        }
+
+        return null;
     }
 }
