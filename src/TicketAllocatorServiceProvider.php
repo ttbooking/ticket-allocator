@@ -122,20 +122,10 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         }
 
         return collect(array_merge($this->discoveredFactors(), $this->factors()))
-            ->filter(static fn (string $class) => is_subclass_of($class, FactorContract::class))
-            ->reject(self::factorExcluded(...))
+            ->filter(DiscoverFactors::isExplicit(...))
             ->mapWithKeys(self::mapFactor(...))
             ->sortBy(self::factorName(...))
             ->all();
-    }
-
-    /**
-     * @param  class-string<FactorContract>  $factor
-     * @return bool
-     */
-    private static function factorExcluded(string $factor): bool
-    {
-        return $factor::isExcluded();
     }
 
     /**

@@ -20,9 +20,20 @@ class DiscoverFactors
     {
         return collect((new Finder)->files()->in($factorPath))
             ->map(static fn (SplFileInfo $file) => static::classFromFile($file, $basePath))
-            ->filter(static fn (string $class) => is_subclass_of($class, FactorContract::class))
+            ->filter(static::isExplicit(...))
             ->values()
             ->all();
+    }
+
+    /**
+     * @param  class-string<FactorContract>  $factor
+     * @return bool
+     */
+    public static function isExplicit(string $factor): bool
+    {
+        return is_subclass_of($factor, FactorContract::class)
+            && (new \ReflectionClass($factor))->isInstantiable()
+            && ! $factor::isExcluded();
     }
 
     /**
