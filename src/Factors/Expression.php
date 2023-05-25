@@ -27,8 +27,8 @@ class Expression extends Factor
     public function getAdjustments(TicketAggregateRoot $ticket): TicketMetrics
     {
         $eval = function (string $metric) use ($ticket) {
-            $variables = $this->config->variables ?? [];
-            $expression = $this->config->expressions->$metric ?? null;
+            $variables = $this->config['variables'] ?? [];
+            $expression = $this->config['expressions'][$metric] ?? null;
             $adjustment = 0;
 
             if ($expression) {

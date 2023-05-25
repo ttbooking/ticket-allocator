@@ -17,7 +17,7 @@ class Random extends Factor
     public function getAdjustments(TicketAggregateRoot $ticket): TicketMetrics
     {
         $rand = function (string $metric) {
-            $range = $this->config->$metric ?? null;
+            $range = $this->config[$metric] ?? null;
 
             return $range ? rand(...$range) : 0;
         };

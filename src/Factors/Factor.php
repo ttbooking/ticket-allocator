@@ -4,28 +4,15 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Factors;
 
-use Illuminate\Support\Enumerable;
 use Illuminate\Support\Str;
-use Spatie\LaravelData\Contracts\DataCollectable;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
-use TTBooking\TicketAllocator\Contracts\FactorConfig;
-use TTBooking\TicketAllocator\DTO\UnknownConfig;
 
-/**
- * @template TFactorConfig of FactorConfig
- *
- * @implements FactorContract<TFactorConfig>
- */
 abstract class Factor implements FactorContract
 {
     /** @var array<class-string<static>, string> */
     protected static array $aliases = [];
 
-    /** @var array<class-string<static>, class-string<FactorConfig>> */
-    protected static array $configClasses = [];
-
-    /** @var TFactorConfig|DataCollectable<array-key, TFactorConfig> */
-    protected $config;
+    protected array $config = [];
 
     public static function setAlias(string $alias): void
     {
@@ -59,34 +46,6 @@ abstract class Factor implements FactorContract
         return self::flagSet(Attributes\Singular::class);
     }
 
-    public static function getConfigClass(): string
-    {
-        if (isset(static::$configClasses[static::class])) {
-            return static::$configClasses[static::class];
-        }
-
-        /** @var list<class-string<FactorConfig>> $guesses */
-        $guesses = array_filter([
-            static::attribute(Attributes\Config::class)?->class,
-            'TTBooking\\TicketAllocator\\DTO\\'.class_basename(static::class).'Config',
-        ]);
-
-        foreach ($guesses as $configClass) {
-            if (class_exists($configClass) && is_subclass_of($configClass, FactorConfig::class)) {
-                return static::$configClasses[static::class] ??= $configClass;
-            }
-        }
-
-        return static::$configClasses[static::class] ??= UnknownConfig::class;
-    }
-
-    public static function makeConfig(Enumerable|array $config)
-    {
-        $collection = static::attribute(Attributes\Config::class)?->collection;
-
-        return static::getConfigClass()::{$collection ? 'collection' : 'from'}($config);
-    }
-
     public static function getComponentName(): ?string
     {
         return static::attribute(Attributes\Component::class)?->name;
@@ -97,14 +56,14 @@ abstract class Factor implements FactorContract
         return [];
     }
 
-    public function configure($config): static
+    public function configure(array $config): static
     {
         $this->config = $config;
 
         return $this;
     }
 
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }

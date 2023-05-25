@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Contracts;
 
-use Illuminate\Support\Enumerable;
-use Spatie\LaravelData\Contracts\DataCollectable;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 use TTBooking\TicketAllocator\DTO\TicketMetrics;
 
-/**
- * @template TFactorConfig of FactorConfig
- */
 interface Factor
 {
     public static function setAlias(string $alias): void;
@@ -26,31 +21,17 @@ interface Factor
 
     public static function isSingular(): bool;
 
-    /**
-     * @return class-string<TFactorConfig>
-     */
-    public static function getConfigClass(): string;
-
-    /**
-     * @param  Enumerable|array  $config
-     * @return TFactorConfig|DataCollectable<array-key, TFactorConfig>
-     */
-    public static function makeConfig(Enumerable|array $config);
-
     public static function getComponentName(): ?string;
 
     public function getProps(): array;
 
     /**
-     * @param  TFactorConfig|DataCollectable<array-key, TFactorConfig>  $config
+     * @param  array  $config
      * @return $this
      */
-    public function configure($config): static;
+    public function configure(array $config): static;
 
-    /**
-     * @return TFactorConfig|DataCollectable<array-key, TFactorConfig>
-     */
-    public function getConfig();
+    public function getConfig(): array;
 
     public function getAdjustments(TicketAggregateRoot $ticket): TicketMetrics;
 }

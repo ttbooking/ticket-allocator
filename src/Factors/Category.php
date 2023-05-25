@@ -6,16 +6,11 @@ namespace TTBooking\TicketAllocator\Factors;
 
 use Illuminate\Support\Arr;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
-use TTBooking\TicketAllocator\DTO\AssociationConfig;
 use TTBooking\TicketAllocator\DTO\TicketMetrics;
 use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
-/**
- * @extends Factor<AssociationConfig>
- */
 #[Attributes\Singular]
-#[Attributes\Config(AssociationConfig::class, true)]
 #[Attributes\Component('Factor/Partials/AssociationForm')]
 class Category extends Factor
 {

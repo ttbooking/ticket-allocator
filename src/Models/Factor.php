@@ -9,23 +9,19 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\LaravelData\Contracts\DataCollectable;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
-use TTBooking\TicketAllocator\Contracts\FactorConfig;
 use TTBooking\TicketAllocator\TicketAllocator;
 
 /**
- * @template TFactorConfig of FactorConfig
- *
  * @method static static create(array $parameters = [])
  * @method static static|null find(string $uuid)
  * @property non-empty-string $uuid
  * @property int $priority
- * @property class-string<FactorContract<TFactorConfig>> $type
- * @property-read FactorContract<TFactorConfig> $instance
+ * @property class-string<FactorContract> $type
+ * @property-read FactorContract $instance
  * @property string $name
  * @property string $description
- * @property TFactorConfig|DataCollectable<array-key, TFactorConfig> $config
+ * @property array $config
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon|null $deleted_at
@@ -71,13 +67,5 @@ class Factor extends Model
     protected function name(): Attribute
     {
         return Attribute::get(fn ($value) => $value ?? $this->type::getName());
-    }
-
-    /**
-     * @return Attribute<TFactorConfig|DataCollectable<array-key, TFactorConfig>, never>
-     */
-    protected function config(): Attribute
-    {
-        return Attribute::get(fn ($config) => $this->type::makeConfig(json_decode($config, true)));
     }
 }
