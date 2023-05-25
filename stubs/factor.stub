@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace {{ namespace }};
 
-use TTBooking\TicketAllocator\Factors\Attributes\Component;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
+use TTBooking\TicketAllocator\DTO\TicketMetrics;
 use TTBooking\TicketAllocator\Factors\Factor;
 
-#[Component('Factor/Partials/AssociationForm')]
 class {{ class }} extends Factor
 {
     /**
@@ -26,13 +25,8 @@ class {{ class }} extends Factor
         ];
     }
 
-    public function getAdjustments(TicketAggregateRoot $ticket): array
+    public function getAdjustments(TicketAggregateRoot $ticket): TicketMetrics
     {
-        return [
-            'initial_weight' => 0,
-            'weight_increment' => 0,
-            'complexity' => 0,
-            'delay' => 0,
-        ];
+        return new TicketMetrics;
     }
 }
