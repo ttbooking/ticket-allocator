@@ -10,7 +10,7 @@ use TTBooking\TicketAllocator\DTO\TicketMetrics;
 use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
-#[Attributes\Instance('99420e14-d5e1-46a9-8142-551d874f084e')]
+#[Attributes\Instance('99420e14-d5e1-46a9-8142-551d874f084e', priority: 100)]
 class Category extends AssociationFactor
 {
     public function getProps(): array
