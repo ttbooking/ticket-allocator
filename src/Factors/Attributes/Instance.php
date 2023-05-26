@@ -27,8 +27,8 @@ class Instance
         public ?string $name = null,
         public ?string $description = null,
         public ?array $config = null,
-        public bool $enable = true,
+        //public bool $enable = true,
     ) {
-        $this->attributes = compact('uuid', 'priority', 'name', 'description', 'config', 'enable');
+        $this->attributes = compact('uuid', 'priority', 'name', 'description', 'config'/*, 'enable'*/);
     }
 }

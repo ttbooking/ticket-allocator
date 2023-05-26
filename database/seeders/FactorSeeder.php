@@ -16,7 +16,7 @@ class FactorSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call('factor:install');
+        $this->command->call('factor:install');
 
         $config = [];
         $ticketCategories = TicketCategory::all(['uuid'])->modelKeys();
