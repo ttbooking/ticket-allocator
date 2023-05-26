@@ -24,6 +24,8 @@ class TicketCategorySeeder extends Seeder
             TicketCategory::factory($count)->create();
         });
 
+        $this->callSilent(FactorSeeder::class);
+
         $this->command->newLine();
     }
 }
