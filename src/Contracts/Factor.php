@@ -30,7 +30,7 @@ interface Factor
     /**
      * @return Collection<int, array{
      *     uuid: string|null,
-     *     priority: int|null,
+     *     priority: int,
      *     type: string,
      *     name: string|null,
      *     description: string|null,

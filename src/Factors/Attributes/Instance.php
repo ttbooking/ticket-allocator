@@ -12,7 +12,7 @@ class Instance
     /**
      * @var array{
      *     uuid: string|null,
-     *     priority: int|null,
+     *     priority: int,
      *     name: string|null,
      *     description: string|null,
      *     config: array|null,
@@ -23,7 +23,7 @@ class Instance
 
     public function __construct(
         public ?string $uuid = null,
-        public ?int $priority = null,
+        public int $priority = PHP_INT_MAX,
         public ?string $name = null,
         public ?string $description = null,
         public ?array $config = null,
