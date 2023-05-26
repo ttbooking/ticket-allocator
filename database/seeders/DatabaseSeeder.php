@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         $count = $this->askNumber('Enter the number of ticket categories', 10);
         $this->callWith(TicketCategorySeeder::class, compact('count'));
 
+        $this->call(FactorSeeder::class);
+
         $count = $this->askNumber('Enter the number of operator teams', 3);
         $this->callWith(OperatorTeamSeeder::class, compact('count'));
 
