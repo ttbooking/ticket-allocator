@@ -6,6 +6,7 @@ namespace TTBooking\TicketAllocator\Console;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -59,6 +60,14 @@ class FactorMakeCommand extends GeneratorCommand
     protected function alreadyExists($rawName): bool
     {
         return class_exists($rawName) || parent::alreadyExists($rawName);
+    }
+
+    /**
+     * Build the class with the given name.
+     */
+    protected function buildClass($name): string
+    {
+        return str_replace('{{ instanceUuid }}', (string) Str::orderedUuid(), parent::buildClass($name));
     }
 
     /**

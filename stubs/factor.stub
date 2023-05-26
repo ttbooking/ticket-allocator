@@ -6,8 +6,10 @@ namespace {{ namespace }};
 
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 use TTBooking\TicketAllocator\DTO\TicketMetrics;
+use TTBooking\TicketAllocator\Factors\Attributes;
 use TTBooking\TicketAllocator\Factors\Factor;
 
+#[Attributes\Instance('{{ instanceUuid }}')]
 class {{ class }} extends Factor
 {
     /**
