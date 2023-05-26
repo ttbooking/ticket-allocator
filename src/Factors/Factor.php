@@ -108,7 +108,7 @@ abstract class Factor implements FactorContract
         $attrRefs = collect();
 
         do {
-            $attrRefs->merge($classRef->getAttributes($attribute));
+            $attrRefs->push(...$classRef->getAttributes($attribute));
         } while ($ascend && false !== $classRef = $classRef->getParentClass());
 
         return $attrRefs->map->newInstance();

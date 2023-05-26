@@ -39,7 +39,10 @@ class FactorDictionary extends Collection
      */
     public function instances(): Collection
     {
-        return $this->flatMap->getInstanceData();
+        return $this->flatMap(
+            /** @param class-string<FactorContract> $factor */
+            static fn (string $factor) => $factor::getInstanceData()
+        );
     }
 
     /**
