@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Support;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 use TTBooking\TicketAllocator\Factors\Unknown;
@@ -35,14 +36,24 @@ class FactorDictionary extends Collection
     }
 
     /**
-     * @return Collection<int, array>
+     * @return Collection<int, array{
+     *     uuid: string|null,
+     *     type: string,
+     *     name: string|null,
+     *     description: string|null,
+     *     config: array|null,
+     *     enable: bool,
+     * }>
      */
     public function instances(): Collection
     {
-        return $this->flatMap(
-            /** @param class-string<FactorContract> $factor */
-            static fn (string $factor) => $factor::getInstanceData()
-        );
+        return $this
+            ->flatMap(
+                /** @param class-string<FactorContract> $factor */
+                static fn (string $factor) => $factor::getInstanceData()
+            )
+            ->sortBy('priority')->values()
+            ->map(static fn (array $attributes) => Arr::except($attributes, 'priority'));
     }
 
     /**

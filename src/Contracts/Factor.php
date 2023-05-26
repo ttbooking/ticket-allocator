@@ -27,6 +27,17 @@ interface Factor
 
     public static function getComponentName(): ?string;
 
+    /**
+     * @return Collection<int, array{
+     *     uuid: string|null,
+     *     priority: int|null,
+     *     type: string,
+     *     name: string|null,
+     *     description: string|null,
+     *     config: array|null,
+     *     enable: bool,
+     * }>
+     */
     public static function getInstanceData(): Collection;
 
     public function getProps(): array;

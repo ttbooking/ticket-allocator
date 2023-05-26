@@ -61,10 +61,7 @@ abstract class Factor implements FactorContract
         return static::attribute(Attributes\Component::class, true)?->name;
     }
 
-    /**
-     * @return Collection<int, array>
-     */
-    public static function getInstanceData(): Collection
+    final public static function getInstanceData(): Collection
     {
         return static::attributes(Attributes\Instance::class)->map(static function (Attributes\Instance $instance) {
             return ['type' => static::getAlias()] + $instance->attributes;

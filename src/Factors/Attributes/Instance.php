@@ -9,6 +9,16 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS)]
 class Instance
 {
+    /**
+     * @var array{
+     *     uuid: string|null,
+     *     priority: int|null,
+     *     name: string|null,
+     *     description: string|null,
+     *     config: array|null,
+     *     enable: bool,
+     * }
+     */
     public array $attributes;
 
     public function __construct(
