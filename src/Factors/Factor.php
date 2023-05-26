@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Factors;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 
@@ -60,6 +61,16 @@ abstract class Factor implements FactorContract
         return static::attribute(Attributes\Component::class, true)?->name;
     }
 
+    /**
+     * @return Collection<int, array>
+     */
+    public static function getInstanceData(): Collection
+    {
+        return static::attributes(Attributes\Instance::class)->map(static function (Attributes\Instance $instance) {
+            return ['type' => static::getAlias()] + $instance->attributes;
+        });
+    }
+
     public function getProps(): array
     {
         return [];
@@ -89,17 +100,18 @@ abstract class Factor implements FactorContract
      *
      * @param  class-string<TAttribute>  $attribute
      * @param  bool  $ascend
-     * @return TAttribute|null
+     * @return Collection<int, TAttribute>
      */
-    private static function attribute(string $attribute, bool $ascend = false)
+    private static function attributes(string $attribute, bool $ascend = false): Collection
     {
         $classRef = new \ReflectionClass(static::class);
+        $attrRefs = collect();
 
         do {
-            $attrRef = $classRef->getAttributes($attribute)[0] ?? null;
-        } while ($ascend && ! $attrRef && false !== $classRef = $classRef->getParentClass());
+            $attrRefs->merge($classRef->getAttributes($attribute));
+        } while ($ascend && false !== $classRef = $classRef->getParentClass());
 
-        return $attrRef?->newInstance();
+        return $attrRefs->map->newInstance();
     }
 
     /**
@@ -109,17 +121,8 @@ abstract class Factor implements FactorContract
      * @param  bool  $ascend
      * @return TAttribute|null
      */
-    private static function attributeAlt(string $attribute, bool $ascend = false)
+    private static function attribute(string $attribute, bool $ascend = false)
     {
-        $inheritanceStack = [static::class => static::class];
-        $ascend && $inheritanceStack += class_parents(static::class);
-
-        foreach ($inheritanceStack as $class) {
-            if ($instance = ((new \ReflectionClass($class))->getAttributes($attribute)[0] ?? null)?->newInstance()) {
-                return $instance;
-            }
-        }
-
-        return null;
+        return self::attributes($attribute, $ascend)->first();
     }
 }

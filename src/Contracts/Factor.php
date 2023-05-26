@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Contracts;
 
+use Illuminate\Support\Collection;
 use TTBooking\TicketAllocator\Domain\Ticket\TicketAggregateRoot;
 use TTBooking\TicketAllocator\DTO\TicketMetrics;
 
@@ -25,6 +26,8 @@ interface Factor
     public static function isSingular(): bool;
 
     public static function getComponentName(): ?string;
+
+    public static function getInstanceData(): Collection;
 
     public function getProps(): array;
 

@@ -81,6 +81,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
             Console\FactorCacheCommand::class,
             Console\FactorClearCommand::class,
             Console\FactorMakeCommand::class,
+            Console\FactorInstallCommand::class,
             Console\ReloadDashboardsCommand::class,
             Console\SnapshotOperatorCommand::class,
         ]);

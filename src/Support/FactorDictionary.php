@@ -35,6 +35,14 @@ class FactorDictionary extends Collection
     }
 
     /**
+     * @return Collection<int, array>
+     */
+    public function instances(): Collection
+    {
+        return $this->flatMap->getInstanceData();
+    }
+
+    /**
      * @template TFirstDefault of TDefault
      */
     public function first(callable $callback = null, $default = null): string
