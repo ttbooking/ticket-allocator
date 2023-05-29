@@ -113,7 +113,7 @@ const headers = computed(() => [
     { title: trans("initial_weight"), key: "initial_weight" },
     { title: trans("weight_increment"), key: "weight_increment" },
     { title: trans("complexity"), key: "complexity" },
-    { title: trans("delay"), key: "delay" },
+    { title: trans("delay_sec"), key: "delay" },
     { title: trans("actions"), key: "actions", sortable: false },
 ]);
 

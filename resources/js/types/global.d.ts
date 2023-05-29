@@ -1,5 +1,6 @@
 import { AxiosInstance } from "axios";
 import Echo from "laravel-echo";
+import dayjs from "dayjs";
 import ziggyRoute, { Config as ZiggyConfig } from "ziggy-js";
 import { PageProps as InertiaPageProps } from "@inertiajs/core";
 import { PageProps as AppPageProps } from "./";
@@ -14,8 +15,9 @@ declare global {
     const Ziggy: ZiggyConfig;
 }
 
-declare module "vue" {
+declare module "@vue/runtime-core" {
     interface ComponentCustomProperties {
+        $dayjs: typeof dayjs;
         route: typeof ziggyRoute;
     }
 }

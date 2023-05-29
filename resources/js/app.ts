@@ -1,5 +1,6 @@
 import "../css/app.css";
 
+import dayjs from "./plugins/dayjs";
 import pinia from "./plugins/pinia";
 import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
@@ -23,6 +24,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ name, render: () => h(App, props) })
             .use(plugin)
+            .use(dayjs)
             .use(pinia)
             .use(vuetify)
             //.use(ZiggyVue, window.Ziggy ?? {})

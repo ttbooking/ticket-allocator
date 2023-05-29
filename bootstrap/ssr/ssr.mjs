@@ -1,3 +1,8 @@
+import dayjs from "dayjs";
+import "dayjs/locale/ru.js";
+import duration from "dayjs/plugin/duration.js";
+import LocalizedFormat from "dayjs/plugin/localizedFormat.js";
+import RelativeTime from "dayjs/plugin/relativeTime.js";
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
 import { capitalize, reactive, computed, watchEffect, toRefs, warn, watch, onScopeDispose, effectScope, ref, unref, provide, inject as inject$1, shallowRef, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, toRaw, createVNode, mergeProps, onBeforeUnmount, readonly, nextTick, isRef, Fragment, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, vShow, onBeforeMount, cloneVNode, toHandlers, Teleport, createTextVNode, withModifiers, createSSRApp } from "vue";
@@ -13,10 +18,14 @@ const complexity$1 = "Complexity";
 const complexity_expression$1 = "Complexity expression";
 const complexity_limit$1 = "Complexity limit";
 const create$1 = "Create";
+const current_weight$1 = "Current weight";
 const dashboard$1 = "Dashboard";
-const delay$1 = "Delay, sec";
+const delay$1 = "Delay";
+const delay_sec$1 = "Delay, sec";
 const delay_expression$1 = "Delay expression";
+const delayed_until$1 = "Delayed until";
 const description$1 = "Description";
+const details$1 = "Details";
 const discover$1 = "Discover";
 const display_name$1 = "Display name";
 const edit$1 = "edit";
@@ -30,6 +39,8 @@ const factor_type$1 = "Factor type";
 const factors$1 = "Factors";
 const initial_weight$1 = "Initial weight";
 const initial_weight_expression$1 = "Initial weight expression";
+const issued_on$1 = "Issued on";
+const lifetime$1 = "Lifetime";
 const lower_priority$1 = "lower priority";
 const metrics$1 = "Metrics";
 const name$2 = "Name";
@@ -38,6 +49,7 @@ const new_entry$1 = "New Entry";
 const new_factor$1 = "New Factor";
 const new_operator$1 = "New Operator";
 const new_team$1 = "New Team";
+const none$1 = "none";
 const operator_teams$1 = "Operator teams";
 const operators$1 = "Operators";
 const properties$1 = "Properties";
@@ -68,10 +80,14 @@ const __vite_glob_1_0 = {
   complexity_expression: complexity_expression$1,
   complexity_limit: complexity_limit$1,
   create: create$1,
+  current_weight: current_weight$1,
   dashboard: dashboard$1,
   delay: delay$1,
+  delay_sec: delay_sec$1,
   delay_expression: delay_expression$1,
+  delayed_until: delayed_until$1,
   description: description$1,
+  details: details$1,
   discover: discover$1,
   display_name: display_name$1,
   edit: edit$1,
@@ -85,6 +101,8 @@ const __vite_glob_1_0 = {
   factors: factors$1,
   initial_weight: initial_weight$1,
   initial_weight_expression: initial_weight_expression$1,
+  issued_on: issued_on$1,
+  lifetime: lifetime$1,
   lower_priority: lower_priority$1,
   metrics: metrics$1,
   name: name$2,
@@ -93,6 +111,7 @@ const __vite_glob_1_0 = {
   new_factor: new_factor$1,
   new_operator: new_operator$1,
   new_team: new_team$1,
+  none: none$1,
   operator_teams: operator_teams$1,
   operators: operators$1,
   properties: properties$1,
@@ -297,10 +316,14 @@ const complexity = "Сложность";
 const complexity_expression = "Выражение для вычисления сложности тикета";
 const complexity_limit = "Ограничение по сложности";
 const create = "Создать";
+const current_weight = "Текущий вес";
 const dashboard = "Мониторинг";
-const delay = "Задержка, с";
+const delay = "Задержка";
+const delay_sec = "Задержка, с";
 const delay_expression = "Выражение для вычисления задержки тикета";
+const delayed_until = "Задержана до";
 const description = "Описание";
+const details = "Подробно";
 const discover = "Обнаружить";
 const display_name = "Отображаемое имя";
 const edit = "редактировать";
@@ -314,6 +337,8 @@ const factor_type = "Тип фактора";
 const factors = "Факторы";
 const initial_weight = "Начальный вес";
 const initial_weight_expression = "Выражение для вычисления начального веса тикета";
+const issued_on = "Время подачи";
+const lifetime = "Время жизни";
 const lower_priority = "понизить приоритет";
 const metrics = "Метрики";
 const name$1 = "Имя";
@@ -322,6 +347,7 @@ const new_entry = "Новая запись";
 const new_factor = "Новый фактор";
 const new_operator = "Новый оператор";
 const new_team = "Новая команда";
+const none = "нет";
 const operator_teams = "Команды операторов";
 const operators = "Операторы";
 const properties = "Свойства";
@@ -352,10 +378,14 @@ const __vite_glob_1_3 = {
   complexity_expression,
   complexity_limit,
   create,
+  current_weight,
   dashboard,
   delay,
+  delay_sec,
   delay_expression,
+  delayed_until,
   description,
+  details,
   discover,
   display_name,
   edit,
@@ -369,6 +399,8 @@ const __vite_glob_1_3 = {
   factors,
   initial_weight,
   initial_weight_expression,
+  issued_on,
+  lifetime,
   lower_priority,
   metrics,
   name: name$1,
@@ -377,6 +409,7 @@ const __vite_glob_1_3 = {
   new_factor,
   new_operator,
   new_team,
+  none,
   operator_teams,
   operators,
   properties,
@@ -398,6 +431,15 @@ const __vite_glob_1_3 = {
   variables,
   weight_increment,
   weight_increment_expression
+};
+dayjs.locale("ru");
+dayjs.extend(duration);
+dayjs.extend(LocalizedFormat);
+dayjs.extend(RelativeTime);
+const plugin = {
+  install(app) {
+    app.config.globalProperties.$dayjs = dayjs;
+  }
 };
 const pinia = createPinia().use(createORM());
 const materialdesignicons = "";
@@ -5088,7 +5130,7 @@ const VField = genericComponent()({
           } : void 0;
           const style = getComputedStyle(el);
           const targetStyle = getComputedStyle(targetEl);
-          const duration = parseFloat(style.transitionDuration) * 1e3 || 150;
+          const duration2 = parseFloat(style.transitionDuration) * 1e3 || 150;
           const scale = parseFloat(targetStyle.getPropertyValue("--v-field-label-scale"));
           const color = targetStyle.getPropertyValue("color");
           el.style.visibility = "visible";
@@ -5098,7 +5140,7 @@ const VField = genericComponent()({
             color,
             ...width
           }, {
-            duration,
+            duration: duration2,
             easing: standardEasing,
             direction: val ? "normal" : "reverse"
           }).finished.then(() => {
@@ -12301,9 +12343,9 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-b986d418.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-129a39d0.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-b3dcf1c1.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-2610581f.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9d9ef5ff.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-45694b6e.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-2e657382.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-20b32237.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-46f1e095.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-6726e251.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-86ff4957.mjs") })),
-    setup({ App, props, plugin }) {
-      return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-55cfb669.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-66dffa4f.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-11489354.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-f383698d.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-e4b81ef3.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-34959a69.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-93f2eb11.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-e06cb657.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-ddeaa334.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-162c7a12.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-f89e9c9c.mjs") })),
+    setup({ App, props, plugin: plugin$1 }) {
+      return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin$1).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
           const languages = /* @__PURE__ */ Object.assign({ "../../lang/en.json": __vite_glob_1_0, "../../lang/php_en.json": __vite_glob_1_1, "../../lang/php_ru.json": __vite_glob_1_2, "../../lang/ru.json": __vite_glob_1_3 });
           return languages[`../../lang/${lang}.json`];

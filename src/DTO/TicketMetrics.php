@@ -18,4 +18,13 @@ class TicketMetrics
     {
         return new static(...$metrics);
     }
+
+    public function adjust(self $adjustments): static
+    {
+        foreach ($adjustments as $metric => $adjustment) {
+            $this->$metric = max(0, ($this->$metric ?? 0) + $adjustment);
+        }
+
+        return $this;
+    }
 }

@@ -1,3 +1,4 @@
+import dayjs from "./plugins/dayjs";
 import pinia from "./plugins/pinia";
 import vuetify from "./plugins/vuetify";
 
@@ -21,6 +22,7 @@ createServer((page) =>
         setup({ App, props, plugin }) {
             return createSSRApp({ name, render: () => h(App, props) })
                 .use(plugin)
+                .use(dayjs)
                 .use(pinia)
                 .use(vuetify)
                 .use(i18nVue, {

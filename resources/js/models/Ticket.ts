@@ -20,14 +20,14 @@ export default class Ticket extends Model {
     @Num(0) declare weight_increment: number;
     @Num(0) declare complexity: number;
     @Num(0) declare delay: number;
-    @Attr() declare created_at: string;
+    @Cast(() => DateCast) @Attr() declare created_at: Date;
 
     @BelongsTo(() => TicketCategory, "category_uuid") declare category: TicketCategory;
 
     @BelongsTo(() => Operator, "handler_uuid") declare handler: Operator | null;
 
     get duration() {
-        return Math.round((useSharedTimestamp().value - new Date(this.created_at).getTime()) / 1000);
+        return Math.round((useSharedTimestamp().value - this.created_at.getTime()) / 1000);
     }
 
     get weight() {

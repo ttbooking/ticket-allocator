@@ -16,6 +16,7 @@
                     <v-tabs v-model="tab">
                         <v-tab value="properties">{{ $t("properties") }}</v-tab>
                         <v-tab value="metrics">{{ $t("metrics") }}</v-tab>
+                        <v-tab value="details">{{ $t("details") }}</v-tab>
                     </v-tabs>
                     <v-card-text>
                         <v-window v-model="tab">
@@ -31,6 +32,50 @@
                                 </table>
                             </v-window-item>
                             <v-window-item value="metrics" class="prose">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th>{{ $t("issued_on") }}</th>
+                                            <td>{{ $dayjs(ticket.created_at).format("lll") }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ $t("lifetime") }}</th>
+                                            <td>{{ $dayjs(ticket.created_at).fromNow(true) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ $t("current_weight") }}</th>
+                                            <td>{{ compactPosition }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ $t("complexity") }}</th>
+                                            <td>{{ ticket.complexity }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ $t("delay") }}</th>
+                                            <td>
+                                                {{
+                                                    ticket.delay
+                                                        ? $dayjs.duration(ticket.delay, "s").humanize()
+                                                        : $t("none")
+                                                }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ $t("delayed_until") }}</th>
+                                            <td>
+                                                {{
+                                                    ticket.delay
+                                                        ? $dayjs(ticket.created_at)
+                                                              .add($dayjs.duration(ticket.delay, "s"))
+                                                              .format("lll")
+                                                        : "-"
+                                                }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </v-window-item>
+                            <v-window-item value="details" class="prose">
                                 <table class="table-fixed">
                                     <thead>
                                         <tr>
@@ -45,7 +90,7 @@
                                                 <em class="metric" :title="$t('complexity')">C</em>
                                             </th>
                                             <th class="text-center">
-                                                <em class="metric" :title="$t('delay')">D</em>
+                                                <em class="metric" :title="$t('delay_sec')">D</em>
                                             </th>
                                         </tr>
                                     </thead>

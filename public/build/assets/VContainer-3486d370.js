@@ -1,0 +1,2 @@
+import"./VRow-960ed207.js";import{p as n,m as o,q as r,v as l,x as i,C as c,D as m}from"./app-855eb26d.js";const p=n({fluid:{type:Boolean,default:!1},...o(),...r()},"v-container"),d=l()({name:"VContainer",props:p(),setup(e,a){let{slots:s}=a;const{rtlClasses:t}=i();return c(()=>m(e.tag,{class:["v-container",{"v-container--fluid":e.fluid},t.value,e.class],style:e.style},s)),{}}});export{d as V};
+//# sourceMappingURL=VContainer-3486d370.js.map
