@@ -36,11 +36,11 @@
                                     <tbody>
                                         <tr>
                                             <th>{{ $t("issued_on") }}</th>
-                                            <td>{{ $dayjs(ticket.created_at).format("lll") }}</td>
+                                            <td>{{ createdAt.format("lll") }}</td>
                                         </tr>
                                         <tr>
                                             <th>{{ $t("lifetime") }}</th>
-                                            <td>{{ $dayjs(ticket.created_at).fromNow(true) }}</td>
+                                            <td>{{ createdAt.fromNow(true) }}</td>
                                         </tr>
                                         <tr>
                                             <th>{{ $t("current_weight") }}</th>
@@ -52,25 +52,11 @@
                                         </tr>
                                         <tr>
                                             <th>{{ $t("delay") }}</th>
-                                            <td>
-                                                {{
-                                                    ticket.delay
-                                                        ? $dayjs.duration(ticket.delay, "s").humanize()
-                                                        : $t("none")
-                                                }}
-                                            </td>
+                                            <td>{{ ticket.delay ? delay.humanize() : $t("none") }}</td>
                                         </tr>
                                         <tr>
                                             <th>{{ $t("delayed_until") }}</th>
-                                            <td>
-                                                {{
-                                                    ticket.delay
-                                                        ? $dayjs(ticket.created_at)
-                                                              .add($dayjs.duration(ticket.delay, "s"))
-                                                              .format("lll")
-                                                        : "-"
-                                                }}
-                                            </td>
+                                            <td>{{ ticket.delay ? createdAt.add(delay).format("lll") : "-" }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -124,6 +110,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import dayjs from "dayjs";
 import MarkdownIt from "markdown-it";
 import { usePage } from "@inertiajs/vue3";
 import Ticket from "@/models/Ticket";
@@ -144,6 +131,10 @@ const options = useSharedOptions();
 const mode = useSharedDisplayMode();
 
 const config = computed(() => usePage().props.options as DisplayOptions);
+
+const createdAt = computed(() => dayjs(props.ticket.created_at));
+
+const delay = computed(() => dayjs.duration(props.ticket.delay, "s"));
 
 const threshold = computed(() => config.value[`${mode.value}_threshold`]);
 
