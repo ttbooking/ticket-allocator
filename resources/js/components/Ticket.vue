@@ -44,11 +44,11 @@
                                         </tr>
                                         <tr>
                                             <th>{{ $t("current_weight") }}</th>
-                                            <td>{{ compact(ticket.weight) }}</td>
+                                            <td>{{ currentWeightInfo }}</td>
                                         </tr>
                                         <tr>
                                             <th>{{ $t("complexity") }}</th>
-                                            <td>{{ ticket.complexity }}</td>
+                                            <td>{{ ticket.complexity + " " + trans("units") }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -131,10 +131,17 @@ const delay = computed(() => dayjs.duration(props.ticket.delay, "s"));
 
 const delayedUntil = computed(() => createdAt.value.add(delay.value));
 
-const createdAtInfo = computed(() => createdAt.value.format("lll") + " (" + createdAt.value.fromNow() + ")");
+const createdAtInfo = computed(() => `${createdAt.value.format("lll")} (${createdAt.value.fromNow()})`);
 
 const delayedUntilInfo = computed(
-    () => delayedUntil.value.format("lll") + " (" + trans("time_left", { time: delay.value.humanize() }) + ")"
+    () => `${delayedUntil.value.format("lll")} (${trans("time_left", { time: delayedUntil.value.fromNow(true) })})`
+);
+
+const currentWeightInfo = computed(
+    () =>
+        `${compact(props.ticket.weight)} (${trans("increment_per_second", {
+            units: props.ticket.weight_increment.toString(),
+        })})`
 );
 
 const threshold = computed(() => config.value[`${mode.value}_threshold`]);

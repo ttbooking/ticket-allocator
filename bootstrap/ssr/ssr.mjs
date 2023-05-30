@@ -36,6 +36,8 @@ const entries$1 = "Entries";
 const factor$1 = "Factor";
 const factor_type$1 = "Factor type";
 const factors$1 = "Factors";
+const increment$1 = "increment";
+const increment_per_second$1 = ":units units/sec. increment";
 const initial_weight$1 = "Initial weight";
 const initial_weight_expression$1 = "Initial weight expression";
 const issued_on$1 = "Issued on";
@@ -63,6 +65,8 @@ const time_left$1 = ":time left";
 const title$1 = "Ticket Allocator";
 const total$1 = "Total";
 const type$1 = "Type";
+const units$1 = "units";
+const units_per_second$1 = "units/sec.";
 const unknown$1 = "Unknown";
 const user$1 = "User";
 const value$1 = "Value";
@@ -96,6 +100,8 @@ const __vite_glob_1_0 = {
   factor: factor$1,
   factor_type: factor_type$1,
   factors: factors$1,
+  increment: increment$1,
+  increment_per_second: increment_per_second$1,
   initial_weight: initial_weight$1,
   initial_weight_expression: initial_weight_expression$1,
   issued_on: issued_on$1,
@@ -123,6 +129,8 @@ const __vite_glob_1_0 = {
   title: title$1,
   total: total$1,
   type: type$1,
+  units: units$1,
+  units_per_second: units_per_second$1,
   unknown: unknown$1,
   user: user$1,
   value: value$1,
@@ -330,6 +338,8 @@ const entries = "Записи";
 const factor = "Фактор";
 const factor_type = "Тип фактора";
 const factors = "Факторы";
+const increment = "приращение";
+const increment_per_second = "приращение :units ед./сек.";
 const initial_weight = "Начальный вес";
 const initial_weight_expression = "Выражение для вычисления начального веса тикета";
 const issued_on = "Время подачи";
@@ -353,10 +363,12 @@ const ticket_categories = "Категории тикетов";
 const ticket_limit = "Ограничение по числу тикетов";
 const ticket_pool = "Пул тикетов";
 const tickets = "Тикеты";
-const time_left = "осталось :time";
+const time_left = "ост. :time";
 const title = "Распределитель Заявок";
 const total = "Итого";
 const type = "Тип";
+const units = "ед.";
+const units_per_second = "ед./сек.";
 const unknown = "Неизвестный";
 const user = "Пользователь";
 const value = "Значение";
@@ -390,6 +402,8 @@ const __vite_glob_1_3 = {
   factor,
   factor_type,
   factors,
+  increment,
+  increment_per_second,
   initial_weight,
   initial_weight_expression,
   issued_on,
@@ -417,6 +431,8 @@ const __vite_glob_1_3 = {
   title,
   total,
   type,
+  units,
+  units_per_second,
   unknown,
   user,
   value,
@@ -12347,7 +12363,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-ff76fc13.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-02da915a.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-8061f0ed.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-183ce8ed.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-92d1216e.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-fddbccd4.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-59cb6ec1.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-829a5e81.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-50246428.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-4a130b93.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-45973223.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-f2914781.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-02da915a.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-8061f0ed.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-183ce8ed.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-92d1216e.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-fddbccd4.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-59cb6ec1.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-829a5e81.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-50246428.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-4a130b93.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-45973223.mjs") })),
     setup({ App, props, plugin: plugin$1 }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin$1).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
