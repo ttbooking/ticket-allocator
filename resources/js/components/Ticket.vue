@@ -38,7 +38,7 @@
                                             <th>{{ $t("issued_on") }}</th>
                                             <td>{{ createdAtInfo }}</td>
                                         </tr>
-                                        <tr v-if="ticket.delay">
+                                        <tr v-if="delayedUntil.isAfter($dayjs())">
                                             <th>{{ $t("delayed_until") }}</th>
                                             <td>{{ delayedUntilInfo }}</td>
                                         </tr>
