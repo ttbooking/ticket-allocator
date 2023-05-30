@@ -1,6 +1,7 @@
 <?php
 
 use TTBooking\TicketAllocator\Http\Middleware\HandleInertiaRequests;
+use TTBooking\TicketAllocator\Http\Middleware\NotifyInvalidProps;
 
 return [
 
@@ -26,7 +27,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'middleware' => ['web', 'auth', HandleInertiaRequests::class],
+    'middleware' => ['web', 'auth', HandleInertiaRequests::class, NotifyInvalidProps::class],
 
     /*
     |--------------------------------------------------------------------------
