@@ -65,10 +65,10 @@ const { isOverDropZone } = useDropZone(
     width: 2.2em;
 }
 .ticket-row .name {
-    width: 14em;
+    width: 12em;
 }
 .ticket-row .load {
-    width: 3.9em;
+    width: 5em;
 }
 .ticket-row .complexity {
     width: 5em;
