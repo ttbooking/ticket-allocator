@@ -5,7 +5,7 @@ import LocalizedFormat from "dayjs/plugin/localizedFormat.js";
 import RelativeTime from "dayjs/plugin/relativeTime.js";
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
-import { capitalize, reactive, computed, watchEffect, toRefs, warn, watch, onScopeDispose, effectScope, ref, unref, provide, inject as inject$1, shallowRef, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, toRaw, createVNode, mergeProps, onBeforeUnmount, readonly, nextTick, isRef, Fragment, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, vShow, onBeforeMount, cloneVNode, toHandlers, Teleport, createTextVNode, withModifiers, createSSRApp } from "vue";
+import { watch, onScopeDispose, effectScope, capitalize, reactive, computed, watchEffect, toRefs, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, unref, provide, inject as inject$1, shallowRef, createVNode, mergeProps, toRaw, onBeforeUnmount, readonly, nextTick, isRef, Fragment, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, toHandlers, Teleport, cloneVNode, createTextVNode, withModifiers, createSSRApp } from "vue";
 import { renderToString } from "@vue/server-renderer";
 import { createInertiaApp } from "@inertiajs/vue3";
 import createServer from "@inertiajs/vue3/server";
@@ -444,6 +444,29 @@ const plugin = {
 const pinia = createPinia().use(createORM());
 const materialdesignicons = "";
 const main = "";
+function useToggleScope(source, fn) {
+  let scope;
+  function start() {
+    scope = effectScope();
+    scope.run(() => fn.length ? fn(() => {
+      scope == null ? void 0 : scope.stop();
+      start();
+    }) : fn());
+  }
+  watch(source, (active2) => {
+    if (active2 && !scope) {
+      start();
+    } else if (!active2) {
+      scope == null ? void 0 : scope.stop();
+      scope = void 0;
+    }
+  }, {
+    immediate: true
+  });
+  onScopeDispose(() => {
+    scope == null ? void 0 : scope.stop();
+  });
+}
 function _classPrivateFieldInitSpec(obj, privateMap, value2) {
   _checkPrivateRedeclaration(obj, privateMap);
   privateMap.set(obj, value2);
@@ -561,8 +584,8 @@ function convertToUnit(str) {
 function isObject(obj) {
   return obj !== null && typeof obj === "object" && !Array.isArray(obj);
 }
-function isComponentInstance(obj) {
-  return obj == null ? void 0 : obj.$el;
+function refElement(obj) {
+  return obj && "$el" in obj ? obj.$el : obj;
 }
 const keyCodes = Object.freeze({
   enter: 13,
@@ -746,7 +769,7 @@ function focusChild(el, location) {
   const focusable = focusableChildren(el);
   const idx = focusable.indexOf(document.activeElement);
   if (!location) {
-    if (!el.contains(document.activeElement)) {
+    if (el === document.activeElement || !el.contains(document.activeElement)) {
       (_a = focusable[0]) == null ? void 0 : _a.focus();
     }
   } else if (location === "first") {
@@ -927,11 +950,24 @@ function deprecate(original, replacement) {
   replacement = Array.isArray(replacement) ? replacement.slice(0, -1).map((s2) => `'${s2}'`).join(", ") + ` or '${replacement.at(-1)}'` : `'${replacement}'`;
   warn(`[Vuetify UPGRADE] '${original}' is deprecated, use ${replacement} instead.`);
 }
+const delta = 0.20689655172413793;
+const cielabForwardTransform = (t4) => t4 > delta ** 3 ? Math.cbrt(t4) : t4 / (3 * delta ** 2) + 4 / 29;
+const cielabReverseTransform = (t4) => t4 > delta ? t4 ** 3 : 3 * delta ** 2 * (t4 - 4 / 29);
+function fromXYZ$1(xyz) {
+  const transform2 = cielabForwardTransform;
+  const transformedY = transform2(xyz[1]);
+  return [116 * transformedY - 16, 500 * (transform2(xyz[0] / 0.95047) - transformedY), 200 * (transformedY - transform2(xyz[2] / 1.08883))];
+}
+function toXYZ$1(lab) {
+  const transform2 = cielabReverseTransform;
+  const Ln = (lab[0] + 16) / 116;
+  return [transform2(Ln + lab[1] / 500) * 0.95047, transform2(Ln), transform2(Ln - lab[2] / 200) * 1.08883];
+}
 const srgbForwardMatrix = [[3.2406, -1.5372, -0.4986], [-0.9689, 1.8758, 0.0415], [0.0557, -0.204, 1.057]];
 const srgbForwardTransform = (C2) => C2 <= 31308e-7 ? C2 * 12.92 : 1.055 * C2 ** (1 / 2.4) - 0.055;
 const srgbReverseMatrix = [[0.4124, 0.3576, 0.1805], [0.2126, 0.7152, 0.0722], [0.0193, 0.1192, 0.9505]];
 const srgbReverseTransform = (C2) => C2 <= 0.04045 ? C2 / 12.92 : ((C2 + 0.055) / 1.055) ** 2.4;
-function fromXYZ$1(xyz) {
+function fromXYZ(xyz) {
   const rgb = Array(3);
   const transform2 = srgbForwardTransform;
   const matrix = srgbForwardMatrix;
@@ -944,7 +980,7 @@ function fromXYZ$1(xyz) {
     b: rgb[2]
   };
 }
-function toXYZ$1(_ref) {
+function toXYZ(_ref) {
   let {
     r: r2,
     g: g2,
@@ -960,19 +996,6 @@ function toXYZ$1(_ref) {
     xyz[i2] = matrix[i2][0] * r2 + matrix[i2][1] * g2 + matrix[i2][2] * b2;
   }
   return xyz;
-}
-const delta = 0.20689655172413793;
-const cielabForwardTransform = (t4) => t4 > delta ** 3 ? Math.cbrt(t4) : t4 / (3 * delta ** 2) + 4 / 29;
-const cielabReverseTransform = (t4) => t4 > delta ? t4 ** 3 : 3 * delta ** 2 * (t4 - 4 / 29);
-function fromXYZ(xyz) {
-  const transform2 = cielabForwardTransform;
-  const transformedY = transform2(xyz[1]);
-  return [116 * transformedY - 16, 500 * (transform2(xyz[0] / 0.95047) - transformedY), 200 * (transformedY - transform2(xyz[2] / 1.08883))];
-}
-function toXYZ(lab) {
-  const transform2 = cielabReverseTransform;
-  const Ln = (lab[0] + 16) / 116;
-  return [transform2(Ln + lab[1] / 500) * 0.95047, transform2(Ln), transform2(Ln - lab[2] / 200) * 1.08883];
 }
 function isCssColor(color) {
   return !!color && /^(#|var\(--|(rgb|hsl)a?\()/.test(color);
@@ -1142,18 +1165,18 @@ function parseHex(hex) {
   return hex;
 }
 function lighten(value2, amount) {
-  const lab = fromXYZ(toXYZ$1(value2));
+  const lab = fromXYZ$1(toXYZ(value2));
   lab[0] = lab[0] + amount * 10;
-  return fromXYZ$1(toXYZ(lab));
+  return fromXYZ(toXYZ$1(lab));
 }
 function darken(value2, amount) {
-  const lab = fromXYZ(toXYZ$1(value2));
+  const lab = fromXYZ$1(toXYZ(value2));
   lab[0] = lab[0] - amount * 10;
-  return fromXYZ$1(toXYZ(lab));
+  return fromXYZ(toXYZ$1(lab));
 }
 function getLuma(color) {
   const rgb = parseColor(color);
-  return toXYZ$1(rgb)[1];
+  return toXYZ(rgb)[1];
 }
 function propsFactory(props, source) {
   return (defaults) => {
@@ -1184,120 +1207,6 @@ const makeComponentProps = propsFactory({
     default: null
   }
 }, "component");
-function useToggleScope(source, fn) {
-  let scope;
-  function start() {
-    scope = effectScope();
-    scope.run(() => fn.length ? fn(() => {
-      scope == null ? void 0 : scope.stop();
-      start();
-    }) : fn());
-  }
-  watch(source, (active2) => {
-    if (active2 && !scope) {
-      start();
-    } else if (!active2) {
-      scope == null ? void 0 : scope.stop();
-      scope = void 0;
-    }
-  }, {
-    immediate: true
-  });
-  onScopeDispose(() => {
-    scope == null ? void 0 : scope.stop();
-  });
-}
-const DefaultsSymbol = Symbol.for("vuetify:defaults");
-function createDefaults(options) {
-  return ref(options);
-}
-function injectDefaults() {
-  const defaults = inject$1(DefaultsSymbol);
-  if (!defaults)
-    throw new Error("[Vuetify] Could not find defaults instance");
-  return defaults;
-}
-function provideDefaults(defaults, options) {
-  const injectedDefaults = injectDefaults();
-  const providedDefaults = ref(defaults);
-  const newDefaults = computed(() => {
-    const disabled = unref(options == null ? void 0 : options.disabled);
-    if (disabled)
-      return injectedDefaults.value;
-    const scoped = unref(options == null ? void 0 : options.scoped);
-    const reset = unref(options == null ? void 0 : options.reset);
-    const root = unref(options == null ? void 0 : options.root);
-    let properties2 = mergeDeep(providedDefaults.value, {
-      prev: injectedDefaults.value
-    });
-    if (scoped)
-      return properties2;
-    if (reset || root) {
-      const len = Number(reset || Infinity);
-      for (let i2 = 0; i2 <= len; i2++) {
-        if (!properties2 || !("prev" in properties2)) {
-          break;
-        }
-        properties2 = properties2.prev;
-      }
-      return properties2;
-    }
-    return properties2.prev ? mergeDeep(properties2.prev, properties2) : properties2;
-  });
-  provide(DefaultsSymbol, newDefaults);
-  return newDefaults;
-}
-function propIsDefined(vnode, prop) {
-  var _a, _b;
-  return typeof ((_a = vnode.props) == null ? void 0 : _a[prop]) !== "undefined" || typeof ((_b = vnode.props) == null ? void 0 : _b[toKebabCase(prop)]) !== "undefined";
-}
-function internalUseDefaults() {
-  let props = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-  let name2 = arguments.length > 1 ? arguments[1] : void 0;
-  let defaults = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : injectDefaults();
-  const vm = getCurrentInstance("useDefaults");
-  name2 = name2 ?? vm.type.name ?? vm.type.__name;
-  if (!name2) {
-    throw new Error("[Vuetify] Could not determine component name");
-  }
-  const componentDefaults = computed(() => {
-    var _a;
-    return (_a = defaults.value) == null ? void 0 : _a[props._as ?? name2];
-  });
-  const _props = new Proxy(props, {
-    get(target, prop) {
-      var _a, _b, _c, _d;
-      const propValue = Reflect.get(target, prop);
-      if (prop === "class" || prop === "style") {
-        return [(_a = componentDefaults.value) == null ? void 0 : _a[prop], propValue].filter((v2) => v2 != null);
-      } else if (typeof prop === "string" && !propIsDefined(vm.vnode, prop)) {
-        return ((_b = componentDefaults.value) == null ? void 0 : _b[prop]) ?? ((_d = (_c = defaults.value) == null ? void 0 : _c.global) == null ? void 0 : _d[prop]) ?? propValue;
-      }
-      return propValue;
-    }
-  });
-  const _subcomponentDefaults = shallowRef();
-  watchEffect(() => {
-    if (componentDefaults.value) {
-      const subComponents = Object.entries(componentDefaults.value).filter((_ref) => {
-        let [key] = _ref;
-        return key.startsWith(key[0].toUpperCase());
-      });
-      if (subComponents.length)
-        _subcomponentDefaults.value = Object.fromEntries(subComponents);
-    }
-  });
-  function provideSubDefaults() {
-    useToggleScope(_subcomponentDefaults, () => {
-      var _a;
-      provideDefaults(mergeDeep(((_a = injectSelf(DefaultsSymbol)) == null ? void 0 : _a.value) ?? {}, _subcomponentDefaults.value));
-    });
-  }
-  return {
-    props: _props,
-    provideSubDefaults
-  };
-}
 function defineComponent(options) {
   options._setup = options._setup ?? options.setup;
   if (!options.name) {
@@ -1305,7 +1214,7 @@ function defineComponent(options) {
     return options;
   }
   if (options._setup) {
-    options.props = propsFactory(options.props ?? {}, toKebabCase(options.name))();
+    options.props = propsFactory(options.props ?? {}, options.name)();
     const propKeys = Object.keys(options.props);
     options.filterProps = function filterProps(props) {
       return pick(props, propKeys, ["class", "style"]);
@@ -1458,47 +1367,418 @@ function useRender(render) {
   const vm = getCurrentInstance("useRender");
   vm.render = render;
 }
-function useProxiedModel(props, prop, defaultValue) {
-  let transformIn = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : (v2) => v2;
-  let transformOut = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : (v2) => v2;
-  const vm = getCurrentInstance("useProxiedModel");
-  const internal = ref(props[prop] !== void 0 ? props[prop] : defaultValue);
-  const kebabProp = toKebabCase(prop);
-  const checkKebab = kebabProp !== prop;
-  const isControlled = checkKebab ? computed(() => {
-    var _a, _b, _c, _d;
-    void props[prop];
-    return !!((((_a = vm.vnode.props) == null ? void 0 : _a.hasOwnProperty(prop)) || ((_b = vm.vnode.props) == null ? void 0 : _b.hasOwnProperty(kebabProp))) && (((_c = vm.vnode.props) == null ? void 0 : _c.hasOwnProperty(`onUpdate:${prop}`)) || ((_d = vm.vnode.props) == null ? void 0 : _d.hasOwnProperty(`onUpdate:${kebabProp}`))));
-  }) : computed(() => {
-    var _a, _b;
-    void props[prop];
-    return !!(((_a = vm.vnode.props) == null ? void 0 : _a.hasOwnProperty(prop)) && ((_b = vm.vnode.props) == null ? void 0 : _b.hasOwnProperty(`onUpdate:${prop}`)));
-  });
-  useToggleScope(() => !isControlled.value, () => {
-    watch(() => props[prop], (val) => {
-      internal.value = val;
+const DefaultsSymbol = Symbol.for("vuetify:defaults");
+function createDefaults(options) {
+  return ref(options);
+}
+function injectDefaults() {
+  const defaults = inject$1(DefaultsSymbol);
+  if (!defaults)
+    throw new Error("[Vuetify] Could not find defaults instance");
+  return defaults;
+}
+function provideDefaults(defaults, options) {
+  const injectedDefaults = injectDefaults();
+  const providedDefaults = ref(defaults);
+  const newDefaults = computed(() => {
+    const disabled = unref(options == null ? void 0 : options.disabled);
+    if (disabled)
+      return injectedDefaults.value;
+    const scoped = unref(options == null ? void 0 : options.scoped);
+    const reset = unref(options == null ? void 0 : options.reset);
+    const root = unref(options == null ? void 0 : options.root);
+    let properties2 = mergeDeep(providedDefaults.value, {
+      prev: injectedDefaults.value
     });
-  });
-  const model = computed({
-    get() {
-      const externalValue = props[prop];
-      return transformIn(isControlled.value ? externalValue : internal.value);
-    },
-    set(internalValue) {
-      const newValue = transformOut(internalValue);
-      const value2 = toRaw(isControlled.value ? props[prop] : internal.value);
-      if (value2 === newValue || transformIn(value2) === internalValue) {
-        return;
+    if (scoped)
+      return properties2;
+    if (reset || root) {
+      const len = Number(reset || Infinity);
+      for (let i2 = 0; i2 <= len; i2++) {
+        if (!properties2 || !("prev" in properties2)) {
+          break;
+        }
+        properties2 = properties2.prev;
       }
-      internal.value = newValue;
-      vm == null ? void 0 : vm.emit(`update:${prop}`, newValue);
+      if (properties2 && typeof root === "string" && root in properties2) {
+        properties2 = mergeDeep(mergeDeep(properties2, {
+          prev: properties2
+        }), properties2[root]);
+      }
+      return properties2;
+    }
+    return properties2.prev ? mergeDeep(properties2.prev, properties2) : properties2;
+  });
+  provide(DefaultsSymbol, newDefaults);
+  return newDefaults;
+}
+function propIsDefined(vnode, prop) {
+  var _a, _b;
+  return typeof ((_a = vnode.props) == null ? void 0 : _a[prop]) !== "undefined" || typeof ((_b = vnode.props) == null ? void 0 : _b[toKebabCase(prop)]) !== "undefined";
+}
+function internalUseDefaults() {
+  let props = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+  let name2 = arguments.length > 1 ? arguments[1] : void 0;
+  let defaults = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : injectDefaults();
+  const vm = getCurrentInstance("useDefaults");
+  name2 = name2 ?? vm.type.name ?? vm.type.__name;
+  if (!name2) {
+    throw new Error("[Vuetify] Could not determine component name");
+  }
+  const componentDefaults = computed(() => {
+    var _a;
+    return (_a = defaults.value) == null ? void 0 : _a[props._as ?? name2];
+  });
+  const _props = new Proxy(props, {
+    get(target, prop) {
+      var _a, _b, _c, _d;
+      const propValue = Reflect.get(target, prop);
+      if (prop === "class" || prop === "style") {
+        return [(_a = componentDefaults.value) == null ? void 0 : _a[prop], propValue].filter((v2) => v2 != null);
+      } else if (typeof prop === "string" && !propIsDefined(vm.vnode, prop)) {
+        return ((_b = componentDefaults.value) == null ? void 0 : _b[prop]) ?? ((_d = (_c = defaults.value) == null ? void 0 : _c.global) == null ? void 0 : _d[prop]) ?? propValue;
+      }
+      return propValue;
     }
   });
-  Object.defineProperty(model, "externalValue", {
-    get: () => isControlled.value ? props[prop] : internal.value
+  const _subcomponentDefaults = shallowRef();
+  watchEffect(() => {
+    if (componentDefaults.value) {
+      const subComponents = Object.entries(componentDefaults.value).filter((_ref) => {
+        let [key] = _ref;
+        return key.startsWith(key[0].toUpperCase());
+      });
+      if (subComponents.length)
+        _subcomponentDefaults.value = Object.fromEntries(subComponents);
+    }
   });
-  return model;
+  function provideSubDefaults() {
+    useToggleScope(_subcomponentDefaults, () => {
+      var _a;
+      provideDefaults(mergeDeep(((_a = injectSelf(DefaultsSymbol)) == null ? void 0 : _a.value) ?? {}, _subcomponentDefaults.value));
+    });
+  }
+  return {
+    props: _props,
+    provideSubDefaults
+  };
 }
+const breakpoints = ["sm", "md", "lg", "xl", "xxl"];
+const DisplaySymbol = Symbol.for("vuetify:display");
+const defaultDisplayOptions = {
+  mobileBreakpoint: "lg",
+  thresholds: {
+    xs: 0,
+    sm: 600,
+    md: 960,
+    lg: 1280,
+    xl: 1920,
+    xxl: 2560
+  }
+};
+const parseDisplayOptions = function() {
+  let options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : defaultDisplayOptions;
+  return mergeDeep(defaultDisplayOptions, options);
+};
+function getClientWidth(ssr) {
+  return IN_BROWSER && !ssr ? window.innerWidth : typeof ssr === "object" && ssr.clientWidth || 0;
+}
+function getClientHeight(ssr) {
+  return IN_BROWSER && !ssr ? window.innerHeight : typeof ssr === "object" && ssr.clientHeight || 0;
+}
+function getPlatform(ssr) {
+  const userAgent = IN_BROWSER && !ssr ? window.navigator.userAgent : "ssr";
+  function match(regexp) {
+    return Boolean(userAgent.match(regexp));
+  }
+  const android = match(/android/i);
+  const ios = match(/iphone|ipad|ipod/i);
+  const cordova = match(/cordova/i);
+  const electron = match(/electron/i);
+  const chrome = match(/chrome/i);
+  const edge = match(/edge/i);
+  const firefox = match(/firefox/i);
+  const opera = match(/opera/i);
+  const win = match(/win/i);
+  const mac = match(/mac/i);
+  const linux = match(/linux/i);
+  return {
+    android,
+    ios,
+    cordova,
+    electron,
+    chrome,
+    edge,
+    firefox,
+    opera,
+    win,
+    mac,
+    linux,
+    touch: SUPPORTS_TOUCH,
+    ssr: userAgent === "ssr"
+  };
+}
+function createDisplay(options, ssr) {
+  const {
+    thresholds,
+    mobileBreakpoint
+  } = parseDisplayOptions(options);
+  const height = shallowRef(getClientHeight(ssr));
+  const platform = shallowRef(getPlatform(ssr));
+  const state = reactive({});
+  const width = shallowRef(getClientWidth(ssr));
+  function updateSize() {
+    height.value = getClientHeight();
+    width.value = getClientWidth();
+  }
+  function update() {
+    updateSize();
+    platform.value = getPlatform();
+  }
+  watchEffect(() => {
+    const xs = width.value < thresholds.sm;
+    const sm = width.value < thresholds.md && !xs;
+    const md = width.value < thresholds.lg && !(sm || xs);
+    const lg = width.value < thresholds.xl && !(md || sm || xs);
+    const xl = width.value < thresholds.xxl && !(lg || md || sm || xs);
+    const xxl = width.value >= thresholds.xxl;
+    const name2 = xs ? "xs" : sm ? "sm" : md ? "md" : lg ? "lg" : xl ? "xl" : "xxl";
+    const breakpointValue = typeof mobileBreakpoint === "number" ? mobileBreakpoint : thresholds[mobileBreakpoint];
+    const mobile = width.value < breakpointValue;
+    state.xs = xs;
+    state.sm = sm;
+    state.md = md;
+    state.lg = lg;
+    state.xl = xl;
+    state.xxl = xxl;
+    state.smAndUp = !xs;
+    state.mdAndUp = !(xs || sm);
+    state.lgAndUp = !(xs || sm || md);
+    state.xlAndUp = !(xs || sm || md || lg);
+    state.smAndDown = !(md || lg || xl || xxl);
+    state.mdAndDown = !(lg || xl || xxl);
+    state.lgAndDown = !(xl || xxl);
+    state.xlAndDown = !xxl;
+    state.name = name2;
+    state.height = height.value;
+    state.width = width.value;
+    state.mobile = mobile;
+    state.mobileBreakpoint = mobileBreakpoint;
+    state.platform = platform.value;
+    state.thresholds = thresholds;
+  });
+  if (IN_BROWSER) {
+    window.addEventListener("resize", updateSize, {
+      passive: true
+    });
+  }
+  return {
+    ...toRefs(state),
+    update,
+    ssr: !!ssr
+  };
+}
+function useDisplay() {
+  const display = inject$1(DisplaySymbol);
+  if (!display)
+    throw new Error("Could not find Vuetify display injection");
+  return display;
+}
+const aliases = {
+  collapse: "mdi-chevron-up",
+  complete: "mdi-check",
+  cancel: "mdi-close-circle",
+  close: "mdi-close",
+  delete: "mdi-close-circle",
+  // delete (e.g. v-chip close)
+  clear: "mdi-close-circle",
+  success: "mdi-check-circle",
+  info: "mdi-information",
+  warning: "mdi-alert-circle",
+  error: "mdi-close-circle",
+  prev: "mdi-chevron-left",
+  next: "mdi-chevron-right",
+  checkboxOn: "mdi-checkbox-marked",
+  checkboxOff: "mdi-checkbox-blank-outline",
+  checkboxIndeterminate: "mdi-minus-box",
+  delimiter: "mdi-circle",
+  // for carousel
+  sortAsc: "mdi-arrow-up",
+  sortDesc: "mdi-arrow-down",
+  expand: "mdi-chevron-down",
+  menu: "mdi-menu",
+  subgroup: "mdi-menu-down",
+  dropdown: "mdi-menu-down",
+  radioOn: "mdi-radiobox-marked",
+  radioOff: "mdi-radiobox-blank",
+  edit: "mdi-pencil",
+  ratingEmpty: "mdi-star-outline",
+  ratingFull: "mdi-star",
+  ratingHalf: "mdi-star-half-full",
+  loading: "mdi-cached",
+  first: "mdi-page-first",
+  last: "mdi-page-last",
+  unfold: "mdi-unfold-more-horizontal",
+  file: "mdi-paperclip",
+  plus: "mdi-plus",
+  minus: "mdi-minus"
+};
+const mdi = {
+  // Not using mergeProps here, functional components merge props by default (?)
+  component: (props) => h$1(VClassIcon, {
+    ...props,
+    class: "mdi"
+  })
+};
+const IconValue = [String, Function, Object, Array];
+const IconSymbol = Symbol.for("vuetify:icons");
+const makeIconProps = propsFactory({
+  icon: {
+    type: IconValue
+  },
+  // Could not remove this and use makeTagProps, types complained because it is not required
+  tag: {
+    type: String,
+    required: true
+  }
+}, "icon");
+const VComponentIcon = genericComponent()({
+  name: "VComponentIcon",
+  props: makeIconProps(),
+  setup(props, _ref) {
+    let {
+      slots
+    } = _ref;
+    return () => {
+      const Icon = props.icon;
+      return createVNode(props.tag, null, {
+        default: () => {
+          var _a;
+          return [props.icon ? createVNode(Icon, null, null) : (_a = slots.default) == null ? void 0 : _a.call(slots)];
+        }
+      });
+    };
+  }
+});
+const VSvgIcon = defineComponent({
+  name: "VSvgIcon",
+  inheritAttrs: false,
+  props: makeIconProps(),
+  setup(props, _ref2) {
+    let {
+      attrs
+    } = _ref2;
+    return () => {
+      return createVNode(props.tag, mergeProps(attrs, {
+        "style": null
+      }), {
+        default: () => [createVNode("svg", {
+          "class": "v-icon__svg",
+          "xmlns": "http://www.w3.org/2000/svg",
+          "viewBox": "0 0 24 24",
+          "role": "img",
+          "aria-hidden": "true"
+        }, [Array.isArray(props.icon) ? props.icon.map((path) => Array.isArray(path) ? createVNode("path", {
+          "d": path[0],
+          "fill-opacity": path[1]
+        }, null) : createVNode("path", {
+          "d": path
+        }, null)) : createVNode("path", {
+          "d": props.icon
+        }, null)])]
+      });
+    };
+  }
+});
+defineComponent({
+  name: "VLigatureIcon",
+  props: makeIconProps(),
+  setup(props) {
+    return () => {
+      return createVNode(props.tag, null, {
+        default: () => [props.icon]
+      });
+    };
+  }
+});
+const VClassIcon = defineComponent({
+  name: "VClassIcon",
+  props: makeIconProps(),
+  setup(props) {
+    return () => {
+      return createVNode(props.tag, {
+        "class": props.icon
+      }, null);
+    };
+  }
+});
+const defaultSets = {
+  svg: {
+    component: VSvgIcon
+  },
+  class: {
+    component: VClassIcon
+  }
+};
+function createIcons(options) {
+  return mergeDeep({
+    defaultSet: "mdi",
+    sets: {
+      ...defaultSets,
+      mdi
+    },
+    aliases: {
+      ...aliases,
+      /* eslint-disable max-len */
+      vuetify: ["M8.2241 14.2009L12 21L22 3H14.4459L8.2241 14.2009Z", ["M7.26303 12.4733L7.00113 12L2 3H12.5261C12.5261 3 12.5261 3 12.5261 3L7.26303 12.4733Z", 0.6]],
+      "vuetify-outline": "svg:M7.26 12.47 12.53 3H2L7.26 12.47ZM14.45 3 8.22 14.2 12 21 22 3H14.45ZM18.6 5 12 16.88 10.51 14.2 15.62 5ZM7.26 8.35 5.4 5H9.13L7.26 8.35Z"
+      /* eslint-enable max-len */
+    }
+  }, options);
+}
+const useIcon = (props) => {
+  const icons = inject$1(IconSymbol);
+  if (!icons)
+    throw new Error("Missing Vuetify Icons provide!");
+  const iconData = computed(() => {
+    var _a;
+    const iconAlias = unref(props);
+    if (!iconAlias)
+      return {
+        component: VComponentIcon
+      };
+    let icon = iconAlias;
+    if (typeof icon === "string") {
+      icon = icon.trim();
+      if (icon.startsWith("$")) {
+        icon = (_a = icons.aliases) == null ? void 0 : _a[icon.slice(1)];
+      }
+    }
+    if (!icon)
+      throw new Error(`Could not find aliased icon "${iconAlias}"`);
+    if (Array.isArray(icon)) {
+      return {
+        component: VSvgIcon,
+        icon
+      };
+    } else if (typeof icon !== "string") {
+      return {
+        component: VComponentIcon,
+        icon
+      };
+    }
+    const iconSetName = Object.keys(icons.sets).find((setName) => typeof icon === "string" && icon.startsWith(`${setName}:`));
+    const iconName = iconSetName ? icon.slice(iconSetName.length + 1) : icon;
+    const iconSet = icons.sets[iconSetName ?? icons.defaultSet];
+    return {
+      component: iconSet.component,
+      icon: iconName
+    };
+  });
+  return {
+    iconData
+  };
+};
 const en = {
   badge: "Badge",
   close: "Close",
@@ -1580,96 +1860,6 @@ const en = {
     empty: "No more"
   }
 };
-const LANG_PREFIX = "$vuetify.";
-const replace = (str, params) => {
-  return str.replace(/\{(\d+)\}/g, (match, index) => {
-    return String(params[+index]);
-  });
-};
-const createTranslateFunction = (current, fallback, messages) => {
-  return function(key) {
-    for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      params[_key - 1] = arguments[_key];
-    }
-    if (!key.startsWith(LANG_PREFIX)) {
-      return replace(key, params);
-    }
-    const shortKey = key.replace(LANG_PREFIX, "");
-    const currentLocale = current.value && messages.value[current.value];
-    const fallbackLocale = fallback.value && messages.value[fallback.value];
-    let str = getObjectValueByPath(currentLocale, shortKey, null);
-    if (!str) {
-      consoleWarn(`Translation key "${key}" not found in "${current.value}", trying fallback locale`);
-      str = getObjectValueByPath(fallbackLocale, shortKey, null);
-    }
-    if (!str) {
-      consoleError(`Translation key "${key}" not found in fallback`);
-      str = key;
-    }
-    if (typeof str !== "string") {
-      consoleError(`Translation key "${key}" has a non-string value`);
-      str = key;
-    }
-    return replace(str, params);
-  };
-};
-function createNumberFunction(current, fallback) {
-  return (value2, options) => {
-    const numberFormat = new Intl.NumberFormat([current.value, fallback.value], options);
-    return numberFormat.format(value2);
-  };
-}
-function useProvided(props, prop, provided) {
-  const internal = useProxiedModel(props, prop, props[prop] ?? provided.value);
-  internal.value = props[prop] ?? provided.value;
-  watch(provided, (v2) => {
-    if (props[prop] == null) {
-      internal.value = provided.value;
-    }
-  });
-  return internal;
-}
-function createProvideFunction(state) {
-  return (props) => {
-    const current = useProvided(props, "locale", state.current);
-    const fallback = useProvided(props, "fallback", state.fallback);
-    const messages = useProvided(props, "messages", state.messages);
-    return {
-      name: "vuetify",
-      current,
-      fallback,
-      messages,
-      t: createTranslateFunction(current, fallback, messages),
-      n: createNumberFunction(current, fallback),
-      provide: createProvideFunction({
-        current,
-        fallback,
-        messages
-      })
-    };
-  };
-}
-function createVuetifyAdapter(options) {
-  const current = shallowRef((options == null ? void 0 : options.locale) ?? "en");
-  const fallback = shallowRef((options == null ? void 0 : options.fallback) ?? "en");
-  const messages = ref({
-    en,
-    ...options == null ? void 0 : options.messages
-  });
-  return {
-    name: "vuetify",
-    current,
-    fallback,
-    messages,
-    t: createTranslateFunction(current, fallback, messages),
-    n: createNumberFunction(current, fallback),
-    provide: createProvideFunction({
-      current,
-      fallback,
-      messages
-    })
-  };
-}
 const ru = {
   badge: "знак",
   close: "Закрыть",
@@ -1794,6 +1984,137 @@ const defaultRtl = {
   zhHans: false,
   zhHant: false
 };
+function useProxiedModel(props, prop, defaultValue) {
+  let transformIn = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : (v2) => v2;
+  let transformOut = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : (v2) => v2;
+  const vm = getCurrentInstance("useProxiedModel");
+  const internal = ref(props[prop] !== void 0 ? props[prop] : defaultValue);
+  const kebabProp = toKebabCase(prop);
+  const checkKebab = kebabProp !== prop;
+  const isControlled = checkKebab ? computed(() => {
+    var _a, _b, _c, _d;
+    void props[prop];
+    return !!((((_a = vm.vnode.props) == null ? void 0 : _a.hasOwnProperty(prop)) || ((_b = vm.vnode.props) == null ? void 0 : _b.hasOwnProperty(kebabProp))) && (((_c = vm.vnode.props) == null ? void 0 : _c.hasOwnProperty(`onUpdate:${prop}`)) || ((_d = vm.vnode.props) == null ? void 0 : _d.hasOwnProperty(`onUpdate:${kebabProp}`))));
+  }) : computed(() => {
+    var _a, _b;
+    void props[prop];
+    return !!(((_a = vm.vnode.props) == null ? void 0 : _a.hasOwnProperty(prop)) && ((_b = vm.vnode.props) == null ? void 0 : _b.hasOwnProperty(`onUpdate:${prop}`)));
+  });
+  useToggleScope(() => !isControlled.value, () => {
+    watch(() => props[prop], (val) => {
+      internal.value = val;
+    });
+  });
+  const model = computed({
+    get() {
+      const externalValue = props[prop];
+      return transformIn(isControlled.value ? externalValue : internal.value);
+    },
+    set(internalValue) {
+      const newValue = transformOut(internalValue);
+      const value2 = toRaw(isControlled.value ? props[prop] : internal.value);
+      if (value2 === newValue || transformIn(value2) === internalValue) {
+        return;
+      }
+      internal.value = newValue;
+      vm == null ? void 0 : vm.emit(`update:${prop}`, newValue);
+    }
+  });
+  Object.defineProperty(model, "externalValue", {
+    get: () => isControlled.value ? props[prop] : internal.value
+  });
+  return model;
+}
+const LANG_PREFIX = "$vuetify.";
+const replace = (str, params) => {
+  return str.replace(/\{(\d+)\}/g, (match, index) => {
+    return String(params[+index]);
+  });
+};
+const createTranslateFunction = (current, fallback, messages) => {
+  return function(key) {
+    for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      params[_key - 1] = arguments[_key];
+    }
+    if (!key.startsWith(LANG_PREFIX)) {
+      return replace(key, params);
+    }
+    const shortKey = key.replace(LANG_PREFIX, "");
+    const currentLocale = current.value && messages.value[current.value];
+    const fallbackLocale = fallback.value && messages.value[fallback.value];
+    let str = getObjectValueByPath(currentLocale, shortKey, null);
+    if (!str) {
+      consoleWarn(`Translation key "${key}" not found in "${current.value}", trying fallback locale`);
+      str = getObjectValueByPath(fallbackLocale, shortKey, null);
+    }
+    if (!str) {
+      consoleError(`Translation key "${key}" not found in fallback`);
+      str = key;
+    }
+    if (typeof str !== "string") {
+      consoleError(`Translation key "${key}" has a non-string value`);
+      str = key;
+    }
+    return replace(str, params);
+  };
+};
+function createNumberFunction(current, fallback) {
+  return (value2, options) => {
+    const numberFormat = new Intl.NumberFormat([current.value, fallback.value], options);
+    return numberFormat.format(value2);
+  };
+}
+function useProvided(props, prop, provided) {
+  const internal = useProxiedModel(props, prop, props[prop] ?? provided.value);
+  internal.value = props[prop] ?? provided.value;
+  watch(provided, (v2) => {
+    if (props[prop] == null) {
+      internal.value = provided.value;
+    }
+  });
+  return internal;
+}
+function createProvideFunction(state) {
+  return (props) => {
+    const current = useProvided(props, "locale", state.current);
+    const fallback = useProvided(props, "fallback", state.fallback);
+    const messages = useProvided(props, "messages", state.messages);
+    return {
+      name: "vuetify",
+      current,
+      fallback,
+      messages,
+      t: createTranslateFunction(current, fallback, messages),
+      n: createNumberFunction(current, fallback),
+      provide: createProvideFunction({
+        current,
+        fallback,
+        messages
+      })
+    };
+  };
+}
+function createVuetifyAdapter(options) {
+  const current = shallowRef((options == null ? void 0 : options.locale) ?? "en");
+  const fallback = shallowRef((options == null ? void 0 : options.fallback) ?? "en");
+  const messages = ref({
+    en,
+    ...options == null ? void 0 : options.messages
+  });
+  return {
+    name: "vuetify",
+    current,
+    fallback,
+    messages,
+    t: createTranslateFunction(current, fallback, messages),
+    n: createNumberFunction(current, fallback),
+    provide: createProvideFunction({
+      current,
+      fallback,
+      messages
+    })
+  };
+}
 const LocaleSymbol = Symbol.for("vuetify:locale");
 function isLocaleInstance(obj) {
   return obj.name != null;
@@ -1829,6 +2150,316 @@ function useRtl() {
     isRtl: locale.isRtl,
     rtlClasses: locale.rtlClasses
   };
+}
+const mainTRC = 2.4;
+const Rco = 0.2126729;
+const Gco = 0.7151522;
+const Bco = 0.072175;
+const normBG = 0.55;
+const normTXT = 0.58;
+const revTXT = 0.57;
+const revBG = 0.62;
+const blkThrs = 0.03;
+const blkClmp = 1.45;
+const deltaYmin = 5e-4;
+const scaleBoW = 1.25;
+const scaleWoB = 1.25;
+const loConThresh = 0.078;
+const loConFactor = 12.82051282051282;
+const loConOffset = 0.06;
+const loClip = 1e-3;
+function APCAcontrast(text, background) {
+  const Rtxt = (text.r / 255) ** mainTRC;
+  const Gtxt = (text.g / 255) ** mainTRC;
+  const Btxt = (text.b / 255) ** mainTRC;
+  const Rbg = (background.r / 255) ** mainTRC;
+  const Gbg = (background.g / 255) ** mainTRC;
+  const Bbg = (background.b / 255) ** mainTRC;
+  let Ytxt = Rtxt * Rco + Gtxt * Gco + Btxt * Bco;
+  let Ybg = Rbg * Rco + Gbg * Gco + Bbg * Bco;
+  if (Ytxt <= blkThrs)
+    Ytxt += (blkThrs - Ytxt) ** blkClmp;
+  if (Ybg <= blkThrs)
+    Ybg += (blkThrs - Ybg) ** blkClmp;
+  if (Math.abs(Ybg - Ytxt) < deltaYmin)
+    return 0;
+  let outputContrast;
+  if (Ybg > Ytxt) {
+    const SAPC = (Ybg ** normBG - Ytxt ** normTXT) * scaleBoW;
+    outputContrast = SAPC < loClip ? 0 : SAPC < loConThresh ? SAPC - SAPC * loConFactor * loConOffset : SAPC - loConOffset;
+  } else {
+    const SAPC = (Ybg ** revBG - Ytxt ** revTXT) * scaleWoB;
+    outputContrast = SAPC > -loClip ? 0 : SAPC > -loConThresh ? SAPC - SAPC * loConFactor * loConOffset : SAPC + loConOffset;
+  }
+  return outputContrast * 100;
+}
+const ThemeSymbol = Symbol.for("vuetify:theme");
+const makeThemeProps = propsFactory({
+  theme: String
+}, "theme");
+const defaultThemeOptions = {
+  defaultTheme: "light",
+  variations: {
+    colors: [],
+    lighten: 0,
+    darken: 0
+  },
+  themes: {
+    light: {
+      dark: false,
+      colors: {
+        background: "#FFFFFF",
+        surface: "#FFFFFF",
+        "surface-variant": "#424242",
+        "on-surface-variant": "#EEEEEE",
+        primary: "#6200EE",
+        "primary-darken-1": "#3700B3",
+        secondary: "#03DAC6",
+        "secondary-darken-1": "#018786",
+        error: "#B00020",
+        info: "#2196F3",
+        success: "#4CAF50",
+        warning: "#FB8C00"
+      },
+      variables: {
+        "border-color": "#000000",
+        "border-opacity": 0.12,
+        "high-emphasis-opacity": 0.87,
+        "medium-emphasis-opacity": 0.6,
+        "disabled-opacity": 0.38,
+        "idle-opacity": 0.04,
+        "hover-opacity": 0.04,
+        "focus-opacity": 0.12,
+        "selected-opacity": 0.08,
+        "activated-opacity": 0.12,
+        "pressed-opacity": 0.12,
+        "dragged-opacity": 0.08,
+        "theme-kbd": "#212529",
+        "theme-on-kbd": "#FFFFFF",
+        "theme-code": "#F5F5F5",
+        "theme-on-code": "#000000"
+      }
+    },
+    dark: {
+      dark: true,
+      colors: {
+        background: "#121212",
+        surface: "#212121",
+        "surface-variant": "#BDBDBD",
+        "on-surface-variant": "#424242",
+        primary: "#BB86FC",
+        "primary-darken-1": "#3700B3",
+        secondary: "#03DAC5",
+        "secondary-darken-1": "#03DAC5",
+        error: "#CF6679",
+        info: "#2196F3",
+        success: "#4CAF50",
+        warning: "#FB8C00"
+      },
+      variables: {
+        "border-color": "#FFFFFF",
+        "border-opacity": 0.12,
+        "high-emphasis-opacity": 1,
+        "medium-emphasis-opacity": 0.7,
+        "disabled-opacity": 0.5,
+        "idle-opacity": 0.1,
+        "hover-opacity": 0.04,
+        "focus-opacity": 0.12,
+        "selected-opacity": 0.08,
+        "activated-opacity": 0.12,
+        "pressed-opacity": 0.16,
+        "dragged-opacity": 0.08,
+        "theme-kbd": "#212529",
+        "theme-on-kbd": "#FFFFFF",
+        "theme-code": "#343434",
+        "theme-on-code": "#CCCCCC"
+      }
+    }
+  }
+};
+function parseThemeOptions() {
+  var _a, _b;
+  let options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : defaultThemeOptions;
+  if (!options)
+    return {
+      ...defaultThemeOptions,
+      isDisabled: true
+    };
+  const themes = {};
+  for (const [key, theme] of Object.entries(options.themes ?? {})) {
+    const defaultTheme = theme.dark || key === "dark" ? (_a = defaultThemeOptions.themes) == null ? void 0 : _a.dark : (_b = defaultThemeOptions.themes) == null ? void 0 : _b.light;
+    themes[key] = mergeDeep(defaultTheme, theme);
+  }
+  return mergeDeep(defaultThemeOptions, {
+    ...options,
+    themes
+  });
+}
+function createTheme(options) {
+  const parsedOptions = reactive(parseThemeOptions(options));
+  const name2 = ref(parsedOptions.defaultTheme);
+  const themes = ref(parsedOptions.themes);
+  const computedThemes = computed(() => {
+    const acc = {};
+    for (const [name3, original] of Object.entries(themes.value)) {
+      const theme = acc[name3] = {
+        ...original,
+        colors: {
+          ...original.colors
+        }
+      };
+      if (parsedOptions.variations) {
+        for (const name4 of parsedOptions.variations.colors) {
+          const color = theme.colors[name4];
+          if (!color)
+            continue;
+          for (const variation of ["lighten", "darken"]) {
+            const fn = variation === "lighten" ? lighten : darken;
+            for (const amount of createRange(parsedOptions.variations[variation], 1)) {
+              theme.colors[`${name4}-${variation}-${amount}`] = RGBtoHex(fn(parseColor(color), amount));
+            }
+          }
+        }
+      }
+      for (const color of Object.keys(theme.colors)) {
+        if (/^on-[a-z]/.test(color) || theme.colors[`on-${color}`])
+          continue;
+        const onColor = `on-${color}`;
+        const colorVal = parseColor(theme.colors[color]);
+        const blackContrast = Math.abs(APCAcontrast(parseColor(0), colorVal));
+        const whiteContrast = Math.abs(APCAcontrast(parseColor(16777215), colorVal));
+        theme.colors[onColor] = whiteContrast > Math.min(blackContrast, 50) ? "#fff" : "#000";
+      }
+    }
+    return acc;
+  });
+  const current = computed(() => computedThemes.value[name2.value]);
+  const styles = computed(() => {
+    const lines = [];
+    if (current.value.dark) {
+      createCssClass(lines, ":root", ["color-scheme: dark"]);
+    }
+    createCssClass(lines, ":root", genCssVariables(current.value));
+    for (const [themeName, theme] of Object.entries(computedThemes.value)) {
+      createCssClass(lines, `.v-theme--${themeName}`, [`color-scheme: ${theme.dark ? "dark" : "normal"}`, ...genCssVariables(theme)]);
+    }
+    const bgLines = [];
+    const fgLines = [];
+    const colors = new Set(Object.values(computedThemes.value).flatMap((theme) => Object.keys(theme.colors)));
+    for (const key of colors) {
+      if (/^on-[a-z]/.test(key)) {
+        createCssClass(fgLines, `.${key}`, [`color: rgb(var(--v-theme-${key})) !important`]);
+      } else {
+        createCssClass(bgLines, `.bg-${key}`, [`--v-theme-overlay-multiplier: var(--v-theme-${key}-overlay-multiplier)`, `background-color: rgb(var(--v-theme-${key})) !important`, `color: rgb(var(--v-theme-on-${key})) !important`]);
+        createCssClass(fgLines, `.text-${key}`, [`color: rgb(var(--v-theme-${key})) !important`]);
+        createCssClass(fgLines, `.border-${key}`, [`--v-border-color: var(--v-theme-${key})`]);
+      }
+    }
+    lines.push(...bgLines, ...fgLines);
+    return lines.map((str, i2) => i2 === 0 ? str : `    ${str}`).join("");
+  });
+  function getHead() {
+    return {
+      style: [{
+        children: styles.value,
+        id: "vuetify-theme-stylesheet",
+        nonce: parsedOptions.cspNonce || false
+      }]
+    };
+  }
+  function install(app) {
+    const head = app._context.provides.usehead;
+    if (head) {
+      if (head.push) {
+        const entry = head.push(getHead);
+        watch(styles, () => {
+          entry.patch(getHead);
+        });
+      } else {
+        if (IN_BROWSER) {
+          head.addHeadObjs(computed(getHead));
+          watchEffect(() => head.updateDOM());
+        } else {
+          head.addHeadObjs(getHead());
+        }
+      }
+    } else {
+      let updateStyles = function() {
+        if (parsedOptions.isDisabled)
+          return;
+        if (typeof document !== "undefined" && !styleEl) {
+          const el = document.createElement("style");
+          el.type = "text/css";
+          el.id = "vuetify-theme-stylesheet";
+          if (parsedOptions.cspNonce)
+            el.setAttribute("nonce", parsedOptions.cspNonce);
+          styleEl = el;
+          document.head.appendChild(styleEl);
+        }
+        if (styleEl)
+          styleEl.innerHTML = styles.value;
+      };
+      let styleEl = IN_BROWSER ? document.getElementById("vuetify-theme-stylesheet") : null;
+      watch(styles, updateStyles, {
+        immediate: true
+      });
+    }
+  }
+  const themeClasses = computed(() => parsedOptions.isDisabled ? void 0 : `v-theme--${name2.value}`);
+  return {
+    install,
+    isDisabled: parsedOptions.isDisabled,
+    name: name2,
+    themes,
+    current,
+    computedThemes,
+    themeClasses,
+    styles,
+    global: {
+      name: name2,
+      current
+    }
+  };
+}
+function provideTheme(props) {
+  getCurrentInstance("provideTheme");
+  const theme = inject$1(ThemeSymbol, null);
+  if (!theme)
+    throw new Error("Could not find Vuetify theme injection");
+  const name2 = computed(() => {
+    return props.theme ?? (theme == null ? void 0 : theme.name.value);
+  });
+  const themeClasses = computed(() => theme.isDisabled ? void 0 : `v-theme--${name2.value}`);
+  const newTheme = {
+    ...theme,
+    name: name2,
+    themeClasses
+  };
+  provide(ThemeSymbol, newTheme);
+  return newTheme;
+}
+function createCssClass(lines, selector, content) {
+  lines.push(`${selector} {
+`, ...content.map((line) => `  ${line};
+`), "}\n");
+}
+function genCssVariables(theme) {
+  const lightOverlay = theme.dark ? 2 : 1;
+  const darkOverlay = theme.dark ? 1 : 2;
+  const variables2 = [];
+  for (const [key, value2] of Object.entries(theme.colors)) {
+    const rgb = parseColor(value2);
+    variables2.push(`--v-theme-${key}: ${rgb.r},${rgb.g},${rgb.b}`);
+    if (!key.startsWith("on-")) {
+      variables2.push(`--v-theme-${key}-overlay-multiplier: ${getLuma(value2) > 0.18 ? lightOverlay : darkOverlay}`);
+    }
+  }
+  for (const [key, value2] of Object.entries(theme.variables)) {
+    const color = typeof value2 === "string" && value2.startsWith("#") ? parseColor(value2) : void 0;
+    const rgb = color ? `${color.r}, ${color.g}, ${color.b}` : void 0;
+    variables2.push(`--v-${key}: ${rgb ?? value2}`);
+  }
+  return variables2;
 }
 function getWeekArray(date2) {
   let currentWeek = [];
@@ -2229,626 +2860,6 @@ function createDate(options) {
     adapter: VuetifyDateAdapter
   };
 }
-const breakpoints = ["sm", "md", "lg", "xl", "xxl"];
-const DisplaySymbol = Symbol.for("vuetify:display");
-const defaultDisplayOptions = {
-  mobileBreakpoint: "lg",
-  thresholds: {
-    xs: 0,
-    sm: 600,
-    md: 960,
-    lg: 1280,
-    xl: 1920,
-    xxl: 2560
-  }
-};
-const parseDisplayOptions = function() {
-  let options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : defaultDisplayOptions;
-  return mergeDeep(defaultDisplayOptions, options);
-};
-function getClientWidth(ssr) {
-  return IN_BROWSER && !ssr ? window.innerWidth : typeof ssr === "object" && ssr.clientWidth || 0;
-}
-function getClientHeight(ssr) {
-  return IN_BROWSER && !ssr ? window.innerHeight : typeof ssr === "object" && ssr.clientHeight || 0;
-}
-function getPlatform(ssr) {
-  const userAgent = IN_BROWSER && !ssr ? window.navigator.userAgent : "ssr";
-  function match(regexp) {
-    return Boolean(userAgent.match(regexp));
-  }
-  const android = match(/android/i);
-  const ios = match(/iphone|ipad|ipod/i);
-  const cordova = match(/cordova/i);
-  const electron = match(/electron/i);
-  const chrome = match(/chrome/i);
-  const edge = match(/edge/i);
-  const firefox = match(/firefox/i);
-  const opera = match(/opera/i);
-  const win = match(/win/i);
-  const mac = match(/mac/i);
-  const linux = match(/linux/i);
-  return {
-    android,
-    ios,
-    cordova,
-    electron,
-    chrome,
-    edge,
-    firefox,
-    opera,
-    win,
-    mac,
-    linux,
-    touch: SUPPORTS_TOUCH,
-    ssr: userAgent === "ssr"
-  };
-}
-function createDisplay(options, ssr) {
-  const {
-    thresholds,
-    mobileBreakpoint
-  } = parseDisplayOptions(options);
-  const height = shallowRef(getClientHeight(ssr));
-  const platform = shallowRef(getPlatform(ssr));
-  const state = reactive({});
-  const width = shallowRef(getClientWidth(ssr));
-  function updateSize() {
-    height.value = getClientHeight();
-    width.value = getClientWidth();
-  }
-  function update() {
-    updateSize();
-    platform.value = getPlatform();
-  }
-  watchEffect(() => {
-    const xs = width.value < thresholds.sm;
-    const sm = width.value < thresholds.md && !xs;
-    const md = width.value < thresholds.lg && !(sm || xs);
-    const lg = width.value < thresholds.xl && !(md || sm || xs);
-    const xl = width.value < thresholds.xxl && !(lg || md || sm || xs);
-    const xxl = width.value >= thresholds.xxl;
-    const name2 = xs ? "xs" : sm ? "sm" : md ? "md" : lg ? "lg" : xl ? "xl" : "xxl";
-    const breakpointValue = typeof mobileBreakpoint === "number" ? mobileBreakpoint : thresholds[mobileBreakpoint];
-    const mobile = width.value < breakpointValue;
-    state.xs = xs;
-    state.sm = sm;
-    state.md = md;
-    state.lg = lg;
-    state.xl = xl;
-    state.xxl = xxl;
-    state.smAndUp = !xs;
-    state.mdAndUp = !(xs || sm);
-    state.lgAndUp = !(xs || sm || md);
-    state.xlAndUp = !(xs || sm || md || lg);
-    state.smAndDown = !(md || lg || xl || xxl);
-    state.mdAndDown = !(lg || xl || xxl);
-    state.lgAndDown = !(xl || xxl);
-    state.xlAndDown = !xxl;
-    state.name = name2;
-    state.height = height.value;
-    state.width = width.value;
-    state.mobile = mobile;
-    state.mobileBreakpoint = mobileBreakpoint;
-    state.platform = platform.value;
-    state.thresholds = thresholds;
-  });
-  if (IN_BROWSER) {
-    window.addEventListener("resize", updateSize, {
-      passive: true
-    });
-  }
-  return {
-    ...toRefs(state),
-    update,
-    ssr: !!ssr
-  };
-}
-function useDisplay() {
-  const display = inject$1(DisplaySymbol);
-  if (!display)
-    throw new Error("Could not find Vuetify display injection");
-  return display;
-}
-const aliases = {
-  collapse: "mdi-chevron-up",
-  complete: "mdi-check",
-  cancel: "mdi-close-circle",
-  close: "mdi-close",
-  delete: "mdi-close-circle",
-  // delete (e.g. v-chip close)
-  clear: "mdi-close-circle",
-  success: "mdi-check-circle",
-  info: "mdi-information",
-  warning: "mdi-alert-circle",
-  error: "mdi-close-circle",
-  prev: "mdi-chevron-left",
-  next: "mdi-chevron-right",
-  checkboxOn: "mdi-checkbox-marked",
-  checkboxOff: "mdi-checkbox-blank-outline",
-  checkboxIndeterminate: "mdi-minus-box",
-  delimiter: "mdi-circle",
-  // for carousel
-  sortAsc: "mdi-arrow-up",
-  sortDesc: "mdi-arrow-down",
-  expand: "mdi-chevron-down",
-  menu: "mdi-menu",
-  subgroup: "mdi-menu-down",
-  dropdown: "mdi-menu-down",
-  radioOn: "mdi-radiobox-marked",
-  radioOff: "mdi-radiobox-blank",
-  edit: "mdi-pencil",
-  ratingEmpty: "mdi-star-outline",
-  ratingFull: "mdi-star",
-  ratingHalf: "mdi-star-half-full",
-  loading: "mdi-cached",
-  first: "mdi-page-first",
-  last: "mdi-page-last",
-  unfold: "mdi-unfold-more-horizontal",
-  file: "mdi-paperclip",
-  plus: "mdi-plus",
-  minus: "mdi-minus"
-};
-const mdi = {
-  // Not using mergeProps here, functional components merge props by default (?)
-  component: (props) => h$1(VClassIcon, {
-    ...props,
-    class: "mdi"
-  })
-};
-const IconValue = [String, Function, Object, Array];
-const IconSymbol = Symbol.for("vuetify:icons");
-const makeIconProps = propsFactory({
-  icon: {
-    type: IconValue
-  },
-  // Could not remove this and use makeTagProps, types complained because it is not required
-  tag: {
-    type: String,
-    required: true
-  }
-}, "icon");
-const VComponentIcon = genericComponent()({
-  name: "VComponentIcon",
-  props: makeIconProps(),
-  setup(props, _ref) {
-    let {
-      slots
-    } = _ref;
-    return () => {
-      const Icon = props.icon;
-      return createVNode(props.tag, null, {
-        default: () => {
-          var _a;
-          return [props.icon ? createVNode(Icon, null, null) : (_a = slots.default) == null ? void 0 : _a.call(slots)];
-        }
-      });
-    };
-  }
-});
-const VSvgIcon = defineComponent({
-  name: "VSvgIcon",
-  inheritAttrs: false,
-  props: makeIconProps(),
-  setup(props, _ref2) {
-    let {
-      attrs
-    } = _ref2;
-    return () => {
-      return createVNode(props.tag, mergeProps(attrs, {
-        "style": null
-      }), {
-        default: () => [createVNode("svg", {
-          "class": "v-icon__svg",
-          "xmlns": "http://www.w3.org/2000/svg",
-          "viewBox": "0 0 24 24",
-          "role": "img",
-          "aria-hidden": "true"
-        }, [Array.isArray(props.icon) ? props.icon.map((path) => Array.isArray(path) ? createVNode("path", {
-          "d": path[0],
-          "fill-opacity": path[1]
-        }, null) : createVNode("path", {
-          "d": path
-        }, null)) : createVNode("path", {
-          "d": props.icon
-        }, null)])]
-      });
-    };
-  }
-});
-defineComponent({
-  name: "VLigatureIcon",
-  props: makeIconProps(),
-  setup(props) {
-    return () => {
-      return createVNode(props.tag, null, {
-        default: () => [props.icon]
-      });
-    };
-  }
-});
-const VClassIcon = defineComponent({
-  name: "VClassIcon",
-  props: makeIconProps(),
-  setup(props) {
-    return () => {
-      return createVNode(props.tag, {
-        "class": props.icon
-      }, null);
-    };
-  }
-});
-const defaultSets = {
-  svg: {
-    component: VSvgIcon
-  },
-  class: {
-    component: VClassIcon
-  }
-};
-function createIcons(options) {
-  return mergeDeep({
-    defaultSet: "mdi",
-    sets: {
-      ...defaultSets,
-      mdi
-    },
-    aliases
-  }, options);
-}
-const useIcon = (props) => {
-  const icons = inject$1(IconSymbol);
-  if (!icons)
-    throw new Error("Missing Vuetify Icons provide!");
-  const iconData = computed(() => {
-    var _a;
-    const iconAlias = unref(props);
-    if (!iconAlias)
-      return {
-        component: VComponentIcon
-      };
-    let icon = iconAlias;
-    if (typeof icon === "string") {
-      icon = icon.trim();
-      if (icon.startsWith("$")) {
-        icon = (_a = icons.aliases) == null ? void 0 : _a[icon.slice(1)];
-      }
-    }
-    if (!icon)
-      throw new Error(`Could not find aliased icon "${iconAlias}"`);
-    if (Array.isArray(icon)) {
-      return {
-        component: VSvgIcon,
-        icon
-      };
-    } else if (typeof icon !== "string") {
-      return {
-        component: VComponentIcon,
-        icon
-      };
-    }
-    const iconSetName = Object.keys(icons.sets).find((setName) => typeof icon === "string" && icon.startsWith(`${setName}:`));
-    const iconName = iconSetName ? icon.slice(iconSetName.length + 1) : icon;
-    const iconSet = icons.sets[iconSetName ?? icons.defaultSet];
-    return {
-      component: iconSet.component,
-      icon: iconName
-    };
-  });
-  return {
-    iconData
-  };
-};
-const mainTRC = 2.4;
-const Rco = 0.2126729;
-const Gco = 0.7151522;
-const Bco = 0.072175;
-const normBG = 0.55;
-const normTXT = 0.58;
-const revTXT = 0.57;
-const revBG = 0.62;
-const blkThrs = 0.03;
-const blkClmp = 1.45;
-const deltaYmin = 5e-4;
-const scaleBoW = 1.25;
-const scaleWoB = 1.25;
-const loConThresh = 0.078;
-const loConFactor = 12.82051282051282;
-const loConOffset = 0.06;
-const loClip = 1e-3;
-function APCAcontrast(text, background) {
-  const Rtxt = (text.r / 255) ** mainTRC;
-  const Gtxt = (text.g / 255) ** mainTRC;
-  const Btxt = (text.b / 255) ** mainTRC;
-  const Rbg = (background.r / 255) ** mainTRC;
-  const Gbg = (background.g / 255) ** mainTRC;
-  const Bbg = (background.b / 255) ** mainTRC;
-  let Ytxt = Rtxt * Rco + Gtxt * Gco + Btxt * Bco;
-  let Ybg = Rbg * Rco + Gbg * Gco + Bbg * Bco;
-  if (Ytxt <= blkThrs)
-    Ytxt += (blkThrs - Ytxt) ** blkClmp;
-  if (Ybg <= blkThrs)
-    Ybg += (blkThrs - Ybg) ** blkClmp;
-  if (Math.abs(Ybg - Ytxt) < deltaYmin)
-    return 0;
-  let outputContrast;
-  if (Ybg > Ytxt) {
-    const SAPC = (Ybg ** normBG - Ytxt ** normTXT) * scaleBoW;
-    outputContrast = SAPC < loClip ? 0 : SAPC < loConThresh ? SAPC - SAPC * loConFactor * loConOffset : SAPC - loConOffset;
-  } else {
-    const SAPC = (Ybg ** revBG - Ytxt ** revTXT) * scaleWoB;
-    outputContrast = SAPC > -loClip ? 0 : SAPC > -loConThresh ? SAPC - SAPC * loConFactor * loConOffset : SAPC + loConOffset;
-  }
-  return outputContrast * 100;
-}
-const ThemeSymbol = Symbol.for("vuetify:theme");
-const makeThemeProps = propsFactory({
-  theme: String
-}, "theme");
-const defaultThemeOptions = {
-  defaultTheme: "light",
-  variations: {
-    colors: [],
-    lighten: 0,
-    darken: 0
-  },
-  themes: {
-    light: {
-      dark: false,
-      colors: {
-        background: "#FFFFFF",
-        surface: "#FFFFFF",
-        "surface-variant": "#424242",
-        "on-surface-variant": "#EEEEEE",
-        primary: "#6200EE",
-        "primary-darken-1": "#3700B3",
-        secondary: "#03DAC6",
-        "secondary-darken-1": "#018786",
-        error: "#B00020",
-        info: "#2196F3",
-        success: "#4CAF50",
-        warning: "#FB8C00"
-      },
-      variables: {
-        "border-color": "#000000",
-        "border-opacity": 0.12,
-        "high-emphasis-opacity": 0.87,
-        "medium-emphasis-opacity": 0.6,
-        "disabled-opacity": 0.38,
-        "idle-opacity": 0.04,
-        "hover-opacity": 0.04,
-        "focus-opacity": 0.12,
-        "selected-opacity": 0.08,
-        "activated-opacity": 0.12,
-        "pressed-opacity": 0.12,
-        "dragged-opacity": 0.08,
-        "theme-kbd": "#212529",
-        "theme-on-kbd": "#FFFFFF",
-        "theme-code": "#F5F5F5",
-        "theme-on-code": "#000000"
-      }
-    },
-    dark: {
-      dark: true,
-      colors: {
-        background: "#121212",
-        surface: "#212121",
-        "surface-variant": "#BDBDBD",
-        "on-surface-variant": "#424242",
-        primary: "#BB86FC",
-        "primary-darken-1": "#3700B3",
-        secondary: "#03DAC5",
-        "secondary-darken-1": "#03DAC5",
-        error: "#CF6679",
-        info: "#2196F3",
-        success: "#4CAF50",
-        warning: "#FB8C00"
-      },
-      variables: {
-        "border-color": "#FFFFFF",
-        "border-opacity": 0.12,
-        "high-emphasis-opacity": 1,
-        "medium-emphasis-opacity": 0.7,
-        "disabled-opacity": 0.5,
-        "idle-opacity": 0.1,
-        "hover-opacity": 0.04,
-        "focus-opacity": 0.12,
-        "selected-opacity": 0.08,
-        "activated-opacity": 0.12,
-        "pressed-opacity": 0.16,
-        "dragged-opacity": 0.08,
-        "theme-kbd": "#212529",
-        "theme-on-kbd": "#FFFFFF",
-        "theme-code": "#343434",
-        "theme-on-code": "#CCCCCC"
-      }
-    }
-  }
-};
-function parseThemeOptions() {
-  var _a, _b;
-  let options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : defaultThemeOptions;
-  if (!options)
-    return {
-      ...defaultThemeOptions,
-      isDisabled: true
-    };
-  const themes = {};
-  for (const [key, theme] of Object.entries(options.themes ?? {})) {
-    const defaultTheme = theme.dark || key === "dark" ? (_a = defaultThemeOptions.themes) == null ? void 0 : _a.dark : (_b = defaultThemeOptions.themes) == null ? void 0 : _b.light;
-    themes[key] = mergeDeep(defaultTheme, theme);
-  }
-  return mergeDeep(defaultThemeOptions, {
-    ...options,
-    themes
-  });
-}
-function createTheme(options) {
-  const parsedOptions = reactive(parseThemeOptions(options));
-  const name2 = ref(parsedOptions.defaultTheme);
-  const themes = ref(parsedOptions.themes);
-  const computedThemes = computed(() => {
-    const acc = {};
-    for (const [name3, original] of Object.entries(themes.value)) {
-      const theme = acc[name3] = {
-        ...original,
-        colors: {
-          ...original.colors
-        }
-      };
-      if (parsedOptions.variations) {
-        for (const name4 of parsedOptions.variations.colors) {
-          const color = theme.colors[name4];
-          if (!color)
-            continue;
-          for (const variation of ["lighten", "darken"]) {
-            const fn = variation === "lighten" ? lighten : darken;
-            for (const amount of createRange(parsedOptions.variations[variation], 1)) {
-              theme.colors[`${name4}-${variation}-${amount}`] = RGBtoHex(fn(parseColor(color), amount));
-            }
-          }
-        }
-      }
-      for (const color of Object.keys(theme.colors)) {
-        if (/^on-[a-z]/.test(color) || theme.colors[`on-${color}`])
-          continue;
-        const onColor = `on-${color}`;
-        const colorVal = parseColor(theme.colors[color]);
-        const blackContrast = Math.abs(APCAcontrast(parseColor(0), colorVal));
-        const whiteContrast = Math.abs(APCAcontrast(parseColor(16777215), colorVal));
-        theme.colors[onColor] = whiteContrast > Math.min(blackContrast, 50) ? "#fff" : "#000";
-      }
-    }
-    return acc;
-  });
-  const current = computed(() => computedThemes.value[name2.value]);
-  const styles = computed(() => {
-    const lines = [];
-    if (current.value.dark) {
-      createCssClass(lines, ":root", ["color-scheme: dark"]);
-    }
-    createCssClass(lines, ":root", genCssVariables(current.value));
-    for (const [themeName, theme] of Object.entries(computedThemes.value)) {
-      createCssClass(lines, `.v-theme--${themeName}`, [`color-scheme: ${theme.dark ? "dark" : "normal"}`, ...genCssVariables(theme)]);
-    }
-    const bgLines = [];
-    const fgLines = [];
-    const colors = new Set(Object.values(computedThemes.value).flatMap((theme) => Object.keys(theme.colors)));
-    for (const key of colors) {
-      if (/^on-[a-z]/.test(key)) {
-        createCssClass(fgLines, `.${key}`, [`color: rgb(var(--v-theme-${key})) !important`]);
-      } else {
-        createCssClass(bgLines, `.bg-${key}`, [`--v-theme-overlay-multiplier: var(--v-theme-${key}-overlay-multiplier)`, `background-color: rgb(var(--v-theme-${key})) !important`, `color: rgb(var(--v-theme-on-${key})) !important`]);
-        createCssClass(fgLines, `.text-${key}`, [`color: rgb(var(--v-theme-${key})) !important`]);
-        createCssClass(fgLines, `.border-${key}`, [`--v-border-color: var(--v-theme-${key})`]);
-      }
-    }
-    lines.push(...bgLines, ...fgLines);
-    return lines.map((str, i2) => i2 === 0 ? str : `    ${str}`).join("");
-  });
-  function getHead() {
-    return {
-      style: [{
-        children: styles.value,
-        id: "vuetify-theme-stylesheet",
-        nonce: parsedOptions.cspNonce || false
-      }]
-    };
-  }
-  function install(app) {
-    const head = app._context.provides.usehead;
-    if (head) {
-      if (head.push) {
-        const entry = head.push(getHead);
-        watch(styles, () => {
-          entry.patch(getHead);
-        });
-      } else {
-        if (IN_BROWSER) {
-          head.addHeadObjs(computed(getHead));
-          watchEffect(() => head.updateDOM());
-        } else {
-          head.addHeadObjs(getHead());
-        }
-      }
-    } else {
-      let updateStyles = function() {
-        if (parsedOptions.isDisabled)
-          return;
-        if (typeof document !== "undefined" && !styleEl) {
-          const el = document.createElement("style");
-          el.type = "text/css";
-          el.id = "vuetify-theme-stylesheet";
-          if (parsedOptions.cspNonce)
-            el.setAttribute("nonce", parsedOptions.cspNonce);
-          styleEl = el;
-          document.head.appendChild(styleEl);
-        }
-        if (styleEl)
-          styleEl.innerHTML = styles.value;
-      };
-      let styleEl = IN_BROWSER ? document.getElementById("vuetify-theme-stylesheet") : null;
-      watch(styles, updateStyles, {
-        immediate: true
-      });
-    }
-  }
-  const themeClasses = computed(() => parsedOptions.isDisabled ? void 0 : `v-theme--${name2.value}`);
-  return {
-    install,
-    isDisabled: parsedOptions.isDisabled,
-    name: name2,
-    themes,
-    current,
-    computedThemes,
-    themeClasses,
-    styles,
-    global: {
-      name: name2,
-      current
-    }
-  };
-}
-function provideTheme(props) {
-  getCurrentInstance("provideTheme");
-  const theme = inject$1(ThemeSymbol, null);
-  if (!theme)
-    throw new Error("Could not find Vuetify theme injection");
-  const name2 = computed(() => {
-    return props.theme ?? (theme == null ? void 0 : theme.name.value);
-  });
-  const themeClasses = computed(() => theme.isDisabled ? void 0 : `v-theme--${name2.value}`);
-  const newTheme = {
-    ...theme,
-    name: name2,
-    themeClasses
-  };
-  provide(ThemeSymbol, newTheme);
-  return newTheme;
-}
-function createCssClass(lines, selector, content) {
-  lines.push(`${selector} {
-`, ...content.map((line) => `  ${line};
-`), "}\n");
-}
-function genCssVariables(theme) {
-  const lightOverlay = theme.dark ? 2 : 1;
-  const darkOverlay = theme.dark ? 1 : 2;
-  const variables2 = [];
-  for (const [key, value2] of Object.entries(theme.colors)) {
-    const rgb = parseColor(value2);
-    variables2.push(`--v-theme-${key}: ${rgb.r},${rgb.g},${rgb.b}`);
-    if (!key.startsWith("on-")) {
-      variables2.push(`--v-theme-${key}-overlay-multiplier: ${getLuma(value2) > 0.18 ? lightOverlay : darkOverlay}`);
-    }
-  }
-  for (const [key, value2] of Object.entries(theme.variables)) {
-    const color = typeof value2 === "string" && value2.startsWith("#") ? parseColor(value2) : void 0;
-    const rgb = color ? `${color.r}, ${color.g}, ${color.b}` : void 0;
-    variables2.push(`--v-${key}: ${rgb ?? value2}`);
-  }
-  return variables2;
-}
 function useResizeObserver(callback) {
   const resizeRef = ref();
   const contentRect = ref();
@@ -2864,11 +2875,11 @@ function useResizeObserver(callback) {
     });
     watch(resizeRef, (newValue, oldValue) => {
       if (oldValue) {
-        observer.unobserve(oldValue);
+        observer.unobserve(refElement(oldValue));
         contentRect.value = void 0;
       }
       if (newValue)
-        observer.observe(newValue);
+        observer.observe(refElement(newValue));
     }, {
       flush: "post"
     });
@@ -2962,7 +2973,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.1";
+const version = "3.3.2";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -3174,7 +3185,7 @@ const makeVBtnGroupProps = propsFactory({
   ...makeTagProps(),
   ...makeThemeProps(),
   ...makeVariantProps()
-}, "v-btn-group");
+}, "VBtnGroup");
 const VBtnGroup = genericComponent()({
   name: "VBtnGroup",
   props: makeVBtnGroupProps(),
@@ -3413,7 +3424,7 @@ const VBtnToggleSymbol = Symbol.for("vuetify:v-btn-toggle");
 const makeVBtnToggleProps = propsFactory({
   ...makeVBtnGroupProps(),
   ...makeGroupProps()
-}, "v-btn-toggle");
+}, "VBtnToggle");
 const VBtnToggle = genericComponent()({
   name: "VBtnToggle",
   props: makeVBtnToggleProps(),
@@ -3457,16 +3468,16 @@ const VBtnToggle = genericComponent()({
     };
   }
 });
-const makeDefaultsProviderProps = propsFactory({
+const makeVDefaultsProviderProps = propsFactory({
   defaults: Object,
   disabled: Boolean,
   reset: [Number, String],
-  root: Boolean,
+  root: [Boolean, String],
   scoped: Boolean
-}, "v-defaults-provider");
+}, "VDefaultsProvider");
 const VDefaultsProvider = genericComponent(false)({
   name: "VDefaultsProvider",
-  props: makeDefaultsProviderProps(),
+  props: makeVDefaultsProviderProps(),
   setup(props, _ref) {
     let {
       slots
@@ -3528,7 +3539,7 @@ const makeVIconProps = propsFactory({
     tag: "i"
   }),
   ...makeThemeProps()
-}, "v-icon");
+}, "VIcon");
 const VIcon = genericComponent()({
   name: "VIcon",
   props: makeVIconProps(),
@@ -3629,7 +3640,7 @@ const makeVProgressCircularProps = propsFactory({
     tag: "div"
   }),
   ...makeThemeProps()
-}, "v-progress-circular");
+}, "VProgressCircular");
 const VProgressCircular = genericComponent()({
   name: "VProgressCircular",
   props: makeVProgressCircularProps(),
@@ -3722,6 +3733,389 @@ const VProgressCircular = genericComponent()({
     return {};
   }
 });
+const makeDimensionProps = propsFactory({
+  height: [Number, String],
+  maxHeight: [Number, String],
+  maxWidth: [Number, String],
+  minHeight: [Number, String],
+  minWidth: [Number, String],
+  width: [Number, String]
+}, "dimension");
+function useDimension(props) {
+  const dimensionStyles = computed(() => ({
+    height: convertToUnit(props.height),
+    maxHeight: convertToUnit(props.maxHeight),
+    maxWidth: convertToUnit(props.maxWidth),
+    minHeight: convertToUnit(props.minHeight),
+    minWidth: convertToUnit(props.minWidth),
+    width: convertToUnit(props.width)
+  }));
+  return {
+    dimensionStyles
+  };
+}
+const VProgressLinear$1 = "";
+const oppositeMap = {
+  center: "center",
+  top: "bottom",
+  bottom: "top",
+  left: "right",
+  right: "left"
+};
+const makeLocationProps = propsFactory({
+  location: String
+}, "location");
+function useLocation(props) {
+  let opposite = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : false;
+  let offset = arguments.length > 2 ? arguments[2] : void 0;
+  const {
+    isRtl
+  } = useRtl();
+  const locationStyles = computed(() => {
+    if (!props.location)
+      return {};
+    const {
+      side,
+      align
+    } = parseAnchor(props.location.split(" ").length > 1 ? props.location : `${props.location} center`, isRtl.value);
+    function getOffset2(side2) {
+      return offset ? offset(side2) : 0;
+    }
+    const styles = {};
+    if (side !== "center") {
+      if (opposite)
+        styles[oppositeMap[side]] = `calc(100% - ${getOffset2(side)}px)`;
+      else
+        styles[side] = 0;
+    }
+    if (align !== "center") {
+      if (opposite)
+        styles[oppositeMap[align]] = `calc(100% - ${getOffset2(align)}px)`;
+      else
+        styles[align] = 0;
+    } else {
+      if (side === "center")
+        styles.top = styles.left = "50%";
+      else {
+        styles[{
+          top: "left",
+          bottom: "left",
+          left: "top",
+          right: "top"
+        }[side]] = "50%";
+      }
+      styles.transform = {
+        top: "translateX(-50%)",
+        bottom: "translateX(-50%)",
+        left: "translateY(-50%)",
+        right: "translateY(-50%)",
+        center: "translate(-50%, -50%)"
+      }[side];
+    }
+    return styles;
+  });
+  return {
+    locationStyles
+  };
+}
+const makeVProgressLinearProps = propsFactory({
+  absolute: Boolean,
+  active: {
+    type: Boolean,
+    default: true
+  },
+  bgColor: String,
+  bgOpacity: [Number, String],
+  bufferValue: {
+    type: [Number, String],
+    default: 0
+  },
+  clickable: Boolean,
+  color: String,
+  height: {
+    type: [Number, String],
+    default: 4
+  },
+  indeterminate: Boolean,
+  max: {
+    type: [Number, String],
+    default: 100
+  },
+  modelValue: {
+    type: [Number, String],
+    default: 0
+  },
+  reverse: Boolean,
+  stream: Boolean,
+  striped: Boolean,
+  roundedBar: Boolean,
+  ...makeComponentProps(),
+  ...makeLocationProps({
+    location: "top"
+  }),
+  ...makeRoundedProps(),
+  ...makeTagProps(),
+  ...makeThemeProps()
+}, "VProgressLinear");
+const VProgressLinear = genericComponent()({
+  name: "VProgressLinear",
+  props: makeVProgressLinearProps(),
+  emits: {
+    "update:modelValue": (value2) => true
+  },
+  setup(props, _ref) {
+    let {
+      slots
+    } = _ref;
+    const progress = useProxiedModel(props, "modelValue");
+    const {
+      isRtl,
+      rtlClasses
+    } = useRtl();
+    const {
+      themeClasses
+    } = provideTheme(props);
+    const {
+      locationStyles
+    } = useLocation(props);
+    const {
+      textColorClasses,
+      textColorStyles
+    } = useTextColor(props, "color");
+    const {
+      backgroundColorClasses,
+      backgroundColorStyles
+    } = useBackgroundColor(computed(() => props.bgColor || props.color));
+    const {
+      backgroundColorClasses: barColorClasses,
+      backgroundColorStyles: barColorStyles
+    } = useBackgroundColor(props, "color");
+    const {
+      roundedClasses
+    } = useRounded(props);
+    const {
+      intersectionRef,
+      isIntersecting
+    } = useIntersectionObserver();
+    const max = computed(() => parseInt(props.max, 10));
+    const height = computed(() => parseInt(props.height, 10));
+    const normalizedBuffer = computed(() => parseFloat(props.bufferValue) / max.value * 100);
+    const normalizedValue = computed(() => parseFloat(progress.value) / max.value * 100);
+    const isReversed = computed(() => isRtl.value !== props.reverse);
+    const transition = computed(() => props.indeterminate ? "fade-transition" : "slide-x-transition");
+    const opacity = computed(() => {
+      return props.bgOpacity == null ? props.bgOpacity : parseFloat(props.bgOpacity);
+    });
+    function handleClick(e2) {
+      if (!intersectionRef.value)
+        return;
+      const {
+        left,
+        right,
+        width
+      } = intersectionRef.value.getBoundingClientRect();
+      const value2 = isReversed.value ? width - e2.clientX + (right - width) : e2.clientX - left;
+      progress.value = Math.round(value2 / width * max.value);
+    }
+    useRender(() => createVNode(props.tag, {
+      "ref": intersectionRef,
+      "class": ["v-progress-linear", {
+        "v-progress-linear--absolute": props.absolute,
+        "v-progress-linear--active": props.active && isIntersecting.value,
+        "v-progress-linear--reverse": isReversed.value,
+        "v-progress-linear--rounded": props.rounded,
+        "v-progress-linear--rounded-bar": props.roundedBar,
+        "v-progress-linear--striped": props.striped
+      }, roundedClasses.value, themeClasses.value, rtlClasses.value, props.class],
+      "style": [{
+        bottom: props.location === "bottom" ? 0 : void 0,
+        top: props.location === "top" ? 0 : void 0,
+        height: props.active ? convertToUnit(height.value) : 0,
+        "--v-progress-linear-height": convertToUnit(height.value),
+        ...locationStyles.value
+      }, props.style],
+      "role": "progressbar",
+      "aria-hidden": props.active ? "false" : "true",
+      "aria-valuemin": "0",
+      "aria-valuemax": props.max,
+      "aria-valuenow": props.indeterminate ? void 0 : normalizedValue.value,
+      "onClick": props.clickable && handleClick
+    }, {
+      default: () => [props.stream && createVNode("div", {
+        "key": "stream",
+        "class": ["v-progress-linear__stream", textColorClasses.value],
+        "style": {
+          ...textColorStyles.value,
+          [isReversed.value ? "left" : "right"]: convertToUnit(-height.value),
+          borderTop: `${convertToUnit(height.value / 2)} dotted`,
+          opacity: opacity.value,
+          top: `calc(50% - ${convertToUnit(height.value / 4)})`,
+          width: convertToUnit(100 - normalizedBuffer.value, "%"),
+          "--v-progress-linear-stream-to": convertToUnit(height.value * (isReversed.value ? 1 : -1))
+        }
+      }, null), createVNode("div", {
+        "class": ["v-progress-linear__background", backgroundColorClasses.value],
+        "style": [backgroundColorStyles.value, {
+          opacity: opacity.value,
+          width: convertToUnit(!props.stream ? 100 : normalizedBuffer.value, "%")
+        }]
+      }, null), createVNode(Transition, {
+        "name": transition.value
+      }, {
+        default: () => [!props.indeterminate ? createVNode("div", {
+          "class": ["v-progress-linear__determinate", barColorClasses.value],
+          "style": [barColorStyles.value, {
+            width: convertToUnit(normalizedValue.value, "%")
+          }]
+        }, null) : createVNode("div", {
+          "class": "v-progress-linear__indeterminate"
+        }, [["long", "short"].map((bar) => createVNode("div", {
+          "key": bar,
+          "class": ["v-progress-linear__indeterminate", bar, barColorClasses.value],
+          "style": barColorStyles.value
+        }, null))])]
+      }), slots.default && createVNode("div", {
+        "class": "v-progress-linear__content"
+      }, [slots.default({
+        value: normalizedValue.value,
+        buffer: normalizedBuffer.value
+      })])]
+    }));
+    return {};
+  }
+});
+const makeLoaderProps = propsFactory({
+  loading: [Boolean, String]
+}, "loader");
+function useLoader(props) {
+  let name2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : getCurrentInstanceName();
+  const loaderClasses = computed(() => ({
+    [`${name2}--loading`]: props.loading
+  }));
+  return {
+    loaderClasses
+  };
+}
+function LoaderSlot(props, _ref) {
+  var _a;
+  let {
+    slots
+  } = _ref;
+  return createVNode("div", {
+    "class": `${props.name}__loader`
+  }, [((_a = slots.default) == null ? void 0 : _a.call(slots, {
+    color: props.color,
+    isActive: props.active
+  })) || createVNode(VProgressLinear, {
+    "active": props.active,
+    "color": props.color,
+    "height": "2",
+    "indeterminate": true
+  }, null)]);
+}
+const positionValues = ["static", "relative", "fixed", "absolute", "sticky"];
+const makePositionProps = propsFactory({
+  position: {
+    type: String,
+    validator: (
+      /* istanbul ignore next */
+      (v2) => positionValues.includes(v2)
+    )
+  }
+}, "position");
+function usePosition(props) {
+  let name2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : getCurrentInstanceName();
+  const positionClasses = computed(() => {
+    return props.position ? `${name2}--${props.position}` : void 0;
+  });
+  return {
+    positionClasses
+  };
+}
+function useRouter() {
+  var _a, _b;
+  return (_b = (_a = getCurrentInstance("useRouter")) == null ? void 0 : _a.proxy) == null ? void 0 : _b.$router;
+}
+function useLink(props, attrs) {
+  const RouterLink = resolveDynamicComponent("RouterLink");
+  const isLink = computed(() => !!(props.href || props.to));
+  const isClickable = computed(() => {
+    return (isLink == null ? void 0 : isLink.value) || hasEvent(attrs, "click") || hasEvent(props, "click");
+  });
+  if (typeof RouterLink === "string") {
+    return {
+      isLink,
+      isClickable,
+      href: toRef(props, "href")
+    };
+  }
+  const link = props.to ? RouterLink.useLink(props) : void 0;
+  return {
+    isLink,
+    isClickable,
+    route: link == null ? void 0 : link.route,
+    navigate: link == null ? void 0 : link.navigate,
+    isActive: link && computed(() => {
+      var _a, _b;
+      return props.exact ? (_a = link.isExactActive) == null ? void 0 : _a.value : (_b = link.isActive) == null ? void 0 : _b.value;
+    }),
+    href: computed(() => props.to ? link == null ? void 0 : link.route.value.href : props.href)
+  };
+}
+const makeRouterProps = propsFactory({
+  href: String,
+  replace: Boolean,
+  to: [String, Object],
+  exact: Boolean
+}, "router");
+let inTransition = false;
+function useBackButton(router, cb) {
+  let popped = false;
+  let removeBefore;
+  let removeAfter;
+  if (IN_BROWSER) {
+    nextTick(() => {
+      window.addEventListener("popstate", onPopstate);
+      removeBefore = router == null ? void 0 : router.beforeEach((to, from, next) => {
+        if (!inTransition) {
+          setTimeout(() => popped ? cb(next) : next());
+        } else {
+          popped ? cb(next) : next();
+        }
+        inTransition = true;
+      });
+      removeAfter = router == null ? void 0 : router.afterEach(() => {
+        inTransition = false;
+      });
+    });
+    onScopeDispose(() => {
+      window.removeEventListener("popstate", onPopstate);
+      removeBefore == null ? void 0 : removeBefore();
+      removeAfter == null ? void 0 : removeAfter();
+    });
+  }
+  function onPopstate(e2) {
+    var _a;
+    if ((_a = e2.state) == null ? void 0 : _a.replaced)
+      return;
+    popped = true;
+    setTimeout(() => popped = false);
+  }
+}
+function useSelectLink(link, select) {
+  watch(() => {
+    var _a;
+    return (_a = link.isActive) == null ? void 0 : _a.value;
+  }, (isActive) => {
+    if (link.isLink.value && isActive && select) {
+      nextTick(() => {
+        select(true);
+      });
+    }
+  }, {
+    immediate: true
+  });
+}
 const VRipple = "";
 const stopSymbol = Symbol("rippleStop");
 const DELAY_RIPPLE = 80;
@@ -4006,389 +4400,6 @@ const Ripple = {
   unmounted: unmounted$1,
   updated
 };
-const makeDimensionProps = propsFactory({
-  height: [Number, String],
-  maxHeight: [Number, String],
-  maxWidth: [Number, String],
-  minHeight: [Number, String],
-  minWidth: [Number, String],
-  width: [Number, String]
-}, "dimension");
-function useDimension(props) {
-  const dimensionStyles = computed(() => ({
-    height: convertToUnit(props.height),
-    maxHeight: convertToUnit(props.maxHeight),
-    maxWidth: convertToUnit(props.maxWidth),
-    minHeight: convertToUnit(props.minHeight),
-    minWidth: convertToUnit(props.minWidth),
-    width: convertToUnit(props.width)
-  }));
-  return {
-    dimensionStyles
-  };
-}
-const VProgressLinear$1 = "";
-const oppositeMap = {
-  center: "center",
-  top: "bottom",
-  bottom: "top",
-  left: "right",
-  right: "left"
-};
-const makeLocationProps = propsFactory({
-  location: String
-}, "location");
-function useLocation(props) {
-  let opposite = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : false;
-  let offset = arguments.length > 2 ? arguments[2] : void 0;
-  const {
-    isRtl
-  } = useRtl();
-  const locationStyles = computed(() => {
-    if (!props.location)
-      return {};
-    const {
-      side,
-      align
-    } = parseAnchor(props.location.split(" ").length > 1 ? props.location : `${props.location} center`, isRtl.value);
-    function getOffset2(side2) {
-      return offset ? offset(side2) : 0;
-    }
-    const styles = {};
-    if (side !== "center") {
-      if (opposite)
-        styles[oppositeMap[side]] = `calc(100% - ${getOffset2(side)}px)`;
-      else
-        styles[side] = 0;
-    }
-    if (align !== "center") {
-      if (opposite)
-        styles[oppositeMap[align]] = `calc(100% - ${getOffset2(align)}px)`;
-      else
-        styles[align] = 0;
-    } else {
-      if (side === "center")
-        styles.top = styles.left = "50%";
-      else {
-        styles[{
-          top: "left",
-          bottom: "left",
-          left: "top",
-          right: "top"
-        }[side]] = "50%";
-      }
-      styles.transform = {
-        top: "translateX(-50%)",
-        bottom: "translateX(-50%)",
-        left: "translateY(-50%)",
-        right: "translateY(-50%)",
-        center: "translate(-50%, -50%)"
-      }[side];
-    }
-    return styles;
-  });
-  return {
-    locationStyles
-  };
-}
-const makeVProgressLinearProps = propsFactory({
-  absolute: Boolean,
-  active: {
-    type: Boolean,
-    default: true
-  },
-  bgColor: String,
-  bgOpacity: [Number, String],
-  bufferValue: {
-    type: [Number, String],
-    default: 0
-  },
-  clickable: Boolean,
-  color: String,
-  height: {
-    type: [Number, String],
-    default: 4
-  },
-  indeterminate: Boolean,
-  max: {
-    type: [Number, String],
-    default: 100
-  },
-  modelValue: {
-    type: [Number, String],
-    default: 0
-  },
-  reverse: Boolean,
-  stream: Boolean,
-  striped: Boolean,
-  roundedBar: Boolean,
-  ...makeComponentProps(),
-  ...makeLocationProps({
-    location: "top"
-  }),
-  ...makeRoundedProps(),
-  ...makeTagProps(),
-  ...makeThemeProps()
-}, "v-progress-linear");
-const VProgressLinear = genericComponent()({
-  name: "VProgressLinear",
-  props: makeVProgressLinearProps(),
-  emits: {
-    "update:modelValue": (value2) => true
-  },
-  setup(props, _ref) {
-    let {
-      slots
-    } = _ref;
-    const progress = useProxiedModel(props, "modelValue");
-    const {
-      isRtl,
-      rtlClasses
-    } = useRtl();
-    const {
-      themeClasses
-    } = provideTheme(props);
-    const {
-      locationStyles
-    } = useLocation(props);
-    const {
-      textColorClasses,
-      textColorStyles
-    } = useTextColor(props, "color");
-    const {
-      backgroundColorClasses,
-      backgroundColorStyles
-    } = useBackgroundColor(computed(() => props.bgColor || props.color));
-    const {
-      backgroundColorClasses: barColorClasses,
-      backgroundColorStyles: barColorStyles
-    } = useBackgroundColor(props, "color");
-    const {
-      roundedClasses
-    } = useRounded(props);
-    const {
-      intersectionRef,
-      isIntersecting
-    } = useIntersectionObserver();
-    const max = computed(() => parseInt(props.max, 10));
-    const height = computed(() => parseInt(props.height, 10));
-    const normalizedBuffer = computed(() => parseFloat(props.bufferValue) / max.value * 100);
-    const normalizedValue = computed(() => parseFloat(progress.value) / max.value * 100);
-    const isReversed = computed(() => isRtl.value !== props.reverse);
-    const transition = computed(() => props.indeterminate ? "fade-transition" : "slide-x-transition");
-    const opacity = computed(() => {
-      return props.bgOpacity == null ? props.bgOpacity : parseFloat(props.bgOpacity);
-    });
-    function handleClick(e2) {
-      if (!intersectionRef.value)
-        return;
-      const {
-        left,
-        right,
-        width
-      } = intersectionRef.value.getBoundingClientRect();
-      const value2 = isReversed.value ? width - e2.clientX + (right - width) : e2.clientX - left;
-      progress.value = Math.round(value2 / width * max.value);
-    }
-    useRender(() => createVNode(props.tag, {
-      "ref": intersectionRef,
-      "class": ["v-progress-linear", {
-        "v-progress-linear--absolute": props.absolute,
-        "v-progress-linear--active": props.active && isIntersecting.value,
-        "v-progress-linear--reverse": isReversed.value,
-        "v-progress-linear--rounded": props.rounded,
-        "v-progress-linear--rounded-bar": props.roundedBar,
-        "v-progress-linear--striped": props.striped
-      }, roundedClasses.value, themeClasses.value, rtlClasses.value, props.class],
-      "style": [{
-        bottom: props.location === "bottom" ? 0 : void 0,
-        top: props.location === "top" ? 0 : void 0,
-        height: props.active ? convertToUnit(height.value) : 0,
-        "--v-progress-linear-height": convertToUnit(height.value),
-        ...locationStyles.value
-      }, props.style],
-      "role": "progressbar",
-      "aria-hidden": props.active ? "false" : "true",
-      "aria-valuemin": "0",
-      "aria-valuemax": props.max,
-      "aria-valuenow": props.indeterminate ? void 0 : normalizedValue.value,
-      "onClick": props.clickable && handleClick
-    }, {
-      default: () => [props.stream && createVNode("div", {
-        "key": "stream",
-        "class": ["v-progress-linear__stream", textColorClasses.value],
-        "style": {
-          ...textColorStyles.value,
-          [isReversed.value ? "left" : "right"]: convertToUnit(-height.value),
-          borderTop: `${convertToUnit(height.value / 2)} dotted`,
-          opacity: opacity.value,
-          top: `calc(50% - ${convertToUnit(height.value / 4)})`,
-          width: convertToUnit(100 - normalizedBuffer.value, "%"),
-          "--v-progress-linear-stream-to": convertToUnit(height.value * (isReversed.value ? 1 : -1))
-        }
-      }, null), createVNode("div", {
-        "class": ["v-progress-linear__background", backgroundColorClasses.value],
-        "style": [backgroundColorStyles.value, {
-          opacity: opacity.value,
-          width: convertToUnit(!props.stream ? 100 : normalizedBuffer.value, "%")
-        }]
-      }, null), createVNode(Transition, {
-        "name": transition.value
-      }, {
-        default: () => [!props.indeterminate ? createVNode("div", {
-          "class": ["v-progress-linear__determinate", barColorClasses.value],
-          "style": [barColorStyles.value, {
-            width: convertToUnit(normalizedValue.value, "%")
-          }]
-        }, null) : createVNode("div", {
-          "class": "v-progress-linear__indeterminate"
-        }, [["long", "short"].map((bar) => createVNode("div", {
-          "key": bar,
-          "class": ["v-progress-linear__indeterminate", bar, barColorClasses.value],
-          "style": barColorStyles.value
-        }, null))])]
-      }), slots.default && createVNode("div", {
-        "class": "v-progress-linear__content"
-      }, [slots.default({
-        value: normalizedValue.value,
-        buffer: normalizedBuffer.value
-      })])]
-    }));
-    return {};
-  }
-});
-const makeLoaderProps = propsFactory({
-  loading: [Boolean, String]
-}, "loader");
-function useLoader(props) {
-  let name2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : getCurrentInstanceName();
-  const loaderClasses = computed(() => ({
-    [`${name2}--loading`]: props.loading
-  }));
-  return {
-    loaderClasses
-  };
-}
-function LoaderSlot(props, _ref) {
-  var _a;
-  let {
-    slots
-  } = _ref;
-  return createVNode("div", {
-    "class": `${props.name}__loader`
-  }, [((_a = slots.default) == null ? void 0 : _a.call(slots, {
-    color: props.color,
-    isActive: props.active
-  })) || createVNode(VProgressLinear, {
-    "active": props.active,
-    "color": props.color,
-    "height": "2",
-    "indeterminate": true
-  }, null)]);
-}
-const positionValues = ["static", "relative", "fixed", "absolute", "sticky"];
-const makePositionProps = propsFactory({
-  position: {
-    type: String,
-    validator: (
-      /* istanbul ignore next */
-      (v2) => positionValues.includes(v2)
-    )
-  }
-}, "position");
-function usePosition(props) {
-  let name2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : getCurrentInstanceName();
-  const positionClasses = computed(() => {
-    return props.position ? `${name2}--${props.position}` : void 0;
-  });
-  return {
-    positionClasses
-  };
-}
-function useRouter() {
-  var _a, _b;
-  return (_b = (_a = getCurrentInstance("useRouter")) == null ? void 0 : _a.proxy) == null ? void 0 : _b.$router;
-}
-function useLink(props, attrs) {
-  const RouterLink = resolveDynamicComponent("RouterLink");
-  const isLink = computed(() => !!(props.href || props.to));
-  const isClickable = computed(() => {
-    return (isLink == null ? void 0 : isLink.value) || hasEvent(attrs, "click") || hasEvent(props, "click");
-  });
-  if (typeof RouterLink === "string") {
-    return {
-      isLink,
-      isClickable,
-      href: toRef(props, "href")
-    };
-  }
-  const link = props.to ? RouterLink.useLink(props) : void 0;
-  return {
-    isLink,
-    isClickable,
-    route: link == null ? void 0 : link.route,
-    navigate: link == null ? void 0 : link.navigate,
-    isActive: link && computed(() => {
-      var _a, _b;
-      return props.exact ? (_a = link.isExactActive) == null ? void 0 : _a.value : (_b = link.isActive) == null ? void 0 : _b.value;
-    }),
-    href: computed(() => props.to ? link == null ? void 0 : link.route.value.href : props.href)
-  };
-}
-const makeRouterProps = propsFactory({
-  href: String,
-  replace: Boolean,
-  to: [String, Object],
-  exact: Boolean
-}, "router");
-let inTransition = false;
-function useBackButton(router, cb) {
-  let popped = false;
-  let removeBefore;
-  let removeAfter;
-  if (IN_BROWSER) {
-    nextTick(() => {
-      window.addEventListener("popstate", onPopstate);
-      removeBefore = router == null ? void 0 : router.beforeEach((to, from, next) => {
-        if (!inTransition) {
-          setTimeout(() => popped ? cb(next) : next());
-        } else {
-          popped ? cb(next) : next();
-        }
-        inTransition = true;
-      });
-      removeAfter = router == null ? void 0 : router.afterEach(() => {
-        inTransition = false;
-      });
-    });
-    onScopeDispose(() => {
-      window.removeEventListener("popstate", onPopstate);
-      removeBefore == null ? void 0 : removeBefore();
-      removeAfter == null ? void 0 : removeAfter();
-    });
-  }
-  function onPopstate(e2) {
-    var _a;
-    if ((_a = e2.state) == null ? void 0 : _a.replaced)
-      return;
-    popped = true;
-    setTimeout(() => popped = false);
-  }
-}
-function useSelectLink(link, select) {
-  watch(() => {
-    var _a;
-    return (_a = link.isActive) == null ? void 0 : _a.value;
-  }, (isActive) => {
-    if (link.isLink.value && isActive && select) {
-      nextTick(() => {
-        select(true);
-      });
-    }
-  }, {
-    immediate: true
-  });
-}
 const makeVBtnProps = propsFactory({
   active: {
     type: Boolean,
@@ -4428,7 +4439,7 @@ const makeVBtnProps = propsFactory({
   ...makeVariantProps({
     variant: "elevated"
   })
-}, "v-btn");
+}, "VBtn");
 const VBtn = genericComponent()({
   name: "VBtn",
   directives: {
@@ -4598,8 +4609,6 @@ const VBtn = genericComponent()({
   }
 });
 const VSelect$1 = "";
-const VTextField$1 = "";
-const VField$1 = "";
 const makeTransitionProps$1 = propsFactory({
   disabled: Boolean,
   group: Boolean,
@@ -4608,9 +4617,7 @@ const makeTransitionProps$1 = propsFactory({
   mode: String,
   origin: String
 }, "transition");
-function createCssTransition(name2) {
-  let origin = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "center center";
-  let mode = arguments.length > 2 ? arguments[2] : void 0;
+function createCssTransition(name2, origin, mode) {
   return genericComponent()({
     name: name2,
     props: makeTransitionProps$1({
@@ -4623,7 +4630,9 @@ function createCssTransition(name2) {
       } = _ref;
       const functions = {
         onBeforeEnter(el) {
-          el.style.transformOrigin = props.origin;
+          if (props.origin) {
+            el.style.transformOrigin = props.origin;
+          }
         },
         onLeave(el) {
           if (props.leaveAbsolute) {
@@ -4917,6 +4926,344 @@ const VSlideYTransition = createCssTransition("slide-y-transition");
 createCssTransition("slide-y-reverse-transition");
 const VExpandTransition = createJavascriptTransition("expand-transition", ExpandTransitionGenerator());
 const VExpandXTransition = createJavascriptTransition("expand-x-transition", ExpandTransitionGenerator("", true));
+const VSelectionControl$1 = "";
+const VLabel$1 = "";
+const makeVLabelProps = propsFactory({
+  text: String,
+  clickable: Boolean,
+  ...makeComponentProps(),
+  ...makeThemeProps()
+}, "VLabel");
+const VLabel = genericComponent()({
+  name: "VLabel",
+  props: makeVLabelProps(),
+  setup(props, _ref) {
+    let {
+      slots
+    } = _ref;
+    useRender(() => {
+      var _a;
+      return createVNode("label", {
+        "class": ["v-label", {
+          "v-label--clickable": props.clickable
+        }, props.class],
+        "style": props.style
+      }, [props.text, (_a = slots.default) == null ? void 0 : _a.call(slots)]);
+    });
+    return {};
+  }
+});
+const VSelectionControlGroup = "";
+const VSelectionControlGroupSymbol = Symbol.for("vuetify:selection-control-group");
+const makeSelectionControlGroupProps = propsFactory({
+  color: String,
+  disabled: Boolean,
+  defaultsTarget: String,
+  error: Boolean,
+  id: String,
+  inline: Boolean,
+  falseIcon: IconValue,
+  trueIcon: IconValue,
+  ripple: {
+    type: Boolean,
+    default: true
+  },
+  multiple: {
+    type: Boolean,
+    default: null
+  },
+  name: String,
+  readonly: Boolean,
+  modelValue: null,
+  type: String,
+  valueComparator: {
+    type: Function,
+    default: deepEqual
+  },
+  ...makeComponentProps(),
+  ...makeDensityProps(),
+  ...makeThemeProps()
+}, "SelectionControlGroup");
+const makeVSelectionControlGroupProps = propsFactory({
+  ...makeSelectionControlGroupProps({
+    defaultsTarget: "VSelectionControl"
+  })
+}, "VSelectionControlGroup");
+genericComponent()({
+  name: "VSelectionControlGroup",
+  props: makeVSelectionControlGroupProps(),
+  emits: {
+    "update:modelValue": (val) => true
+  },
+  setup(props, _ref) {
+    let {
+      slots
+    } = _ref;
+    const modelValue = useProxiedModel(props, "modelValue");
+    const uid = getUid();
+    const id = computed(() => props.id || `v-selection-control-group-${uid}`);
+    const name2 = computed(() => props.name || id.value);
+    const updateHandlers = /* @__PURE__ */ new Set();
+    provide(VSelectionControlGroupSymbol, {
+      modelValue,
+      forceUpdate: () => {
+        updateHandlers.forEach((fn) => fn());
+      },
+      onForceUpdate: (cb) => {
+        updateHandlers.add(cb);
+        onScopeDispose(() => {
+          updateHandlers.delete(cb);
+        });
+      }
+    });
+    provideDefaults({
+      [props.defaultsTarget]: {
+        color: toRef(props, "color"),
+        disabled: toRef(props, "disabled"),
+        density: toRef(props, "density"),
+        error: toRef(props, "error"),
+        inline: toRef(props, "inline"),
+        modelValue,
+        multiple: computed(() => !!props.multiple || props.multiple == null && Array.isArray(modelValue.value)),
+        name: name2,
+        falseIcon: toRef(props, "falseIcon"),
+        trueIcon: toRef(props, "trueIcon"),
+        readonly: toRef(props, "readonly"),
+        ripple: toRef(props, "ripple"),
+        type: toRef(props, "type"),
+        valueComparator: toRef(props, "valueComparator")
+      }
+    });
+    useRender(() => {
+      var _a;
+      return createVNode("div", {
+        "class": ["v-selection-control-group", {
+          "v-selection-control-group--inline": props.inline
+        }, props.class],
+        "style": props.style,
+        "role": props.type === "radio" ? "radiogroup" : void 0
+      }, [(_a = slots.default) == null ? void 0 : _a.call(slots)]);
+    });
+    return {};
+  }
+});
+const makeVSelectionControlProps = propsFactory({
+  label: String,
+  trueValue: null,
+  falseValue: null,
+  value: null,
+  ...makeComponentProps(),
+  ...makeSelectionControlGroupProps()
+}, "VSelectionControl");
+function useSelectionControl(props) {
+  const group = inject$1(VSelectionControlGroupSymbol, void 0);
+  const {
+    densityClasses
+  } = useDensity(props);
+  const modelValue = useProxiedModel(props, "modelValue");
+  const trueValue = computed(() => props.trueValue !== void 0 ? props.trueValue : props.value !== void 0 ? props.value : true);
+  const falseValue = computed(() => props.falseValue !== void 0 ? props.falseValue : false);
+  const isMultiple = computed(() => !!props.multiple || props.multiple == null && Array.isArray(modelValue.value));
+  const model = computed({
+    get() {
+      const val = group ? group.modelValue.value : modelValue.value;
+      return isMultiple.value ? val.some((v2) => props.valueComparator(v2, trueValue.value)) : props.valueComparator(val, trueValue.value);
+    },
+    set(val) {
+      if (props.readonly)
+        return;
+      const currentValue = val ? trueValue.value : falseValue.value;
+      let newVal = currentValue;
+      if (isMultiple.value) {
+        newVal = val ? [...wrapInArray(modelValue.value), currentValue] : wrapInArray(modelValue.value).filter((item) => !props.valueComparator(item, trueValue.value));
+      }
+      if (group) {
+        group.modelValue.value = newVal;
+      } else {
+        modelValue.value = newVal;
+      }
+    }
+  });
+  const {
+    textColorClasses,
+    textColorStyles
+  } = useTextColor(computed(() => {
+    return model.value && !props.error && !props.disabled ? props.color : void 0;
+  }));
+  const icon = computed(() => model.value ? props.trueIcon : props.falseIcon);
+  return {
+    group,
+    densityClasses,
+    trueValue,
+    falseValue,
+    model,
+    textColorClasses,
+    textColorStyles,
+    icon
+  };
+}
+const VSelectionControl = genericComponent()({
+  name: "VSelectionControl",
+  directives: {
+    Ripple
+  },
+  inheritAttrs: false,
+  props: makeVSelectionControlProps(),
+  emits: {
+    "update:modelValue": (val) => true
+  },
+  setup(props, _ref) {
+    let {
+      attrs,
+      slots
+    } = _ref;
+    const {
+      group,
+      densityClasses,
+      icon,
+      model,
+      textColorClasses,
+      textColorStyles,
+      trueValue
+    } = useSelectionControl(props);
+    const uid = getUid();
+    const id = computed(() => props.id || `input-${uid}`);
+    const isFocused = shallowRef(false);
+    const isFocusVisible = shallowRef(false);
+    const input = ref();
+    group == null ? void 0 : group.onForceUpdate(() => {
+      if (input.value) {
+        input.value.checked = model.value;
+      }
+    });
+    function onFocus(e2) {
+      isFocused.value = true;
+      if (!SUPPORTS_FOCUS_VISIBLE || SUPPORTS_FOCUS_VISIBLE && e2.target.matches(":focus-visible")) {
+        isFocusVisible.value = true;
+      }
+    }
+    function onBlur() {
+      isFocused.value = false;
+      isFocusVisible.value = false;
+    }
+    function onInput(e2) {
+      if (props.readonly && group) {
+        nextTick(() => group.forceUpdate());
+      }
+      model.value = e2.target.checked;
+    }
+    useRender(() => {
+      var _a, _b;
+      const label = slots.label ? slots.label({
+        label: props.label,
+        props: {
+          for: id.value
+        }
+      }) : props.label;
+      const [rootAttrs, inputAttrs] = filterInputAttrs(attrs);
+      return createVNode("div", mergeProps({
+        "class": ["v-selection-control", {
+          "v-selection-control--dirty": model.value,
+          "v-selection-control--disabled": props.disabled,
+          "v-selection-control--error": props.error,
+          "v-selection-control--focused": isFocused.value,
+          "v-selection-control--focus-visible": isFocusVisible.value,
+          "v-selection-control--inline": props.inline
+        }, densityClasses.value, props.class]
+      }, rootAttrs, {
+        "style": props.style
+      }), [createVNode("div", {
+        "class": ["v-selection-control__wrapper", textColorClasses.value],
+        "style": textColorStyles.value
+      }, [(_a = slots.default) == null ? void 0 : _a.call(slots), withDirectives(createVNode("div", {
+        "class": ["v-selection-control__input"]
+      }, [icon.value && createVNode(VIcon, {
+        "key": "icon",
+        "icon": icon.value
+      }, null), createVNode("input", mergeProps({
+        "ref": input,
+        "checked": model.value,
+        "disabled": props.disabled,
+        "id": id.value,
+        "onBlur": onBlur,
+        "onFocus": onFocus,
+        "onInput": onInput,
+        "aria-disabled": props.readonly,
+        "type": props.type,
+        "value": trueValue.value,
+        "name": props.name,
+        "aria-checked": props.type === "checkbox" ? model.value : void 0
+      }, inputAttrs), null), (_b = slots.input) == null ? void 0 : _b.call(slots, {
+        model,
+        textColorClasses,
+        textColorStyles,
+        props: {
+          onFocus,
+          onBlur,
+          id: id.value
+        }
+      })]), [[resolveDirective("ripple"), props.ripple && [!props.disabled && !props.readonly, null, ["center", "circle"]]]])]), label && createVNode(VLabel, {
+        "for": id.value,
+        "clickable": true
+      }, {
+        default: () => [label]
+      })]);
+    });
+    return {
+      isFocused,
+      input
+    };
+  }
+});
+const makeVCheckboxBtnProps = propsFactory({
+  indeterminate: Boolean,
+  indeterminateIcon: {
+    type: IconValue,
+    default: "$checkboxIndeterminate"
+  },
+  ...makeVSelectionControlProps({
+    falseIcon: "$checkboxOff",
+    trueIcon: "$checkboxOn"
+  })
+}, "VCheckboxBtn");
+const VCheckboxBtn = genericComponent()({
+  name: "VCheckboxBtn",
+  props: makeVCheckboxBtnProps(),
+  emits: {
+    "update:modelValue": (value2) => true,
+    "update:indeterminate": (val) => true
+  },
+  setup(props, _ref) {
+    let {
+      slots
+    } = _ref;
+    const indeterminate = useProxiedModel(props, "indeterminate");
+    const model = useProxiedModel(props, "modelValue");
+    function onChange(v2) {
+      if (indeterminate.value) {
+        indeterminate.value = false;
+      }
+    }
+    const falseIcon = computed(() => {
+      return indeterminate.value ? props.indeterminateIcon : props.falseIcon;
+    });
+    const trueIcon = computed(() => {
+      return indeterminate.value ? props.indeterminateIcon : props.trueIcon;
+    });
+    useRender(() => createVNode(VSelectionControl, mergeProps(props, {
+      "modelValue": model.value,
+      "onUpdate:modelValue": [($event) => model.value = $event, onChange],
+      "class": ["v-checkbox-btn", props.class],
+      "style": props.style,
+      "type": "checkbox",
+      "falseIcon": falseIcon.value,
+      "trueIcon": trueIcon.value,
+      "aria-checked": indeterminate.value ? "mixed" : void 0
+    }), slots));
+    return {};
+  }
+});
+const VInput$1 = "";
 function useInputIcon(props) {
   const {
     t: t4
@@ -4944,347 +5291,6 @@ function useInputIcon(props) {
     InputIcon
   };
 }
-const VLabel$1 = "";
-const makeVLabelProps = propsFactory({
-  text: String,
-  clickable: Boolean,
-  ...makeComponentProps(),
-  ...makeThemeProps()
-}, "v-label");
-const VLabel = genericComponent()({
-  name: "VLabel",
-  props: makeVLabelProps(),
-  setup(props, _ref) {
-    let {
-      slots
-    } = _ref;
-    useRender(() => {
-      var _a;
-      return createVNode("label", {
-        "class": ["v-label", {
-          "v-label--clickable": props.clickable
-        }, props.class],
-        "style": props.style
-      }, [props.text, (_a = slots.default) == null ? void 0 : _a.call(slots)]);
-    });
-    return {};
-  }
-});
-const makeVFieldLabelProps = propsFactory({
-  floating: Boolean,
-  ...makeComponentProps()
-}, "v-field-label");
-const VFieldLabel = genericComponent()({
-  name: "VFieldLabel",
-  props: makeVFieldLabelProps(),
-  setup(props, _ref) {
-    let {
-      slots
-    } = _ref;
-    useRender(() => createVNode(VLabel, {
-      "class": ["v-field-label", {
-        "v-field-label--floating": props.floating
-      }, props.class],
-      "style": props.style,
-      "aria-hidden": props.floating || void 0
-    }, slots));
-    return {};
-  }
-});
-const makeFocusProps = propsFactory({
-  focused: Boolean,
-  "onUpdate:focused": EventProp()
-}, "focus");
-function useFocus(props) {
-  let name2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : getCurrentInstanceName();
-  const isFocused = useProxiedModel(props, "focused");
-  const focusClasses = computed(() => {
-    return {
-      [`${name2}--focused`]: isFocused.value
-    };
-  });
-  function focus() {
-    isFocused.value = true;
-  }
-  function blur() {
-    isFocused.value = false;
-  }
-  return {
-    focusClasses,
-    isFocused,
-    focus,
-    blur
-  };
-}
-const allowedVariants = ["underlined", "outlined", "filled", "solo", "solo-inverted", "solo-filled", "plain"];
-const makeVFieldProps = propsFactory({
-  appendInnerIcon: IconValue,
-  bgColor: String,
-  clearable: Boolean,
-  clearIcon: {
-    type: IconValue,
-    default: "$clear"
-  },
-  active: Boolean,
-  centerAffix: {
-    type: Boolean,
-    default: void 0
-  },
-  color: String,
-  baseColor: String,
-  dirty: Boolean,
-  disabled: {
-    type: Boolean,
-    default: null
-  },
-  error: Boolean,
-  flat: Boolean,
-  label: String,
-  persistentClear: Boolean,
-  prependInnerIcon: IconValue,
-  reverse: Boolean,
-  singleLine: Boolean,
-  variant: {
-    type: String,
-    default: "filled",
-    validator: (v2) => allowedVariants.includes(v2)
-  },
-  "onClick:clear": EventProp(),
-  "onClick:appendInner": EventProp(),
-  "onClick:prependInner": EventProp(),
-  ...makeComponentProps(),
-  ...makeLoaderProps(),
-  ...makeRoundedProps(),
-  ...makeThemeProps()
-}, "v-field");
-const VField = genericComponent()({
-  name: "VField",
-  inheritAttrs: false,
-  props: {
-    id: String,
-    ...makeFocusProps(),
-    ...makeVFieldProps()
-  },
-  emits: {
-    "update:focused": (focused) => true,
-    "update:modelValue": (val) => true
-  },
-  setup(props, _ref) {
-    let {
-      attrs,
-      emit,
-      slots
-    } = _ref;
-    const {
-      themeClasses
-    } = provideTheme(props);
-    const {
-      loaderClasses
-    } = useLoader(props);
-    const {
-      focusClasses,
-      isFocused,
-      focus,
-      blur
-    } = useFocus(props);
-    const {
-      InputIcon
-    } = useInputIcon(props);
-    const {
-      roundedClasses
-    } = useRounded(props);
-    const {
-      rtlClasses
-    } = useRtl();
-    const isActive = computed(() => props.dirty || props.active);
-    const hasLabel = computed(() => !props.singleLine && !!(props.label || slots.label));
-    const uid = getUid();
-    const id = computed(() => props.id || `input-${uid}`);
-    const messagesId = computed(() => `${id.value}-messages`);
-    const labelRef = ref();
-    const floatingLabelRef = ref();
-    const controlRef = ref();
-    const isPlainOrUnderlined = computed(() => ["plain", "underlined"].includes(props.variant));
-    const {
-      backgroundColorClasses,
-      backgroundColorStyles
-    } = useBackgroundColor(toRef(props, "bgColor"));
-    const {
-      textColorClasses,
-      textColorStyles
-    } = useTextColor(computed(() => {
-      return props.error || props.disabled ? void 0 : isActive.value && isFocused.value ? props.color : props.baseColor;
-    }));
-    watch(isActive, (val) => {
-      if (hasLabel.value) {
-        const el = labelRef.value.$el;
-        const targetEl = floatingLabelRef.value.$el;
-        requestAnimationFrame(() => {
-          const rect = nullifyTransforms(el);
-          const targetRect = targetEl.getBoundingClientRect();
-          const x2 = targetRect.x - rect.x;
-          const y2 = targetRect.y - rect.y - (rect.height / 2 - targetRect.height / 2);
-          const targetWidth = targetRect.width / 0.75;
-          const width = Math.abs(targetWidth - rect.width) > 1 ? {
-            maxWidth: convertToUnit(targetWidth)
-          } : void 0;
-          const style = getComputedStyle(el);
-          const targetStyle = getComputedStyle(targetEl);
-          const duration2 = parseFloat(style.transitionDuration) * 1e3 || 150;
-          const scale = parseFloat(targetStyle.getPropertyValue("--v-field-label-scale"));
-          const color = targetStyle.getPropertyValue("color");
-          el.style.visibility = "visible";
-          targetEl.style.visibility = "hidden";
-          animate(el, {
-            transform: `translate(${x2}px, ${y2}px) scale(${scale})`,
-            color,
-            ...width
-          }, {
-            duration: duration2,
-            easing: standardEasing,
-            direction: val ? "normal" : "reverse"
-          }).finished.then(() => {
-            el.style.removeProperty("visibility");
-            targetEl.style.removeProperty("visibility");
-          });
-        });
-      }
-    }, {
-      flush: "post"
-    });
-    const slotProps = computed(() => ({
-      isActive,
-      isFocused,
-      controlRef,
-      blur,
-      focus
-    }));
-    function onClick(e2) {
-      if (e2.target !== document.activeElement) {
-        e2.preventDefault();
-      }
-    }
-    useRender(() => {
-      var _a, _b, _c;
-      const isOutlined = props.variant === "outlined";
-      const hasPrepend = slots["prepend-inner"] || props.prependInnerIcon;
-      const hasClear = !!(props.clearable || slots.clear);
-      const hasAppend = !!(slots["append-inner"] || props.appendInnerIcon || hasClear);
-      const label = slots.label ? slots.label({
-        ...slotProps.value,
-        label: props.label,
-        props: {
-          for: id.value
-        }
-      }) : props.label;
-      return createVNode("div", mergeProps({
-        "class": ["v-field", {
-          "v-field--active": isActive.value,
-          "v-field--appended": hasAppend,
-          "v-field--center-affix": props.centerAffix ?? !isPlainOrUnderlined.value,
-          "v-field--disabled": props.disabled,
-          "v-field--dirty": props.dirty,
-          "v-field--error": props.error,
-          "v-field--flat": props.flat,
-          "v-field--has-background": !!props.bgColor,
-          "v-field--persistent-clear": props.persistentClear,
-          "v-field--prepended": hasPrepend,
-          "v-field--reverse": props.reverse,
-          "v-field--single-line": props.singleLine,
-          "v-field--no-label": !label,
-          [`v-field--variant-${props.variant}`]: true
-        }, themeClasses.value, backgroundColorClasses.value, focusClasses.value, loaderClasses.value, roundedClasses.value, rtlClasses.value, props.class],
-        "style": [backgroundColorStyles.value, textColorStyles.value, props.style],
-        "onClick": onClick
-      }, attrs), [createVNode("div", {
-        "class": "v-field__overlay"
-      }, null), createVNode(LoaderSlot, {
-        "name": "v-field",
-        "active": !!props.loading,
-        "color": props.error ? "error" : props.color
-      }, {
-        default: slots.loader
-      }), hasPrepend && createVNode("div", {
-        "key": "prepend",
-        "class": "v-field__prepend-inner"
-      }, [props.prependInnerIcon && createVNode(InputIcon, {
-        "key": "prepend-icon",
-        "name": "prependInner"
-      }, null), (_a = slots["prepend-inner"]) == null ? void 0 : _a.call(slots, slotProps.value)]), createVNode("div", {
-        "class": "v-field__field",
-        "data-no-activator": ""
-      }, [["filled", "solo", "solo-inverted", "solo-filled"].includes(props.variant) && hasLabel.value && createVNode(VFieldLabel, {
-        "key": "floating-label",
-        "ref": floatingLabelRef,
-        "class": [textColorClasses.value],
-        "floating": true,
-        "for": id.value
-      }, {
-        default: () => [label]
-      }), createVNode(VFieldLabel, {
-        "ref": labelRef,
-        "for": id.value
-      }, {
-        default: () => [label]
-      }), (_b = slots.default) == null ? void 0 : _b.call(slots, {
-        ...slotProps.value,
-        props: {
-          id: id.value,
-          class: "v-field__input",
-          "aria-describedby": messagesId.value
-        },
-        focus,
-        blur
-      })]), hasClear && createVNode(VExpandXTransition, {
-        "key": "clear"
-      }, {
-        default: () => [withDirectives(createVNode("div", {
-          "class": "v-field__clearable",
-          "onMousedown": (e2) => {
-            e2.preventDefault();
-            e2.stopPropagation();
-          }
-        }, [slots.clear ? slots.clear() : createVNode(InputIcon, {
-          "name": "clear"
-        }, null)]), [[vShow, props.dirty]])]
-      }), hasAppend && createVNode("div", {
-        "key": "append",
-        "class": "v-field__append-inner"
-      }, [(_c = slots["append-inner"]) == null ? void 0 : _c.call(slots, slotProps.value), props.appendInnerIcon && createVNode(InputIcon, {
-        "key": "append-icon",
-        "name": "appendInner"
-      }, null)]), createVNode("div", {
-        "class": ["v-field__outline", textColorClasses.value]
-      }, [isOutlined && createVNode(Fragment, null, [createVNode("div", {
-        "class": "v-field__outline__start"
-      }, null), hasLabel.value && createVNode("div", {
-        "class": "v-field__outline__notch"
-      }, [createVNode(VFieldLabel, {
-        "ref": floatingLabelRef,
-        "floating": true,
-        "for": id.value
-      }, {
-        default: () => [label]
-      })]), createVNode("div", {
-        "class": "v-field__outline__end"
-      }, null)]), isPlainOrUnderlined.value && hasLabel.value && createVNode(VFieldLabel, {
-        "ref": floatingLabelRef,
-        "floating": true,
-        "for": id.value
-      }, {
-        default: () => [label]
-      })])]);
-    });
-    return {
-      controlRef
-    };
-  }
-});
-function filterFieldProps(attrs) {
-  const keys2 = Object.keys(VField.props).filter((k2) => !isOn(k2) && k2 !== "class" && k2 !== "style");
-  return pick(attrs, keys2);
-}
-const VInput$1 = "";
 const VMessages$1 = "";
 const makeTransitionProps = propsFactory({
   transition: {
@@ -5327,7 +5333,7 @@ const makeVMessagesProps = propsFactory({
       group: true
     }
   })
-}, "v-messages");
+}, "VMessages");
 const VMessages = genericComponent()({
   name: "VMessages",
   props: makeVMessagesProps(),
@@ -5358,6 +5364,31 @@ const VMessages = genericComponent()({
     return {};
   }
 });
+const makeFocusProps = propsFactory({
+  focused: Boolean,
+  "onUpdate:focused": EventProp()
+}, "focus");
+function useFocus(props) {
+  let name2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : getCurrentInstanceName();
+  const isFocused = useProxiedModel(props, "focused");
+  const focusClasses = computed(() => {
+    return {
+      [`${name2}--focused`]: isFocused.value
+    };
+  });
+  function focus() {
+    isFocused.value = true;
+  }
+  function blur() {
+    isFocused.value = false;
+  }
+  return {
+    focusClasses,
+    isFocused,
+    focus,
+    blur
+  };
+}
 const FormKey = Symbol.for("vuetify:form");
 const makeFormProps = propsFactory({
   disabled: Boolean,
@@ -5671,7 +5702,7 @@ const makeVInputProps = propsFactory({
   ...makeComponentProps(),
   ...makeDensityProps(),
   ...makeValidationProps()
-}, "v-input");
+}, "VInput");
 const VInput = genericComponent()({
   name: "VInput",
   props: {
@@ -5689,6 +5720,9 @@ const VInput = genericComponent()({
     const {
       densityClasses
     } = useDensity(props);
+    const {
+      rtlClasses
+    } = useRtl();
     const {
       InputIcon
     } = useInputIcon(props);
@@ -5740,7 +5774,7 @@ const VInput = genericComponent()({
       return createVNode("div", {
         "class": ["v-input", `v-input--${props.direction}`, {
           "v-input--center-affix": props.centerAffix
-        }, densityClasses.value, validationClasses.value, props.class],
+        }, densityClasses.value, rtlClasses.value, validationClasses.value, props.class],
         "style": props.style
       }, [hasPrepend && createVNode("div", {
         "key": "prepend",
@@ -5773,44 +5807,54 @@ const VInput = genericComponent()({
     };
   }
 });
-const VCounter$1 = "";
-const makeVCounterProps = propsFactory({
-  active: Boolean,
-  max: [Number, String],
-  value: {
-    type: [Number, String],
-    default: 0
-  },
+const VChip$1 = "";
+const VAvatar$1 = "";
+const VImg$1 = "";
+const VResponsive$1 = "";
+function useAspectStyles(props) {
+  return {
+    aspectStyles: computed(() => {
+      const ratio = Number(props.aspectRatio);
+      return ratio ? {
+        paddingBottom: String(1 / ratio * 100) + "%"
+      } : void 0;
+    })
+  };
+}
+const makeVResponsiveProps = propsFactory({
+  aspectRatio: [String, Number],
+  contentClass: String,
+  inline: Boolean,
   ...makeComponentProps(),
-  ...makeTransitionProps({
-    transition: {
-      component: VSlideYTransition
-    }
-  })
-}, "v-counter");
-const VCounter = genericComponent()({
-  name: "VCounter",
-  functional: true,
-  props: makeVCounterProps(),
+  ...makeDimensionProps()
+}, "VResponsive");
+const VResponsive = genericComponent()({
+  name: "VResponsive",
+  props: makeVResponsiveProps(),
   setup(props, _ref) {
     let {
       slots
     } = _ref;
-    const counter = computed(() => {
-      return props.max ? `${props.value} / ${props.max}` : String(props.value);
+    const {
+      aspectStyles
+    } = useAspectStyles(props);
+    const {
+      dimensionStyles
+    } = useDimension(props);
+    useRender(() => {
+      var _a;
+      return createVNode("div", {
+        "class": ["v-responsive", {
+          "v-responsive--inline": props.inline
+        }, props.class],
+        "style": [dimensionStyles.value, props.style]
+      }, [createVNode("div", {
+        "class": "v-responsive__sizer",
+        "style": aspectStyles.value
+      }, null), (_a = slots.additional) == null ? void 0 : _a.call(slots), slots.default && createVNode("div", {
+        "class": ["v-responsive__content", props.contentClass]
+      }, [slots.default()])]);
     });
-    useRender(() => createVNode(MaybeTransition, {
-      "transition": props.transition
-    }, {
-      default: () => [withDirectives(createVNode("div", {
-        "class": ["v-counter", props.class],
-        "style": props.style
-      }, [slots.default ? slots.default({
-        counter: counter.value,
-        max: props.max,
-        value: props.value
-      }) : counter.value]), [[vShow, props.active]])]
-    }));
     return {};
   }
 });
@@ -5862,647 +5906,6 @@ const Intersect = {
   unmounted
 };
 const Intersect$1 = Intersect;
-const Refs = Symbol("Forwarded refs");
-function getDescriptor(obj, key) {
-  let currentObj = obj;
-  while (currentObj) {
-    const descriptor = Reflect.getOwnPropertyDescriptor(currentObj, key);
-    if (descriptor)
-      return descriptor;
-    currentObj = Object.getPrototypeOf(currentObj);
-  }
-  return void 0;
-}
-function forwardRefs(target) {
-  for (var _len = arguments.length, refs = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    refs[_key - 1] = arguments[_key];
-  }
-  target[Refs] = refs;
-  return new Proxy(target, {
-    get(target2, key) {
-      if (Reflect.has(target2, key)) {
-        return Reflect.get(target2, key);
-      }
-      if (typeof key === "symbol" || key.startsWith("__"))
-        return;
-      for (const ref2 of refs) {
-        if (ref2.value && Reflect.has(ref2.value, key)) {
-          const val = Reflect.get(ref2.value, key);
-          return typeof val === "function" ? val.bind(ref2.value) : val;
-        }
-      }
-    },
-    has(target2, key) {
-      if (Reflect.has(target2, key)) {
-        return true;
-      }
-      if (typeof key === "symbol" || key.startsWith("__"))
-        return false;
-      for (const ref2 of refs) {
-        if (ref2.value && Reflect.has(ref2.value, key)) {
-          return true;
-        }
-      }
-      return false;
-    },
-    getOwnPropertyDescriptor(target2, key) {
-      var _a;
-      const descriptor = Reflect.getOwnPropertyDescriptor(target2, key);
-      if (descriptor)
-        return descriptor;
-      if (typeof key === "symbol" || key.startsWith("__"))
-        return;
-      for (const ref2 of refs) {
-        if (!ref2.value)
-          continue;
-        const descriptor2 = getDescriptor(ref2.value, key) ?? ("_" in ref2.value ? getDescriptor((_a = ref2.value._) == null ? void 0 : _a.setupState, key) : void 0);
-        if (descriptor2)
-          return descriptor2;
-      }
-      for (const ref2 of refs) {
-        const childRefs = ref2.value && ref2.value[Refs];
-        if (!childRefs)
-          continue;
-        const queue = childRefs.slice();
-        while (queue.length) {
-          const ref3 = queue.shift();
-          const descriptor2 = getDescriptor(ref3.value, key);
-          if (descriptor2)
-            return descriptor2;
-          const childRefs2 = ref3.value && ref3.value[Refs];
-          if (childRefs2)
-            queue.push(...childRefs2);
-        }
-      }
-      return void 0;
-    }
-  });
-}
-const activeTypes = ["color", "file", "time", "date", "datetime-local", "week", "month"];
-const makeVTextFieldProps = propsFactory({
-  autofocus: Boolean,
-  counter: [Boolean, Number, String],
-  counterValue: Function,
-  prefix: String,
-  placeholder: String,
-  persistentPlaceholder: Boolean,
-  persistentCounter: Boolean,
-  suffix: String,
-  type: {
-    type: String,
-    default: "text"
-  },
-  modelModifiers: Object,
-  ...makeVInputProps(),
-  ...makeVFieldProps()
-}, "v-text-field");
-const VTextField = genericComponent()({
-  name: "VTextField",
-  directives: {
-    Intersect: Intersect$1
-  },
-  inheritAttrs: false,
-  props: makeVTextFieldProps(),
-  emits: {
-    "click:control": (e2) => true,
-    "mousedown:control": (e2) => true,
-    "update:focused": (focused) => true,
-    "update:modelValue": (val) => true
-  },
-  setup(props, _ref) {
-    let {
-      attrs,
-      emit,
-      slots
-    } = _ref;
-    const model = useProxiedModel(props, "modelValue");
-    const {
-      isFocused,
-      focus,
-      blur
-    } = useFocus(props);
-    const counterValue = computed(() => {
-      return typeof props.counterValue === "function" ? props.counterValue(model.value) : (model.value ?? "").toString().length;
-    });
-    const max = computed(() => {
-      if (attrs.maxlength)
-        return attrs.maxlength;
-      if (!props.counter || typeof props.counter !== "number" && typeof props.counter !== "string")
-        return void 0;
-      return props.counter;
-    });
-    const isPlainOrUnderlined = computed(() => ["plain", "underlined"].includes(props.variant));
-    function onIntersect(isIntersecting, entries2) {
-      var _a, _b;
-      if (!props.autofocus || !isIntersecting)
-        return;
-      (_b = (_a = entries2[0].target) == null ? void 0 : _a.focus) == null ? void 0 : _b.call(_a);
-    }
-    const vInputRef = ref();
-    const vFieldRef = ref();
-    const inputRef = ref();
-    const isActive = computed(() => activeTypes.includes(props.type) || props.persistentPlaceholder || isFocused.value || props.active);
-    function onFocus() {
-      var _a;
-      if (inputRef.value !== document.activeElement) {
-        (_a = inputRef.value) == null ? void 0 : _a.focus();
-      }
-      if (!isFocused.value)
-        focus();
-    }
-    function onControlMousedown(e2) {
-      emit("mousedown:control", e2);
-      if (e2.target === inputRef.value)
-        return;
-      onFocus();
-      e2.preventDefault();
-    }
-    function onControlClick(e2) {
-      onFocus();
-      emit("click:control", e2);
-    }
-    function onClear(e2) {
-      e2.stopPropagation();
-      onFocus();
-      nextTick(() => {
-        model.value = null;
-        callEvent(props["onClick:clear"], e2);
-      });
-    }
-    function onInput(e2) {
-      var _a;
-      const el = e2.target;
-      model.value = el.value;
-      if (((_a = props.modelModifiers) == null ? void 0 : _a.trim) && ["text", "search", "password", "tel", "url"].includes(props.type)) {
-        const caretPosition = [el.selectionStart, el.selectionEnd];
-        nextTick(() => {
-          el.selectionStart = caretPosition[0];
-          el.selectionEnd = caretPosition[1];
-        });
-      }
-    }
-    useRender(() => {
-      const hasCounter = !!(slots.counter || props.counter || props.counterValue);
-      const hasDetails = !!(hasCounter || slots.details);
-      const [rootAttrs, inputAttrs] = filterInputAttrs(attrs);
-      const [{
-        modelValue: _,
-        ...inputProps
-      }] = VInput.filterProps(props);
-      const [fieldProps] = filterFieldProps(props);
-      return createVNode(VInput, mergeProps({
-        "ref": vInputRef,
-        "modelValue": model.value,
-        "onUpdate:modelValue": ($event) => model.value = $event,
-        "class": ["v-text-field", {
-          "v-text-field--prefixed": props.prefix,
-          "v-text-field--suffixed": props.suffix,
-          "v-text-field--plain-underlined": ["plain", "underlined"].includes(props.variant)
-        }, props.class],
-        "style": props.style
-      }, rootAttrs, inputProps, {
-        "centerAffix": !isPlainOrUnderlined.value,
-        "focused": isFocused.value
-      }), {
-        ...slots,
-        default: (_ref2) => {
-          let {
-            id,
-            isDisabled,
-            isDirty,
-            isReadonly,
-            isValid: isValid2
-          } = _ref2;
-          return createVNode(VField, mergeProps({
-            "ref": vFieldRef,
-            "onMousedown": onControlMousedown,
-            "onClick": onControlClick,
-            "onClick:clear": onClear,
-            "onClick:prependInner": props["onClick:prependInner"],
-            "onClick:appendInner": props["onClick:appendInner"],
-            "role": "textbox"
-          }, fieldProps, {
-            "id": id.value,
-            "active": isActive.value || isDirty.value,
-            "dirty": isDirty.value || props.dirty,
-            "disabled": isDisabled.value,
-            "focused": isFocused.value,
-            "error": isValid2.value === false
-          }), {
-            ...slots,
-            default: (_ref3) => {
-              let {
-                props: {
-                  class: fieldClass,
-                  ...slotProps
-                }
-              } = _ref3;
-              const inputNode = withDirectives(createVNode("input", mergeProps({
-                "ref": inputRef,
-                "value": model.value,
-                "onInput": onInput,
-                "autofocus": props.autofocus,
-                "readonly": isReadonly.value,
-                "disabled": isDisabled.value,
-                "name": props.name,
-                "placeholder": props.placeholder,
-                "size": 1,
-                "type": props.type,
-                "onFocus": onFocus,
-                "onBlur": blur
-              }, slotProps, inputAttrs), null), [[resolveDirective("intersect"), {
-                handler: onIntersect
-              }, null, {
-                once: true
-              }]]);
-              return createVNode(Fragment, null, [props.prefix && createVNode("span", {
-                "class": "v-text-field__prefix"
-              }, [props.prefix]), slots.default ? createVNode("div", {
-                "class": fieldClass,
-                "data-no-activator": ""
-              }, [slots.default(), inputNode]) : cloneVNode(inputNode, {
-                class: fieldClass
-              }), props.suffix && createVNode("span", {
-                "class": "v-text-field__suffix"
-              }, [props.suffix])]);
-            }
-          });
-        },
-        details: hasDetails ? (slotProps) => {
-          var _a;
-          return createVNode(Fragment, null, [(_a = slots.details) == null ? void 0 : _a.call(slots, slotProps), hasCounter && createVNode(Fragment, null, [createVNode("span", null, null), createVNode(VCounter, {
-            "active": props.persistentCounter || isFocused.value,
-            "value": counterValue.value,
-            "max": max.value
-          }, slots.counter)])]);
-        } : void 0
-      });
-    });
-    return forwardRefs({}, vInputRef, vFieldRef, inputRef);
-  }
-});
-const VSelectionControl$1 = "";
-const VSelectionControlGroup = "";
-const VSelectionControlGroupSymbol = Symbol.for("vuetify:selection-control-group");
-const makeSelectionControlGroupProps = propsFactory({
-  color: String,
-  disabled: Boolean,
-  defaultsTarget: String,
-  error: Boolean,
-  id: String,
-  inline: Boolean,
-  falseIcon: IconValue,
-  trueIcon: IconValue,
-  ripple: {
-    type: Boolean,
-    default: true
-  },
-  multiple: {
-    type: Boolean,
-    default: null
-  },
-  name: String,
-  readonly: Boolean,
-  modelValue: null,
-  type: String,
-  valueComparator: {
-    type: Function,
-    default: deepEqual
-  },
-  ...makeComponentProps(),
-  ...makeDensityProps(),
-  ...makeThemeProps()
-}, "selection-control-group");
-const makeVSelectionControlGroupProps = propsFactory({
-  ...makeSelectionControlGroupProps({
-    defaultsTarget: "VSelectionControl"
-  })
-}, "v-selection-control-group");
-genericComponent()({
-  name: "VSelectionControlGroup",
-  props: makeVSelectionControlGroupProps(),
-  emits: {
-    "update:modelValue": (val) => true
-  },
-  setup(props, _ref) {
-    let {
-      slots
-    } = _ref;
-    const modelValue = useProxiedModel(props, "modelValue");
-    const uid = getUid();
-    const id = computed(() => props.id || `v-selection-control-group-${uid}`);
-    const name2 = computed(() => props.name || id.value);
-    const updateHandlers = /* @__PURE__ */ new Set();
-    provide(VSelectionControlGroupSymbol, {
-      modelValue,
-      forceUpdate: () => {
-        updateHandlers.forEach((fn) => fn());
-      },
-      onForceUpdate: (cb) => {
-        updateHandlers.add(cb);
-        onScopeDispose(() => {
-          updateHandlers.delete(cb);
-        });
-      }
-    });
-    provideDefaults({
-      [props.defaultsTarget]: {
-        color: toRef(props, "color"),
-        disabled: toRef(props, "disabled"),
-        density: toRef(props, "density"),
-        error: toRef(props, "error"),
-        inline: toRef(props, "inline"),
-        modelValue,
-        multiple: computed(() => !!props.multiple || props.multiple == null && Array.isArray(modelValue.value)),
-        name: name2,
-        falseIcon: toRef(props, "falseIcon"),
-        trueIcon: toRef(props, "trueIcon"),
-        readonly: toRef(props, "readonly"),
-        ripple: toRef(props, "ripple"),
-        type: toRef(props, "type"),
-        valueComparator: toRef(props, "valueComparator")
-      }
-    });
-    useRender(() => {
-      var _a;
-      return createVNode("div", {
-        "class": ["v-selection-control-group", {
-          "v-selection-control-group--inline": props.inline
-        }, props.class],
-        "style": props.style,
-        "role": props.type === "radio" ? "radiogroup" : void 0
-      }, [(_a = slots.default) == null ? void 0 : _a.call(slots)]);
-    });
-    return {};
-  }
-});
-const makeSelectionControlProps = propsFactory({
-  label: String,
-  trueValue: null,
-  falseValue: null,
-  value: null,
-  ...makeComponentProps(),
-  ...makeSelectionControlGroupProps()
-}, "v-selection-control");
-function useSelectionControl(props) {
-  const group = inject$1(VSelectionControlGroupSymbol, void 0);
-  const {
-    densityClasses
-  } = useDensity(props);
-  const modelValue = useProxiedModel(props, "modelValue");
-  const trueValue = computed(() => props.trueValue !== void 0 ? props.trueValue : props.value !== void 0 ? props.value : true);
-  const falseValue = computed(() => props.falseValue !== void 0 ? props.falseValue : false);
-  const isMultiple = computed(() => !!props.multiple || props.multiple == null && Array.isArray(modelValue.value));
-  const model = computed({
-    get() {
-      const val = group ? group.modelValue.value : modelValue.value;
-      return isMultiple.value ? val.some((v2) => props.valueComparator(v2, trueValue.value)) : props.valueComparator(val, trueValue.value);
-    },
-    set(val) {
-      if (props.readonly)
-        return;
-      const currentValue = val ? trueValue.value : falseValue.value;
-      let newVal = currentValue;
-      if (isMultiple.value) {
-        newVal = val ? [...wrapInArray(modelValue.value), currentValue] : wrapInArray(modelValue.value).filter((item) => !props.valueComparator(item, trueValue.value));
-      }
-      if (group) {
-        group.modelValue.value = newVal;
-      } else {
-        modelValue.value = newVal;
-      }
-    }
-  });
-  const {
-    textColorClasses,
-    textColorStyles
-  } = useTextColor(computed(() => {
-    return model.value && !props.error && !props.disabled ? props.color : void 0;
-  }));
-  const icon = computed(() => model.value ? props.trueIcon : props.falseIcon);
-  return {
-    group,
-    densityClasses,
-    trueValue,
-    falseValue,
-    model,
-    textColorClasses,
-    textColorStyles,
-    icon
-  };
-}
-const VSelectionControl = genericComponent()({
-  name: "VSelectionControl",
-  directives: {
-    Ripple
-  },
-  inheritAttrs: false,
-  props: makeSelectionControlProps(),
-  emits: {
-    "update:modelValue": (val) => true
-  },
-  setup(props, _ref) {
-    let {
-      attrs,
-      slots
-    } = _ref;
-    const {
-      group,
-      densityClasses,
-      icon,
-      model,
-      textColorClasses,
-      textColorStyles,
-      trueValue
-    } = useSelectionControl(props);
-    const uid = getUid();
-    const id = computed(() => props.id || `input-${uid}`);
-    const isFocused = shallowRef(false);
-    const isFocusVisible = shallowRef(false);
-    const input = ref();
-    group == null ? void 0 : group.onForceUpdate(() => {
-      if (input.value) {
-        input.value.checked = model.value;
-      }
-    });
-    function onFocus(e2) {
-      isFocused.value = true;
-      if (!SUPPORTS_FOCUS_VISIBLE || SUPPORTS_FOCUS_VISIBLE && e2.target.matches(":focus-visible")) {
-        isFocusVisible.value = true;
-      }
-    }
-    function onBlur() {
-      isFocused.value = false;
-      isFocusVisible.value = false;
-    }
-    function onInput(e2) {
-      if (props.readonly && group) {
-        nextTick(() => group.forceUpdate());
-      }
-      model.value = e2.target.checked;
-    }
-    useRender(() => {
-      var _a, _b;
-      const label = slots.label ? slots.label({
-        label: props.label,
-        props: {
-          for: id.value
-        }
-      }) : props.label;
-      const [rootAttrs, inputAttrs] = filterInputAttrs(attrs);
-      return createVNode("div", mergeProps({
-        "class": ["v-selection-control", {
-          "v-selection-control--dirty": model.value,
-          "v-selection-control--disabled": props.disabled,
-          "v-selection-control--error": props.error,
-          "v-selection-control--focused": isFocused.value,
-          "v-selection-control--focus-visible": isFocusVisible.value,
-          "v-selection-control--inline": props.inline
-        }, densityClasses.value, props.class]
-      }, rootAttrs, {
-        "style": props.style
-      }), [createVNode("div", {
-        "class": ["v-selection-control__wrapper", textColorClasses.value],
-        "style": textColorStyles.value
-      }, [(_a = slots.default) == null ? void 0 : _a.call(slots), withDirectives(createVNode("div", {
-        "class": ["v-selection-control__input"]
-      }, [icon.value && createVNode(VIcon, {
-        "key": "icon",
-        "icon": icon.value
-      }, null), createVNode("input", mergeProps({
-        "ref": input,
-        "checked": model.value,
-        "disabled": props.disabled,
-        "id": id.value,
-        "onBlur": onBlur,
-        "onFocus": onFocus,
-        "onInput": onInput,
-        "aria-disabled": props.readonly,
-        "type": props.type,
-        "value": trueValue.value,
-        "name": props.name,
-        "aria-checked": props.type === "checkbox" ? model.value : void 0
-      }, inputAttrs), null), (_b = slots.input) == null ? void 0 : _b.call(slots, {
-        model,
-        textColorClasses,
-        textColorStyles,
-        props: {
-          onFocus,
-          onBlur,
-          id: id.value
-        }
-      })]), [[resolveDirective("ripple"), props.ripple && [!props.disabled && !props.readonly, null, ["center", "circle"]]]])]), label && createVNode(VLabel, {
-        "for": id.value,
-        "clickable": true
-      }, {
-        default: () => [label]
-      })]);
-    });
-    return {
-      isFocused,
-      input
-    };
-  }
-});
-const makeVCheckboxBtnProps = propsFactory({
-  indeterminate: Boolean,
-  indeterminateIcon: {
-    type: IconValue,
-    default: "$checkboxIndeterminate"
-  },
-  ...makeSelectionControlProps({
-    falseIcon: "$checkboxOff",
-    trueIcon: "$checkboxOn"
-  })
-}, "v-checkbox-btn");
-const VCheckboxBtn = genericComponent()({
-  name: "VCheckboxBtn",
-  props: makeVCheckboxBtnProps(),
-  emits: {
-    "update:modelValue": (value2) => true,
-    "update:indeterminate": (val) => true
-  },
-  setup(props, _ref) {
-    let {
-      slots
-    } = _ref;
-    const indeterminate = useProxiedModel(props, "indeterminate");
-    const model = useProxiedModel(props, "modelValue");
-    function onChange(v2) {
-      if (indeterminate.value) {
-        indeterminate.value = false;
-      }
-    }
-    const falseIcon = computed(() => {
-      return indeterminate.value ? props.indeterminateIcon : props.falseIcon;
-    });
-    const trueIcon = computed(() => {
-      return indeterminate.value ? props.indeterminateIcon : props.trueIcon;
-    });
-    useRender(() => createVNode(VSelectionControl, mergeProps(props, {
-      "modelValue": model.value,
-      "onUpdate:modelValue": [($event) => model.value = $event, onChange],
-      "class": ["v-checkbox-btn", props.class],
-      "style": props.style,
-      "type": "checkbox",
-      "falseIcon": falseIcon.value,
-      "trueIcon": trueIcon.value,
-      "aria-checked": indeterminate.value ? "mixed" : void 0
-    }), slots));
-    return {};
-  }
-});
-const VChip$1 = "";
-const VAvatar$1 = "";
-const VImg$1 = "";
-const VResponsive$1 = "";
-function useAspectStyles(props) {
-  return {
-    aspectStyles: computed(() => {
-      const ratio = Number(props.aspectRatio);
-      return ratio ? {
-        paddingBottom: String(1 / ratio * 100) + "%"
-      } : void 0;
-    })
-  };
-}
-const makeVResponsiveProps = propsFactory({
-  aspectRatio: [String, Number],
-  contentClass: String,
-  inline: Boolean,
-  ...makeComponentProps(),
-  ...makeDimensionProps()
-}, "v-responsive");
-const VResponsive = genericComponent()({
-  name: "VResponsive",
-  props: makeVResponsiveProps(),
-  setup(props, _ref) {
-    let {
-      slots
-    } = _ref;
-    const {
-      aspectStyles
-    } = useAspectStyles(props);
-    const {
-      dimensionStyles
-    } = useDimension(props);
-    useRender(() => {
-      var _a;
-      return createVNode("div", {
-        "class": ["v-responsive", {
-          "v-responsive--inline": props.inline
-        }, props.class],
-        "style": [dimensionStyles.value, props.style]
-      }, [createVNode("div", {
-        "class": "v-responsive__sizer",
-        "style": aspectStyles.value
-      }, null), (_a = slots.additional) == null ? void 0 : _a.call(slots), slots.default && createVNode("div", {
-        "class": ["v-responsive__content", props.contentClass]
-      }, [slots.default()])]);
-    });
-    return {};
-  }
-});
 const makeVImgProps = propsFactory({
   alt: String,
   cover: Boolean,
@@ -6528,7 +5931,7 @@ const makeVImgProps = propsFactory({
   ...makeVResponsiveProps(),
   ...makeComponentProps(),
   ...makeTransitionProps()
-}, "v-img");
+}, "VImg");
 const VImg = genericComponent()({
   name: "VImg",
   directives: {
@@ -6772,7 +6175,7 @@ const makeVAvatarProps = propsFactory({
   ...makeVariantProps({
     variant: "flat"
   })
-}, "v-avatar");
+}, "VAvatar");
 const VAvatar = genericComponent()({
   name: "VAvatar",
   props: makeVAvatarProps(),
@@ -6839,7 +6242,7 @@ const makeVChipGroupProps = propsFactory({
   ...makeVariantProps({
     variant: "tonal"
   })
-}, "v-chip-group");
+}, "VChipGroup");
 genericComponent()({
   name: "VChipGroup",
   props: makeVChipGroupProps(),
@@ -6941,7 +6344,7 @@ const makeVChipProps = propsFactory({
   ...makeVariantProps({
     variant: "tonal"
   })
-}, "v-chip");
+}, "VChip");
 const VChip = genericComponent()({
   name: "VChip",
   directives: {
@@ -7135,53 +6538,6 @@ const VChip = genericComponent()({
   }
 });
 const VList$1 = "";
-const VDivider$1 = "";
-const makeVDividerProps = propsFactory({
-  color: String,
-  inset: Boolean,
-  length: [Number, String],
-  thickness: [Number, String],
-  vertical: Boolean,
-  ...makeComponentProps(),
-  ...makeThemeProps()
-}, "v-divider");
-const VDivider = genericComponent()({
-  name: "VDivider",
-  props: makeVDividerProps(),
-  setup(props, _ref) {
-    let {
-      attrs
-    } = _ref;
-    const {
-      themeClasses
-    } = provideTheme(props);
-    const {
-      textColorClasses,
-      textColorStyles
-    } = useTextColor(toRef(props, "color"));
-    const dividerStyles = computed(() => {
-      const styles = {};
-      if (props.length) {
-        styles[props.vertical ? "maxHeight" : "maxWidth"] = convertToUnit(props.length);
-      }
-      if (props.thickness) {
-        styles[props.vertical ? "borderRightWidth" : "borderTopWidth"] = convertToUnit(props.thickness);
-      }
-      return styles;
-    });
-    useRender(() => createVNode("hr", {
-      "class": [{
-        "v-divider": true,
-        "v-divider--inset": props.inset,
-        "v-divider--vertical": props.vertical
-      }, themeClasses.value, textColorClasses.value, props.class],
-      "style": [dividerStyles.value, textColorStyles.value, props.style],
-      "aria-orientation": !attrs.role || attrs.role === "separator" ? props.vertical ? "vertical" : "horizontal" : void 0,
-      "role": `${attrs.role || "separator"}`
-    }, null));
-    return {};
-  }
-});
 const ListKey = Symbol.for("vuetify:list");
 function createList() {
   const parent = inject$1(ListKey, {
@@ -7692,7 +7048,7 @@ const makeVListGroupProps = propsFactory({
   value: null,
   ...makeComponentProps(),
   ...makeTagProps()
-}, "v-list-group");
+}, "VListGroup");
 const VListGroup = genericComponent()({
   name: "VListGroup",
   props: makeVListGroupProps(),
@@ -7812,7 +7168,7 @@ const makeVListItemProps = propsFactory({
   ...makeVariantProps({
     variant: "text"
   })
-}, "v-list-item");
+}, "VListItem");
 const VListItem = genericComponent()({
   name: "VListItem",
   directives: {
@@ -8037,7 +7393,7 @@ const makeVListSubheaderProps = propsFactory({
   title: String,
   ...makeComponentProps(),
   ...makeTagProps()
-}, "v-list-subheader");
+}, "VListSubheader");
 const VListSubheader = genericComponent()({
   name: "VListSubheader",
   props: makeVListSubheaderProps(),
@@ -8071,9 +7427,56 @@ const VListSubheader = genericComponent()({
     return {};
   }
 });
+const VDivider$1 = "";
+const makeVDividerProps = propsFactory({
+  color: String,
+  inset: Boolean,
+  length: [Number, String],
+  thickness: [Number, String],
+  vertical: Boolean,
+  ...makeComponentProps(),
+  ...makeThemeProps()
+}, "VDivider");
+const VDivider = genericComponent()({
+  name: "VDivider",
+  props: makeVDividerProps(),
+  setup(props, _ref) {
+    let {
+      attrs
+    } = _ref;
+    const {
+      themeClasses
+    } = provideTheme(props);
+    const {
+      textColorClasses,
+      textColorStyles
+    } = useTextColor(toRef(props, "color"));
+    const dividerStyles = computed(() => {
+      const styles = {};
+      if (props.length) {
+        styles[props.vertical ? "maxHeight" : "maxWidth"] = convertToUnit(props.length);
+      }
+      if (props.thickness) {
+        styles[props.vertical ? "borderRightWidth" : "borderTopWidth"] = convertToUnit(props.thickness);
+      }
+      return styles;
+    });
+    useRender(() => createVNode("hr", {
+      "class": [{
+        "v-divider": true,
+        "v-divider--inset": props.inset,
+        "v-divider--vertical": props.vertical
+      }, themeClasses.value, textColorClasses.value, props.class],
+      "style": [dividerStyles.value, textColorStyles.value, props.style],
+      "aria-orientation": !attrs.role || attrs.role === "separator" ? props.vertical ? "vertical" : "horizontal" : void 0,
+      "role": `${attrs.role || "separator"}`
+    }, null));
+    return {};
+  }
+});
 const makeVListChildrenProps = propsFactory({
   items: Array
-}, "v-list-children");
+}, "VListChildren");
 const VListChildren = genericComponent()({
   name: "VListChildren",
   props: makeVListChildrenProps(),
@@ -8298,7 +7701,7 @@ const makeVListProps = propsFactory({
   ...makeVariantProps({
     variant: "text"
   })
-}, "v-list");
+}, "VList");
 const VList = genericComponent()({
   name: "VList",
   props: makeVListProps(),
@@ -8406,6 +7809,7 @@ const VList = genericComponent()({
           "v-list--nav": props.nav
         }, themeClasses.value, backgroundColorClasses.value, borderClasses.value, densityClasses.value, elevationClasses.value, lineClasses.value, roundedClasses.value, props.class],
         "style": [backgroundColorStyles.value, dimensionStyles.value, props.style],
+        "tabindex": props.disabled || isFocused.value ? -1 : 0,
         "role": "listbox",
         "aria-activedescendant": void 0,
         "onFocusin": onFocusin,
@@ -8427,294 +7831,6 @@ const VList = genericComponent()({
 });
 const VMenu$1 = "";
 const VOverlay$1 = "";
-const makeDelayProps = propsFactory({
-  closeDelay: [Number, String],
-  openDelay: [Number, String]
-}, "delay");
-function useDelay(props, cb) {
-  const delays = {};
-  const runDelayFactory = (prop) => () => {
-    if (!IN_BROWSER)
-      return Promise.resolve(true);
-    const active2 = prop === "openDelay";
-    delays.closeDelay && window.clearTimeout(delays.closeDelay);
-    delete delays.closeDelay;
-    delays.openDelay && window.clearTimeout(delays.openDelay);
-    delete delays.openDelay;
-    return new Promise((resolve) => {
-      const delay2 = parseInt(props[prop] ?? 0, 10);
-      delays[prop] = window.setTimeout(() => {
-        cb == null ? void 0 : cb(active2);
-        resolve(active2);
-      }, delay2);
-    });
-  };
-  return {
-    runCloseDelay: runDelayFactory("closeDelay"),
-    runOpenDelay: runDelayFactory("openDelay")
-  };
-}
-const VMenuSymbol = Symbol.for("vuetify:v-menu");
-const makeActivatorProps = propsFactory({
-  activator: [String, Object],
-  activatorProps: {
-    type: Object,
-    default: () => ({})
-  },
-  openOnClick: {
-    type: Boolean,
-    default: void 0
-  },
-  openOnHover: Boolean,
-  openOnFocus: {
-    type: Boolean,
-    default: void 0
-  },
-  closeOnContentClick: Boolean,
-  ...makeDelayProps()
-}, "v-overlay-activator");
-function useActivator(props, _ref) {
-  let {
-    isActive,
-    isTop
-  } = _ref;
-  const activatorEl = ref();
-  let isHovered = false;
-  let isFocused = false;
-  let firstEnter = true;
-  const openOnFocus = computed(() => props.openOnFocus || props.openOnFocus == null && props.openOnHover);
-  const openOnClick = computed(() => props.openOnClick || props.openOnClick == null && !props.openOnHover && !openOnFocus.value);
-  const {
-    runOpenDelay,
-    runCloseDelay
-  } = useDelay(props, (value2) => {
-    if (value2 === (props.openOnHover && isHovered || openOnFocus.value && isFocused) && !(props.openOnHover && isActive.value && !isTop.value)) {
-      if (isActive.value !== value2) {
-        firstEnter = true;
-      }
-      isActive.value = value2;
-    }
-  });
-  const availableEvents = {
-    click: (e2) => {
-      e2.stopPropagation();
-      activatorEl.value = e2.currentTarget || e2.target;
-      isActive.value = !isActive.value;
-    },
-    mouseenter: (e2) => {
-      var _a;
-      if ((_a = e2.sourceCapabilities) == null ? void 0 : _a.firesTouchEvents)
-        return;
-      isHovered = true;
-      activatorEl.value = e2.currentTarget || e2.target;
-      runOpenDelay();
-    },
-    mouseleave: (e2) => {
-      isHovered = false;
-      runCloseDelay();
-    },
-    focus: (e2) => {
-      if (SUPPORTS_FOCUS_VISIBLE && !e2.target.matches(":focus-visible"))
-        return;
-      isFocused = true;
-      e2.stopPropagation();
-      activatorEl.value = e2.currentTarget || e2.target;
-      runOpenDelay();
-    },
-    blur: (e2) => {
-      isFocused = false;
-      e2.stopPropagation();
-      runCloseDelay();
-    }
-  };
-  const activatorEvents = computed(() => {
-    const events = {};
-    if (openOnClick.value) {
-      events.click = availableEvents.click;
-    }
-    if (props.openOnHover) {
-      events.mouseenter = availableEvents.mouseenter;
-      events.mouseleave = availableEvents.mouseleave;
-    }
-    if (openOnFocus.value) {
-      events.focus = availableEvents.focus;
-      events.blur = availableEvents.blur;
-    }
-    return events;
-  });
-  const contentEvents = computed(() => {
-    const events = {};
-    if (props.openOnHover) {
-      events.mouseenter = () => {
-        isHovered = true;
-        runOpenDelay();
-      };
-      events.mouseleave = () => {
-        isHovered = false;
-        runCloseDelay();
-      };
-    }
-    if (props.closeOnContentClick) {
-      const menu = inject$1(VMenuSymbol, null);
-      events.click = () => {
-        isActive.value = false;
-        menu == null ? void 0 : menu.closeParents();
-      };
-    }
-    return events;
-  });
-  const scrimEvents = computed(() => {
-    const events = {};
-    if (props.openOnHover) {
-      events.mouseenter = () => {
-        if (firstEnter) {
-          isHovered = true;
-          firstEnter = false;
-          runOpenDelay();
-        }
-      };
-      events.mouseleave = () => {
-        isHovered = false;
-        runCloseDelay();
-      };
-    }
-    return events;
-  });
-  watch(isTop, (val) => {
-    if (val && (props.openOnHover && !isHovered && (!openOnFocus.value || !isFocused) || openOnFocus.value && !isFocused && (!props.openOnHover || !isHovered))) {
-      isActive.value = false;
-    }
-  });
-  const activatorRef = ref();
-  watchEffect(() => {
-    if (!activatorRef.value)
-      return;
-    nextTick(() => {
-      const activator = activatorRef.value;
-      activatorEl.value = isComponentInstance(activator) ? activator.$el : activator;
-    });
-  });
-  const vm = getCurrentInstance("useActivator");
-  let scope;
-  watch(() => !!props.activator, (val) => {
-    if (val && IN_BROWSER) {
-      scope = effectScope();
-      scope.run(() => {
-        _useActivator(props, vm, {
-          activatorEl,
-          activatorEvents
-        });
-      });
-    } else if (scope) {
-      scope.stop();
-    }
-  }, {
-    flush: "post",
-    immediate: true
-  });
-  onScopeDispose(() => {
-    scope == null ? void 0 : scope.stop();
-  });
-  return {
-    activatorEl,
-    activatorRef,
-    activatorEvents,
-    contentEvents,
-    scrimEvents
-  };
-}
-function _useActivator(props, vm, _ref2) {
-  let {
-    activatorEl,
-    activatorEvents
-  } = _ref2;
-  watch(() => props.activator, (val, oldVal) => {
-    if (oldVal && val !== oldVal) {
-      const activator = getActivator(oldVal);
-      activator && unbindActivatorProps(activator);
-    }
-    if (val) {
-      nextTick(() => bindActivatorProps());
-    }
-  }, {
-    immediate: true
-  });
-  watch(() => props.activatorProps, () => {
-    bindActivatorProps();
-  });
-  onScopeDispose(() => {
-    unbindActivatorProps();
-  });
-  function bindActivatorProps() {
-    let el = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : getActivator();
-    let _props = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : props.activatorProps;
-    if (!el)
-      return;
-    Object.entries(activatorEvents.value).forEach((_ref3) => {
-      let [name2, cb] = _ref3;
-      el.addEventListener(name2, cb);
-    });
-    Object.keys(_props).forEach((k2) => {
-      if (_props[k2] == null) {
-        el.removeAttribute(k2);
-      } else {
-        el.setAttribute(k2, _props[k2]);
-      }
-    });
-  }
-  function unbindActivatorProps() {
-    let el = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : getActivator();
-    let _props = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : props.activatorProps;
-    if (!el)
-      return;
-    Object.entries(activatorEvents.value).forEach((_ref4) => {
-      let [name2, cb] = _ref4;
-      el.removeEventListener(name2, cb);
-    });
-    Object.keys(_props).forEach((k2) => {
-      el.removeAttribute(k2);
-    });
-  }
-  function getActivator() {
-    var _a, _b;
-    let selector = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : props.activator;
-    let activator;
-    if (selector) {
-      if (selector === "parent") {
-        let el = (_b = (_a = vm == null ? void 0 : vm.proxy) == null ? void 0 : _a.$el) == null ? void 0 : _b.parentNode;
-        while (el.hasAttribute("data-no-activator")) {
-          el = el.parentNode;
-        }
-        activator = el;
-      } else if (typeof selector === "string") {
-        activator = document.querySelector(selector);
-      } else if ("$el" in selector) {
-        activator = selector.$el;
-      } else {
-        activator = selector;
-      }
-    }
-    activatorEl.value = (activator == null ? void 0 : activator.nodeType) === Node.ELEMENT_NODE ? activator : null;
-    return activatorEl.value;
-  }
-}
-const makeLazyProps = propsFactory({
-  eager: Boolean
-}, "lazy");
-function useLazy(props, active2) {
-  const isBooted = shallowRef(false);
-  const hasContent = computed(() => isBooted.value || props.eager || active2.value);
-  watch(active2, () => isBooted.value = true);
-  function onAfterLeave() {
-    if (!props.eager)
-      isBooted.value = false;
-  }
-  return {
-    isBooted,
-    hasContent,
-    onAfterLeave
-  };
-}
 function elementToViewport(point, offset) {
   return {
     x: point.x + offset.x,
@@ -8777,7 +7893,7 @@ const makeLocationStrategyProps = propsFactory({
     default: "auto"
   },
   offset: [Number, String, Array]
-}, "v-overlay-location-strategies");
+}, "VOverlay-location-strategies");
 function useLocationStrategies(props, data) {
   const contentStyles = ref({});
   const updateLocation = ref();
@@ -9145,7 +8261,7 @@ const makeScrollStrategyProps = propsFactory({
     default: "block",
     validator: (val) => typeof val === "function" || val in scrollStrategies
   }
-}, "v-overlay-scroll-strategies");
+}, "VOverlay-scroll-strategies");
 function useScrollStrategies(props, data) {
   if (!IN_BROWSER)
     return;
@@ -9253,6 +8369,276 @@ function bindScroll(el, onScroll) {
     });
   });
 }
+const VMenuSymbol = Symbol.for("vuetify:v-menu");
+const makeDelayProps = propsFactory({
+  closeDelay: [Number, String],
+  openDelay: [Number, String]
+}, "delay");
+function useDelay(props, cb) {
+  const delays = {};
+  const runDelayFactory = (prop) => () => {
+    if (!IN_BROWSER)
+      return Promise.resolve(true);
+    const active2 = prop === "openDelay";
+    delays.closeDelay && window.clearTimeout(delays.closeDelay);
+    delete delays.closeDelay;
+    delays.openDelay && window.clearTimeout(delays.openDelay);
+    delete delays.openDelay;
+    return new Promise((resolve) => {
+      const delay2 = parseInt(props[prop] ?? 0, 10);
+      delays[prop] = window.setTimeout(() => {
+        cb == null ? void 0 : cb(active2);
+        resolve(active2);
+      }, delay2);
+    });
+  };
+  return {
+    runCloseDelay: runDelayFactory("closeDelay"),
+    runOpenDelay: runDelayFactory("openDelay")
+  };
+}
+const makeActivatorProps = propsFactory({
+  activator: [String, Object],
+  activatorProps: {
+    type: Object,
+    default: () => ({})
+  },
+  openOnClick: {
+    type: Boolean,
+    default: void 0
+  },
+  openOnHover: Boolean,
+  openOnFocus: {
+    type: Boolean,
+    default: void 0
+  },
+  closeOnContentClick: Boolean,
+  ...makeDelayProps()
+}, "VOverlay-activator");
+function useActivator(props, _ref) {
+  let {
+    isActive,
+    isTop
+  } = _ref;
+  const activatorEl = ref();
+  let isHovered = false;
+  let isFocused = false;
+  let firstEnter = true;
+  const openOnFocus = computed(() => props.openOnFocus || props.openOnFocus == null && props.openOnHover);
+  const openOnClick = computed(() => props.openOnClick || props.openOnClick == null && !props.openOnHover && !openOnFocus.value);
+  const {
+    runOpenDelay,
+    runCloseDelay
+  } = useDelay(props, (value2) => {
+    if (value2 === (props.openOnHover && isHovered || openOnFocus.value && isFocused) && !(props.openOnHover && isActive.value && !isTop.value)) {
+      if (isActive.value !== value2) {
+        firstEnter = true;
+      }
+      isActive.value = value2;
+    }
+  });
+  const availableEvents = {
+    click: (e2) => {
+      e2.stopPropagation();
+      activatorEl.value = e2.currentTarget || e2.target;
+      isActive.value = !isActive.value;
+    },
+    mouseenter: (e2) => {
+      var _a;
+      if ((_a = e2.sourceCapabilities) == null ? void 0 : _a.firesTouchEvents)
+        return;
+      isHovered = true;
+      activatorEl.value = e2.currentTarget || e2.target;
+      runOpenDelay();
+    },
+    mouseleave: (e2) => {
+      isHovered = false;
+      runCloseDelay();
+    },
+    focus: (e2) => {
+      if (SUPPORTS_FOCUS_VISIBLE && !e2.target.matches(":focus-visible"))
+        return;
+      isFocused = true;
+      e2.stopPropagation();
+      activatorEl.value = e2.currentTarget || e2.target;
+      runOpenDelay();
+    },
+    blur: (e2) => {
+      isFocused = false;
+      e2.stopPropagation();
+      runCloseDelay();
+    }
+  };
+  const activatorEvents = computed(() => {
+    const events = {};
+    if (openOnClick.value) {
+      events.click = availableEvents.click;
+    }
+    if (props.openOnHover) {
+      events.mouseenter = availableEvents.mouseenter;
+      events.mouseleave = availableEvents.mouseleave;
+    }
+    if (openOnFocus.value) {
+      events.focus = availableEvents.focus;
+      events.blur = availableEvents.blur;
+    }
+    return events;
+  });
+  const contentEvents = computed(() => {
+    const events = {};
+    if (props.openOnHover) {
+      events.mouseenter = () => {
+        isHovered = true;
+        runOpenDelay();
+      };
+      events.mouseleave = () => {
+        isHovered = false;
+        runCloseDelay();
+      };
+    }
+    if (props.closeOnContentClick) {
+      const menu = inject$1(VMenuSymbol, null);
+      events.click = () => {
+        isActive.value = false;
+        menu == null ? void 0 : menu.closeParents();
+      };
+    }
+    return events;
+  });
+  const scrimEvents = computed(() => {
+    const events = {};
+    if (props.openOnHover) {
+      events.mouseenter = () => {
+        if (firstEnter) {
+          isHovered = true;
+          firstEnter = false;
+          runOpenDelay();
+        }
+      };
+      events.mouseleave = () => {
+        isHovered = false;
+        runCloseDelay();
+      };
+    }
+    return events;
+  });
+  watch(isTop, (val) => {
+    if (val && (props.openOnHover && !isHovered && (!openOnFocus.value || !isFocused) || openOnFocus.value && !isFocused && (!props.openOnHover || !isHovered))) {
+      isActive.value = false;
+    }
+  });
+  const activatorRef = ref();
+  watchEffect(() => {
+    if (!activatorRef.value)
+      return;
+    nextTick(() => {
+      activatorEl.value = refElement(activatorRef.value);
+    });
+  });
+  const vm = getCurrentInstance("useActivator");
+  let scope;
+  watch(() => !!props.activator, (val) => {
+    if (val && IN_BROWSER) {
+      scope = effectScope();
+      scope.run(() => {
+        _useActivator(props, vm, {
+          activatorEl,
+          activatorEvents
+        });
+      });
+    } else if (scope) {
+      scope.stop();
+    }
+  }, {
+    flush: "post",
+    immediate: true
+  });
+  onScopeDispose(() => {
+    scope == null ? void 0 : scope.stop();
+  });
+  return {
+    activatorEl,
+    activatorRef,
+    activatorEvents,
+    contentEvents,
+    scrimEvents
+  };
+}
+function _useActivator(props, vm, _ref2) {
+  let {
+    activatorEl,
+    activatorEvents
+  } = _ref2;
+  watch(() => props.activator, (val, oldVal) => {
+    if (oldVal && val !== oldVal) {
+      const activator = getActivator(oldVal);
+      activator && unbindActivatorProps(activator);
+    }
+    if (val) {
+      nextTick(() => bindActivatorProps());
+    }
+  }, {
+    immediate: true
+  });
+  watch(() => props.activatorProps, () => {
+    bindActivatorProps();
+  });
+  onScopeDispose(() => {
+    unbindActivatorProps();
+  });
+  function bindActivatorProps() {
+    let el = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : getActivator();
+    let _props = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : props.activatorProps;
+    if (!el)
+      return;
+    Object.entries(activatorEvents.value).forEach((_ref3) => {
+      let [name2, cb] = _ref3;
+      el.addEventListener(name2, cb);
+    });
+    Object.keys(_props).forEach((k2) => {
+      if (_props[k2] == null) {
+        el.removeAttribute(k2);
+      } else {
+        el.setAttribute(k2, _props[k2]);
+      }
+    });
+  }
+  function unbindActivatorProps() {
+    let el = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : getActivator();
+    let _props = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : props.activatorProps;
+    if (!el)
+      return;
+    Object.entries(activatorEvents.value).forEach((_ref4) => {
+      let [name2, cb] = _ref4;
+      el.removeEventListener(name2, cb);
+    });
+    Object.keys(_props).forEach((k2) => {
+      el.removeAttribute(k2);
+    });
+  }
+  function getActivator() {
+    var _a, _b;
+    let selector = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : props.activator;
+    let activator;
+    if (selector) {
+      if (selector === "parent") {
+        let el = (_b = (_a = vm == null ? void 0 : vm.proxy) == null ? void 0 : _a.$el) == null ? void 0 : _b.parentNode;
+        while (el.hasAttribute("data-no-activator")) {
+          el = el.parentNode;
+        }
+        activator = el;
+      } else if (typeof selector === "string") {
+        activator = document.querySelector(selector);
+      } else if ("$el" in selector) {
+        activator = selector.$el;
+      } else {
+        activator = selector;
+      }
+    }
+    activatorEl.value = (activator == null ? void 0 : activator.nodeType) === Node.ELEMENT_NODE ? activator : null;
+    return activatorEl.value;
+  }
+}
 function useHydration() {
   if (!IN_BROWSER)
     return shallowRef(false);
@@ -9268,6 +8654,23 @@ function useHydration() {
   } else {
     return shallowRef(true);
   }
+}
+const makeLazyProps = propsFactory({
+  eager: Boolean
+}, "lazy");
+function useLazy(props, active2) {
+  const isBooted = shallowRef(false);
+  const hasContent = computed(() => isBooted.value || props.eager || active2.value);
+  watch(active2, () => isBooted.value = true);
+  function onAfterLeave() {
+    if (!props.eager)
+      isBooted.value = false;
+  }
+  return {
+    isBooted,
+    hasContent,
+    onAfterLeave
+  };
 }
 function useScopeId() {
   const vm = getCurrentInstance("useScopeId");
@@ -9462,7 +8865,7 @@ const makeVOverlayProps = propsFactory({
   ...makeScrollStrategyProps(),
   ...makeThemeProps(),
   ...makeTransitionProps()
-}, "v-overlay");
+}, "VOverlay");
 const VOverlay = genericComponent()({
   name: "VOverlay",
   directives: {
@@ -9678,6 +9081,82 @@ const VOverlay = genericComponent()({
     };
   }
 });
+const Refs = Symbol("Forwarded refs");
+function getDescriptor(obj, key) {
+  let currentObj = obj;
+  while (currentObj) {
+    const descriptor = Reflect.getOwnPropertyDescriptor(currentObj, key);
+    if (descriptor)
+      return descriptor;
+    currentObj = Object.getPrototypeOf(currentObj);
+  }
+  return void 0;
+}
+function forwardRefs(target) {
+  for (var _len = arguments.length, refs = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    refs[_key - 1] = arguments[_key];
+  }
+  target[Refs] = refs;
+  return new Proxy(target, {
+    get(target2, key) {
+      if (Reflect.has(target2, key)) {
+        return Reflect.get(target2, key);
+      }
+      if (typeof key === "symbol" || key.startsWith("__"))
+        return;
+      for (const ref2 of refs) {
+        if (ref2.value && Reflect.has(ref2.value, key)) {
+          const val = Reflect.get(ref2.value, key);
+          return typeof val === "function" ? val.bind(ref2.value) : val;
+        }
+      }
+    },
+    has(target2, key) {
+      if (Reflect.has(target2, key)) {
+        return true;
+      }
+      if (typeof key === "symbol" || key.startsWith("__"))
+        return false;
+      for (const ref2 of refs) {
+        if (ref2.value && Reflect.has(ref2.value, key)) {
+          return true;
+        }
+      }
+      return false;
+    },
+    getOwnPropertyDescriptor(target2, key) {
+      var _a;
+      const descriptor = Reflect.getOwnPropertyDescriptor(target2, key);
+      if (descriptor)
+        return descriptor;
+      if (typeof key === "symbol" || key.startsWith("__"))
+        return;
+      for (const ref2 of refs) {
+        if (!ref2.value)
+          continue;
+        const descriptor2 = getDescriptor(ref2.value, key) ?? ("_" in ref2.value ? getDescriptor((_a = ref2.value._) == null ? void 0 : _a.setupState, key) : void 0);
+        if (descriptor2)
+          return descriptor2;
+      }
+      for (const ref2 of refs) {
+        const childRefs = ref2.value && ref2.value[Refs];
+        if (!childRefs)
+          continue;
+        const queue = childRefs.slice();
+        while (queue.length) {
+          const ref3 = queue.shift();
+          const descriptor2 = getDescriptor(ref3.value, key);
+          if (descriptor2)
+            return descriptor2;
+          const childRefs2 = ref3.value && ref3.value[Refs];
+          if (childRefs2)
+            queue.push(...childRefs2);
+        }
+      }
+      return void 0;
+    }
+  });
+}
 const makeVMenuProps = propsFactory({
   // TODO
   // disableKeys: Boolean,
@@ -9693,7 +9172,7 @@ const makeVMenuProps = propsFactory({
       component: VDialogTransition
     }
   }), ["absolute"])
-}, "v-menu");
+}, "VMenu");
 const VMenu = genericComponent()({
   name: "VMenu",
   props: makeVMenuProps(),
@@ -9759,7 +9238,7 @@ const VMenu = genericComponent()({
             args[_key] = arguments[_key];
           }
           return createVNode(VDefaultsProvider, {
-            "root": true
+            "root": "VMenu"
           }, {
             default: () => {
               var _a;
@@ -9773,6 +9252,541 @@ const VMenu = genericComponent()({
       id,
       ΨopenChildren: openChildren
     }, overlay);
+  }
+});
+const VTextField$1 = "";
+const VCounter$1 = "";
+const makeVCounterProps = propsFactory({
+  active: Boolean,
+  max: [Number, String],
+  value: {
+    type: [Number, String],
+    default: 0
+  },
+  ...makeComponentProps(),
+  ...makeTransitionProps({
+    transition: {
+      component: VSlideYTransition
+    }
+  })
+}, "VCounter");
+const VCounter = genericComponent()({
+  name: "VCounter",
+  functional: true,
+  props: makeVCounterProps(),
+  setup(props, _ref) {
+    let {
+      slots
+    } = _ref;
+    const counter = computed(() => {
+      return props.max ? `${props.value} / ${props.max}` : String(props.value);
+    });
+    useRender(() => createVNode(MaybeTransition, {
+      "transition": props.transition
+    }, {
+      default: () => [withDirectives(createVNode("div", {
+        "class": ["v-counter", props.class],
+        "style": props.style
+      }, [slots.default ? slots.default({
+        counter: counter.value,
+        max: props.max,
+        value: props.value
+      }) : counter.value]), [[vShow, props.active]])]
+    }));
+    return {};
+  }
+});
+const VField$1 = "";
+const makeVFieldLabelProps = propsFactory({
+  floating: Boolean,
+  ...makeComponentProps()
+}, "VFieldLabel");
+const VFieldLabel = genericComponent()({
+  name: "VFieldLabel",
+  props: makeVFieldLabelProps(),
+  setup(props, _ref) {
+    let {
+      slots
+    } = _ref;
+    useRender(() => createVNode(VLabel, {
+      "class": ["v-field-label", {
+        "v-field-label--floating": props.floating
+      }, props.class],
+      "style": props.style,
+      "aria-hidden": props.floating || void 0
+    }, slots));
+    return {};
+  }
+});
+const allowedVariants = ["underlined", "outlined", "filled", "solo", "solo-inverted", "solo-filled", "plain"];
+const makeVFieldProps = propsFactory({
+  appendInnerIcon: IconValue,
+  bgColor: String,
+  clearable: Boolean,
+  clearIcon: {
+    type: IconValue,
+    default: "$clear"
+  },
+  active: Boolean,
+  centerAffix: {
+    type: Boolean,
+    default: void 0
+  },
+  color: String,
+  baseColor: String,
+  dirty: Boolean,
+  disabled: {
+    type: Boolean,
+    default: null
+  },
+  error: Boolean,
+  flat: Boolean,
+  label: String,
+  persistentClear: Boolean,
+  prependInnerIcon: IconValue,
+  reverse: Boolean,
+  singleLine: Boolean,
+  variant: {
+    type: String,
+    default: "filled",
+    validator: (v2) => allowedVariants.includes(v2)
+  },
+  "onClick:clear": EventProp(),
+  "onClick:appendInner": EventProp(),
+  "onClick:prependInner": EventProp(),
+  ...makeComponentProps(),
+  ...makeLoaderProps(),
+  ...makeRoundedProps(),
+  ...makeThemeProps()
+}, "VField");
+const VField = genericComponent()({
+  name: "VField",
+  inheritAttrs: false,
+  props: {
+    id: String,
+    ...makeFocusProps(),
+    ...makeVFieldProps()
+  },
+  emits: {
+    "update:focused": (focused) => true,
+    "update:modelValue": (val) => true
+  },
+  setup(props, _ref) {
+    let {
+      attrs,
+      emit,
+      slots
+    } = _ref;
+    const {
+      themeClasses
+    } = provideTheme(props);
+    const {
+      loaderClasses
+    } = useLoader(props);
+    const {
+      focusClasses,
+      isFocused,
+      focus,
+      blur
+    } = useFocus(props);
+    const {
+      InputIcon
+    } = useInputIcon(props);
+    const {
+      roundedClasses
+    } = useRounded(props);
+    const {
+      rtlClasses
+    } = useRtl();
+    const isActive = computed(() => props.dirty || props.active);
+    const hasLabel = computed(() => !props.singleLine && !!(props.label || slots.label));
+    const uid = getUid();
+    const id = computed(() => props.id || `input-${uid}`);
+    const messagesId = computed(() => `${id.value}-messages`);
+    const labelRef = ref();
+    const floatingLabelRef = ref();
+    const controlRef = ref();
+    const isPlainOrUnderlined = computed(() => ["plain", "underlined"].includes(props.variant));
+    const {
+      backgroundColorClasses,
+      backgroundColorStyles
+    } = useBackgroundColor(toRef(props, "bgColor"));
+    const {
+      textColorClasses,
+      textColorStyles
+    } = useTextColor(computed(() => {
+      return props.error || props.disabled ? void 0 : isActive.value && isFocused.value ? props.color : props.baseColor;
+    }));
+    watch(isActive, (val) => {
+      if (hasLabel.value) {
+        const el = labelRef.value.$el;
+        const targetEl = floatingLabelRef.value.$el;
+        requestAnimationFrame(() => {
+          const rect = nullifyTransforms(el);
+          const targetRect = targetEl.getBoundingClientRect();
+          const x2 = targetRect.x - rect.x;
+          const y2 = targetRect.y - rect.y - (rect.height / 2 - targetRect.height / 2);
+          const targetWidth = targetRect.width / 0.75;
+          const width = Math.abs(targetWidth - rect.width) > 1 ? {
+            maxWidth: convertToUnit(targetWidth)
+          } : void 0;
+          const style = getComputedStyle(el);
+          const targetStyle = getComputedStyle(targetEl);
+          const duration2 = parseFloat(style.transitionDuration) * 1e3 || 150;
+          const scale = parseFloat(targetStyle.getPropertyValue("--v-field-label-scale"));
+          const color = targetStyle.getPropertyValue("color");
+          el.style.visibility = "visible";
+          targetEl.style.visibility = "hidden";
+          animate(el, {
+            transform: `translate(${x2}px, ${y2}px) scale(${scale})`,
+            color,
+            ...width
+          }, {
+            duration: duration2,
+            easing: standardEasing,
+            direction: val ? "normal" : "reverse"
+          }).finished.then(() => {
+            el.style.removeProperty("visibility");
+            targetEl.style.removeProperty("visibility");
+          });
+        });
+      }
+    }, {
+      flush: "post"
+    });
+    const slotProps = computed(() => ({
+      isActive,
+      isFocused,
+      controlRef,
+      blur,
+      focus
+    }));
+    function onClick(e2) {
+      if (e2.target !== document.activeElement) {
+        e2.preventDefault();
+      }
+    }
+    useRender(() => {
+      var _a, _b, _c;
+      const isOutlined = props.variant === "outlined";
+      const hasPrepend = slots["prepend-inner"] || props.prependInnerIcon;
+      const hasClear = !!(props.clearable || slots.clear);
+      const hasAppend = !!(slots["append-inner"] || props.appendInnerIcon || hasClear);
+      const label = slots.label ? slots.label({
+        ...slotProps.value,
+        label: props.label,
+        props: {
+          for: id.value
+        }
+      }) : props.label;
+      return createVNode("div", mergeProps({
+        "class": ["v-field", {
+          "v-field--active": isActive.value,
+          "v-field--appended": hasAppend,
+          "v-field--center-affix": props.centerAffix ?? !isPlainOrUnderlined.value,
+          "v-field--disabled": props.disabled,
+          "v-field--dirty": props.dirty,
+          "v-field--error": props.error,
+          "v-field--flat": props.flat,
+          "v-field--has-background": !!props.bgColor,
+          "v-field--persistent-clear": props.persistentClear,
+          "v-field--prepended": hasPrepend,
+          "v-field--reverse": props.reverse,
+          "v-field--single-line": props.singleLine,
+          "v-field--no-label": !label,
+          [`v-field--variant-${props.variant}`]: true
+        }, themeClasses.value, backgroundColorClasses.value, focusClasses.value, loaderClasses.value, roundedClasses.value, rtlClasses.value, props.class],
+        "style": [backgroundColorStyles.value, textColorStyles.value, props.style],
+        "onClick": onClick
+      }, attrs), [createVNode("div", {
+        "class": "v-field__overlay"
+      }, null), createVNode(LoaderSlot, {
+        "name": "v-field",
+        "active": !!props.loading,
+        "color": props.error ? "error" : props.color
+      }, {
+        default: slots.loader
+      }), hasPrepend && createVNode("div", {
+        "key": "prepend",
+        "class": "v-field__prepend-inner"
+      }, [props.prependInnerIcon && createVNode(InputIcon, {
+        "key": "prepend-icon",
+        "name": "prependInner"
+      }, null), (_a = slots["prepend-inner"]) == null ? void 0 : _a.call(slots, slotProps.value)]), createVNode("div", {
+        "class": "v-field__field",
+        "data-no-activator": ""
+      }, [["filled", "solo", "solo-inverted", "solo-filled"].includes(props.variant) && hasLabel.value && createVNode(VFieldLabel, {
+        "key": "floating-label",
+        "ref": floatingLabelRef,
+        "class": [textColorClasses.value],
+        "floating": true,
+        "for": id.value
+      }, {
+        default: () => [label]
+      }), createVNode(VFieldLabel, {
+        "ref": labelRef,
+        "for": id.value
+      }, {
+        default: () => [label]
+      }), (_b = slots.default) == null ? void 0 : _b.call(slots, {
+        ...slotProps.value,
+        props: {
+          id: id.value,
+          class: "v-field__input",
+          "aria-describedby": messagesId.value
+        },
+        focus,
+        blur
+      })]), hasClear && createVNode(VExpandXTransition, {
+        "key": "clear"
+      }, {
+        default: () => [withDirectives(createVNode("div", {
+          "class": "v-field__clearable",
+          "onMousedown": (e2) => {
+            e2.preventDefault();
+            e2.stopPropagation();
+          }
+        }, [slots.clear ? slots.clear() : createVNode(InputIcon, {
+          "name": "clear"
+        }, null)]), [[vShow, props.dirty]])]
+      }), hasAppend && createVNode("div", {
+        "key": "append",
+        "class": "v-field__append-inner"
+      }, [(_c = slots["append-inner"]) == null ? void 0 : _c.call(slots, slotProps.value), props.appendInnerIcon && createVNode(InputIcon, {
+        "key": "append-icon",
+        "name": "appendInner"
+      }, null)]), createVNode("div", {
+        "class": ["v-field__outline", textColorClasses.value]
+      }, [isOutlined && createVNode(Fragment, null, [createVNode("div", {
+        "class": "v-field__outline__start"
+      }, null), hasLabel.value && createVNode("div", {
+        "class": "v-field__outline__notch"
+      }, [createVNode(VFieldLabel, {
+        "ref": floatingLabelRef,
+        "floating": true,
+        "for": id.value
+      }, {
+        default: () => [label]
+      })]), createVNode("div", {
+        "class": "v-field__outline__end"
+      }, null)]), isPlainOrUnderlined.value && hasLabel.value && createVNode(VFieldLabel, {
+        "ref": floatingLabelRef,
+        "floating": true,
+        "for": id.value
+      }, {
+        default: () => [label]
+      })])]);
+    });
+    return {
+      controlRef
+    };
+  }
+});
+function filterFieldProps(attrs) {
+  const keys2 = Object.keys(VField.props).filter((k2) => !isOn(k2) && k2 !== "class" && k2 !== "style");
+  return pick(attrs, keys2);
+}
+const activeTypes = ["color", "file", "time", "date", "datetime-local", "week", "month"];
+const makeVTextFieldProps = propsFactory({
+  autofocus: Boolean,
+  counter: [Boolean, Number, String],
+  counterValue: Function,
+  prefix: String,
+  placeholder: String,
+  persistentPlaceholder: Boolean,
+  persistentCounter: Boolean,
+  suffix: String,
+  type: {
+    type: String,
+    default: "text"
+  },
+  modelModifiers: Object,
+  ...makeVInputProps(),
+  ...makeVFieldProps()
+}, "VTextField");
+const VTextField = genericComponent()({
+  name: "VTextField",
+  directives: {
+    Intersect: Intersect$1
+  },
+  inheritAttrs: false,
+  props: makeVTextFieldProps(),
+  emits: {
+    "click:control": (e2) => true,
+    "mousedown:control": (e2) => true,
+    "update:focused": (focused) => true,
+    "update:modelValue": (val) => true
+  },
+  setup(props, _ref) {
+    let {
+      attrs,
+      emit,
+      slots
+    } = _ref;
+    const model = useProxiedModel(props, "modelValue");
+    const {
+      isFocused,
+      focus,
+      blur
+    } = useFocus(props);
+    const counterValue = computed(() => {
+      return typeof props.counterValue === "function" ? props.counterValue(model.value) : (model.value ?? "").toString().length;
+    });
+    const max = computed(() => {
+      if (attrs.maxlength)
+        return attrs.maxlength;
+      if (!props.counter || typeof props.counter !== "number" && typeof props.counter !== "string")
+        return void 0;
+      return props.counter;
+    });
+    const isPlainOrUnderlined = computed(() => ["plain", "underlined"].includes(props.variant));
+    function onIntersect(isIntersecting, entries2) {
+      var _a, _b;
+      if (!props.autofocus || !isIntersecting)
+        return;
+      (_b = (_a = entries2[0].target) == null ? void 0 : _a.focus) == null ? void 0 : _b.call(_a);
+    }
+    const vInputRef = ref();
+    const vFieldRef = ref();
+    const inputRef = ref();
+    const isActive = computed(() => activeTypes.includes(props.type) || props.persistentPlaceholder || isFocused.value || props.active);
+    function onFocus() {
+      var _a;
+      if (inputRef.value !== document.activeElement) {
+        (_a = inputRef.value) == null ? void 0 : _a.focus();
+      }
+      if (!isFocused.value)
+        focus();
+    }
+    function onControlMousedown(e2) {
+      emit("mousedown:control", e2);
+      if (e2.target === inputRef.value)
+        return;
+      onFocus();
+      e2.preventDefault();
+    }
+    function onControlClick(e2) {
+      onFocus();
+      emit("click:control", e2);
+    }
+    function onClear(e2) {
+      e2.stopPropagation();
+      onFocus();
+      nextTick(() => {
+        model.value = null;
+        callEvent(props["onClick:clear"], e2);
+      });
+    }
+    function onInput(e2) {
+      var _a;
+      const el = e2.target;
+      model.value = el.value;
+      if (((_a = props.modelModifiers) == null ? void 0 : _a.trim) && ["text", "search", "password", "tel", "url"].includes(props.type)) {
+        const caretPosition = [el.selectionStart, el.selectionEnd];
+        nextTick(() => {
+          el.selectionStart = caretPosition[0];
+          el.selectionEnd = caretPosition[1];
+        });
+      }
+    }
+    useRender(() => {
+      const hasCounter = !!(slots.counter || props.counter || props.counterValue);
+      const hasDetails = !!(hasCounter || slots.details);
+      const [rootAttrs, inputAttrs] = filterInputAttrs(attrs);
+      const [{
+        modelValue: _,
+        ...inputProps
+      }] = VInput.filterProps(props);
+      const [fieldProps] = filterFieldProps(props);
+      return createVNode(VInput, mergeProps({
+        "ref": vInputRef,
+        "modelValue": model.value,
+        "onUpdate:modelValue": ($event) => model.value = $event,
+        "class": ["v-text-field", {
+          "v-text-field--prefixed": props.prefix,
+          "v-text-field--suffixed": props.suffix,
+          "v-text-field--plain-underlined": ["plain", "underlined"].includes(props.variant)
+        }, props.class],
+        "style": props.style
+      }, rootAttrs, inputProps, {
+        "centerAffix": !isPlainOrUnderlined.value,
+        "focused": isFocused.value
+      }), {
+        ...slots,
+        default: (_ref2) => {
+          let {
+            id,
+            isDisabled,
+            isDirty,
+            isReadonly,
+            isValid: isValid2
+          } = _ref2;
+          return createVNode(VField, mergeProps({
+            "ref": vFieldRef,
+            "onMousedown": onControlMousedown,
+            "onClick": onControlClick,
+            "onClick:clear": onClear,
+            "onClick:prependInner": props["onClick:prependInner"],
+            "onClick:appendInner": props["onClick:appendInner"],
+            "role": "textbox"
+          }, fieldProps, {
+            "id": id.value,
+            "active": isActive.value || isDirty.value,
+            "dirty": isDirty.value || props.dirty,
+            "disabled": isDisabled.value,
+            "focused": isFocused.value,
+            "error": isValid2.value === false
+          }), {
+            ...slots,
+            default: (_ref3) => {
+              let {
+                props: {
+                  class: fieldClass,
+                  ...slotProps
+                }
+              } = _ref3;
+              const inputNode = withDirectives(createVNode("input", mergeProps({
+                "ref": inputRef,
+                "value": model.value,
+                "onInput": onInput,
+                "autofocus": props.autofocus,
+                "readonly": isReadonly.value,
+                "disabled": isDisabled.value,
+                "name": props.name,
+                "placeholder": props.placeholder,
+                "size": 1,
+                "type": props.type,
+                "onFocus": onFocus,
+                "onBlur": blur
+              }, slotProps, inputAttrs), null), [[resolveDirective("intersect"), {
+                handler: onIntersect
+              }, null, {
+                once: true
+              }]]);
+              return createVNode(Fragment, null, [props.prefix && createVNode("span", {
+                "class": "v-text-field__prefix"
+              }, [props.prefix]), slots.default ? createVNode("div", {
+                "class": fieldClass,
+                "data-no-activator": ""
+              }, [slots.default(), inputNode]) : cloneVNode(inputNode, {
+                class: fieldClass
+              }), props.suffix && createVNode("span", {
+                "class": "v-text-field__suffix"
+              }, [props.suffix])]);
+            }
+          });
+        },
+        details: hasDetails ? (slotProps) => {
+          var _a;
+          return createVNode(Fragment, null, [(_a = slots.details) == null ? void 0 : _a.call(slots, slotProps), hasCounter && createVNode(Fragment, null, [createVNode("span", null, null), createVNode(VCounter, {
+            "active": props.persistentCounter || isFocused.value,
+            "value": counterValue.value,
+            "max": max.value
+          }, slots.counter)])]);
+        } : void 0
+      });
+    });
+    return forwardRefs({}, vInputRef, vFieldRef, inputRef);
   }
 });
 const makeSelectProps = propsFactory({
@@ -9802,7 +9816,7 @@ const makeSelectProps = propsFactory({
   ...makeItemsProps({
     itemChildren: false
   })
-}, "select");
+}, "Select");
 const makeVSelectProps = propsFactory({
   ...makeSelectProps(),
   ...omit(makeVTextFieldProps({
@@ -9813,7 +9827,7 @@ const makeVSelectProps = propsFactory({
       component: VDialogTransition
     }
   })
-}, "v-select");
+}, "VSelect");
 const VSelect = genericComponent()({
   name: "VSelect",
   props: makeVSelectProps(),
@@ -10113,7 +10127,7 @@ const makeDataTablePaginateProps = propsFactory({
     type: [Number, String],
     default: 10
   }
-}, "v-data-table-paginate");
+}, "DataTable-paginate");
 const VDataTablePaginationSymbol = Symbol.for("vuetify:data-table-pagination");
 function createPagination(props) {
   const page = useProxiedModel(props, "page", void 0, (value2) => +(value2 ?? 1));
@@ -10260,7 +10274,7 @@ const makeVDataTableFooterProps = propsFactory({
     }]
   },
   showCurrentPage: Boolean
-}, "v-data-table-footer");
+}, "VDataTableFooter");
 const VDataTableFooter = genericComponent()({
   name: "VDataTableFooter",
   props: makeVDataTableFooterProps(),
@@ -10373,7 +10387,7 @@ const makeDataTableHeaderProps = propsFactory({
     type: Array,
     default: () => []
   }
-}, "v-data-table-header");
+}, "DataTable-header");
 const VDataTableHeadersSymbol = Symbol.for("vuetify:data-table-headers");
 function createHeaders(props, options) {
   const headers = ref([]);
@@ -10485,7 +10499,7 @@ function createHeaders(props, options) {
           fixedOffset: fixedOffsets[i2],
           sortable: column.sortable ?? !!column.key
         });
-        fixedOffsets[i2] += column.width ?? 0;
+        fixedOffsets[i2] += Number(column.width ?? 0);
       }
     });
     fixedRows.forEach((row) => {
@@ -10622,7 +10636,7 @@ const makeDataTableSelectProps = propsFactory({
     type: Array,
     default: () => []
   }
-}, "v-data-table-select");
+}, "DataTable-select");
 const VDataTableSelectionSymbol = Symbol.for("vuetify:data-table-selection");
 function provideSelection(props, _ref9) {
   let {
@@ -10710,7 +10724,7 @@ const makeDataTableSortProps = propsFactory({
   customKeySort: Object,
   multiSort: Boolean,
   mustSort: Boolean
-}, "v-data-table-sort");
+}, "DataTable-sort");
 const VDataTableSortSymbol = Symbol.for("vuetify:data-table-sort");
 function createSort(props) {
   const sortBy = useProxiedModel(props, "sortBy");
@@ -10808,13 +10822,10 @@ function sortItems(items, sortByItems, locale, customSorters) {
           continue;
         return customResult;
       }
-      if (sortA == null || sortB == null) {
-        continue;
-      }
       if (sortA instanceof Date && sortB instanceof Date) {
         return sortA.getTime() - sortB.getTime();
       }
-      [sortA, sortB] = [sortA, sortB].map((s2) => (s2 || "").toString().toLocaleLowerCase());
+      [sortA, sortB] = [sortA, sortB].map((s2) => s2 != null ? s2.toString().toLocaleLowerCase() : s2);
       if (sortA !== sortB) {
         if (!isNaN(sortA) && !isNaN(sortB))
           return Number(sortA) - Number(sortB);
@@ -10837,7 +10848,7 @@ const makeVDataTableHeadersProps = propsFactory({
     default: "$sortDesc"
   },
   ...makeLoaderProps()
-}, "v-data-table-headers");
+}, "VDataTableHeaders");
 const VDataTableHeaders = genericComponent()({
   name: "VDataTableHeaders",
   props: makeVDataTableHeadersProps(),
@@ -10984,7 +10995,7 @@ const makeDataTableGroupProps = propsFactory({
     type: Array,
     default: () => []
   }
-}, "data-table-group");
+}, "DataTable-group");
 const VDataTableGroupSymbol = Symbol.for("vuetify:data-table-group");
 function createGroupBy(props) {
   const groupBy = useProxiedModel(props, "groupBy");
@@ -11120,7 +11131,7 @@ const makeVDataTableGroupHeaderRowProps = propsFactory({
     type: Object,
     required: true
   }
-}, "v-data-table-group-header-row");
+}, "VDataTableGroupHeaderRow");
 const VDataTableGroupHeaderRow = genericComponent()({
   name: "VDataTableGroupHeaderRow",
   props: makeVDataTableGroupHeaderRowProps(),
@@ -11199,7 +11210,7 @@ const makeDataTableExpandProps = propsFactory({
     type: Array,
     default: () => []
   }
-}, "v-data-table-expand");
+}, "DataTable-expand");
 const VDataTableExpandedKey = Symbol.for("vuetify:datatable:expanded");
 function provideExpanded(props) {
   const expandOnClick = toRef(props, "expandOnClick");
@@ -11243,7 +11254,7 @@ const makeVDataTableRowProps = propsFactory({
   index: Number,
   item: Object,
   onClick: Function
-}, "v-data-table-row");
+}, "VDataTableRow");
 const VDataTableRow = defineComponent({
   name: "VDataTableRow",
   props: makeVDataTableRowProps(),
@@ -11327,7 +11338,7 @@ const makeVDataTableRowsProps = propsFactory({
   },
   rowHeight: Number,
   "onClick:row": Function
-}, "v-data-table-rows");
+}, "VDataTableRows");
 const VDataTableRows = genericComponent()({
   name: "VDataTableRows",
   props: makeVDataTableRowsProps(),
@@ -11400,20 +11411,24 @@ const VDataTableRows = genericComponent()({
           isSelected,
           toggleSelect
         };
-        return createVNode(Fragment, null, [slots.item ? slots.item(slotProps) : createVNode(VDataTableRow, {
-          "key": `item_${item.value}`,
-          "onClick": expandOnClick.value || props["onClick:row"] ? (event) => {
-            var _a3;
-            if (expandOnClick.value) {
-              toggleExpand(item);
-            }
-            (_a3 = props["onClick:row"]) == null ? void 0 : _a3.call(props, event, {
-              item
-            });
-          } : void 0,
-          "index": index,
-          "item": item
-        }, slots), isExpanded(item) && ((_a2 = slots["expanded-row"]) == null ? void 0 : _a2.call(slots, slotProps))]);
+        const itemSlotProps = {
+          ...slotProps,
+          props: {
+            key: `item_${item.value}`,
+            onClick: expandOnClick.value || props["onClick:row"] ? (event) => {
+              var _a3;
+              if (expandOnClick.value) {
+                toggleExpand(item);
+              }
+              (_a3 = props["onClick:row"]) == null ? void 0 : _a3.call(props, event, {
+                item
+              });
+            } : void 0,
+            index,
+            item
+          }
+        };
+        return createVNode(Fragment, null, [slots.item ? slots.item(itemSlotProps) : createVNode(VDataTableRow, itemSlotProps.props, slots), isExpanded(item) && ((_a2 = slots["expanded-row"]) == null ? void 0 : _a2.call(slots, slotProps))]);
       })]);
     });
     return {};
@@ -11429,7 +11444,7 @@ const makeVTableProps = propsFactory({
   ...makeDensityProps(),
   ...makeTagProps(),
   ...makeThemeProps()
-}, "v-table");
+}, "VTable");
 const VTable = genericComponent()({
   name: "VTable",
   props: makeVTableProps(),
@@ -11467,7 +11482,7 @@ const VTable = genericComponent()({
     return {};
   }
 });
-const makeDataTableItemProps = propsFactory({
+const makeDataTableItemsProps = propsFactory({
   items: {
     type: Array,
     default: () => []
@@ -11481,8 +11496,8 @@ const makeDataTableItemProps = propsFactory({
     default: null
   },
   returnObject: Boolean
-}, "v-data-table-item");
-function transformItem(props, item, columns) {
+}, "DataTable-items");
+function transformItem(props, item, index, columns) {
   const value2 = props.returnObject ? item : getPropertyFromItem(item, props.itemValue);
   const selectable = getPropertyFromItem(item, props.itemSelectable, true);
   const itemColumns = columns.reduce((obj, column) => {
@@ -11491,6 +11506,7 @@ function transformItem(props, item, columns) {
   }, {});
   return {
     type: "item",
+    index,
     value: value2,
     selectable,
     columns: itemColumns,
@@ -11498,17 +11514,43 @@ function transformItem(props, item, columns) {
   };
 }
 function transformItems(props, items, columns) {
-  const array = [];
-  for (const item of items) {
-    array.push(transformItem(props, item, columns));
-  }
-  return array;
+  return items.map((item, index) => transformItem(props, item, index, columns));
 }
 function useDataTableItems(props, columns) {
   const items = computed(() => transformItems(props, props.items, columns.value));
   return {
     items
   };
+}
+function useOptions(_ref) {
+  let {
+    page,
+    itemsPerPage,
+    sortBy,
+    groupBy,
+    search
+  } = _ref;
+  const vm = getCurrentInstance("VDataTable");
+  const options = computed(() => ({
+    page: page.value,
+    itemsPerPage: itemsPerPage.value,
+    sortBy: sortBy.value,
+    groupBy: groupBy.value,
+    search: search.value
+  }));
+  watch(() => search == null ? void 0 : search.value, () => {
+    page.value = 1;
+  });
+  let oldOptions = null;
+  watch(options, () => {
+    if (deepEqual(oldOptions, options.value))
+      return;
+    vm.emit("update:options", options.value);
+    oldOptions = options.value;
+  }, {
+    deep: true,
+    immediate: true
+  });
 }
 const defaultFilter = (value2, query, item) => {
   if (value2 == null || query == null)
@@ -11615,36 +11657,6 @@ function useFilter(props, items, query, options) {
     getMatches
   };
 }
-function useOptions(_ref) {
-  let {
-    page,
-    itemsPerPage,
-    sortBy,
-    groupBy,
-    search
-  } = _ref;
-  const vm = getCurrentInstance("VDataTable");
-  const options = computed(() => ({
-    page: page.value,
-    itemsPerPage: itemsPerPage.value,
-    sortBy: sortBy.value,
-    groupBy: groupBy.value,
-    search: search.value
-  }));
-  watch(() => search == null ? void 0 : search.value, () => {
-    page.value = 1;
-  });
-  let oldOptions = null;
-  watch(options, () => {
-    if (deepEqual(oldOptions, options.value))
-      return;
-    vm.emit("update:options", options.value);
-    oldOptions = options.value;
-  }, {
-    deep: true,
-    immediate: true
-  });
-}
 const makeDataTableProps = propsFactory({
   ...makeVDataTableRowsProps(),
   width: [String, Number],
@@ -11652,18 +11664,18 @@ const makeDataTableProps = propsFactory({
   ...makeDataTableExpandProps(),
   ...makeDataTableGroupProps(),
   ...makeDataTableHeaderProps(),
-  ...makeDataTableItemProps(),
+  ...makeDataTableItemsProps(),
   ...makeDataTableSelectProps(),
   ...makeDataTableSortProps(),
   ...makeVDataTableHeadersProps(),
   ...makeVTableProps()
-}, "data-table");
+}, "DataTable");
 const makeVDataTableProps = propsFactory({
   ...makeDataTablePaginateProps(),
   ...makeDataTableProps(),
   ...makeFilterProps(),
   ...makeVDataTableFooterProps()
-}, "v-data-table");
+}, "VDataTable");
 const VDataTable = genericComponent()({
   name: "VDataTable",
   props: makeVDataTableProps(),
@@ -12343,7 +12355,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-55cfb669.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-66dffa4f.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-11489354.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-f383698d.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-e4b81ef3.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-34959a69.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-93f2eb11.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-e06cb657.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-ddeaa334.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-162c7a12.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-f89e9c9c.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-72f83347.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-02da915a.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-8061f0ed.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-183ce8ed.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-92d1216e.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-fddbccd4.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-59cb6ec1.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-829a5e81.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-50246428.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-4a130b93.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-45973223.mjs") })),
     setup({ App, props, plugin: plugin$1 }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin$1).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
@@ -12374,7 +12386,7 @@ export {
   VOverlay as K,
   makeVInputProps as L,
   MaybeTransition as M,
-  makeSelectionControlProps as N,
+  makeVSelectionControlProps as N,
   useLoader as O,
   useFocus as P,
   getUid as Q,
@@ -12382,13 +12394,13 @@ export {
   VInput as S,
   VSelectionControl as T,
   LoaderSlot as U,
-  VFadeTransition as V,
+  VBtn as V,
   VProgressCircular as W,
   VBtnToggle as X,
   VBtnGroup as Y,
   VTable as Z,
   VTextField as _,
-  makeTagProps as a,
+  useRender as a,
   VDialogTransition as a0,
   useScopeId as a1,
   forwardRefs as a2,
@@ -12447,26 +12459,26 @@ export {
   VField as ax,
   VCounter as ay,
   callEvent as az,
-  makeGroupProps as b,
-  useDisplay as c,
-  useGroup as d,
-  useResizeObserver as e,
-  IN_BROWSER as f,
+  animate as b,
+  makeComponentProps as c,
+  makeTagProps as d,
+  makeGroupProps as e,
+  useRtl as f,
   genericComponent as g,
-  useRender as h,
-  VIcon as i,
-  focusableChildren as j,
-  clamp as k,
-  makeVBtnProps as l,
-  makeComponentProps as m,
-  useTextColor as n,
+  useDisplay as h,
+  useGroup as i,
+  useResizeObserver as j,
+  IN_BROWSER as k,
+  VFadeTransition as l,
+  makeVBtnProps as m,
+  VIcon as n,
   omit as o,
   propsFactory as p,
-  VBtn as q,
-  animate as r,
+  focusableChildren as q,
+  clamp as r,
   standardEasing as s,
   makeDensityProps as t,
-  useRtl as u,
+  useTextColor as u,
   useProxiedModel as v,
   useDensity as w,
   useBackgroundColor as x,
