@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Symfony\Component\Console\Attribute\AsCommand;
+use TTBooking\TicketAllocator\TicketAllocator;
 
 #[AsCommand(
     name: 'ticket-allocator:clean',
@@ -56,8 +57,8 @@ class CleanCommand extends Command
 
         Schema::enableForeignKeyConstraints();
 
-        $this->components->info('Clean up finished.');
+        TicketAllocator::invalidateProps();
 
-        $this->call('ticket-allocator:reload-dashboards');
+        $this->components->info('Clean up finished.');
     }
 }

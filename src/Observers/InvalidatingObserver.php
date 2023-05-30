@@ -4,37 +4,32 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Observers;
 
-use TTBooking\TicketAllocator\Events\PropsInvalidated;
+use TTBooking\TicketAllocator\TicketAllocator;
 
 class InvalidatingObserver
 {
     public function created(): void
     {
-        $this->invalidateProps();
+        TicketAllocator::invalidateProps();
     }
 
     public function updated(): void
     {
-        $this->invalidateProps();
+        TicketAllocator::invalidateProps();
     }
 
     public function deleted(): void
     {
-        $this->invalidateProps();
+        TicketAllocator::invalidateProps();
     }
 
     public function forceDeleted(): void
     {
-        $this->invalidateProps();
+        TicketAllocator::invalidateProps();
     }
 
     public function restored(): void
     {
-        $this->invalidateProps();
-    }
-
-    protected function invalidateProps(): void
-    {
-        broadcast(new PropsInvalidated);
+        TicketAllocator::invalidateProps();
     }
 }

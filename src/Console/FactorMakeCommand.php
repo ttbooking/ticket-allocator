@@ -9,6 +9,7 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputOption;
+use TTBooking\TicketAllocator\TicketAllocator;
 
 #[AsCommand(
     name: 'make:factor',
@@ -48,7 +49,7 @@ class FactorMakeCommand extends GeneratorCommand
     {
         if (false !== $result = parent::handle()) {
             $this->laravel->factorsAreCached() && $this->call('factor:cache');
-            $this->call('ticket-allocator:reload-dashboards');
+            TicketAllocator::invalidateProps();
         }
 
         return $result;

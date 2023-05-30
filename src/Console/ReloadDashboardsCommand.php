@@ -6,7 +6,7 @@ namespace TTBooking\TicketAllocator\Console;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
-use TTBooking\TicketAllocator\Events\PropsInvalidated;
+use TTBooking\TicketAllocator\TicketAllocator;
 
 #[AsCommand(
     name: 'ticket-allocator:reload-dashboards',
@@ -33,8 +33,6 @@ class ReloadDashboardsCommand extends Command
      */
     public function handle(): void
     {
-        broadcast(new PropsInvalidated);
-
-        $this->components->info('All dashboards has been notified on property changes.');
+        TicketAllocator::invalidateProps();
     }
 }
