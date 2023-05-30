@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator;
 
 use Illuminate\Console\Events\CommandFinished;
-use Illuminate\Console\OutputStyle;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Console\View\Components\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Events\PublishingStubs;
 use Illuminate\Support\Facades\Event;
@@ -21,7 +19,6 @@ use TTBooking\TicketAllocator\Domain\Operator\Reactors\SyncTicketCategories;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
 //use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
 use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyFactors;
-use TTBooking\TicketAllocator\Events\PropsInvalidated;
 use TTBooking\TicketAllocator\Jobs\Triage;
 use TTBooking\TicketAllocator\Support\DiscoverFactors;
 
@@ -90,15 +87,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
             Console\SnapshotOperatorCommand::class,
         ]);
 
-        Event::listen(CommandFinished::class, static function (CommandFinished $event) {
-            if (TicketAllocator::propsInvalid()) {
-                broadcast(new PropsInvalidated);
-                TicketAllocator::invalidateProps(false);
-
-                (new Factory(new OutputStyle($event->input, $event->output)))
-                    ->info('All dashboards has been notified on property changes.');
-            }
-        });
+        Event::listen(CommandFinished::class, TicketAllocator::actualizeProps(...));
     }
 
     protected function registerObservers(): void

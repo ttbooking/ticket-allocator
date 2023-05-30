@@ -7,10 +7,9 @@ namespace TTBooking\TicketAllocator\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use TTBooking\TicketAllocator\Events\PropsInvalidated;
 use TTBooking\TicketAllocator\TicketAllocator;
 
-class NotifyInvalidProps
+class NotifyOutdatedProps
 {
     /**
      * Handle an incoming request.
@@ -21,10 +20,7 @@ class NotifyInvalidProps
     {
         $response = $next($request);
 
-        if (TicketAllocator::propsInvalid()) {
-            broadcast(new PropsInvalidated);
-            TicketAllocator::invalidateProps(false);
-        }
+        TicketAllocator::actualizeProps();
 
         return $response;
     }
