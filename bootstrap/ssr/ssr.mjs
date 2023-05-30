@@ -20,7 +20,6 @@ const complexity_limit$1 = "Complexity limit";
 const create$1 = "Create";
 const current_weight$1 = "Current weight";
 const dashboard$1 = "Dashboard";
-const delay$1 = "Delay";
 const delay_sec$1 = "Delay, sec";
 const delay_expression$1 = "Delay expression";
 const delayed_until$1 = "Delayed until";
@@ -40,7 +39,6 @@ const factors$1 = "Factors";
 const initial_weight$1 = "Initial weight";
 const initial_weight_expression$1 = "Initial weight expression";
 const issued_on$1 = "Issued on";
-const lifetime$1 = "Lifetime";
 const lower_priority$1 = "lower priority";
 const metrics$1 = "Metrics";
 const name$2 = "Name";
@@ -49,7 +47,6 @@ const new_entry$1 = "New Entry";
 const new_factor$1 = "New Factor";
 const new_operator$1 = "New Operator";
 const new_team$1 = "New Team";
-const none$1 = "none";
 const operator_teams$1 = "Operator teams";
 const operators$1 = "Operators";
 const properties$1 = "Properties";
@@ -62,6 +59,7 @@ const ticket_categories$1 = "Ticket categories";
 const ticket_limit$1 = "Ticket limit";
 const ticket_pool$1 = "Ticket pool";
 const tickets$1 = "Tickets";
+const time_left$1 = ":time left";
 const title$1 = "Ticket Allocator";
 const total$1 = "Total";
 const type$1 = "Type";
@@ -82,7 +80,6 @@ const __vite_glob_1_0 = {
   create: create$1,
   current_weight: current_weight$1,
   dashboard: dashboard$1,
-  delay: delay$1,
   delay_sec: delay_sec$1,
   delay_expression: delay_expression$1,
   delayed_until: delayed_until$1,
@@ -102,7 +99,6 @@ const __vite_glob_1_0 = {
   initial_weight: initial_weight$1,
   initial_weight_expression: initial_weight_expression$1,
   issued_on: issued_on$1,
-  lifetime: lifetime$1,
   lower_priority: lower_priority$1,
   metrics: metrics$1,
   name: name$2,
@@ -111,7 +107,6 @@ const __vite_glob_1_0 = {
   new_factor: new_factor$1,
   new_operator: new_operator$1,
   new_team: new_team$1,
-  none: none$1,
   operator_teams: operator_teams$1,
   operators: operators$1,
   properties: properties$1,
@@ -124,6 +119,7 @@ const __vite_glob_1_0 = {
   ticket_limit: ticket_limit$1,
   ticket_pool: ticket_pool$1,
   tickets: tickets$1,
+  time_left: time_left$1,
   title: title$1,
   total: total$1,
   type: type$1,
@@ -318,7 +314,6 @@ const complexity_limit = "Ограничение по сложности";
 const create = "Создать";
 const current_weight = "Текущий вес";
 const dashboard = "Мониторинг";
-const delay = "Задержка";
 const delay_sec = "Задержка, с";
 const delay_expression = "Выражение для вычисления задержки тикета";
 const delayed_until = "Задержана до";
@@ -338,7 +333,6 @@ const factors = "Факторы";
 const initial_weight = "Начальный вес";
 const initial_weight_expression = "Выражение для вычисления начального веса тикета";
 const issued_on = "Время подачи";
-const lifetime = "Время жизни";
 const lower_priority = "понизить приоритет";
 const metrics = "Метрики";
 const name$1 = "Имя";
@@ -347,7 +341,6 @@ const new_entry = "Новая запись";
 const new_factor = "Новый фактор";
 const new_operator = "Новый оператор";
 const new_team = "Новая команда";
-const none = "нет";
 const operator_teams = "Команды операторов";
 const operators = "Операторы";
 const properties = "Свойства";
@@ -360,6 +353,7 @@ const ticket_categories = "Категории тикетов";
 const ticket_limit = "Ограничение по числу тикетов";
 const ticket_pool = "Пул тикетов";
 const tickets = "Тикеты";
+const time_left = "осталось :time";
 const title = "Распределитель Заявок";
 const total = "Итого";
 const type = "Тип";
@@ -380,7 +374,6 @@ const __vite_glob_1_3 = {
   create,
   current_weight,
   dashboard,
-  delay,
   delay_sec,
   delay_expression,
   delayed_until,
@@ -400,7 +393,6 @@ const __vite_glob_1_3 = {
   initial_weight,
   initial_weight_expression,
   issued_on,
-  lifetime,
   lower_priority,
   metrics,
   name: name$1,
@@ -409,7 +401,6 @@ const __vite_glob_1_3 = {
   new_factor,
   new_operator,
   new_team,
-  none,
   operator_teams,
   operators,
   properties,
@@ -422,6 +413,7 @@ const __vite_glob_1_3 = {
   ticket_limit,
   ticket_pool,
   tickets,
+  time_left,
   title,
   total,
   type,
@@ -4218,7 +4210,7 @@ const ripples = {
     else
       animation.dataset.isHiding = "true";
     const diff = performance.now() - Number(animation.dataset.activated);
-    const delay2 = Math.max(250 - diff, 0);
+    const delay = Math.max(250 - diff, 0);
     setTimeout(() => {
       animation.classList.remove("v-ripple__animation--in");
       animation.classList.add("v-ripple__animation--out");
@@ -4232,7 +4224,7 @@ const ripples = {
         if (((_a2 = animation.parentNode) == null ? void 0 : _a2.parentNode) === el)
           el.removeChild(animation.parentNode);
       }, 300);
-    }, delay2);
+    }, delay);
   }
 };
 function isRippleEnabled(value2) {
@@ -8385,11 +8377,11 @@ function useDelay(props, cb) {
     delays.openDelay && window.clearTimeout(delays.openDelay);
     delete delays.openDelay;
     return new Promise((resolve) => {
-      const delay2 = parseInt(props[prop] ?? 0, 10);
+      const delay = parseInt(props[prop] ?? 0, 10);
       delays[prop] = window.setTimeout(() => {
         cb == null ? void 0 : cb(active2);
         resolve(active2);
-      }, delay2);
+      }, delay);
     });
   };
   return {
@@ -12355,7 +12347,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-92f1b7d7.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-02da915a.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-8061f0ed.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-183ce8ed.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-92d1216e.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-fddbccd4.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-59cb6ec1.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-829a5e81.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-50246428.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-4a130b93.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-45973223.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-ff76fc13.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-02da915a.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-8061f0ed.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-183ce8ed.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-92d1216e.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-fddbccd4.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-59cb6ec1.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-829a5e81.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-50246428.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-4a130b93.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-45973223.mjs") })),
     setup({ App, props, plugin: plugin$1 }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin$1).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {

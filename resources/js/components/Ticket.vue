@@ -36,27 +36,19 @@
                                     <tbody>
                                         <tr>
                                             <th>{{ $t("issued_on") }}</th>
-                                            <td>{{ createdAt.format("lll") }}</td>
+                                            <td>{{ createdAtInfo }}</td>
                                         </tr>
-                                        <tr>
-                                            <th>{{ $t("lifetime") }}</th>
-                                            <td>{{ createdAt.fromNow(true) }}</td>
+                                        <tr v-if="ticket.delay">
+                                            <th>{{ $t("delayed_until") }}</th>
+                                            <td>{{ delayedUntilInfo }}</td>
                                         </tr>
                                         <tr>
                                             <th>{{ $t("current_weight") }}</th>
-                                            <td>{{ compactPosition }}</td>
+                                            <td>{{ compact(ticket.weight) }}</td>
                                         </tr>
                                         <tr>
                                             <th>{{ $t("complexity") }}</th>
                                             <td>{{ ticket.complexity }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>{{ $t("delay") }}</th>
-                                            <td>{{ ticket.delay ? delay.humanize() : $t("none") }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>{{ $t("delayed_until") }}</th>
-                                            <td>{{ ticket.delay ? createdAt.add(delay).format("lll") : "-" }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -110,6 +102,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { trans } from "laravel-vue-i18n";
 import dayjs from "dayjs";
 import MarkdownIt from "markdown-it";
 import { usePage } from "@inertiajs/vue3";
@@ -136,11 +129,19 @@ const createdAt = computed(() => dayjs(props.ticket.created_at));
 
 const delay = computed(() => dayjs.duration(props.ticket.delay, "s"));
 
+const delayedUntil = computed(() => createdAt.value.add(delay.value));
+
+const createdAtInfo = computed(() => createdAt.value.format("lll") + " (" + createdAt.value.fromNow() + ")");
+
+const delayedUntilInfo = computed(
+    () => delayedUntil.value.format("lll") + " (" + trans("time_left", { time: delay.value.humanize() }) + ")"
+);
+
 const threshold = computed(() => config.value[`${mode.value}_threshold`]);
 
 const position = computed(() => props.ticket[mode.value]);
 
-const compactPosition = computed(() => (position.value < 100000 ? position.value : position.value.toExponential(1)));
+const compact = (value: number) => (value < 100000 ? value : value.toExponential(1));
 
 const categoryName = () => props.ticket.meta?.category_name ?? props.ticket.category?.name ?? "";
 
