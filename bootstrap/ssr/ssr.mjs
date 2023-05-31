@@ -1,13 +1,13 @@
-import dayjs from "dayjs";
+import dayjs$1 from "dayjs";
 import "dayjs/locale/ru.js";
 import duration from "dayjs/plugin/duration.js";
 import LocalizedFormat from "dayjs/plugin/localizedFormat.js";
 import RelativeTime from "dayjs/plugin/relativeTime.js";
+import { computed, watch, onScopeDispose, effectScope, capitalize, reactive, watchEffect, toRefs, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, unref, provide, inject as inject$1, shallowRef, createVNode, mergeProps, toRaw, onBeforeUnmount, readonly, nextTick, isRef, Fragment, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, toHandlers, Teleport, cloneVNode, createTextVNode, withModifiers, createSSRApp } from "vue";
+import { usePage, router, createInertiaApp } from "@inertiajs/vue3";
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
-import { watch, onScopeDispose, effectScope, capitalize, reactive, computed, watchEffect, toRefs, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, unref, provide, inject as inject$1, shallowRef, createVNode, mergeProps, toRaw, onBeforeUnmount, readonly, nextTick, isRef, Fragment, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, toHandlers, Teleport, cloneVNode, createTextVNode, withModifiers, createSSRApp } from "vue";
 import { renderToString } from "@vue/server-renderer";
-import { createInertiaApp } from "@inertiajs/vue3";
 import createServer from "@inertiajs/vue3/server";
 import { i18nVue } from "laravel-vue-i18n";
 const actions$1 = "Actions";
@@ -440,13 +440,37 @@ const __vite_glob_1_3 = {
   weight_increment,
   weight_increment_expression
 };
-dayjs.locale("ru");
-dayjs.extend(duration);
-dayjs.extend(LocalizedFormat);
-dayjs.extend(RelativeTime);
-const plugin = {
+dayjs$1.locale("ru");
+dayjs$1.extend(duration);
+dayjs$1.extend(LocalizedFormat);
+dayjs$1.extend(RelativeTime);
+const dayjs = {
   install(app) {
-    app.config.globalProperties.$dayjs = dayjs;
+    app.config.globalProperties.$dayjs = dayjs$1;
+  }
+};
+const link = {
+  install(app) {
+    app.component("RouterLink", {
+      useLink(props) {
+        const href = props.to;
+        const currentUrl = computed(() => usePage().url);
+        return {
+          route: computed(() => ({ href })),
+          isActive: computed(() => currentUrl.value.startsWith(href)),
+          isExactActive: computed(() => currentUrl.value === href),
+          navigate(e2) {
+            var _a;
+            if (e2.shiftKey || e2.metaKey || e2.ctrlKey)
+              return;
+            e2.preventDefault();
+            router.visit(href, {
+              method: ((_a = e2.currentTarget) == null ? void 0 : _a.getAttribute("method")) ?? "get"
+            });
+          }
+        };
+      }
+    });
   }
 };
 const pinia = createPinia().use(createORM());
@@ -4057,17 +4081,17 @@ function useLink(props, attrs) {
       href: toRef(props, "href")
     };
   }
-  const link = props.to ? RouterLink.useLink(props) : void 0;
+  const link2 = props.to ? RouterLink.useLink(props) : void 0;
   return {
     isLink,
     isClickable,
-    route: link == null ? void 0 : link.route,
-    navigate: link == null ? void 0 : link.navigate,
-    isActive: link && computed(() => {
+    route: link2 == null ? void 0 : link2.route,
+    navigate: link2 == null ? void 0 : link2.navigate,
+    isActive: link2 && computed(() => {
       var _a, _b;
-      return props.exact ? (_a = link.isExactActive) == null ? void 0 : _a.value : (_b = link.isActive) == null ? void 0 : _b.value;
+      return props.exact ? (_a = link2.isExactActive) == null ? void 0 : _a.value : (_b = link2.isActive) == null ? void 0 : _b.value;
     }),
-    href: computed(() => props.to ? link == null ? void 0 : link.route.value.href : props.href)
+    href: computed(() => props.to ? link2 == null ? void 0 : link2.route.value.href : props.href)
   };
 }
 const makeRouterProps = propsFactory({
@@ -4077,14 +4101,14 @@ const makeRouterProps = propsFactory({
   exact: Boolean
 }, "router");
 let inTransition = false;
-function useBackButton(router, cb) {
+function useBackButton(router2, cb) {
   let popped = false;
   let removeBefore;
   let removeAfter;
   if (IN_BROWSER) {
     nextTick(() => {
       window.addEventListener("popstate", onPopstate);
-      removeBefore = router == null ? void 0 : router.beforeEach((to, from, next) => {
+      removeBefore = router2 == null ? void 0 : router2.beforeEach((to, from, next) => {
         if (!inTransition) {
           setTimeout(() => popped ? cb(next) : next());
         } else {
@@ -4092,7 +4116,7 @@ function useBackButton(router, cb) {
         }
         inTransition = true;
       });
-      removeAfter = router == null ? void 0 : router.afterEach(() => {
+      removeAfter = router2 == null ? void 0 : router2.afterEach(() => {
         inTransition = false;
       });
     });
@@ -4110,12 +4134,12 @@ function useBackButton(router, cb) {
     setTimeout(() => popped = false);
   }
 }
-function useSelectLink(link, select) {
+function useSelectLink(link2, select) {
   watch(() => {
     var _a;
-    return (_a = link.isActive) == null ? void 0 : _a.value;
+    return (_a = link2.isActive) == null ? void 0 : _a.value;
   }, (isActive) => {
-    if (link.isLink.value && isActive && select) {
+    if (link2.isLink.value && isActive && select) {
       nextTick(() => {
         select(true);
       });
@@ -4499,14 +4523,14 @@ const VBtn = genericComponent()({
       sizeStyles
     } = useSize(props);
     const group = useGroupItem(props, props.symbol, false);
-    const link = useLink(props, attrs);
+    const link2 = useLink(props, attrs);
     const isActive = computed(() => {
       var _a;
       if (props.active !== void 0) {
         return props.active;
       }
-      if (link.isLink.value) {
-        return (_a = link.isActive) == null ? void 0 : _a.value;
+      if (link2.isLink.value) {
+        return (_a = link2.isActive) == null ? void 0 : _a.value;
       }
       return group == null ? void 0 : group.isSelected.value;
     });
@@ -4523,17 +4547,17 @@ const VBtn = genericComponent()({
       var _a;
       if (isDisabled.value)
         return;
-      (_a = link.navigate) == null ? void 0 : _a.call(link, e2);
+      (_a = link2.navigate) == null ? void 0 : _a.call(link2, e2);
       group == null ? void 0 : group.toggle();
     }
-    useSelectLink(link, group == null ? void 0 : group.select);
+    useSelectLink(link2, group == null ? void 0 : group.select);
     useRender(() => {
       var _a, _b;
-      const Tag = link.isLink.value ? "a" : props.tag;
+      const Tag = link2.isLink.value ? "a" : props.tag;
       const hasPrepend = !!(props.prependIcon || slots.prepend);
       const hasAppend = !!(props.appendIcon || slots.append);
       const hasIcon = !!(props.icon && props.icon !== true);
-      const hasColor = (group == null ? void 0 : group.isSelected.value) && (!link.isLink.value || ((_a = link.isActive) == null ? void 0 : _a.value)) || !group || ((_b = link.isActive) == null ? void 0 : _b.value);
+      const hasColor = (group == null ? void 0 : group.isSelected.value) && (!link2.isLink.value || ((_a = link2.isActive) == null ? void 0 : _a.value)) || !group || ((_b = link2.isActive) == null ? void 0 : _b.value);
       return withDirectives(createVNode(Tag, {
         "type": Tag === "a" ? void 0 : "button",
         "class": ["v-btn", group == null ? void 0 : group.selectedClass.value, {
@@ -4548,7 +4572,7 @@ const VBtn = genericComponent()({
         }, themeClasses.value, borderClasses.value, hasColor ? colorClasses.value : void 0, densityClasses.value, elevationClasses.value, loaderClasses.value, positionClasses.value, roundedClasses.value, sizeClasses.value, variantClasses.value, props.class],
         "style": [hasColor ? colorStyles.value : void 0, dimensionStyles.value, locationStyles.value, sizeStyles.value, props.style],
         "disabled": isDisabled.value || void 0,
-        "href": link.href.value,
+        "href": link2.href.value,
         "onClick": onClick,
         "value": valueAttr.value
       }, {
@@ -6399,9 +6423,9 @@ const VChip = genericComponent()({
     } = provideTheme(props);
     const isActive = useProxiedModel(props, "modelValue");
     const group = useGroupItem(props, VChipGroupSymbol, false);
-    const link = useLink(props, attrs);
-    const isLink = computed(() => props.link !== false && link.isLink.value);
-    const isClickable = computed(() => !props.disabled && props.link !== false && (!!group || props.link || link.isClickable.value));
+    const link2 = useLink(props, attrs);
+    const isLink = computed(() => props.link !== false && link2.isLink.value);
+    const isClickable = computed(() => !props.disabled && props.link !== false && (!!group || props.link || link2.isClickable.value));
     const closeProps = computed(() => ({
       "aria-label": t4(props.closeLabel),
       onClick(e2) {
@@ -6414,7 +6438,7 @@ const VChip = genericComponent()({
       emit("click", e2);
       if (!isClickable.value)
         return;
-      (_a = link.navigate) == null ? void 0 : _a.call(link, e2);
+      (_a = link2.navigate) == null ? void 0 : _a.call(link2, e2);
       group == null ? void 0 : group.toggle();
     }
     function onKeyDown(e2) {
@@ -6424,7 +6448,7 @@ const VChip = genericComponent()({
       }
     }
     return () => {
-      const Tag = link.isLink.value ? "a" : props.tag;
+      const Tag = link2.isLink.value ? "a" : props.tag;
       const hasAppendMedia = !!(props.appendIcon || props.appendAvatar);
       const hasAppend = !!(hasAppendMedia || slots.append);
       const hasClose = !!(slots.close || props.closable);
@@ -6443,7 +6467,7 @@ const VChip = genericComponent()({
         "style": [hasColor ? colorStyles.value : void 0, props.style],
         "disabled": props.disabled || void 0,
         "draggable": props.draggable,
-        "href": link.href.value,
+        "href": link2.href.value,
         "tabindex": isClickable.value ? 0 : void 0,
         "onClick": onClick,
         "onKeydown": isClickable.value && !isLink.value && onKeyDown
@@ -7192,8 +7216,8 @@ const VListItem = genericComponent()({
       slots,
       emit
     } = _ref;
-    const link = useLink(props, attrs);
-    const id = computed(() => props.value ?? link.href.value);
+    const link2 = useLink(props, attrs);
+    const id = computed(() => props.value ?? link2.href.value);
     const {
       select,
       isSelected,
@@ -7206,10 +7230,10 @@ const VListItem = genericComponent()({
     const list = useList();
     const isActive = computed(() => {
       var _a;
-      return props.active !== false && (props.active || ((_a = link.isActive) == null ? void 0 : _a.value) || isSelected.value);
+      return props.active !== false && (props.active || ((_a = link2.isActive) == null ? void 0 : _a.value) || isSelected.value);
     });
-    const isLink = computed(() => props.link !== false && link.isLink.value);
-    const isClickable = computed(() => !props.disabled && props.link !== false && (props.link || link.isClickable.value || props.value != null && !!list));
+    const isLink = computed(() => props.link !== false && link2.isLink.value);
+    const isClickable = computed(() => !props.disabled && props.link !== false && (props.link || link2.isClickable.value || props.value != null && !!list));
     const roundedProps = computed(() => props.rounded || props.nav);
     const color = computed(() => props.color ?? props.activeColor);
     const variantProps = computed(() => ({
@@ -7218,7 +7242,7 @@ const VListItem = genericComponent()({
     }));
     watch(() => {
       var _a;
-      return (_a = link.isActive) == null ? void 0 : _a.value;
+      return (_a = link2.isActive) == null ? void 0 : _a.value;
     }, (val) => {
       if (val && parent.value != null) {
         root.open(parent.value, true);
@@ -7264,7 +7288,7 @@ const VListItem = genericComponent()({
       emit("click", e2);
       if (isGroupActivator || !isClickable.value)
         return;
-      (_a = link.navigate) == null ? void 0 : _a.call(link, e2);
+      (_a = link2.navigate) == null ? void 0 : _a.call(link2, e2);
       props.value != null && select(!isSelected.value, e2);
     }
     function onKeyDown(e2) {
@@ -7295,7 +7319,7 @@ const VListItem = genericComponent()({
           [`${props.activeClass}`]: props.activeClass && isActive.value
         }, themeClasses.value, borderClasses.value, colorClasses.value, densityClasses.value, elevationClasses.value, lineClasses.value, roundedClasses.value, variantClasses.value, props.class],
         "style": [colorStyles.value, dimensionStyles.value, props.style],
-        "href": link.href.value,
+        "href": link2.href.value,
         "tabindex": isClickable.value ? list ? -2 : 0 : void 0,
         "onClick": onClick,
         "onKeydown": isClickable.value && !isLink.value && onKeyDown
@@ -8991,9 +9015,9 @@ const VOverlay = genericComponent()({
           animateClick();
       }
     }
-    const router = useRouter();
+    const router2 = useRouter();
     useToggleScope(() => props.closeOnBack, () => {
-      useBackButton(router, (next) => {
+      useBackButton(router2, (next) => {
         if (globalTop.value && isActive.value) {
           next(false);
           if (!props.persistent)
@@ -12363,9 +12387,9 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-7dc1219e.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-02da915a.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-8061f0ed.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-183ce8ed.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-92d1216e.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-fddbccd4.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-59cb6ec1.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-829a5e81.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-50246428.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-4a130b93.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-45973223.mjs") })),
-    setup({ App, props, plugin: plugin$1 }) {
-      return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin$1).use(plugin).use(pinia).use(vuetify).use(i18nVue, {
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-3f29388a.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-81d0efd6.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-06a25ea6.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-f3fcbc14.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-87bccf0a.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-c0850056.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-4afdd28e.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-910f8f8f.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-2dc9826a.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-fc412887.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-4b049ae5.mjs") })),
+    setup({ App, props, plugin }) {
+      return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
           const languages = /* @__PURE__ */ Object.assign({ "../../lang/en.json": __vite_glob_1_0, "../../lang/php_en.json": __vite_glob_1_1, "../../lang/php_ru.json": __vite_glob_1_2, "../../lang/ru.json": __vite_glob_1_3 });
           return languages[`../../lang/${lang}.json`];

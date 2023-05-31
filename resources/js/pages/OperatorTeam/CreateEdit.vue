@@ -73,9 +73,7 @@
                             <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">
                                 {{ $t("save") }}
                             </v-btn>
-                            <Link :href="route('ticket-allocator.teams.index')" class="mr-3">
-                                <v-btn>{{ $t("cancel") }}</v-btn>
-                            </Link>
+                            <v-btn :to="route('ticket-allocator.teams.index')" class="mr-3">{{ $t("cancel") }}</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -86,7 +84,7 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, useForm } from "@inertiajs/vue3";
 import type { OperatorTeam, Operator, TicketCategory } from "@/types";
 import route from "ziggy-js";
 

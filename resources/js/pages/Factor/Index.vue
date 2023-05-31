@@ -39,13 +39,15 @@
                                 <v-card-actions>
                                     <v-spacer />
                                     <v-btn color="primary" dark @click="close">{{ $t("cancel") }}</v-btn>
-                                    <Link
-                                        v-if="!!factorType"
-                                        :href="route('ticket-allocator.factors.create', { type: factorType })"
+                                    <v-btn
+                                        :to="route('ticket-allocator.factors.create', { type: factorType })"
+                                        :disabled="!factorType"
+                                        color="primary"
+                                        dark
+                                        @click="close"
                                     >
-                                        <v-btn color="primary" dark @click="close">{{ $t("create") }}</v-btn>
-                                    </Link>
-                                    <v-btn v-else color="primary" dark disabled>{{ $t("create") }}</v-btn>
+                                        {{ $t("create") }}
+                                    </v-btn>
                                 </v-card-actions>
                             </v-card>
                         </v-dialog>
@@ -70,26 +72,37 @@
                     </span>
                 </template>
                 <template #[`item.actions`]="{ item }">
-                    <Link :href="route('ticket-allocator.factors.edit', item.raw.uuid)">
-                        <v-btn icon="mdi-pencil" :title="$t('edit')" size="small" variant="plain" />
-                    </Link>
-                    <Link
-                        as="span"
-                        :href="route('ticket-allocator.factors.raise-priority', item.raw.uuid)"
+                    <v-btn
+                        :to="route('ticket-allocator.factors.edit', item.raw.uuid)"
+                        icon="mdi-pencil"
+                        :title="$t('edit')"
+                        size="small"
+                        variant="plain"
+                    />
+                    <v-btn
+                        :to="route('ticket-allocator.factors.raise-priority', item.raw.uuid)"
                         method="put"
-                    >
-                        <v-btn icon="mdi-arrow-up-thick" :title="$t('raise_priority')" size="small" variant="plain" />
-                    </Link>
-                    <Link
-                        as="span"
-                        :href="route('ticket-allocator.factors.lower-priority', item.raw.uuid)"
+                        icon="mdi-arrow-up-thick"
+                        :title="$t('raise_priority')"
+                        size="small"
+                        variant="plain"
+                    />
+                    <v-btn
+                        :to="route('ticket-allocator.factors.lower-priority', item.raw.uuid)"
                         method="put"
-                    >
-                        <v-btn icon="mdi-arrow-down-thick" :title="$t('lower_priority')" size="small" variant="plain" />
-                    </Link>
-                    <Link as="span" :href="route('ticket-allocator.factors.destroy', item.raw.uuid)" method="delete">
-                        <v-btn icon="mdi-delete" :title="$t('remove')" size="small" variant="plain" />
-                    </Link>
+                        icon="mdi-arrow-down-thick"
+                        :title="$t('lower_priority')"
+                        size="small"
+                        variant="plain"
+                    />
+                    <v-btn
+                        :to="route('ticket-allocator.factors.destroy', item.raw.uuid)"
+                        method="delete"
+                        icon="mdi-delete"
+                        :title="$t('remove')"
+                        size="small"
+                        variant="plain"
+                    />
                 </template>
             </v-data-table>
         </div>

@@ -13,9 +13,9 @@
                         <v-toolbar-title>{{ $t("operator_teams") }}</v-toolbar-title>
                         <v-divider class="mx-4" inset vertical />
                         <v-spacer />
-                        <Link :href="route('ticket-allocator.teams.create')">
-                            <v-btn color="primary" dark>{{ $t("new_team") }}</v-btn>
-                        </Link>
+                        <v-btn :to="route('ticket-allocator.teams.create')" color="primary" dark>
+                            {{ $t("new_team") }}
+                        </v-btn>
                     </v-toolbar>
                 </template>
                 <template #[`item.active`]="{ item }">
@@ -29,12 +29,21 @@
                     </Link>
                 </template>
                 <template #[`item.actions`]="{ item }">
-                    <Link :href="route('ticket-allocator.teams.edit', item.raw.uuid)">
-                        <v-btn icon="mdi-pencil" :title="$t('edit')" size="small" variant="plain" />
-                    </Link>
-                    <Link as="span" :href="route('ticket-allocator.teams.destroy', item.raw.uuid)" method="delete">
-                        <v-btn icon="mdi-delete" :title="$t('remove')" size="small" variant="plain" />
-                    </Link>
+                    <v-btn
+                        :to="route('ticket-allocator.teams.edit', item.raw.uuid)"
+                        icon="mdi-pencil"
+                        :title="$t('edit')"
+                        size="small"
+                        variant="plain"
+                    />
+                    <v-btn
+                        :to="route('ticket-allocator.teams.destroy', item.raw.uuid)"
+                        method="delete"
+                        icon="mdi-delete"
+                        :title="$t('remove')"
+                        size="small"
+                        variant="plain"
+                    />
                 </template>
             </v-data-table>
         </div>

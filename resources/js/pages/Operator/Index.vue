@@ -13,24 +13,33 @@
                         <v-toolbar-title>{{ $t("operators") }}</v-toolbar-title>
                         <v-divider class="mx-4" inset vertical />
                         <v-spacer />
-                        <Link as="span" :href="route('ticket-allocator.operators.discover')" method="put">
-                            <v-btn color="primary" dark>{{ $t("discover") }}</v-btn>
-                        </Link>
-                        <Link :href="route('ticket-allocator.operators.create')">
-                            <v-btn color="primary" dark>{{ $t("new_operator") }}</v-btn>
-                        </Link>
+                        <v-btn :to="route('ticket-allocator.operators.discover')" method="put" color="primary" dark>
+                            {{ $t("discover") }}
+                        </v-btn>
+                        <v-btn :to="route('ticket-allocator.operators.create')" color="primary" dark>
+                            {{ $t("new_operator") }}
+                        </v-btn>
                     </v-toolbar>
                 </template>
                 <template #[`item.name`]="{ item }">{{ item.raw.name ?? item.raw.user.name ?? "" }}</template>
                 <template #[`item.ticket_limit`]="{ item }">{{ item.raw.ticket_limit ?? "&infin;" }}</template>
                 <template #[`item.complexity_limit`]="{ item }">{{ item.raw.complexity_limit ?? "&infin;" }}</template>
                 <template #[`item.actions`]="{ item }">
-                    <Link :href="route('ticket-allocator.operators.edit', item.raw.uuid)">
-                        <v-btn icon="mdi-pencil" :title="$t('edit')" size="small" variant="plain" />
-                    </Link>
-                    <Link as="span" :href="route('ticket-allocator.operators.destroy', item.raw.uuid)" method="delete">
-                        <v-btn icon="mdi-delete" :title="$t('remove')" size="small" variant="plain" />
-                    </Link>
+                    <v-btn
+                        :to="route('ticket-allocator.operators.edit', item.raw.uuid)"
+                        icon="mdi-pencil"
+                        :title="$t('edit')"
+                        size="small"
+                        variant="plain"
+                    />
+                    <v-btn
+                        :to="route('ticket-allocator.operators.destroy', item.raw.uuid)"
+                        method="delete"
+                        icon="mdi-delete"
+                        :title="$t('remove')"
+                        size="small"
+                        variant="plain"
+                    />
                 </template>
             </v-data-table>
         </div>
@@ -40,7 +49,7 @@
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
 import { computed } from "vue";
-import { Head, Link } from "@inertiajs/vue3";
+import { Head } from "@inertiajs/vue3";
 import type { Operator } from "@/types";
 import { trans } from "laravel-vue-i18n";
 import route from "ziggy-js";

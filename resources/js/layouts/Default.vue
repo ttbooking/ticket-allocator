@@ -2,21 +2,36 @@
     <v-app>
         <v-navigation-drawer expand-on-hover rail>
             <v-list density="compact" nav>
-                <Link :href="route('ticket-allocator.index')">
-                    <v-list-item prepend-icon="mdi-monitor-dashboard" :title="$t('dashboard')" value="dashboard" />
-                </Link>
-                <Link :href="route('ticket-allocator.operators.index')">
-                    <v-list-item prepend-icon="mdi-account" :title="$t('operators')" value="operators" />
-                </Link>
-                <Link :href="route('ticket-allocator.teams.index')">
-                    <v-list-item prepend-icon="mdi-account-group" :title="$t('teams')" value="teams" />
-                </Link>
-                <Link :href="route('ticket-allocator.ticket-categories.index')">
-                    <v-list-item prepend-icon="mdi-ticket" :title="$t('ticket_categories')" value="ticket-categories" />
-                </Link>
-                <Link :href="route('ticket-allocator.factors.index')">
-                    <v-list-item prepend-icon="mdi-tune" :title="$t('factors')" value="factors" />
-                </Link>
+                <v-list-item
+                    :to="route('ticket-allocator.index')"
+                    prepend-icon="mdi-monitor-dashboard"
+                    :title="$t('dashboard')"
+                    value="dashboard"
+                />
+                <v-list-item
+                    :to="route('ticket-allocator.operators.index')"
+                    prepend-icon="mdi-account"
+                    :title="$t('operators')"
+                    value="operators"
+                />
+                <v-list-item
+                    :to="route('ticket-allocator.teams.index')"
+                    prepend-icon="mdi-account-group"
+                    :title="$t('teams')"
+                    value="teams"
+                />
+                <v-list-item
+                    :to="route('ticket-allocator.ticket-categories.index')"
+                    prepend-icon="mdi-ticket"
+                    :title="$t('ticket_categories')"
+                    value="ticket-categories"
+                />
+                <v-list-item
+                    :to="route('ticket-allocator.factors.index')"
+                    prepend-icon="mdi-tune"
+                    :title="$t('factors')"
+                    value="factors"
+                />
             </v-list>
         </v-navigation-drawer>
         <v-main>
