@@ -1,6 +1,8 @@
 <template>
     <v-btn v-bind="$attrs" @click="visitLink">
-        <slot></slot>
+        <template v-for="(_, slot) of $slots as VBtn['v-slots']" #[slot]="scope: unknown">
+            <slot :name="slot" v-bind="scope || {}" />
+        </template>
     </v-btn>
 </template>
 
