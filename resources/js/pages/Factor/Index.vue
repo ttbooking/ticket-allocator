@@ -40,6 +40,7 @@
                                     <v-spacer />
                                     <v-btn color="primary" dark @click="close">{{ $t("cancel") }}</v-btn>
                                     <v-btn
+                                        :key="factorType"
                                         :to="route('ticket-allocator.factors.create', { type: factorType })"
                                         :disabled="!factorType"
                                         color="primary"
