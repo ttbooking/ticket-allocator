@@ -11,6 +11,7 @@ import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { i18nVue } from "laravel-vue-i18n";
 //import { ZiggyVue } from "ziggy-js";
+import VBtnEx from "@/components/VBtnEx.vue";
 
 import.meta.glob("../images/**");
 
@@ -36,6 +37,7 @@ createInertiaApp({
                     return await languages[`../../lang/${lang}.json`]();
                 },
             })
+            .component("v-btn-ex", VBtnEx)
             .provide("resolveComponent", props.resolveComponent)
             .mount(el);
     },

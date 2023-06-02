@@ -36,7 +36,7 @@
                         size="small"
                         variant="plain"
                     />
-                    <v-btn
+                    <v-btn-ex
                         :to="route('ticket-allocator.teams.destroy', item.raw.uuid)"
                         method="delete"
                         icon="mdi-delete"

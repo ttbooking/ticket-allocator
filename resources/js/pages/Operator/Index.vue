@@ -13,9 +13,9 @@
                         <v-toolbar-title>{{ $t("operators") }}</v-toolbar-title>
                         <v-divider class="mx-4" inset vertical />
                         <v-spacer />
-                        <v-btn :to="route('ticket-allocator.operators.discover')" method="put" color="primary" dark>
+                        <v-btn-ex :to="route('ticket-allocator.operators.discover')" method="put" color="primary" dark>
                             {{ $t("discover") }}
-                        </v-btn>
+                        </v-btn-ex>
                         <v-btn :to="route('ticket-allocator.operators.create')" color="primary" dark>
                             {{ $t("new_operator") }}
                         </v-btn>
@@ -32,7 +32,7 @@
                         size="small"
                         variant="plain"
                     />
-                    <v-btn
+                    <v-btn-ex
                         :to="route('ticket-allocator.operators.destroy', item.raw.uuid)"
                         method="delete"
                         icon="mdi-delete"

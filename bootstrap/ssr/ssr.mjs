@@ -3,13 +3,14 @@ import "dayjs/locale/ru.js";
 import duration from "dayjs/plugin/duration.js";
 import LocalizedFormat from "dayjs/plugin/localizedFormat.js";
 import RelativeTime from "dayjs/plugin/relativeTime.js";
-import { computed, watch, onScopeDispose, effectScope, capitalize, reactive, watchEffect, toRefs, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, unref, provide, inject as inject$1, shallowRef, createVNode, mergeProps, toRaw, onBeforeUnmount, readonly, nextTick, isRef, Fragment, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, toHandlers, Teleport, cloneVNode, createTextVNode, withModifiers, createSSRApp } from "vue";
+import { computed, watch, onScopeDispose, effectScope, reactive, watchEffect, toRefs, capitalize, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, inject as inject$1, unref, provide, shallowRef, createVNode, mergeProps, toRaw, onBeforeUnmount, readonly, nextTick, isRef, Fragment, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, toHandlers, Teleport, cloneVNode, createTextVNode, withModifiers, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
 import { usePage, router, createInertiaApp } from "@inertiajs/vue3";
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
 import { renderToString } from "@vue/server-renderer";
 import createServer from "@inertiajs/vue3/server";
 import { i18nVue } from "laravel-vue-i18n";
+import { ssrRenderComponent, ssrRenderSlot } from "vue/server-renderer";
 const actions$1 = "Actions";
 const active$1 = "Active";
 const cancel$1 = "Cancel";
@@ -12381,13 +12382,59 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
   };
   t4.mixin({ methods: { route: n2 } }), parseInt(t4.version) > 2 && t4.provide("route", n2);
 } };
+const _sfc_main = /* @__PURE__ */ defineComponent$1({
+  __name: "VBtnEx",
+  __ssrInlineRender: true,
+  props: {
+    method: {}
+  },
+  setup(__props) {
+    const props = __props;
+    const attrs = useAttrs();
+    const href = attrs.to;
+    onBeforeMount(() => {
+      if (href && props.method && props.method !== "get") {
+        delete attrs.to;
+      }
+    });
+    function visitLink() {
+      if (href && props.method && props.method !== "get") {
+        router.visit(href, { method: props.method });
+      }
+    }
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(ssrRenderComponent(unref(VBtn), mergeProps(_ctx.$attrs, { onClick: visitLink }, _attrs), createSlots({ _: 2 }, [
+        renderList(_ctx.$slots, (_, slot) => {
+          return {
+            name: slot,
+            fn: withCtx((scope, _push2, _parent2, _scopeId) => {
+              if (_push2) {
+                ssrRenderSlot(_ctx.$slots, slot, scope || {}, null, _push2, _parent2, _scopeId);
+              } else {
+                return [
+                  renderSlot(_ctx.$slots, _ctx.slot, scope || {})
+                ];
+              }
+            })
+          };
+        })
+      ]), _parent));
+    };
+  }
+});
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("resources/js/components/VBtnEx.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
 const name = "Laravel";
 createServer(
   (page) => createInertiaApp({
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-3f29388a.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-81d0efd6.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-9518b198.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-f3fcbc14.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-87bccf0a.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-c0850056.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-4afdd28e.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-910f8f8f.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-2dc9826a.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-fc412887.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-4b049ae5.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-36ae5526.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-8303da34.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-c7b3aa2a.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-d9492a64.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-6d624e2d.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-bd477974.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-90633876.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-31628745.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-f0f816d5.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-a7349085.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-ea274a91.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
@@ -12399,44 +12446,44 @@ createServer(
         ...page.props.ziggy,
         // @ts-expect-error
         location: new URL(page.props.ziggy.location)
-      });
+      }).component("v-btn-ex", _sfc_main).provide("resolveComponent", props.resolveComponent);
     }
   })
 );
 export {
   makeVOverlayProps as $,
-  keys as A,
-  makeThemeProps as B,
-  provideTheme as C,
-  useLocale as D,
-  makeGroupItemProps as E,
-  makeLazyProps as F,
-  useGroupItem as G,
-  useSsrBoot as H,
+  makeVSelectionControlProps as A,
+  useProxiedModel as B,
+  useLoader as C,
+  useFocus as D,
+  getUid as E,
+  filterInputAttrs as F,
+  VInput as G,
+  VSelectionControl as H,
   IconValue as I,
-  useLazy as J,
-  VOverlay as K,
-  makeVInputProps as L,
+  VProgressCircular as J,
+  omit as K,
+  LoaderSlot as L,
   MaybeTransition as M,
-  makeVSelectionControlProps as N,
-  useLoader as O,
-  useFocus as P,
-  getUid as Q,
-  filterInputAttrs as R,
-  VInput as S,
-  VSelectionControl as T,
-  LoaderSlot as U,
+  makeVBtnProps as N,
+  useTextColor as O,
+  animate as P,
+  standardEasing as Q,
+  makeDensityProps as R,
+  useDensity as S,
+  useBackgroundColor as T,
+  provideDefaults as U,
   VBtn as V,
-  VProgressCircular as W,
+  VOverlay as W,
   VBtnToggle as X,
   VBtnGroup as Y,
   VTable as Z,
   VTextField as _,
-  useRender as a,
+  makeTagProps as a,
   VDialogTransition as a0,
   useScopeId as a1,
-  forwardRefs as a2,
-  VDefaultsProvider as a3,
+  VDefaultsProvider as a2,
+  forwardRefs as a3,
   VDivider as a4,
   VSelect as a5,
   VCheckboxBtn as a6,
@@ -12491,30 +12538,30 @@ export {
   VField as ax,
   VCounter as ay,
   callEvent as az,
-  animate as b,
-  makeComponentProps as c,
-  makeTagProps as d,
-  makeGroupProps as e,
-  useRtl as f,
+  makeThemeProps as b,
+  provideTheme as c,
+  useLocale as d,
+  useGroup as e,
+  useRender as f,
   genericComponent as g,
-  useDisplay as h,
-  useGroup as i,
-  useResizeObserver as j,
-  IN_BROWSER as k,
-  VFadeTransition as l,
-  makeVBtnProps as m,
-  VIcon as n,
-  omit as o,
+  makeGroupItemProps as h,
+  makeLazyProps as i,
+  useGroupItem as j,
+  keys as k,
+  useSsrBoot as l,
+  makeComponentProps as m,
+  useLazy as n,
+  convertToUnit as o,
   propsFactory as p,
-  focusableChildren as q,
-  clamp as r,
-  standardEasing as s,
-  makeDensityProps as t,
-  useTextColor as u,
-  useProxiedModel as v,
-  useDensity as w,
-  useBackgroundColor as x,
-  provideDefaults as y,
-  convertToUnit as z
+  makeGroupProps as q,
+  useDisplay as r,
+  useResizeObserver as s,
+  IN_BROWSER as t,
+  useRtl as u,
+  VFadeTransition as v,
+  VIcon as w,
+  focusableChildren as x,
+  clamp as y,
+  makeVInputProps as z
 };
 //# sourceMappingURL=ssr.mjs.map

@@ -80,7 +80,7 @@
                         size="small"
                         variant="plain"
                     />
-                    <v-btn
+                    <v-btn-ex
                         :to="route('ticket-allocator.factors.raise-priority', item.raw.uuid)"
                         method="put"
                         icon="mdi-arrow-up-thick"
@@ -88,7 +88,7 @@
                         size="small"
                         variant="plain"
                     />
-                    <v-btn
+                    <v-btn-ex
                         :to="route('ticket-allocator.factors.lower-priority', item.raw.uuid)"
                         method="put"
                         icon="mdi-arrow-down-thick"
@@ -96,7 +96,7 @@
                         size="small"
                         variant="plain"
                     />
-                    <v-btn
+                    <v-btn-ex
                         :to="route('ticket-allocator.factors.destroy', item.raw.uuid)"
                         method="delete"
                         icon="mdi-delete"

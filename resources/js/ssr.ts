@@ -10,6 +10,7 @@ import createServer from "@inertiajs/vue3/server";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { i18nVue } from "laravel-vue-i18n";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
+import VBtnEx from "@/components/VBtnEx.vue";
 
 const name = "Laravel";
 
@@ -38,7 +39,9 @@ createServer((page) =>
                     ...page.props.ziggy,
                     // @ts-expect-error
                     location: new URL(page.props.ziggy.location),
-                });
+                })
+                .component("v-btn-ex", VBtnEx)
+                .provide("resolveComponent", props.resolveComponent);
         },
     })
 );
