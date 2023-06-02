@@ -42,6 +42,14 @@
                                             <th>{{ $t("delayed_until") }}</th>
                                             <td>{{ delayedUntilInfo }}</td>
                                         </tr>
+                                        <tr v-if="boundAt">
+                                            <th>{{ $t("bound_at") }}</th>
+                                            <td>{{ boundAtInfo }}</td>
+                                        </tr>
+                                        <tr v-if="acceptedAt">
+                                            <th>{{ $t("accepted_at") }}</th>
+                                            <td>{{ acceptedAtInfo }}</td>
+                                        </tr>
                                         <tr>
                                             <th>{{ $t("current_weight") }}</th>
                                             <td>{{ currentWeightInfo }}</td>
@@ -131,10 +139,22 @@ const delay = computed(() => dayjs.duration(props.ticket.delay, "s"));
 
 const delayedUntil = computed(() => createdAt.value.add(delay.value));
 
+const boundAt = computed(() => (props.ticket.bound_at ? dayjs(props.ticket.bound_at) : null));
+
+const acceptedAt = computed(() => (props.ticket.accepted_at ? dayjs(props.ticket.accepted_at) : null));
+
 const createdAtInfo = computed(() => `${createdAt.value.format("lll")} (${createdAt.value.fromNow()})`);
 
 const delayedUntilInfo = computed(
     () => `${delayedUntil.value.format("lll")} (${trans("time_left", { time: delayedUntil.value.fromNow(true) })})`
+);
+
+const boundAtInfo = computed(() =>
+    boundAt.value ? `${boundAt.value!.format("lll")} (${boundAt.value!.fromNow()})` : null
+);
+
+const acceptedAtInfo = computed(() =>
+    acceptedAt.value ? `${acceptedAt.value!.format("lll")} (${acceptedAt.value!.fromNow()})` : null
 );
 
 const currentWeightInfo = computed(

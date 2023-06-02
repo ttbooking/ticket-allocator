@@ -21,6 +21,8 @@ export default class Ticket extends Model {
     @Num(0) declare complexity: number;
     @Num(0) declare delay: number;
     @Cast(() => DateCast) @Attr() declare created_at: Date;
+    @Cast(() => DateCast) @Attr(null) declare bound_at: Date | null;
+    @Cast(() => DateCast) @Attr(null) declare accepted_at: Date | null;
 
     @BelongsTo(() => TicketCategory, "category_uuid") declare category: TicketCategory;
 

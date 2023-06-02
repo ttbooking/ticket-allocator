@@ -26,6 +26,7 @@ export enum Operator {
 
 export enum Ticket {
     Bound = ".ticket.bound",
+    Accepted = ".ticket.accepted",
     CategoryChanged = ".ticket.category-changed",
     MetaValueSet = ".ticket.meta-value-set",
     MetaValuesMerged = ".ticket.meta-values-merged",
@@ -117,6 +118,10 @@ declare namespace Ticket {
         uuid: string;
         operatorUuid: string;
         meta: Record<string, string>;
+    }
+
+    export interface AcceptedPayload {
+        uuid: string;
     }
 
     export interface CategoryChangedPayload {

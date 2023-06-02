@@ -29,14 +29,18 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
  * @property-read Carbon $delayed_until
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property Carbon|null $bound_at
+ * @property Carbon|null $accepted_at
  * @property Carbon|null $deleted_at
  * @property-read int $duration
  * @property-read int $weight
  * @property TicketCategory $category
  * @property Operator|null $operator
  *
- * @method static Builder<self> bound()
  * @method static Builder<self> unbound()
+ * @method static Builder<self> bound()
+ * @method static Builder<self> notAccepted()
+ * @method static Builder<self> accepted()
  * @method int increment(string $column, float|int $amount = 1, array $extra = [])
  * @method int decrement(string $column, float|int $amount = 1, array $extra = [])
  */
@@ -56,6 +60,8 @@ class Ticket extends Projection
         'weight_increment' => 0,
         'complexity' => 0,
         'delay' => 0,
+        'bound_at' => null,
+        'accepted_at' => null,
     ];
 
     /** @var array<string, string> */
@@ -66,6 +72,8 @@ class Ticket extends Projection
         'weight_increment' => 'integer',
         'complexity' => 'integer',
         'delay' => 'integer',
+        'bound_at' => 'datetime',
+        'accepted_at' => 'datetime',
     ];
 
     /** @var list<string> */
@@ -117,6 +125,17 @@ class Ticket extends Projection
     }
 
     /**
+     * Scope a query to only include unbound tickets.
+     *
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    public function scopeUnbound(Builder $query): Builder
+    {
+        return $query->whereNull('handler_uuid');
+    }
+
+    /**
      * Scope a query to only include bound tickets.
      *
      * @param  Builder<self>  $query
@@ -128,13 +147,24 @@ class Ticket extends Projection
     }
 
     /**
-     * Scope a query to only include unbound tickets.
+     * Scope a query to only include not accepted tickets.
      *
      * @param  Builder<self>  $query
      * @return Builder<self>
      */
-    public function scopeUnbound(Builder $query): Builder
+    public function scopeNotAccepted(Builder $query): Builder
     {
-        return $query->whereNull('handler_uuid');
+        return $query->whereNotNull('handler_uuid')->whereNull('accepted_at');
+    }
+
+    /**
+     * Scope a query to only include accepted tickets.
+     *
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    public function scopeAccepted(Builder $query): Builder
+    {
+        return $query->whereNotNull('handler_uuid')->whereNotNull('accepted_at');
     }
 }

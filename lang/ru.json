@@ -1,6 +1,8 @@
 {
+    "accepted_at": "Подтверждена",
     "actions": "Действия",
     "active": "Активна",
+    "bound_at": "Назначена",
     "cancel": "Отменить",
     "choose_factor_type": "Выберите тип фактора",
     "complexity": "Сложность",

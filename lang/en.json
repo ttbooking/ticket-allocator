@@ -1,6 +1,8 @@
 {
+    "accepted_at": "Accepted at",
     "actions": "Actions",
     "active": "Active",
+    "bound_at": "Bound at",
     "cancel": "Cancel",
     "choose_factor_type": "Choose factor type",
     "complexity": "Complexity",

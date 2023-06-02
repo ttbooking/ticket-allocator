@@ -36,6 +36,8 @@ return new class extends Migration
             // timestamps
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamp('bound_at')->nullable();
+            $table->timestamp('accepted_at')->nullable();
             $table->softDeletes();
 
             $table->rawIndex('(CAST(meta->"$.order" AS UNSIGNED))', 'ticket_allocator_tickets_meta_order_index');

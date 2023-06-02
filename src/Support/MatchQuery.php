@@ -22,7 +22,11 @@ class MatchQuery
         ->fromSub(
 
             Ticket::query()
-                ->whereNull('handler_uuid')
+                ->where(static fn (EloquentBuilder $query) => $query
+                    ->whereNull('handler_uuid')
+                    ->orWhereNull('accepted_at')
+                    ->where('bound_at', '>', DB::raw('DATE_SUB(NOW(), INTERVAL 5 MINUTE)'))
+                )
                 ->where('delayed_until', '<=', DB::raw('NOW()'))
                 ->orderByRaw('initial_weight + TIMESTAMPDIFF(SECOND, created_at, NOW()) * weight_increment DESC'),
 
@@ -44,8 +48,14 @@ class MatchQuery
 
             static fn (JoinClause $join) => $join
                 ->on(static fn (Builder $query) => $query
-                    ->whereNull('o.free_complexity')
-                    ->orWhereColumn('t.complexity', '<=', 'o.free_complexity')
+                    ->where(static fn (Builder $query) => $query
+                        ->whereNull('o.free_complexity')
+                        ->orWhereColumn('t.complexity', '<=', 'o.free_complexity')
+                    )
+                    ->where(static fn (Builder $query) => $query
+                        ->whereNull('t.handler_uuid')
+                        ->orWhereColumn('t.handler_uuid', '<>', 'o.uuid')
+                    )
                     //->whereJsonContains('o.matching->categories', DB::raw('json_quote(t.category_uuid)'))
                 )
 

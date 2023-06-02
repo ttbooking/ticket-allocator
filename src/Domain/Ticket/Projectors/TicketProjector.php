@@ -19,6 +19,7 @@ class TicketProjector extends Projector
             'category_uuid' => $event->categoryUuid,
             'handler_uuid' => $event->operatorUuid,
             'meta' => $event->meta,
+            'bound_at' => $event->operatorUuid ? now() : null,
         ]);
     }
 
@@ -78,11 +79,22 @@ class TicketProjector extends Projector
         $ticket->update([
             'handler_uuid' => $event->operatorUuid,
             'meta' => array_merge($ticket->meta, $event->meta),
+            'bound_at' => now(),
+            'accepted_at' => null,
         ]);
+    }
+
+    public function onTicketAccepted(Events\TicketAccepted $event): void
+    {
+        Ticket::find($event->uuid)?->writeable()->update(['accepted_at' => now()]);
     }
 
     public function onTicketUnbound(Events\TicketUnbound $event): void
     {
-        Ticket::find($event->uuid)?->writeable()->update(['handler_uuid' => null]);
+        Ticket::find($event->uuid)?->writeable()->update([
+            'handler_uuid' => null,
+            'bound_at' => null,
+            'accepted_at' => null,
+        ]);
     }
 }

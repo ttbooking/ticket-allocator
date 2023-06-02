@@ -41,6 +41,8 @@ export interface Ticket {
     complexity: number;
     delay: number;
     created_at: string;
+    bound_at: string | null;
+    accepted_at: string | null;
 }
 
 export interface OperatorTeam {

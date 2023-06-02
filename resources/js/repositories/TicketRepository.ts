@@ -22,11 +22,20 @@ export default class TicketRepository extends Repository<Ticket> {
     bind = ({ uuid, operatorUuid, meta }: Events.Ticket.BoundPayload) => {
         const ticketMeta = this.find(uuid)?.meta ?? {};
         meta = { ...ticketMeta, ...meta };
-        this.where("uuid", uuid).update({ handler_uuid: operatorUuid, meta });
+        this.where("uuid", uuid).update({
+            handler_uuid: operatorUuid,
+            meta,
+            bound_at: new Date().toISOString(),
+            accepted_at: null,
+        });
+    };
+
+    accept = ({ uuid }: Events.Ticket.AcceptedPayload) => {
+        this.where("uuid", uuid).update({ accepted_at: new Date().toISOString() });
     };
 
     unbind = ({ uuid }: Events.Ticket.UnboundPayload) => {
-        this.where("uuid", uuid).update({ handler_uuid: null });
+        this.where("uuid", uuid).update({ handler_uuid: null, bound_at: null, accepted_at: null });
     };
 
     changeCategory = ({ uuid, categoryUuid, meta }: Events.Ticket.CategoryChangedPayload) => {

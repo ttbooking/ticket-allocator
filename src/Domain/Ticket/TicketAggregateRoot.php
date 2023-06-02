@@ -43,6 +43,8 @@ class TicketAggregateRoot extends AggregateRoot
 
     public ?string $operatorUuid;
 
+    public bool $accepted;
+
     public function __construct()
     {
         $this->metrics ??= new TicketMetrics;
@@ -147,6 +149,19 @@ class TicketAggregateRoot extends AggregateRoot
     {
         $this->operatorUuid = $event->operatorUuid;
         $this->meta = array_merge($this->meta, $event->meta);
+        $this->accepted = false;
+    }
+
+    public function accept(Commands\AcceptTicket $command): static
+    {
+        return $this->recordThat(new Events\TicketAccepted(
+            uuid: $this->uuid(),
+        ));
+    }
+
+    protected function applyTicketAccepted(Events\TicketAccepted $event): void
+    {
+        $this->accepted = true;
     }
 
     public function unbind(Commands\UnbindTicket $command): static
@@ -159,6 +174,7 @@ class TicketAggregateRoot extends AggregateRoot
     protected function applyTicketUnbound(Events\TicketUnbound $event): void
     {
         $this->operatorUuid = null;
+        $this->accepted = false;
     }
 
     /**

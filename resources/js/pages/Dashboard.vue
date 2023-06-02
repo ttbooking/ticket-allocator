@@ -154,6 +154,7 @@ onMounted(() => {
         .listen(Events.Ticket.Created, ticketRepo.value.create)
         .listen(Events.Ticket.Closed, ticketRepo.value.close)
         .listen(Events.Ticket.Bound, ticketRepo.value.bind)
+        .listen(Events.Ticket.Accepted, ticketRepo.value.accept)
         .listen(Events.Ticket.Unbound, ticketRepo.value.unbind)
         .listen(Events.Ticket.CategoryChanged, ticketRepo.value.changeCategory)
         .listen(Events.Ticket.MetaValueSet, ticketRepo.value.setMetaValue)

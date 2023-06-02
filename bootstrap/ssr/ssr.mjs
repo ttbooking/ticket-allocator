@@ -11,8 +11,10 @@ import { renderToString } from "@vue/server-renderer";
 import createServer from "@inertiajs/vue3/server";
 import { i18nVue } from "laravel-vue-i18n";
 import { ssrRenderComponent, ssrRenderSlot } from "vue/server-renderer";
+const accepted_at$1 = "Accepted at";
 const actions$1 = "Actions";
 const active$1 = "Active";
+const bound_at$1 = "Bound at";
 const cancel$1 = "Cancel";
 const choose_factor_type$1 = "Choose factor type";
 const complexity$1 = "Complexity";
@@ -75,8 +77,10 @@ const variables$1 = "Variables";
 const weight_increment$1 = "Weight increment";
 const weight_increment_expression$1 = "Weight increment expression";
 const __vite_glob_1_0 = {
+  accepted_at: accepted_at$1,
   actions: actions$1,
   active: active$1,
+  bound_at: bound_at$1,
   cancel: cancel$1,
   choose_factor_type: choose_factor_type$1,
   complexity: complexity$1,
@@ -313,8 +317,10 @@ const __vite_glob_1_2 = {
   "validation.attributes.user": "пользователь",
   "validation.attributes.weight_increment": "приращение веса"
 };
+const accepted_at = "Подтверждена";
 const actions = "Действия";
 const active = "Активна";
+const bound_at = "Назначена";
 const cancel = "Отменить";
 const choose_factor_type = "Выберите тип фактора";
 const complexity = "Сложность";
@@ -377,8 +383,10 @@ const variables = "Переменные";
 const weight_increment = "Приращение веса";
 const weight_increment_expression = "Выражение для вычисления приращения веса тикета";
 const __vite_glob_1_3 = {
+  accepted_at,
   actions,
   active,
+  bound_at,
   cancel,
   choose_factor_type,
   complexity,
@@ -12434,7 +12442,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-36ae5526.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-8303da34.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-c7b3aa2a.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-d9492a64.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-6d624e2d.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-bd477974.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-90633876.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-31628745.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-f0f816d5.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-a7349085.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-ea274a91.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-4cedcc08.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-8303da34.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-c7b3aa2a.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-d9492a64.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-6d624e2d.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-bd477974.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-90633876.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-31628745.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-f0f816d5.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-a7349085.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-ea274a91.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
