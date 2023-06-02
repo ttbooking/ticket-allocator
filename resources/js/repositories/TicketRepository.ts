@@ -12,6 +12,7 @@ export default class TicketRepository extends Repository<Ticket> {
             handler_uuid: payload.operatorUuid,
             meta: payload.meta,
             created_at: new Date().toISOString(),
+            bound_at: payload.operatorUuid ? new Date().toISOString() : null,
         });
     };
 
