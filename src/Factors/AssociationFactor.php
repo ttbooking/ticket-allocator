@@ -11,6 +11,7 @@ namespace TTBooking\TicketAllocator\Factors;
  *     weight_increment: int,
  *     complexity: int,
  *     delay: int,
+ *     reservation: int,
  * }
  *
  * @extends Factor<TEntry[]>

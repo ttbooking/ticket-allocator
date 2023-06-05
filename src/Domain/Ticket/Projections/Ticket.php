@@ -26,7 +26,9 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
  * @property int $weight_increment
  * @property int $complexity
  * @property int $delay
+ * @property int $reservation
  * @property-read Carbon $delayed_until
+ * @property-read Carbon|null $reserved_until
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon|null $bound_at
@@ -60,6 +62,7 @@ class Ticket extends Projection
         'weight_increment' => 0,
         'complexity' => 0,
         'delay' => 0,
+        'reservation' => 0,
         'bound_at' => null,
         'accepted_at' => null,
     ];
@@ -72,6 +75,7 @@ class Ticket extends Projection
         'weight_increment' => 'integer',
         'complexity' => 'integer',
         'delay' => 'integer',
+        'reservation' => 'integer',
         'bound_at' => 'datetime',
         'accepted_at' => 'datetime',
     ];

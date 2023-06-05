@@ -46,6 +46,10 @@
                                             <th>{{ $t("bound_at") }}</th>
                                             <td>{{ boundAtInfo }}</td>
                                         </tr>
+                                        <tr v-if="reservedUntil && reservedUntil.isAfter($dayjs())">
+                                            <th>{{ $t("reserved_until") }}</th>
+                                            <td>{{ reservedUntilInfo }}</td>
+                                        </tr>
                                         <tr v-if="acceptedAt">
                                             <th>{{ $t("accepted_at") }}</th>
                                             <td>{{ acceptedAtInfo }}</td>
@@ -78,6 +82,9 @@
                                             <th class="text-center">
                                                 <em class="metric" :title="$t('delay_sec')">D</em>
                                             </th>
+                                            <th class="text-center">
+                                                <em class="metric" :title="$t('reservation_sec')">R</em>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -87,6 +94,7 @@
                                             <td class="text-right">{{ adjustments.weight_increment ?? 0 }}</td>
                                             <td class="text-right">{{ adjustments.complexity ?? 0 }}</td>
                                             <td class="text-right">{{ adjustments.delay ?? 0 }}</td>
+                                            <td class="text-right">{{ adjustments.reservation ?? 0 }}</td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
@@ -96,6 +104,7 @@
                                             <td class="text-right">{{ ticket.weight_increment }}</td>
                                             <td class="text-right">{{ ticket.complexity }}</td>
                                             <td class="text-right">{{ ticket.delay }}</td>
+                                            <td class="text-right">{{ ticket.reservation }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -141,6 +150,10 @@ const delayedUntil = computed(() => createdAt.value.add(delay.value));
 
 const boundAt = computed(() => (props.ticket.bound_at ? dayjs(props.ticket.bound_at) : null));
 
+const reservation = computed(() => dayjs.duration(props.ticket.reservation, "s"));
+
+const reservedUntil = computed(() => (boundAt.value ? boundAt.value!.add(reservation.value) : null));
+
 const acceptedAt = computed(() => (props.ticket.accepted_at ? dayjs(props.ticket.accepted_at) : null));
 
 const createdAtInfo = computed(() => `${createdAt.value.format("lll")} (${createdAt.value.fromNow()})`);
@@ -151,6 +164,12 @@ const delayedUntilInfo = computed(
 
 const boundAtInfo = computed(() =>
     boundAt.value ? `${boundAt.value!.format("lll")} (${boundAt.value!.fromNow()})` : null
+);
+
+const reservedUntilInfo = computed(() =>
+    reservedUntil.value
+        ? `${reservedUntil.value!.format("lll")} (${trans("time_left", { time: reservedUntil.value!.fromNow(true) })})`
+        : null
 );
 
 const acceptedAtInfo = computed(() =>

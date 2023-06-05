@@ -31,6 +31,7 @@ class TicketController extends Controller
             'weight_increment' => 0,
             'complexity' => 0,
             'delay' => 0,
+            'reservation' => 0,
         ]);
 
         return Response::json($weightPoints);

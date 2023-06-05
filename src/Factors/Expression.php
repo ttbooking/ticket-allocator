@@ -16,6 +16,7 @@ use TTBooking\TicketAllocator\DTO\TicketMetrics;
  *         weight_increment: string,
  *         complexity: string,
  *         delay: string,
+ *         reservation: string,
  *     },
  * }>
  */
@@ -50,7 +51,7 @@ class Expression extends Factor
         };
 
         return TicketMetrics::from(array_combine(
-            $metrics = ['initial_weight', 'weight_increment', 'complexity', 'delay'],
+            $metrics = ['initial_weight', 'weight_increment', 'complexity', 'delay', 'reservation'],
             array_map($eval, $metrics)
         ));
     }

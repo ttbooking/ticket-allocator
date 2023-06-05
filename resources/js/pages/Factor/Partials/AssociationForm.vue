@@ -71,6 +71,18 @@
                         hide-details="auto"
                     />
                 </template>
+                <template #[`item.reservation`]="{ item }">
+                    <v-text-field
+                        v-model.number="item.raw.reservation"
+                        type="number"
+                        min="0"
+                        max="99999"
+                        placeholder="0"
+                        variant="plain"
+                        density="compact"
+                        hide-details="auto"
+                    />
+                </template>
                 <template #[`item.actions`]="{ item }">
                     <v-btn
                         icon="mdi-delete"
@@ -114,6 +126,7 @@ const headers = computed(() => [
     { title: trans("weight_increment"), key: "weight_increment" },
     { title: trans("complexity"), key: "complexity" },
     { title: trans("delay_sec"), key: "delay" },
+    { title: trans("reservation_sec"), key: "reservation" },
     { title: trans("actions"), key: "actions", sortable: false },
 ]);
 
@@ -130,6 +143,7 @@ function addEntry() {
         weight_increment: null,
         complexity: null,
         delay: null,
+        reservation: null,
     });
 }
 

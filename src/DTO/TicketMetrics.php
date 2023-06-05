@@ -11,6 +11,7 @@ class TicketMetrics
         public int $weight_increment = 0,
         public int $complexity = 0,
         public int $delay = 0,
+        public int $reservation = 0,
     ) {
     }
 

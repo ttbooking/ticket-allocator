@@ -57,6 +57,9 @@ const operators$1 = "Operators";
 const properties$1 = "Properties";
 const raise_priority$1 = "raise priority";
 const remove$1 = "remove";
+const reservation_sec$1 = "Reservation, sec";
+const reservation_expression$1 = "Reservation expression";
+const reserved_until$1 = "Reserved until";
 const save$1 = "Save";
 const short_name$1 = "Short name";
 const teams$1 = "Teams";
@@ -123,6 +126,9 @@ const __vite_glob_1_0 = {
   properties: properties$1,
   raise_priority: raise_priority$1,
   remove: remove$1,
+  reservation_sec: reservation_sec$1,
+  reservation_expression: reservation_expression$1,
+  reserved_until: reserved_until$1,
   save: save$1,
   short_name: short_name$1,
   teams: teams$1,
@@ -363,6 +369,9 @@ const operators = "Операторы";
 const properties = "Свойства";
 const raise_priority = "повысить приоритет";
 const remove = "удалить";
+const reservation_sec = "Резервирование, с";
+const reservation_expression = "Выражение для вычисления резервирования тикета";
+const reserved_until = "Зарезервирована до";
 const save = "Сохранить";
 const short_name = "Короткое имя";
 const teams = "Команды";
@@ -429,6 +438,9 @@ const __vite_glob_1_3 = {
   properties,
   raise_priority,
   remove,
+  reservation_sec,
+  reservation_expression,
+  reserved_until,
   save,
   short_name,
   teams,
@@ -12442,7 +12454,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-eddce438.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-8303da34.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-c7b3aa2a.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-d9492a64.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-6d624e2d.mjs"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-cedfaf39.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-bd477974.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-90633876.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-31628745.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-f0f816d5.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-a7349085.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-ea274a91.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-9a9fde5d.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-8303da34.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-c7b3aa2a.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-35dd0fea.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-577fb142.mjs"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-7713fc33.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-bd477974.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-90633876.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-31628745.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-f0f816d5.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-a7349085.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-ea274a91.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {

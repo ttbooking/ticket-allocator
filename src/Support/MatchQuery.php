@@ -25,7 +25,7 @@ class MatchQuery
                 ->where(static fn (EloquentBuilder $query) => $query
                     ->whereNull('handler_uuid')
                     ->orWhereNull('accepted_at')
-                    ->where('bound_at', '>', DB::raw('DATE_SUB(NOW(), INTERVAL 5 MINUTE)'))
+                    ->where('reserved_until', '<=', DB::raw('NOW()'))
                 )
                 ->where('delayed_until', '<=', DB::raw('NOW()'))
                 ->orderByRaw('initial_weight + TIMESTAMPDIFF(SECOND, created_at, NOW()) * weight_increment DESC'),

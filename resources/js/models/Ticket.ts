@@ -20,6 +20,7 @@ export default class Ticket extends Model {
     @Num(0) declare weight_increment: number;
     @Num(0) declare complexity: number;
     @Num(0) declare delay: number;
+    @Num(0) declare reservation: number;
     @Cast(() => DateCast) @Attr() declare created_at: Date;
     @Cast(() => DateCast) @Attr(null) declare bound_at: Date | null;
     @Cast(() => DateCast) @Attr(null) declare accepted_at: Date | null;

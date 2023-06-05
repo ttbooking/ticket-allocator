@@ -15,6 +15,7 @@ use TTBooking\TicketAllocator\DTO\TicketMetrics;
  *     weight_increment: TRange,
  *     complexity: TRange,
  *     delay: TRange,
+ *     reservation: TRange,
  * }>
  */
 #[Attributes\Hidden]
@@ -29,7 +30,7 @@ class Random extends Factor
         };
 
         return TicketMetrics::from(array_combine(
-            $metrics = ['initial_weight', 'weight_increment', 'complexity', 'delay'],
+            $metrics = ['initial_weight', 'weight_increment', 'complexity', 'delay', 'reservation'],
             array_map($rand, $metrics)
         ));
     }

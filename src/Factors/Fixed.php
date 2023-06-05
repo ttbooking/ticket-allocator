@@ -13,6 +13,7 @@ use TTBooking\TicketAllocator\DTO\TicketMetrics;
  *     weight_increment: int,
  *     complexity: int,
  *     delay: int,
+ *     reservation: int,
  * }>
  */
 #[Attributes\Singular]

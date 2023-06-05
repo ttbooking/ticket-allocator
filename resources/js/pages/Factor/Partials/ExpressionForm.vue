@@ -40,6 +40,15 @@
             />
         </v-col>
     </v-row>
+    <v-row>
+        <v-col cols="12" md="12">
+            <v-text-field
+                v-model="config.expressions.reservation"
+                :label="$t('reservation_expression')"
+                :error-messages="errors.reservation_expression"
+            />
+        </v-col>
+    </v-row>
 </template>
 
 <script setup lang="ts">

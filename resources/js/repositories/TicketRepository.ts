@@ -66,6 +66,7 @@ export default class TicketRepository extends Repository<Ticket> {
             weight_increment: Math.max(0, (this.find(uuid)?.weight_increment ?? 0) + adjustments.weight_increment),
             complexity: Math.max(0, (this.find(uuid)?.complexity ?? 0) + adjustments.complexity),
             delay: Math.max(0, (this.find(uuid)?.delay ?? 0) + adjustments.delay),
+            reservation: Math.max(0, (this.find(uuid)?.reservation ?? 0) + adjustments.reservation),
         });
     };
 

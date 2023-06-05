@@ -28,6 +28,7 @@ export interface TicketMetrics {
     weight_increment: number;
     complexity: number;
     delay: number;
+    reservation: number;
 }
 
 export interface Ticket {
@@ -40,6 +41,7 @@ export interface Ticket {
     weight_increment: number;
     complexity: number;
     delay: number;
+    reservation: number;
     created_at: string;
     bound_at: string | null;
     accepted_at: string | null;
@@ -77,6 +79,7 @@ export type AssociativeFactorConfig = Array<{
     weight_increment: number | null;
     complexity: number | null;
     delay: number | null;
+    reservation: number | null;
 }>;
 
 export interface ExpressiveFactorConfig {
@@ -86,6 +89,7 @@ export interface ExpressiveFactorConfig {
         weight_increment: string;
         complexity: string;
         delay: string;
+        reservation: string;
     };
 }
 
@@ -94,6 +98,7 @@ export interface RandomFactorConfig {
     weight_increment: [number, number];
     complexity: [number, number];
     delay: [number, number];
+    reservation: [number, number];
 }
 
 export interface FactorType {
