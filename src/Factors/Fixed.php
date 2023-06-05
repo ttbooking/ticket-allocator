@@ -18,7 +18,9 @@ use TTBooking\TicketAllocator\DTO\TicketMetrics;
  */
 #[Attributes\Singular]
 #[Attributes\Component('Factor/Partials/FixedForm')]
-#[Attributes\Instance('99561e6e-f5e7-4aa4-bfe1-f1ab3c343041', priority: 100)]
+#[Attributes\Instance('99561e6e-f5e7-4aa4-bfe1-f1ab3c343041', priority: 100, config: [
+    'reservation' => 300,
+])]
 class Fixed extends Factor
 {
     public function getAdjustments(TicketAggregateRoot $ticket): TicketMetrics
