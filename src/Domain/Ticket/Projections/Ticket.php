@@ -7,11 +7,9 @@ namespace TTBooking\TicketAllocator\Domain\Ticket\Projections;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EventSourcing\Projections\Projection;
-use TTBooking\TicketAllocator\Database\Factories\TicketFactory;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\DTO\TicketMetrics;
 use TTBooking\TicketAllocator\Models\TicketCategory;
@@ -48,7 +46,7 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
  */
 class Ticket extends Projection
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes;
 
     protected $table = 'ticket_allocator_tickets';
 
@@ -82,11 +80,6 @@ class Ticket extends Projection
 
     /** @var list<string> */
     //protected $appends = ['duration', 'weight'];
-
-    protected static function newFactory(): TicketFactory
-    {
-        return TicketFactory::new();
-    }
 
     /**
      * Retrieve ticket duration in seconds.

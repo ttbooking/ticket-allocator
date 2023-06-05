@@ -35,7 +35,6 @@ return new class extends Migration
             $table->timestamp('delayed_until')->virtualAs('DATE_ADD(created_at, INTERVAL delay SECOND)');
             $table->timestamp('reserved_until')->virtualAs('DATE_ADD(bound_at, INTERVAL reservation SECOND)');
 
-
             // timestamps
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

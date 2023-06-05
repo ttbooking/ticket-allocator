@@ -7,13 +7,11 @@ namespace TTBooking\TicketAllocator\Domain\Operator\Projections;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\EventSourcing\Projections\Projection;
-use TTBooking\TicketAllocator\Database\Factories\OperatorFactory;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
 use TTBooking\TicketAllocator\Models\TeamOperator;
@@ -44,8 +42,6 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
  */
 class Operator extends Projection
 {
-    use HasFactory;
-
     protected $table = 'ticket_allocator_operators';
 
     protected $guarded = [];
@@ -79,11 +75,6 @@ class Operator extends Projection
 
     // @var string[]
     //protected $touches = ['operatorTeams'];
-
-    protected static function newFactory(): OperatorFactory
-    {
-        return OperatorFactory::new();
-    }
 
     /**
      * @return Attribute<string, never>
