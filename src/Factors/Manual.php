@@ -12,7 +12,7 @@ use TTBooking\TicketAllocator\DTO\TicketMetrics;
  */
 #[Attributes\Hidden]
 #[Attributes\Singular]
-#[Attributes\Instance('99420f64-2ffb-44d3-abd8-1d31a1c6627f', priority: 200)]
+#[Attributes\Instance('99561ef1-ae1c-45d9-8b57-176c22e109a4', priority: 300)]
 class Manual extends Factor
 {
     public function getAdjustments(Ticket $ticket): TicketMetrics

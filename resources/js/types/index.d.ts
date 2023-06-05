@@ -69,6 +69,8 @@ export interface TicketCategory {
     updated_at: string;
 }
 
+export type FixedFactorConfig = TicketMetrics;
+
 export type AssociativeFactorConfig = Array<{
     value: string;
     initial_weight: number | null;
