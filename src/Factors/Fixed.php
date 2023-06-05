@@ -22,6 +22,6 @@ class Fixed extends Factor
 {
     public function getAdjustments(TicketAggregateRoot $ticket): TicketMetrics
     {
-        return TicketMetrics::from($this->config);
+        return $this->config ? TicketMetrics::from($this->config) : new TicketMetrics;
     }
 }
