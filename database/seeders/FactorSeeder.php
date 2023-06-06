@@ -27,6 +27,7 @@ class FactorSeeder extends Seeder
                 'weight_increment' => fake()->numberBetween(0, 100),
                 'complexity' => fake()->randomElement([5, 10, 25, 50]),
                 'delay' => fake()->boolean(10) ? fake()->numberBetween(1, 10) * 60 : 0,
+                'reservation' => 0,
             ];
         }
 
