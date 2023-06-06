@@ -1,5 +1,5 @@
 import { createSharedComposable, useLocalStorage, useTimestamp } from "@vueuse/core";
-import type { SortDirection, TicketSortBy, ToggleOptions } from "./types";
+import type { TicketSortBy, ToggleOptions } from "./types";
 import { computed, reactive } from "vue";
 
 export const useSharedOptions = createSharedComposable(() => {
@@ -19,10 +19,6 @@ export const useSharedOptions = createSharedComposable(() => {
 
 export const useSharedDisplayMode = createSharedComposable(() =>
     useLocalStorage<TicketSortBy>("ticket-allocator.display-mode", "weight")
-);
-
-export const useSharedOperatorSorting = createSharedComposable(() =>
-    useLocalStorage<SortDirection>("ticket-allocator.operator-sorting", "asc")
 );
 
 export const useSharedTimestamp = createSharedComposable(() => useTimestamp({ interval: 1000 }));

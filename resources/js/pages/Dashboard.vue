@@ -33,16 +33,6 @@
                     </v-col>
                     <v-col cols="2">
                         <v-switch
-                            v-model="oprSort"
-                            false-value="asc"
-                            true-value="desc"
-                            prepend-icon="mdi-sort-ascending"
-                            append-icon="mdi-sort-descending"
-                            class="d-flex justify-end"
-                        />
-                    </v-col>
-                    <v-col cols="2">
-                        <v-switch
                             v-model="mode"
                             false-value="weight"
                             true-value="duration"
@@ -77,7 +67,7 @@ import { refThrottled } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
 import { useDropZone, usePusherChannel } from "@/composables";
 import type { Operator, Ticket, TicketCategory, Factor } from "@/types";
-import { useSharedOptions, useSharedDisplayMode, useSharedOperatorSorting } from "@/shared";
+import { useSharedOptions, useSharedDisplayMode } from "@/shared";
 import * as Events from "@/types/events.d";
 
 import { useRepo } from "pinia-orm";
@@ -95,7 +85,6 @@ const props = defineProps<{
 
 const options = useSharedOptions();
 const mode = useSharedDisplayMode();
-const oprSort = useSharedOperatorSorting();
 
 const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));

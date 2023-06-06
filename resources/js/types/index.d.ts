@@ -2,8 +2,6 @@ export type ToggleOptions = "hide-empty" | "alt-info" | "unlocked";
 
 export type TicketSortBy = "weight" | "duration";
 
-export type SortDirection = "asc" | "desc";
-
 export interface User {
     id: number;
     name: string;
