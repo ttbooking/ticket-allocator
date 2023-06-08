@@ -16,14 +16,9 @@ class Builder implements Arrayable, Jsonable, JsonSerializable
 {
     protected array $wheres = [];
 
-    public static function query(): static
-    {
-        return (new static)->newQuery();
-    }
-
     public function newQuery(): static
     {
-        return $this;
+        return new static;
     }
 
     public function where(Closure|string $type, string $operator = null, mixed $value = null, string $boolean = 'and'): static
