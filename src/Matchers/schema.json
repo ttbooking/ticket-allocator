@@ -17,6 +17,11 @@
                 "description": "Boolean operator",
                 "default": "and",
                 "enum": ["and", "or"]
+            },
+            "not": {
+                "description": "Query negation",
+                "default": false,
+                "type": "boolean"
             }
         },
         "oneOf": [

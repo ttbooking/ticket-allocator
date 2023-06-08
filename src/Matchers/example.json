@@ -4,23 +4,19 @@
         "value": [
             "080f51a5-9fa6-3b93-adb7-ad5a6bdaedba",
             "2782bdd0-8995-3e22-a8b4-5d06ebea80f1"
-        ],
-        "x": 5
+        ]
     },
     {
         "type": "group",
         "value": [
             {
                 "type": "import",
-                "value": "42213844-f8a4-3428-9536-cb3262026372",
-                "lol": 7
+                "value": "42213844-f8a4-3428-9536-cb3262026372"
             },
             {
                 "type": "time_until_departure",
-                "value": {
-                    "operator": "<",
-                    "value": 3600
-                },
+                "operator": "<",
+                "value": 3600,
                 "boolean": "or"
             }
         ],
@@ -28,15 +24,9 @@
     },
     {
         "type": "weight",
-        "value": {
-            "operator": "between",
-            "min": 1000,
-            "max": 5000
-        },
-        "boolean": "or"
-    },
-    {
-        "type": "import",
-        "value": "asd"
+        "operator": "between",
+        "value": [1000, 5000],
+        "boolean": "or",
+        "not": true
     }
 ]

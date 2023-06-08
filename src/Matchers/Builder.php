@@ -21,35 +21,40 @@ class Builder implements Arrayable, Jsonable, JsonSerializable
         return new static;
     }
 
-    public function where(Closure|string $type, string $operator = null, mixed $value = null, string $boolean = 'and'): static
-    {
+    public function where(
+        Closure|string $type,
+        string $operator = null,
+        mixed $value = null,
+        string $boolean = 'and',
+        bool $not = false,
+    ): static {
         if ($type instanceof Closure) {
-            return $this->whereNested($type, $boolean);
+            return $this->whereNested($type, $boolean, $not);
         }
 
-        $this->wheres[] = compact('type', 'operator', 'value', 'boolean');
+        $this->wheres[] = compact('type', 'operator', 'value', 'boolean', 'not');
 
         return $this;
     }
 
-    public function orWhere(string $type, string $operator, mixed $value): static
+    public function orWhere(string $type, string $operator, mixed $value, bool $not = false): static
     {
-        return $this->where($type, $operator, $value, 'or');
+        return $this->where($type, $operator, $value, 'or', $not);
     }
 
-    public function whereNested(Closure $callback, string $boolean = 'and'): static
+    public function whereNested(Closure $callback, string $boolean = 'and', bool $not = false): static
     {
         $callback($query = $this->newQuery());
 
         return $this->addNestedWhereQuery($query, $boolean);
     }
 
-    public function addNestedWhereQuery(self $query, string $boolean = 'and'): static
+    public function addNestedWhereQuery(self $query, string $boolean = 'and', bool $not = false): static
     {
         if (count($query->wheres)) {
             $type = 'group';
             $value = $query->toArray();
-            $this->wheres[] = compact('type', 'value', 'boolean');
+            $this->wheres[] = compact('type', 'value', 'boolean', 'not');
         }
 
         return $this;
