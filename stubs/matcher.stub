@@ -1,0 +1,19 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use TTBooking\TicketAllocator\Matchers\Attributes;
+use TTBooking\TicketAllocator\Matchers\Matcher;
+
+class {{ class }} extends Matcher
+{
+    /**
+     * Create a new matcher instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+}

@@ -121,6 +121,12 @@ export interface Factor {
     deleted_at: string | null;
 }
 
+export interface MatcherType {
+    alias: string;
+    name: string;
+    excluded: boolean;
+}
+
 export interface DisplayOptions {
     duration_threshold: number;
     weight_threshold: number;

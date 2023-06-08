@@ -69,6 +69,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Ticket Allocator Matchers
+    |--------------------------------------------------------------------------
+    */
+
+    'enable_matcher_discovery' => env('TA_DISCOVER_MATCHERS', true),
+
+    'discover_matchers_within' => [
+        app_path('Matchers'),
+    ],
+
+    'matcher_discovery_base_path' => base_path(),
+
+    'matchers' => [
+        TTBooking\TicketAllocator\Matchers\Category::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Ticket Allocator User Model
     |--------------------------------------------------------------------------
     */

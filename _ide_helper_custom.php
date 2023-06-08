@@ -9,7 +9,17 @@ namespace Illuminate\Contracts\Foundation
             return true;
         }
 
+        public function matchersAreCached(): bool
+        {
+            return true;
+        }
+
         public function getCachedFactorsPath(): string
+        {
+            return '';
+        }
+
+        public function getCachedMatchersPath(): string
         {
             return '';
         }
@@ -25,7 +35,17 @@ namespace Illuminate\Foundation
             return true;
         }
 
+        public function matchersAreCached(): bool
+        {
+            return true;
+        }
+
         public function getCachedFactorsPath(): string
+        {
+            return '';
+        }
+
+        public function getCachedMatchersPath(): string
         {
             return '';
         }

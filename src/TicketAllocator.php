@@ -9,15 +9,20 @@ use Illuminate\Console\OutputStyle;
 use Illuminate\Console\View\Components\Factory;
 use Illuminate\Contracts\Support\Arrayable;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
+use TTBooking\TicketAllocator\Contracts\Matcher as MatcherContract;
 use TTBooking\TicketAllocator\Events\PropsInvalidated;
 use TTBooking\TicketAllocator\Support\FactorDictionary;
+use TTBooking\TicketAllocator\Support\MatcherDictionary;
 
 /**
  * @template TFactor of class-string<FactorContract>
+ * @template TMatcher of class-string<MatcherContract>
  */
 class TicketAllocator
 {
     protected static FactorDictionary $factors;
+
+    protected static MatcherDictionary $matchers;
 
     protected static bool $propsChanged = false;
 
@@ -33,6 +38,20 @@ class TicketAllocator
     public static function factors(): FactorDictionary
     {
         return static::$factors ??= new FactorDictionary;
+    }
+
+    /**
+     * @param  Arrayable<string, TMatcher>|iterable<string, TMatcher>|null  $matchers
+     * @return void
+     */
+    public static function setMatchers(Arrayable|iterable|null $matchers): void
+    {
+        static::$matchers = new MatcherDictionary($matchers);
+    }
+
+    public static function matchers(): MatcherDictionary
+    {
+        return static::$matchers ??= new MatcherDictionary;
     }
 
     public static function invalidateProps(): void

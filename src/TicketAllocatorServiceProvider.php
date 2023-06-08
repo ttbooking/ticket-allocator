@@ -78,6 +78,9 @@ class TicketAllocatorServiceProvider extends ServiceProvider
             Console\FactorClearCommand::class,
             Console\FactorMakeCommand::class,
             Console\FactorInstallCommand::class,
+            Console\MatcherCacheCommand::class,
+            Console\MatcherClearCommand::class,
+            Console\MatcherMakeCommand::class,
             Console\ReloadDashboardsCommand::class,
             Console\SnapshotOperatorCommand::class,
         ]);
@@ -128,9 +131,10 @@ class TicketAllocatorServiceProvider extends ServiceProvider
             __DIR__.'/../stubs' => $this->app->basePath('stubs')
         ], ['ticket-allocator', 'stubs', 'ticket-allocator-stubs']);
 
-        Event::listen(PublishingStubs::class, static function (PublishingStubs $stubs) {
-            $stubs->add(__DIR__.'/../stubs/factor.stub', 'factor.stub');
-        });
+        Event::listen(PublishingStubs::class, static fn (PublishingStubs $stubs) => $stubs
+            ->add(__DIR__.'/../stubs/factor.stub', 'factor.stub')
+            ->add(__DIR__.'/../stubs/matcher.stub', 'matcher.stub')
+        );
     }
 
     protected function registerMigrations(): void
@@ -165,6 +169,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     protected function registerProviders(): void
     {
         $this->app->register(FactorServiceProvider::class);
+        $this->app->register(MatcherServiceProvider::class);
     }
 
     protected function scheduleTasks(): void
