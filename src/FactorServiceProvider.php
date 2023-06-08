@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use TTBooking\TicketAllocator\Contracts\Factor as FactorContract;
 use TTBooking\TicketAllocator\Support\DiscoverFactors;
@@ -15,7 +16,13 @@ class FactorServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->registerMixins();
         $this->registerFactors();
+    }
+
+    protected function registerMixins(): void
+    {
+        Application::mixin(new Support\FactorCacheMixin);
     }
 
     protected function registerFactors(): void

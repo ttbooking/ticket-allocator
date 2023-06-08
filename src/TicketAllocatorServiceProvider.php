@@ -6,7 +6,6 @@ namespace TTBooking\TicketAllocator;
 
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Events\PublishingStubs;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
@@ -66,7 +65,6 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
     protected function registerMixins(): void
     {
-        Application::mixin(new Support\FactorCacheMixin);
         Vite::mixin(new Support\ViteAliasMixin);
     }
 
