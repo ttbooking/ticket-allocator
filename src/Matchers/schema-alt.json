@@ -1,0 +1,37 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://ttbooking.ru/match-query.schema-alt.json",
+    "title": "Match query",
+    "description": "Blah",
+    "type": "array",
+    "items": {
+        "description": "Match query segments",
+        "type": "object",
+        "properties": {
+            "type": {
+                "description": "Matcher type",
+                "type": "string"
+            },
+            "operator": {
+                "description": "Comparison operator",
+                "default": "=",
+                "enum": ["=", "!=", "<>", "<", ">", "<=", ">=", "between"]
+            },
+            "boolean": {
+                "description": "Boolean operator",
+                "default": "and",
+                "enum": ["and", "or"]
+            }
+        },
+        "if": {
+            "properties": { "type": { "const": "group" } }
+        },
+        "then": {
+            "properties": { "value": { "$ref": "#" } }
+        },
+        "else": {
+            "properties": { "value": { "description": "Match operand(s)" } }
+        },
+        "required": ["type"]
+    }
+}

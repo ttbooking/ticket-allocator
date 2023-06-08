@@ -1,0 +1,67 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://ttbooking.ru/match-query.schema.json",
+    "title": "Match query",
+    "description": "Blah",
+    "type": "array",
+    "items": {
+        "description": "Match query segments",
+        "type": "object",
+        "properties": {
+            "operator": {
+                "description": "Comparison operator",
+                "default": "=",
+                "enum": ["=", "!=", "<>", "<", ">", "<=", ">=", "between"]
+            },
+            "boolean": {
+                "description": "Boolean operator",
+                "default": "and",
+                "enum": ["and", "or"]
+            }
+        },
+        "oneOf": [
+            {
+                "properties": {
+                    "type": {
+                        "description": "Matcher type",
+                        "const": "group"
+                    },
+                    "value": {
+                        "$ref": "#"
+                    }
+                },
+                "required": ["value"]
+            },
+            {
+                "properties": {
+                    "type": {
+                        "description": "Matcher type",
+                        "const": "import"
+                    },
+                    "value": {
+                        "description": "Match operand(s)",
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "required": ["type", "value"]
+            },
+            {
+                "properties": {
+                    "type": {
+                        "description": "Matcher type",
+                        "type": "string",
+                        "not": {
+                            "enum": ["group", "import"]
+                        }
+                    },
+                    "value": {
+                        "description": "Match operand(s)"
+                    }
+                },
+                "required": ["type"]
+            }
+        ],
+        "additionalProperties": false
+    }
+}
