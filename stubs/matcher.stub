@@ -16,4 +16,16 @@ class {{ class }} extends Matcher
     {
         //
     }
+
+    public static function getProps(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function qualify(Builder $query): Builder
+    {
+        return $query;
+    }
 }
