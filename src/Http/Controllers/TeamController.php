@@ -39,8 +39,12 @@ class TeamController extends Controller
     {
         $operators = OperatorResource::collection(Operator::all())->resolve();
         $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
+        $matchers = TicketAllocator::matchers()->mapWithKeys(
+            /** @param class-string<MatcherContract> $matcher */
+            static fn (string $matcher, string $alias) => [$alias => $matcher::getProps()]
+        );
 
-        return Inertia::render('OperatorTeam/CreateEdit', compact('operators', 'ticketCategories'));
+        return Inertia::render('OperatorTeam/CreateEdit', compact('operators', 'ticketCategories', 'matchers'));
     }
 
     /**
@@ -75,12 +79,12 @@ class TeamController extends Controller
         $team = new OperatorTeamResource($team->load('operators', 'ticketCategories'));
         $operators = OperatorResource::collection(Operator::all())->resolve();
         $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
-        $props = TicketAllocator::matchers()->mapWithKeys(
+        $matchers = TicketAllocator::matchers()->mapWithKeys(
             /** @param class-string<MatcherContract> $matcher */
             static fn (string $matcher, string $alias) => [$alias => $matcher::getProps()]
         );
 
-        return Inertia::render('OperatorTeam/CreateEdit', compact('team', 'operators', 'ticketCategories') + $props);
+        return Inertia::render('OperatorTeam/CreateEdit', compact('team', 'operators', 'ticketCategories', 'matchers'));
     }
 
     /**

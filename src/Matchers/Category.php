@@ -12,7 +12,11 @@ class Category extends Matcher
 {
     public static function getProps(): array
     {
-        return TicketCategory::all(['uuid', 'name'])->pluck('name', 'uuid')->all();
+        return TicketCategory::query()
+            ->select(['uuid', 'name'])
+            ->orderBy('name')
+            ->pluck('name', 'uuid')
+            ->all();
     }
 
     public static function qualify(Builder $query): Builder

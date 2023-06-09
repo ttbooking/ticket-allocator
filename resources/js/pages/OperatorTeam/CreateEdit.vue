@@ -68,6 +68,19 @@
                             />
                         </v-col>
                     </v-row>
+                    <v-row v-for="(items, matcher) in matchers" :key="matcher">
+                        <v-col cols="12" md="12">
+                            <v-autocomplete
+                                multiple
+                                clearable
+                                chips
+                                closable-chips
+                                :label="$t(matcher)"
+                                :items="itemify(items)"
+                                :error-messages="errors[matcher]"
+                            />
+                        </v-col>
+                    </v-row>
                     <v-row>
                         <v-col cols="12" md="12">
                             <v-btn type="submit" color="primary" class="mr-3" :disabled="form.processing">
@@ -92,6 +105,7 @@ const props = defineProps<{
     team?: OperatorTeam;
     operators: Operator[];
     ticketCategories: TicketCategory[];
+    matchers: Record<string, Record<string | number, string>>;
     errors: Record<string, string>;
 }>();
 
@@ -102,6 +116,8 @@ const form = useForm({
     operators: props.team?.operators.map((operator) => operator.uuid) ?? [],
     ticket_categories: props.team?.ticket_categories.map((category) => category.uuid) ?? [],
 });
+
+const itemify = (items: object) => Object.entries(items).map(([value, title]) => ({ title, value }));
 
 function submit() {
     props.team

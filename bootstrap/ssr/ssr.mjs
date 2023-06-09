@@ -286,6 +286,8 @@ const __vite_glob_1_1 = {
   "factor.manual": "Manual adjustment",
   "factor.random": "Random",
   "factor.unknown": "Unknown",
+  "matcher.category": "Ticket category",
+  "matcher.unknown": "Unknown",
   "validation.attributes.complexity": "complexity",
   "validation.attributes.complexity_limit": "complexity limit",
   "validation.attributes.delay": "delay",
@@ -308,6 +310,8 @@ const __vite_glob_1_2 = {
   "factor.manual": "Ручная подстройка",
   "factor.random": "Случайный",
   "factor.unknown": "Неизвестный",
+  "matcher.category": "Категория тикета",
+  "matcher.unknown": "Неизвестный",
   "validation.attributes.complexity": "сложность",
   "validation.attributes.complexity_limit": "ограничение по суммарной сложности",
   "validation.attributes.delay": "задержка",
@@ -12549,7 +12553,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-1bb56668.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-f85d47cb.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-e9ccd776.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-ce5bc724.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-af3590a8.mjs"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-7713fc33.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-506801fa.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-90633876.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-29eb6553.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-f0f816d5.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-a7349085.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-ea274a91.mjs") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-1bb56668.mjs"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-f85d47cb.mjs"), "./pages/Factor/Index.vue": () => import("./assets/Index-e9ccd776.mjs"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-ce5bc724.mjs"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-af3590a8.mjs"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-7713fc33.mjs"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-506801fa.mjs"), "./pages/Operator/Index.vue": () => import("./assets/Index-90633876.mjs"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-14815602.mjs"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-f0f816d5.mjs"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-a7349085.mjs"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-ea274a91.mjs") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
