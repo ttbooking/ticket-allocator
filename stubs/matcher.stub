@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace {{ namespace }};
 
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
 use TTBooking\TicketAllocator\Matchers\Attributes;
 use TTBooking\TicketAllocator\Matchers\Matcher;
 
