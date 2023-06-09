@@ -9,7 +9,7 @@ use Illuminate\Database\Query\Builder;
 #[Attributes\Excluded]
 class Unknown extends Matcher
 {
-    public function qualify(Builder $query, string $operator, mixed $value): Builder
+    public static function qualify(Builder $query): Builder
     {
         return $query;
     }

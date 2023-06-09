@@ -16,5 +16,7 @@ interface Matcher
 
     public static function isExcluded(): bool;
 
-    public function qualify(Builder $query, string $operator, mixed $value): Builder;
+    public static function getProps(): array;
+
+    public static function qualify(Builder $query): Builder;
 }

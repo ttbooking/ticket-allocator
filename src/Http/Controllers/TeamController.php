@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
+use TTBooking\TicketAllocator\Contracts\Matcher as MatcherContract;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Http\Requests\StoreOperatorTeamRequest;
 use TTBooking\TicketAllocator\Http\Requests\UpdateOperatorTeamRequest;
@@ -17,6 +18,7 @@ use TTBooking\TicketAllocator\Http\Resources\OperatorTeamResource;
 use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
 use TTBooking\TicketAllocator\Models\TicketCategory;
+use TTBooking\TicketAllocator\TicketAllocator;
 
 class TeamController extends Controller
 {
@@ -73,8 +75,12 @@ class TeamController extends Controller
         $team = new OperatorTeamResource($team->load('operators', 'ticketCategories'));
         $operators = OperatorResource::collection(Operator::all())->resolve();
         $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
+        $props = TicketAllocator::matchers()->mapWithKeys(
+            /** @param class-string<MatcherContract> $matcher */
+            static fn (string $matcher, string $alias) => [$alias => $matcher::getProps()]
+        );
 
-        return Inertia::render('OperatorTeam/CreateEdit', compact('team', 'operators', 'ticketCategories'));
+        return Inertia::render('OperatorTeam/CreateEdit', compact('team', 'operators', 'ticketCategories') + $props);
     }
 
     /**

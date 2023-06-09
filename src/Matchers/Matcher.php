@@ -38,6 +38,11 @@ abstract class Matcher implements MatcherContract
         return (bool) self::attribute(Attributes\Excluded::class, true);
     }
 
+    public static function getProps(): array
+    {
+        return [];
+    }
+
     /**
      * @template TAttribute of object
      *
