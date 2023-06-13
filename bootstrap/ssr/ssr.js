@@ -12502,6 +12502,7 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
   t4.mixin({ methods: { route: n2 } }), parseInt(t4.version) > 2 && t4.provide("route", n2);
 } };
 const _sfc_main = /* @__PURE__ */ defineComponent$1({
+  ...{ inheritAttrs: false },
   __name: "VBtnEx",
   __ssrInlineRender: true,
   props: {
@@ -12509,20 +12510,19 @@ const _sfc_main = /* @__PURE__ */ defineComponent$1({
   },
   setup(__props) {
     const props = __props;
-    const attrs = useAttrs();
-    const href = attrs.to;
-    onBeforeMount(() => {
-      if (href && props.method && props.method !== "get") {
-        delete attrs.to;
+    const attrs = computed(() => {
+      const attrs2 = { ...useAttrs() };
+      if (attrs2.to && props.method && props.method !== "get") {
+        attrs2.tohref = attrs2.to;
+        delete attrs2.to;
       }
+      return attrs2;
     });
     function visitLink() {
-      if (href && props.method && props.method !== "get") {
-        router.visit(href, { method: props.method });
-      }
+      attrs.value.tohref && router.visit(attrs.value.tohref, { method: props.method });
     }
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(unref(VBtn), mergeProps(_ctx.$attrs, { onClick: visitLink }, _attrs), createSlots({ _: 2 }, [
+      _push(ssrRenderComponent(unref(VBtn), mergeProps(attrs.value, { onClick: visitLink }, _attrs), createSlots({ _: 2 }, [
         renderList(_ctx.$slots, (_, slot) => {
           return {
             name: slot,
@@ -12553,7 +12553,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-86a4aca5.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-240efed6.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c1b5df9b.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-7716839d.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-af3881e5.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-1f65de9a.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-42629734.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-ea0ce58c.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-27657e0e.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-caeadef1.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-14f6f3cb.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-9b161065.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-45710094.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-240efed6.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c1b5df9b.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-7716839d.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-af3881e5.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-1f65de9a.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-42629734.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-ea0ce58c.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-27657e0e.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-caeadef1.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-14f6f3cb.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-9b161065.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {

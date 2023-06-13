@@ -1,5 +1,5 @@
 <template>
-    <v-btn v-bind="$attrs" @click="visitLink">
+    <v-btn v-bind="attrs" @click="visitLink">
         <template v-for="(_, slot) of $slots as VBtn['v-slots']" #[slot]="scope: unknown">
             <slot :name="slot" v-bind="scope || {}" />
         </template>
@@ -7,24 +7,26 @@
 </template>
 
 <script setup lang="ts">
-import { useAttrs, onBeforeMount } from "vue";
+import { computed, useAttrs } from "vue";
 import { Method } from "@inertiajs/core";
 import { router } from "@inertiajs/vue3";
 import { VBtn } from "vuetify/components";
 
 const props = defineProps<{ method?: Method }>();
-const attrs = useAttrs();
-const href = attrs.to as string;
+defineOptions({ inheritAttrs: false });
 
-onBeforeMount(() => {
-    if (href && props.method && props.method !== "get") {
+const attrs = computed(() => {
+    const attrs = { ...useAttrs() };
+
+    if (attrs.to && props.method && props.method !== "get") {
+        attrs.tohref = attrs.to;
         delete attrs.to;
     }
+
+    return attrs;
 });
 
 function visitLink() {
-    if (href && props.method && props.method !== "get") {
-        router.visit(href, { method: props.method });
-    }
+    attrs.value.tohref && router.visit(attrs.value.tohref as string, { method: props.method });
 }
 </script>
