@@ -13,6 +13,7 @@ export default class OperatorTeam extends Model {
     @Uid() declare uuid: string;
     @Str("") declare name: string;
     @Str("") declare description: string;
+    @Attr() declare matching: Record<string, Array<string | number>> | null;
     @Attr() declare created_at: string;
     @Attr() declare updated_at: string;
     @Attr() declare deleted_at: string | null;
