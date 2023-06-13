@@ -41,6 +41,11 @@ class OperatorTeam extends Model
 
     protected $fillable = ['uuid', 'name', 'description', 'matching'];
 
+    /** @var array<string, string> */
+    protected $casts = [
+        'matching' => 'array',
+    ];
+
     protected static function newFactory(): OperatorTeamFactory
     {
         return OperatorTeamFactory::new();

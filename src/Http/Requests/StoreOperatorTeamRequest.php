@@ -31,6 +31,8 @@ class StoreOperatorTeamRequest extends FormRequest
             'operators.*' => 'required|uuid',
             'ticket_categories' => 'array',
             'ticket_categories.*' => 'required|uuid',
+            'matching' => 'array',
+            'matching.*' => 'array',
         ];
     }
 

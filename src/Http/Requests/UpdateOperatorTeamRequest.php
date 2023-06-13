@@ -31,6 +31,8 @@ class UpdateOperatorTeamRequest extends FormRequest
             'operators.*' => 'sometimes|required|uuid',
             'ticket_categories' => 'sometimes|array',
             'ticket_categories.*' => 'sometimes|required|uuid',
+            'matching' => 'sometimes|array',
+            'matching.*' => 'sometimes|array',
         ];
     }
 

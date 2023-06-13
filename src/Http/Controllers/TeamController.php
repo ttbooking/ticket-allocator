@@ -53,7 +53,7 @@ class TeamController extends Controller
     public function store(StoreOperatorTeamRequest $request): RedirectResponse
     {
         /** @var OperatorTeam $team */
-        $team = OperatorTeam::query()->create($request->safe(['name', 'description']));
+        $team = OperatorTeam::query()->create($request->safe(['name', 'description', 'matching']));
         $request->validated('active') ? $team->restore() : $team->delete();
         $team->operators()->sync($request->validated('operators'));
         $team->ticketCategories()->sync($request->validated('ticket_categories'));
@@ -96,7 +96,7 @@ class TeamController extends Controller
             $active ? $team->restore() : $team->delete();
         }
 
-        $team->update($request->safe(['name', 'description']));
+        $team->update($request->safe(['name', 'description', 'matching']));
 
         if (! is_null($operators = $request->validated('operators'))) {
             $team->operators()->sync($operators);
