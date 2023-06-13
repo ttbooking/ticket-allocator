@@ -149,7 +149,6 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->configure();
         $this->registerServices();
-        $this->registerProviders();
 
         if ($this->app->runningInConsole()) {
             $this->scheduleTasks();
@@ -164,12 +163,6 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     protected function registerServices(): void
     {
         //
-    }
-
-    protected function registerProviders(): void
-    {
-        $this->app->register(FactorServiceProvider::class);
-        $this->app->register(MatcherServiceProvider::class);
     }
 
     protected function scheduleTasks(): void

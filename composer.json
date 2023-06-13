@@ -56,7 +56,9 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TTBooking\\TicketAllocator\\TicketAllocatorServiceProvider"
+                "TTBooking\\TicketAllocator\\TicketAllocatorServiceProvider",
+                "TTBooking\\TicketAllocator\\FactorServiceProvider",
+                "TTBooking\\TicketAllocator\\MatcherServiceProvider"
             ],
             "aliases": {
                 "TicketAllocator": "TTBooking\\TicketAllocator\\TicketAllocator"
