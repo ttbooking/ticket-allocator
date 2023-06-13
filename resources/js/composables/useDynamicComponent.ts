@@ -1,9 +1,9 @@
-import { ref, inject, onBeforeMount, DefineComponent } from "vue";
+import { shallowRef, inject, onBeforeMount, DefineComponent } from "vue";
 
 type PageResolver = (name: string) => DefineComponent | Promise<DefineComponent>;
 
 export function useDynamicComponent(name: string | null) {
-    const component = ref<DefineComponent | null>(null);
+    const component = shallowRef<DefineComponent | null>(null);
     const resolveComponent = inject<PageResolver>("resolveComponent");
 
     onBeforeMount(async () => {
