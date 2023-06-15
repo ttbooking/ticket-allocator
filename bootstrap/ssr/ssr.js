@@ -1738,7 +1738,8 @@ const aliases = {
   unfold: "mdi-unfold-more-horizontal",
   file: "mdi-paperclip",
   plus: "mdi-plus",
-  minus: "mdi-minus"
+  minus: "mdi-minus",
+  calendar: "mdi-calendar"
 };
 const mdi = {
   // Not using mergeProps here, functional components merge props by default (?)
@@ -1924,12 +1925,21 @@ const en = {
     lastPage: "Last page",
     pageText: "{0}-{1} of {2}"
   },
+  dateRangeInput: {
+    divider: "to"
+  },
   datePicker: {
-    itemsSelected: "{0} selected",
-    nextMonthAriaLabel: "Next month",
-    nextYearAriaLabel: "Next year",
-    prevMonthAriaLabel: "Previous month",
-    prevYearAriaLabel: "Previous year"
+    ok: "OK",
+    cancel: "Cancel",
+    range: {
+      title: "Select dates",
+      header: "Enter dates"
+    },
+    title: "Select date",
+    header: "Enter date",
+    input: {
+      placeholder: "Enter date"
+    }
   },
   noDataText: "No data available",
   carousel: {
@@ -2005,12 +2015,21 @@ const ru = {
     lastPage: "Последняя страница",
     pageText: "{0}-{1} из {2}"
   },
+  dateRangeInput: {
+    divider: "to"
+  },
   datePicker: {
-    itemsSelected: "{0} выбран",
-    nextMonthAriaLabel: "Следующий месяц",
-    nextYearAriaLabel: "Следующий год",
-    prevMonthAriaLabel: "Прошлый месяц",
-    prevYearAriaLabel: "Предыдущий год"
+    ok: "OK",
+    cancel: "Cancel",
+    range: {
+      title: "Select dates",
+      header: "Enter dates"
+    },
+    title: "Select date",
+    header: "Enter date",
+    input: {
+      placeholder: "Enter date"
+    }
   },
   noDataText: "Отсутствуют данные",
   carousel: {
@@ -2578,46 +2597,6 @@ function genCssVariables(theme) {
   }
   return variables2;
 }
-function getWeekArray(date2) {
-  let currentWeek = [];
-  const weeks = [];
-  const firstDayOfMonth = startOfMonth(date2);
-  const lastDayOfMonth = endOfMonth(date2);
-  for (let i2 = 0; i2 < firstDayOfMonth.getDay(); i2++) {
-    currentWeek.push(null);
-  }
-  for (let i2 = 1; i2 <= lastDayOfMonth.getDate(); i2++) {
-    const day = new Date(date2.getFullYear(), date2.getMonth(), i2);
-    currentWeek.push(day);
-    if (currentWeek.length === 7) {
-      weeks.push(currentWeek);
-      currentWeek = [];
-    }
-  }
-  for (let i2 = currentWeek.length; i2 < 7; i2++) {
-    currentWeek.push(null);
-  }
-  weeks.push(currentWeek);
-  return weeks;
-}
-function startOfMonth(date2) {
-  return new Date(date2.getFullYear(), date2.getMonth(), 1);
-}
-function endOfMonth(date2) {
-  return new Date(date2.getFullYear(), date2.getMonth() + 1, 0);
-}
-function date(value2) {
-  if (value2 == null)
-    return null;
-  if (value2 instanceof Date)
-    return value2;
-  if (typeof value2 === "string") {
-    const parsed = Date.parse(value2);
-    if (!isNaN(parsed))
-      return new Date(parsed);
-  }
-  return null;
-}
 const firstDay = {
   "001": 1,
   AD: 1,
@@ -2631,7 +2610,7 @@ const firstDay = {
   AR: 1,
   AS: 0,
   AT: 1,
-  AU: 0,
+  AU: 1,
   AX: 1,
   AZ: 1,
   BA: 1,
@@ -2651,7 +2630,7 @@ const firstDay = {
   CH: 1,
   CL: 1,
   CM: 1,
-  CN: 0,
+  CN: 1,
   CO: 0,
   CR: 1,
   CY: 1,
@@ -2771,6 +2750,52 @@ const firstDay = {
   ZA: 0,
   ZW: 0
 };
+function getWeekArray(date2, locale) {
+  const weeks = [];
+  let currentWeek = [];
+  const firstDayOfMonth = startOfMonth(date2);
+  const lastDayOfMonth = endOfMonth(date2);
+  const firstDayWeekIndex = firstDayOfMonth.getDay() - firstDay[locale.slice(-2).toUpperCase()];
+  const lastDayWeekIndex = lastDayOfMonth.getDay() - firstDay[locale.slice(-2).toUpperCase()];
+  for (let i2 = 0; i2 < firstDayWeekIndex; i2++) {
+    const adjacentDay = new Date(firstDayOfMonth);
+    adjacentDay.setDate(adjacentDay.getDate() - (firstDayWeekIndex - i2));
+    currentWeek.push(adjacentDay);
+  }
+  for (let i2 = 1; i2 <= lastDayOfMonth.getDate(); i2++) {
+    const day = new Date(date2.getFullYear(), date2.getMonth(), i2);
+    currentWeek.push(day);
+    if (currentWeek.length === 7) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+  }
+  for (let i2 = 1; i2 < 7 - lastDayWeekIndex; i2++) {
+    const adjacentDay = new Date(lastDayOfMonth);
+    adjacentDay.setDate(adjacentDay.getDate() + i2);
+    currentWeek.push(adjacentDay);
+  }
+  weeks.push(currentWeek);
+  return weeks;
+}
+function startOfMonth(date2) {
+  return new Date(date2.getFullYear(), date2.getMonth(), 1);
+}
+function endOfMonth(date2) {
+  return new Date(date2.getFullYear(), date2.getMonth() + 1, 0);
+}
+function date(value2) {
+  if (value2 == null)
+    return /* @__PURE__ */ new Date();
+  if (value2 instanceof Date)
+    return value2;
+  if (typeof value2 === "string") {
+    const parsed = Date.parse(value2);
+    if (!isNaN(parsed))
+      return new Date(parsed);
+  }
+  return null;
+}
 const sundayJanuarySecond2000 = new Date(2e3, 0, 2);
 function getWeekdays(locale) {
   const daysFromSunday = firstDay[locale.slice(-2).toUpperCase()];
@@ -2778,7 +2803,7 @@ function getWeekdays(locale) {
     const weekday = new Date(sundayJanuarySecond2000);
     weekday.setDate(sundayJanuarySecond2000.getDate() + daysFromSunday + i2);
     return new Intl.DateTimeFormat(locale, {
-      weekday: "long"
+      weekday: "short"
     }).format(weekday);
   });
 }
@@ -2798,8 +2823,7 @@ function format(value2, formatString, locale) {
       options = {
         weekday: "short",
         day: "numeric",
-        month: "short",
-        year: "numeric"
+        month: "short"
       };
       break;
     case "keyboardDate":
@@ -2815,6 +2839,11 @@ function format(value2, formatString, locale) {
       options = {
         month: "long",
         year: "numeric"
+      };
+      break;
+    case "dayOfMonth":
+      options = {
+        day: "numeric"
       };
       break;
     default:
@@ -2846,26 +2875,6 @@ function startOfYear(date2) {
 }
 function endOfYear(date2) {
   return new Date(date2.getFullYear(), 11, 31);
-}
-function getMondayOfFirstWeekOfYear(year) {
-  return new Date(year, 0, 1);
-}
-function getWeek(date2) {
-  let year = date2.getFullYear();
-  let d1w1 = getMondayOfFirstWeekOfYear(year);
-  if (date2 < d1w1) {
-    year = year - 1;
-    d1w1 = getMondayOfFirstWeekOfYear(year);
-  } else {
-    const tv = getMondayOfFirstWeekOfYear(year + 1);
-    if (date2 >= tv) {
-      year = year + 1;
-      d1w1 = tv;
-    }
-  }
-  const diffTime = Math.abs(date2.getTime() - d1w1.getTime());
-  const diffDays = Math.ceil(diffTime / (1e3 * 60 * 60 * 24));
-  return Math.floor(diffDays / 7) + 1;
 }
 function isWithinRange(date2, range) {
   return isAfter(date2, range[0]) && isBefore(date2, range[1]);
@@ -2903,12 +2912,14 @@ function setYear(date2, year) {
   return d2;
 }
 class VuetifyDateAdapter {
-  constructor() {
-    let locale = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : "en";
-    this.locale = locale;
+  constructor(options) {
+    this.locale = options.locale;
   }
   date(value2) {
     return date(value2);
+  }
+  toJsDate(date2) {
+    return date2;
   }
   addDays(date2, amount) {
     return addDays(date2, amount);
@@ -2917,7 +2928,7 @@ class VuetifyDateAdapter {
     return addMonths(date2, amount);
   }
   getWeekArray(date2) {
-    return getWeekArray(date2);
+    return getWeekArray(date2, this.locale);
   }
   startOfMonth(date2) {
     return startOfMonth(date2);
@@ -2940,6 +2951,9 @@ class VuetifyDateAdapter {
   isAfter(date2, comparing) {
     return isAfter(date2, comparing);
   }
+  isBefore(date2, comparing) {
+    return !isAfter(date2, comparing) && !isEqual(date2, comparing);
+  }
   isSameDay(date2, comparing) {
     return isSameDay(date2, comparing);
   }
@@ -2951,9 +2965,6 @@ class VuetifyDateAdapter {
   }
   getDiff(date2, comparing, unit) {
     return getDiff(date2, comparing, unit);
-  }
-  getWeek(date2) {
-    return getWeek(date2);
   }
   getWeekdays() {
     return getWeekdays(this.locale);
@@ -2973,9 +2984,52 @@ class VuetifyDateAdapter {
 }
 const DateAdapterSymbol = Symbol.for("vuetify:date-adapter");
 function createDate(options) {
-  return options ?? {
-    adapter: VuetifyDateAdapter
-  };
+  return mergeDeep({
+    adapter: VuetifyDateAdapter,
+    locale: {
+      af: "af-ZA",
+      // ar: '', # not the same value for all variants
+      bg: "bg-BG",
+      ca: "ca-ES",
+      ckb: "",
+      cs: "",
+      de: "de-DE",
+      el: "el-GR",
+      en: "en-US",
+      // es: '', # not the same value for all variants
+      et: "et-EE",
+      fa: "fa-IR",
+      fi: "fi-FI",
+      // fr: '', #not the same value for all variants
+      hr: "hr-HR",
+      hu: "hu-HU",
+      he: "he-IL",
+      id: "id-ID",
+      it: "it-IT",
+      ja: "ja-JP",
+      ko: "ko-KR",
+      lv: "lv-LV",
+      lt: "lt-LT",
+      nl: "nl-NL",
+      no: "nn-NO",
+      pl: "pl-PL",
+      pt: "pt-PT",
+      ro: "ro-RO",
+      ru: "ru-RU",
+      sk: "sk-SK",
+      sl: "sl-SI",
+      srCyrl: "sr-SP",
+      srLatn: "sr-SP",
+      sv: "sv-SE",
+      th: "th-TH",
+      tr: "tr-TR",
+      az: "az-AZ",
+      uk: "uk-UA",
+      vi: "vi-VN",
+      zhHans: "zh-CN",
+      zhHant: "zh-TW"
+    }
+  }, options);
 }
 function useResizeObserver(callback) {
   const resizeRef = ref();
@@ -3090,7 +3144,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.3";
+const version = "3.3.4";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -7088,7 +7142,7 @@ const useNested = (props) => {
 const useNestedItem = (id, isGroup) => {
   const parent = inject$1(VNestedSymbol, emptyNested);
   const uidSymbol = Symbol(getUid());
-  const computedId = computed(() => id.value ?? uidSymbol);
+  const computedId = computed(() => id.value !== void 0 ? id.value : uidSymbol);
   const item = {
     ...parent,
     id: computedId,
@@ -7302,7 +7356,7 @@ const VListItem = genericComponent()({
       emit
     } = _ref;
     const link2 = useLink(props, attrs);
-    const id = computed(() => props.value ?? link2.href.value);
+    const id = computed(() => props.value === void 0 ? link2.href.value : props.value);
     const {
       select,
       isSelected,
@@ -7731,7 +7785,7 @@ function useItems(props) {
 }
 function useTransformItems(items, transform2) {
   function transformIn(value2) {
-    return value2.map((v2) => {
+    return value2.filter((v2) => v2 !== null || items.value.some((item) => item.value === null)).map((v2) => {
       const existingItem = items.value.find((item) => deepEqual(v2, item.value));
       return existingItem ?? transform2(v2);
     });
@@ -10005,7 +10059,7 @@ const VSelect = genericComponent()({
       transformIn,
       transformOut
     } = useItems(props);
-    const model = useProxiedModel(props, "modelValue", [], (v2) => transformIn(wrapInArray(v2)), (v2) => {
+    const model = useProxiedModel(props, "modelValue", [], (v2) => transformIn(v2 === null ? [null] : wrapInArray(v2)), (v2) => {
       const transformed = transformOut(v2);
       return props.multiple ? transformed : transformed[0] ?? null;
     });
@@ -10543,7 +10597,7 @@ const VDataTableHeadersSymbol = Symbol.for("vuetify:data-table-headers");
 function createHeaders(props, options) {
   const headers = ref([]);
   const columns = ref([]);
-  watch(() => props.headers, () => {
+  watchEffect(() => {
     var _a, _b, _c;
     const wrapped = !props.headers.length ? [] : Array.isArray(props.headers[0]) ? props.headers : [props.headers];
     const flat = wrapped.flatMap((row, index) => row.map((column) => ({
@@ -10673,9 +10727,6 @@ function createHeaders(props, options) {
       return filtered;
     });
     columns.value = fixedRows.at(-1) ?? [];
-  }, {
-    deep: true,
-    immediate: true
   });
   const data = {
     headers,
@@ -12553,7 +12604,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-ba637267.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-1eab0347.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c1b5df9b.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-7716839d.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-af3881e5.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-1f65de9a.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-42629734.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-ea0ce58c.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-b31aa83e.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-caeadef1.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-14f6f3cb.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-9b161065.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-ecb704b1.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-1eab0347.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c1b5df9b.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-be4b3d69.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-af3881e5.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-1f65de9a.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-37bb5e79.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-ea0ce58c.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-e2cf3e05.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-caeadef1.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-14f6f3cb.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-9b161065.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
