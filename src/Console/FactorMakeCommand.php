@@ -94,7 +94,7 @@ class FactorMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace): string
     {
-        return $rootNamespace.'\Factors';
+        return $rootNamespace.'\TicketAllocator\Factors';
     }
 
     /**

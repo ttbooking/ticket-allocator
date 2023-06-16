@@ -85,7 +85,7 @@ class MatcherMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace): string
     {
-        return $rootNamespace.'\Matchers';
+        return $rootNamespace.'\TicketAllocator\Matchers';
     }
 
     /**

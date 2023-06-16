@@ -54,7 +54,7 @@ return [
     'enable_factor_discovery' => env('TA_DISCOVER_FACTORS', true),
 
     'discover_factors_within' => [
-        app_path('Factors'),
+        app_path('TicketAllocator/Factors'),
     ],
 
     'factor_discovery_base_path' => base_path(),
@@ -76,7 +76,7 @@ return [
     'enable_matcher_discovery' => env('TA_DISCOVER_MATCHERS', true),
 
     'discover_matchers_within' => [
-        app_path('Matchers'),
+        app_path('TicketAllocator/Matchers'),
     ],
 
     'matcher_discovery_base_path' => base_path(),
