@@ -24,7 +24,7 @@
                                 <div v-if="typeof cardContent === 'string'" v-html="md.render(cardContent)"></div>
                                 <table v-else>
                                     <tbody>
-                                        <tr v-for="{ key, value } in cardContent" :key="key">
+                                        <tr v-for="[key, value] in cardContent" :key="key">
                                             <th>{{ key }}</th>
                                             <td v-html="md.renderInline(value)"></td>
                                         </tr>
@@ -199,7 +199,7 @@ const cardTitle = computed(() => props.ticket.meta?.card_title ?? "Title");
 
 const cardSubtitle = computed(() => props.ticket.meta?.card_subtitle ?? categoryName());
 
-const cardContent = computed(() => props.ticket.meta?.card_content ?? []);
+const cardContent = computed(() => <Array<[string, string]>>(props.ticket.meta?.card_content as unknown) ?? []);
 
 const overflow = computed(() => position.value > threshold.value);
 
