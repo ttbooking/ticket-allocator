@@ -24,7 +24,7 @@
                                 <div v-if="typeof cardContent === 'string'" v-html="md.render(cardContent)"></div>
                                 <table v-else>
                                     <tbody>
-                                        <tr v-for="(value, key) in cardContent" :key="key">
+                                        <tr v-for="{ key, value } in cardContent" :key="key">
                                             <th>{{ key }}</th>
                                             <td v-html="md.renderInline(value)"></td>
                                         </tr>

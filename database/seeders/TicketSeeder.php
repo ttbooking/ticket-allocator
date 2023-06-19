@@ -36,8 +36,8 @@ class TicketSeeder extends Seeder
                     Ticket::META_TITLE => $order = fake()->numberBetween(100, 1000),
                     Ticket::META_CARD_TITLE => 'Order #'.$order,
                     Ticket::META_CARD_CONTENT => [
-                        'Applicant' => fake()->name(),
-                        'Organisation' => fake()->company(),
+                        ['Applicant', fake()->name()],
+                        ['Organisation', fake()->company()],
                     ],
                 ],
             );
