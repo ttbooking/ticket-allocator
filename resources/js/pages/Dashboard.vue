@@ -45,6 +45,7 @@
                 <v-row>
                     <v-col v-for="(items, matcher) in matchers" :key="matcher" cols="2">
                         <v-autocomplete
+                            v-model="filters[matcher]"
                             multiple
                             clearable
                             chips
@@ -104,6 +105,8 @@ const ticketRepo = computed(() => useRepo(TicketRepository));
 const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 const channel = usePusherChannel(Events.Channel);
 
+const filters = ref<Record<string, string[]>>({});
+
 const sortedOperators = refThrottled(
     computed(() =>
         useCollect(
@@ -124,7 +127,23 @@ const sortedOperators = refThrottled(
 );
 
 const sortedTickets = refThrottled(
-    computed(() => ticketRepo.value.unbound().with("category").orderBy(mode.value, "desc").get()),
+    computed(() =>
+        ticketRepo.value
+            .unbound()
+            .with("category")
+            .where("meta", (meta: Record<string, string> | null) => {
+                return Object.entries(filters.value).reduce<boolean>((passes, x) => {
+                    const [filter, entries] = x;
+                    const prop = meta?.[filter];
+                    console.log(filters.value);
+                    const pass = prop === undefined || entries.includes(prop.toString());
+                    console.log(`${filter} ${pass ? "pass" : "nopass"} ${prop}`);
+                    return passes && pass;
+                }, true);
+            })
+            .orderBy(mode.value, "desc")
+            .get()
+    ),
     750
 );
 
