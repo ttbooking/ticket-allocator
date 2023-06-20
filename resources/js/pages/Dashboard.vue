@@ -106,13 +106,23 @@ const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 const channel = usePusherChannel(Events.Channel);
 
 const filters = ref<Record<string, string[]>>({});
+const metaFilter = (meta: Record<string, string> | null) => {
+    return Object.entries(filters.value).reduce<boolean>((passes, x) => {
+        const [filter, entries] = x;
+        const prop = meta?.[filter];
+        console.log(filters.value);
+        const pass = prop === undefined || (entries.length > 0 && entries.includes(prop.toString()));
+        console.log(`${filter} ${pass ? "pass" : "nopass"} ${prop}`);
+        return passes && pass;
+    }, true);
+};
 
 const sortedOperators = refThrottled(
     computed(() =>
         useCollect(
             operatorRepo.value
                 .with("tickets", (query) => {
-                    query.with("category").orderBy(mode.value, "desc");
+                    query.with("category").where("meta", metaFilter).orderBy(mode.value, "desc");
                 })
                 .get()
         ).sortBy([
@@ -128,21 +138,7 @@ const sortedOperators = refThrottled(
 
 const sortedTickets = refThrottled(
     computed(() =>
-        ticketRepo.value
-            .unbound()
-            .with("category")
-            .where("meta", (meta: Record<string, string> | null) => {
-                return Object.entries(filters.value).reduce<boolean>((passes, x) => {
-                    const [filter, entries] = x;
-                    const prop = meta?.[filter];
-                    console.log(filters.value);
-                    const pass = prop === undefined || entries.includes(prop.toString());
-                    console.log(`${filter} ${pass ? "pass" : "nopass"} ${prop}`);
-                    return passes && pass;
-                }, true);
-            })
-            .orderBy(mode.value, "desc")
-            .get()
+        ticketRepo.value.unbound().with("category").where("meta", metaFilter).orderBy(mode.value, "desc").get()
     ),
     750
 );
