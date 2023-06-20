@@ -8,11 +8,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
+use TTBooking\TicketAllocator\Contracts\Matcher as MatcherContract;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 use TTBooking\TicketAllocator\Http\Resources\FactorResource;
 use TTBooking\TicketAllocator\Models\Factor;
 use TTBooking\TicketAllocator\Models\TicketCategory;
+use TTBooking\TicketAllocator\TicketAllocator;
 
 class DashboardController extends Controller
 {
@@ -32,7 +34,11 @@ class DashboardController extends Controller
         $factors = FactorResource::collection(
             Factor::withTrashed()->orderBy('priority')->get()->keyBy('uuid')
         )->resolve();
+        $matchers = TicketAllocator::matchers()->mapWithKeys(
+            /** @param class-string<MatcherContract> $matcher */
+            static fn (string $matcher, string $alias) => [$alias => $matcher::getProps()]
+        );
 
-        return Inertia::render('Dashboard', compact('operators', 'tickets', 'ticketCategories', 'factors'));
+        return Inertia::render('Dashboard', compact('operators', 'tickets', 'ticketCategories', 'factors', 'matchers'));
     }
 }

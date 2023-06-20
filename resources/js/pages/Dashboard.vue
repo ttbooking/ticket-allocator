@@ -42,6 +42,18 @@
                         />
                     </v-col>
                 </v-row>
+                <v-row>
+                    <v-col v-for="(items, matcher) in matchers" :key="matcher" cols="2">
+                        <v-autocomplete
+                            multiple
+                            clearable
+                            chips
+                            closable-chips
+                            :label="$t(matcher)"
+                            :items="itemify(items)"
+                        />
+                    </v-col>
+                </v-row>
             </v-container>
             <v-table density="compact" class="ticket-monitor">
                 <tbody class="align-text-top">
@@ -81,6 +93,7 @@ const props = defineProps<{
     tickets: Ticket[];
     ticketCategories: TicketCategory[];
     factors: Record<string, Factor>;
+    matchers: Record<string, Record<string | number, string>>;
 }>();
 
 const options = useSharedOptions();
@@ -164,6 +177,8 @@ onUnmounted(() => {
     removeNavigateEventListener();
     removeSuccessEventListener();
 });
+
+const itemify = (items: object) => Object.entries(items).map(([value, title]) => ({ title, value }));
 </script>
 
 <style scoped>
