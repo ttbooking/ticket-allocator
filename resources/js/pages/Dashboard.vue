@@ -75,7 +75,7 @@ import DefaultLayout from "@/layouts/Default.vue";
 import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
 import { Head, router } from "@inertiajs/vue3";
-import { computed, ref, onMounted, onUnmounted } from "vue";
+import { computed, ref, reactive, onMounted, onUnmounted } from "vue";
 import { refThrottled } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
 import { useDropZone, usePusherChannel } from "@/composables";
@@ -105,14 +105,14 @@ const ticketRepo = computed(() => useRepo(TicketRepository));
 const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 const channel = usePusherChannel(Events.Channel);
 
-const filters = ref<Record<string, string[]>>({});
+const filters = reactive<Record<string, string[]>>({});
 const metaFilter = (meta: Record<string, string> | null) => {
-    return Object.entries(filters.value).reduce<boolean>((passes, x) => {
+    return Object.entries(filters).reduce<boolean>((passes, x) => {
         const [filter, entries] = x;
         const prop = meta?.[filter];
-        console.log(filters.value);
-        const pass = prop === undefined || (entries.length > 0 && entries.includes(prop.toString()));
-        console.log(`${filter} ${pass ? "pass" : "nopass"} ${prop}`);
+        //console.log(filters);
+        const pass = prop === undefined || !entries.length || entries.includes(prop.toString());
+        //console.log(`${filter} ${pass ? "pass" : "nopass"} ${prop}`);
         return passes && pass;
     }, true);
 };
