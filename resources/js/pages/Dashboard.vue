@@ -75,8 +75,8 @@ import DefaultLayout from "@/layouts/Default.vue";
 import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
 import { Head, router } from "@inertiajs/vue3";
-import { computed, ref, reactive, onMounted, onUnmounted } from "vue";
-import { refThrottled } from "@vueuse/core";
+import { computed, ref, shallowRef, reactive, onMounted, onUnmounted } from "vue";
+import { watchThrottled } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
 import { useDropZone, usePusherChannel } from "@/composables";
 import type { Operator, Ticket, TicketCategory, Factor } from "@/types";
@@ -85,9 +85,12 @@ import * as Events from "@/types/events.d";
 
 import { useRepo } from "pinia-orm";
 import { useCollect } from "pinia-orm/dist/helpers.js";
+import { Collection } from "pinia-orm";
 import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
 import TicketCategoryRepository from "@/models/TicketCategory";
+import OperatorModel from "@/models/Operator";
+import TicketModel from "@/models/Ticket";
 
 const props = defineProps<{
     operators: Operator[];
@@ -117,6 +120,39 @@ const metaFilter = (meta: Record<string, string> | null) => {
     }, true);
 };
 
+const sortedOperators = shallowRef<Collection<OperatorModel>>([]);
+const sortedTickets = shallowRef<Collection<TicketModel>>([]);
+
+watchThrottled(
+    () =>
+        useCollect(
+            operatorRepo.value
+                .with("tickets", (query) => {
+                    query.with("category").where("meta", metaFilter).orderBy(mode.value, "desc");
+                })
+                .get()
+        ).sortBy([
+            ["online", "desc"],
+            ["ready", "desc"],
+            ["free_slots", "desc"],
+            ["ticket_count", "asc"],
+            ["name", "asc"],
+        ]),
+    (operators) => {
+        sortedOperators.value = operators;
+    },
+    { throttle: 750, immediate: true, deep: true }
+);
+
+watchThrottled(
+    () => ticketRepo.value.unbound().with("category").where("meta", metaFilter).orderBy(mode.value, "desc").get(),
+    (tickets) => {
+        sortedTickets.value = tickets;
+    },
+    { throttle: 750, immediate: true, deep: true }
+);
+
+/*
 const sortedOperators = refThrottled(
     computed(() =>
         useCollect(
@@ -142,6 +178,7 @@ const sortedTickets = refThrottled(
     ),
     750
 );
+ */
 
 const api = useSupervisorApi();
 

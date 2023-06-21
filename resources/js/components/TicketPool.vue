@@ -19,13 +19,14 @@ import { ref, computed, watch, onMounted } from "vue";
 import { useMouse, usePointerLock } from "@vueuse/core";
 import { useDragAndDrop } from "@/composables";
 import { default as TicketComponent } from "@/components/Ticket.vue";
+import type { Collection } from "pinia-orm";
 import Ticket from "@/models/Ticket";
 
 import { useRepo } from "pinia-orm";
 import TicketRepository from "@/repositories/TicketRepository";
 
 defineProps<{
-    tickets: Ticket[];
+    tickets: Collection<Ticket>;
 }>();
 
 const ticketPool = ref<HTMLElement | null>(null);

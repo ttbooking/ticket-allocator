@@ -33,10 +33,11 @@ import TicketPool from "@/components/TicketPool.vue";
 import { computed, ref } from "vue";
 import { useSupervisorApi } from "@/api";
 import { useDropZone } from "@/composables";
+import type { Collection } from "pinia-orm";
 import Ticket from "@/models/Ticket";
 
 const props = defineProps<{
-    tickets: Ticket[];
+    tickets: Collection<Ticket>;
 }>();
 
 let collapsed = ref(false);
