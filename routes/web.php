@@ -7,6 +7,7 @@ use TTBooking\TicketAllocator\Http\Controllers\TeamController;
 use TTBooking\TicketAllocator\Http\Controllers\TicketCategoryController;
 
 Route::get('/', 'DashboardController@index')->name('index');
+Route::get('/trans', 'DashboardController@trans')->name('trans');
 
 Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', 'DashboardController@supervisor')->name('supervisor');

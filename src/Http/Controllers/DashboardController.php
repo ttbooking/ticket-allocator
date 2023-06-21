@@ -41,4 +41,9 @@ class DashboardController extends Controller
 
         return Inertia::render('Dashboard', compact('operators', 'tickets', 'ticketCategories', 'factors', 'matchers'));
     }
+
+    public function trans(): Response
+    {
+        return Inertia::render('Trans');
+    }
 }

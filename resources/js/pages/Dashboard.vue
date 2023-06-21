@@ -75,8 +75,8 @@ import DefaultLayout from "@/layouts/Default.vue";
 import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
 import { Head, router } from "@inertiajs/vue3";
-import { computed, ref, shallowRef, reactive, onMounted, onUnmounted } from "vue";
-import { watchThrottled } from "@vueuse/core";
+import { computed, ref, shallowRef, reactive, onMounted, onUnmounted, nextTick } from "vue";
+import { useIntervalFn } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
 import { useDropZone, usePusherChannel } from "@/composables";
 import type { Operator, Ticket, TicketCategory, Factor } from "@/types";
@@ -123,34 +123,32 @@ const metaFilter = (meta: Record<string, string> | null) => {
 const sortedOperators = shallowRef<Collection<OperatorModel>>([]);
 const sortedTickets = shallowRef<Collection<TicketModel>>([]);
 
-watchThrottled(
-    () =>
-        useCollect(
-            operatorRepo.value
-                .with("tickets", (query) => {
-                    query.with("category").where("meta", metaFilter).orderBy(mode.value, "desc");
-                })
-                .get()
-        ).sortBy([
-            ["online", "desc"],
-            ["ready", "desc"],
-            ["free_slots", "desc"],
-            ["ticket_count", "asc"],
-            ["name", "asc"],
-        ]),
-    (operators) => {
-        sortedOperators.value = operators;
-    },
-    { throttle: 750, immediate: true, deep: true }
-);
+useIntervalFn(async () => {
+    await nextTick();
 
-watchThrottled(
-    () => ticketRepo.value.unbound().with("category").where("meta", metaFilter).orderBy(mode.value, "desc").get(),
-    (tickets) => {
-        sortedTickets.value = tickets;
-    },
-    { throttle: 750, immediate: true, deep: true }
-);
+    console.log("upd");
+
+    sortedOperators.value = useCollect(
+        operatorRepo.value
+            .with("tickets", (query) => {
+                query.with("category").where("meta", metaFilter).orderBy(mode.value, "desc");
+            })
+            .get()
+    ).sortBy([
+        ["online", "desc"],
+        ["ready", "desc"],
+        ["free_slots", "desc"],
+        ["ticket_count", "asc"],
+        ["name", "asc"],
+    ]);
+
+    sortedTickets.value = ticketRepo.value
+        .unbound()
+        .with("category")
+        .where("meta", metaFilter)
+        .orderBy(mode.value, "desc")
+        .get();
+}, 750);
 
 /*
 const sortedOperators = refThrottled(
