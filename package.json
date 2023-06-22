@@ -4,6 +4,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vue-tsc && vite build && vite build --ssr",
+        "build-dev": "vue-tsc && vite build -m development",
         "serve": "vite preview"
     },
     "dependencies": {

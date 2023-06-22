@@ -3,7 +3,7 @@
         <v-btn size="small" class="ticket justify-start px-2" :class="{ overflow }" :ripple="false" flat width="100">
             <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon ?? ''" color="white" />
             <span class="text-white overflow-hidden">
-                <span class="title inline-block relative">{{ title() }}</span>
+                <span class="title inline-block relative">{{ ticket.uuid }}</span>
             </span>
             <v-overlay
                 open-on-click
