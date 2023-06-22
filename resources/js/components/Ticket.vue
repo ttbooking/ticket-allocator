@@ -3,7 +3,7 @@
         <v-btn size="small" class="ticket justify-start px-2" :class="{ overflow }" :ripple="false" flat width="100">
             <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon ?? ''" color="white" />
             <span class="text-white overflow-hidden">
-                <span class="title inline-block relative">{{ ticket.uuid }}</span>
+                <span class="title inline-block relative">{{ title() }}</span>
             </span>
             <v-overlay
                 open-on-click
@@ -178,14 +178,14 @@ const acceptedAtInfo = computed(() =>
 
 const currentWeightInfo = computed(
     () =>
-        `${compact(props.ticket.weight.value)} (${trans("increment_per_second", {
+        `${compact(props.ticket.weight)} (${trans("increment_per_second", {
             units: props.ticket.weight_increment.toString(),
         })})`
 );
 
 const threshold = computed(() => config.value[`${mode.value}_threshold`]);
 
-const position = computed(() => props.ticket[mode.value].value);
+const position = computed(() => props.ticket[mode.value]);
 
 const compact = (value: number) => (value < 100000 ? value : value.toExponential(1));
 

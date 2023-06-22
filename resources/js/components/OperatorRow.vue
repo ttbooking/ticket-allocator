@@ -3,7 +3,7 @@
         <template #status><v-icon icon="mdi-account" @click="toggleReadiness" /></template>
         <template #load-max>{{ operator.ticket_limit ?? "&infin;" }}</template>
         <template #complexity-max>{{ operator.complexity_limit ?? "&infin;" }}</template>
-        <template #name>{{ operator.uuid }}</template>
+        <template #name>{{ operator.name }}</template>
     </TicketRow>
 </template>
 

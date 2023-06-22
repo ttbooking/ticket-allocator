@@ -1,6 +1,5 @@
 import { Model } from "pinia-orm";
 import { Attr, Bool, Num, Str, Uid, BelongsToMany, HasMany, OnDelete } from "pinia-orm/decorators";
-import { computed } from "vue";
 import OperatorTeam from "./OperatorTeam";
 import TeamOperator from "./TeamOperator";
 import Ticket from "./Ticket";
@@ -22,22 +21,18 @@ export default class Operator extends Model {
     @HasMany(() => Ticket, "handler_uuid") @OnDelete("set null") declare tickets: Ticket[];
 
     get ticket_count() {
-        return computed(() => this.tickets.length);
+        return this.tickets.length;
     }
 
     get free_slots() {
-        return computed(() =>
-            this.ticket_limit !== null ? Math.max(0, this.ticket_limit - this.ticket_count.value) : null
-        );
+        return this.ticket_limit !== null ? Math.max(0, this.ticket_limit - this.ticket_count) : null;
     }
 
     get total_complexity() {
-        return computed(() => this.tickets.reduce((n, { complexity }) => n + complexity, 0));
+        return this.tickets.reduce((n, { complexity }) => n + complexity, 0);
     }
 
     get free_complexity() {
-        return computed(() =>
-            this.complexity_limit !== null ? Math.max(0, this.complexity_limit - this.total_complexity.value) : null
-        );
+        return this.complexity_limit !== null ? Math.max(0, this.complexity_limit - this.total_complexity) : null;
     }
 }
