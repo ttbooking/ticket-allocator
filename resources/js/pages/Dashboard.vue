@@ -62,7 +62,13 @@
                         <template #name>{{ $t("ticket_pool") }}</template>
                     </TicketRow>
                     <TransitionGroup name="operator-pool">
-                        <OperatorRow v-for="operator in sortedOperators" :key="operator.uuid" :operator="operator" />
+                        <OperatorRow
+                            v-for="operator in sortedOperators"
+                            :key="operator.uuid"
+                            :operator="operator"
+                            @transitionstart="transitioning = true"
+                            @transitionend="transitioning = false"
+                        />
                     </TransitionGroup>
                 </tbody>
             </v-table>
@@ -75,8 +81,8 @@ import DefaultLayout from "@/layouts/Default.vue";
 import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
 import { Head, router } from "@inertiajs/vue3";
-import { computed, ref, shallowRef, reactive, onMounted, onUnmounted, nextTick } from "vue";
-import { useIntervalFn } from "@vueuse/core";
+import { computed, ref, shallowRef, reactive, onMounted, onUnmounted } from "vue";
+import { until, useIntervalFn } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
 import { useDropZone, usePusherChannel } from "@/composables";
 import type { Operator, Ticket, TicketCategory, Factor } from "@/types";
@@ -123,8 +129,10 @@ const metaFilter = (meta: Record<string, string> | null) => {
 const sortedOperators = shallowRef<Collection<OperatorModel>>([]);
 const sortedTickets = shallowRef<Collection<TicketModel>>([]);
 
+let transitioning = ref(false);
+
 useIntervalFn(async () => {
-    await nextTick();
+    await until(transitioning).toBe(false);
 
     console.log("upd");
 
