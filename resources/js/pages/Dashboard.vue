@@ -75,7 +75,7 @@ import DefaultLayout from "@/layouts/Default.vue";
 import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
 import { Head, router } from "@inertiajs/vue3";
-import { computed, ref,  reactive, onMounted, onUnmounted } from "vue";
+import { computed, ref, reactive, onMounted, onUnmounted } from "vue";
 import { useSupervisorApi } from "@/api";
 import { useDropZone, usePusherChannel } from "@/composables";
 import type { Operator, Ticket, TicketCategory, Factor } from "@/types";
