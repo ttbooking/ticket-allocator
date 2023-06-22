@@ -1,6 +1,7 @@
 import { Model } from "pinia-orm";
 import { Attr, Num, Str, Uid, Cast, BelongsTo } from "pinia-orm/decorators";
 import { DateCast } from "pinia-orm/casts";
+import { computed } from "vue";
 import type { TicketMetrics } from "@/types";
 import { useSharedTimestamp } from "@/shared";
 import TicketCategory from "./TicketCategory";
@@ -30,10 +31,10 @@ export default class Ticket extends Model {
     @BelongsTo(() => Operator, "handler_uuid") declare handler: Operator | null;
 
     get duration() {
-        return Math.round((useSharedTimestamp().value - this.created_at.getTime()) / 1000);
+        return computed(() => Math.round((useSharedTimestamp().value - this.created_at.getTime()) / 1000));
     }
 
     get weight() {
-        return this.initial_weight + this.weight_increment * this.duration;
+        return computed(() => this.initial_weight + this.weight_increment * this.duration.value);
     }
 }
