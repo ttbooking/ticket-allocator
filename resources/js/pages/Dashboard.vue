@@ -62,13 +62,7 @@
                         <template #name>{{ $t("ticket_pool") }}</template>
                     </TicketRow>
                     <TransitionGroup name="operator-pool">
-                        <OperatorRow
-                            v-for="operator in sortedOperators"
-                            :key="operator.uuid"
-                            :operator="operator"
-                            @transitionstart="transitioning = true"
-                            @transitionend="transitioning = false"
-                        />
+                        <OperatorRow v-for="operator in sortedOperators" :key="operator.uuid" :operator="operator" />
                     </TransitionGroup>
                 </tbody>
             </v-table>
@@ -82,7 +76,6 @@ import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
 import { Head, router } from "@inertiajs/vue3";
 import { computed, ref, reactive, onMounted, onUnmounted } from "vue";
-import { computedAsync, until } from "@vueuse/core";
 import { useSupervisorApi } from "@/api";
 import { useDropZone, usePusherChannel } from "@/composables";
 import type { Operator, Ticket, TicketCategory, Factor } from "@/types";
@@ -123,11 +116,8 @@ const metaFilter = (meta: Record<string, string> | null) => {
     }, true);
 };
 
-let transitioning = ref(false);
-
-const sortedOperators = computedAsync(async () => {
-    await until(transitioning).toBe(false);
-    return useCollect(
+const sortedOperators = computed(() =>
+    useCollect(
         operatorRepo.value
             .with("tickets", (query) => {
                 query.with("category").where("meta", metaFilter).orderBy(mode.value, "desc");
@@ -139,8 +129,8 @@ const sortedOperators = computedAsync(async () => {
         ["free_slots", "desc"],
         ["ticket_count", "asc"],
         ["name", "asc"],
-    ]);
-});
+    ])
+);
 
 const sortedTickets = computed(() =>
     ticketRepo.value.unbound().with("category").where("meta", metaFilter).orderBy(mode.value, "desc").get()
