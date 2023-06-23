@@ -7,7 +7,7 @@
         </template>
 
         <div>
-            <v-table density="compact" class="monitor overflow-hidden">
+            <v-table density="compact" class="monitor bg-transparent overflow-hidden">
                 <tbody>
                     <TransitionGroup name="operators">
                         <tr v-for="operator in operators" :key="operator.id">
@@ -134,10 +134,7 @@ function reset() {
     width: 12em;
 }
 
-.operators-move {
-    transition: all 1s ease;
-}
-
+.operators-move,
 .tickets-move,
 .tickets-enter-active {
     transition: all 1s ease;
@@ -149,6 +146,7 @@ function reset() {
 
 .tickets-leave-active {
     transition: opacity 1s;
+    position: absolute;
 }
 
 .tickets-leave-to {

@@ -69,6 +69,7 @@ onMounted(() => {
 
 .ticket-pool-leave-active {
     transition: opacity 0.5s;
+    position: absolute;
 }
 
 .ticket-pool-leave-to {
