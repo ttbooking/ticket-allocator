@@ -8,26 +8,12 @@
 
         <div>
             <v-table density="compact" class="monitor bg-transparent overflow-hidden">
-                <tbody>
-                    <TransitionGroup name="operators">
-                        <tr v-for="operator in operators" :key="operator.id">
-                            <th>{{ operator.name }}</th>
-                            <td>
-                                <TransitionGroup name="tickets">
-                                    <v-btn
-                                        v-for="ticket in operator.tickets"
-                                        :key="ticket.id"
-                                        size="small"
-                                        width="100"
-                                        class="mr-1 mb-1"
-                                    >
-                                        {{ ticket.name }}
-                                    </v-btn>
-                                </TransitionGroup>
-                            </td>
-                        </tr>
-                    </TransitionGroup>
-                </tbody>
+                <TransitionGroup tag="tbody" name="operators">
+                    <tr v-for="operator in operators" :key="operator.id">
+                        <th>{{ operator.name }}</th>
+                        <TransSub :tickets="operator.tickets" />
+                    </tr>
+                </TransitionGroup>
             </v-table>
             <v-container>
                 <v-row>
@@ -51,19 +37,10 @@
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import { random, remove, reverse, sample, shuffle, uniqueId } from "lodash";
-
-interface Ticket {
-    id: string;
-    name: string;
-}
-
-interface Operator {
-    id: string;
-    name: string;
-    tickets: Ticket[];
-}
+import TransSub from "@/pages/TransSub.vue";
+import type { Operator } from "@/types/trans.d";
 
 const operatorNames = ["Apollo", "Hermes", "Ares", "Zeus", "Poseidon", "Dionysus", "Aphrodite", "Hephaestus", "Athena"];
 const ticketNames = ["Lorem", "Ipsum", "Dolor", "Sit", "Amet"];
@@ -106,8 +83,9 @@ function shuffleTickets() {
     }
 }
 
-function shuffleBoth() {
+async function shuffleBoth() {
     shuffleOperators();
+    await nextTick();
     shuffleTickets();
 }
 
@@ -139,22 +117,7 @@ function reset() {
     width: 12em;
 }
 
-.operators-move,
-.tickets-move,
-.tickets-enter-active {
+.operators-move {
     transition: transform 2s linear;
-}
-
-.tickets-enter-from {
-    transform: translateX(300px);
-}
-
-.tickets-leave-active {
-    transition: opacity 2s;
-    position: absolute;
-}
-
-.tickets-leave-to {
-    opacity: 0;
 }
 </style>
