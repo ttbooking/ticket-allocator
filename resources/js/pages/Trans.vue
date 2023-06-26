@@ -35,6 +35,7 @@
                         <v-btn color="primary" class="mr-3" @click="addOperator">Add operator</v-btn>
                         <v-btn color="primary" class="mr-3" @click="addTicket">Add ticket</v-btn>
                         <v-btn color="primary" class="mr-3" @click="removeTicket">Remove ticket</v-btn>
+                        <v-btn color="primary" class="mr-3" @click="flipOperators">Flip operators</v-btn>
                         <v-btn color="primary" class="mr-3" @click="shuffleOperators">Shuffle operators</v-btn>
                         <v-btn color="primary" class="mr-3" @click="shuffleTickets">Shuffle tickets</v-btn>
                         <v-btn color="primary" class="mr-3" @click="shuffleBoth">Shuffle both</v-btn>
@@ -51,7 +52,7 @@
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head } from "@inertiajs/vue3";
 import { ref } from "vue";
-import { random, remove, sample, shuffle, uniqueId } from "lodash";
+import { random, remove, reverse, sample, shuffle, uniqueId } from "lodash";
 
 interface Ticket {
     id: string;
@@ -89,6 +90,10 @@ function removeTicket() {
         counter++;
     } while (operator && operator.tickets.length === 0 && counter < 10);
     operator && remove(operator.tickets, (ticket, index) => index === random(0, operator!.tickets.length - 1));
+}
+
+function flipOperators() {
+    operators.value = reverse(operators.value);
 }
 
 function shuffleOperators() {
@@ -137,7 +142,7 @@ function reset() {
 .operators-move,
 .tickets-move,
 .tickets-enter-active {
-    transition: all 1s ease;
+    transition: transform 2s linear;
 }
 
 .tickets-enter-from {
@@ -145,7 +150,7 @@ function reset() {
 }
 
 .tickets-leave-active {
-    transition: opacity 1s;
+    transition: opacity 2s;
     position: absolute;
 }
 
