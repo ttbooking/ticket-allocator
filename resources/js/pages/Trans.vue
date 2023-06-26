@@ -9,10 +9,7 @@
         <div>
             <v-table density="compact" class="monitor bg-transparent overflow-hidden">
                 <TransitionGroup tag="tbody" name="operators">
-                    <tr v-for="operator in operators" :key="operator.id">
-                        <th>{{ operator.name }}</th>
-                        <TransSub :tickets="operator.tickets" />
-                    </tr>
+                    <TransOperator v-for="operator in operators" :key="operator.id" :operator="operator" />
                 </TransitionGroup>
             </v-table>
             <v-container>
@@ -39,20 +36,22 @@ import DefaultLayout from "@/layouts/Default.vue";
 import { Head, usePage } from "@inertiajs/vue3";
 import { ref, computed, nextTick } from "vue";
 import { random, remove, reverse, sample, shuffle, uniqueId } from "lodash";
-import TransSub from "@/pages/TransSub.vue";
+import TransOperator from "@/pages/TransOperator.vue";
 import type { DisplayOptions } from "@/types";
-import type { Operator } from "@/types/trans.d";
+import type { Operator } from "@/types/trans";
 
 const operatorNames = ["Apollo", "Hermes", "Ares", "Zeus", "Poseidon", "Dionysus", "Aphrodite", "Hephaestus", "Athena"];
 const ticketNames = ["Lorem", "Ipsum", "Dolor", "Sit", "Amet"];
 const operators = ref<Operator[]>([]);
 const config = computed(() => usePage().props.options as DisplayOptions);
+let priority = 0;
 
 async function addOperator() {
     await nextTick();
     operators.value.push({
         id: uniqueId(),
         name: sample(operatorNames) ?? "bitch",
+        priority: priority++,
         tickets: [],
     });
 }

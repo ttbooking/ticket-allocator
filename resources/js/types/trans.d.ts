@@ -7,5 +7,6 @@ export interface Ticket {
 export interface Operator {
     id: string;
     name: string;
+    priority: number;
     tickets: Ticket[];
 }

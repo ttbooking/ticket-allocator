@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import TransTicket from "@/pages/TransTicket.vue";
-import type { Ticket } from "@/types/trans.d";
+import type { Ticket } from "@/types/trans";
 
 defineProps<{ tickets: Ticket[] }>();
 </script>
