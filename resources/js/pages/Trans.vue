@@ -36,17 +36,20 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
-import { Head } from "@inertiajs/vue3";
-import { nextTick, ref } from "vue";
+import { Head, usePage } from "@inertiajs/vue3";
+import { ref, computed, nextTick } from "vue";
 import { random, remove, reverse, sample, shuffle, uniqueId } from "lodash";
 import TransSub from "@/pages/TransSub.vue";
+import type { DisplayOptions } from "@/types";
 import type { Operator } from "@/types/trans.d";
 
 const operatorNames = ["Apollo", "Hermes", "Ares", "Zeus", "Poseidon", "Dionysus", "Aphrodite", "Hephaestus", "Athena"];
 const ticketNames = ["Lorem", "Ipsum", "Dolor", "Sit", "Amet"];
 const operators = ref<Operator[]>([]);
+const config = computed(() => usePage().props.options as DisplayOptions);
 
-function addOperator() {
+async function addOperator() {
+    await nextTick();
     operators.value.push({
         id: uniqueId(),
         name: sample(operatorNames) ?? "bitch",
@@ -54,14 +57,20 @@ function addOperator() {
     });
 }
 
-function addTicket() {
+async function addTicket() {
+    await nextTick();
     const operator = <Operator | undefined>sample(operators.value);
-    operator?.tickets.push({ id: uniqueId(), name: sample(ticketNames) ?? "bitch" });
+    operator?.tickets.push({
+        id: uniqueId(),
+        name: sample(ticketNames) ?? "bitch",
+        weight: random(0, config.value.weight_threshold),
+    });
 }
 
-function removeTicket() {
+async function removeTicket() {
     let operator: Operator | undefined;
     let counter = 0;
+    await nextTick();
     do {
         operator = <Operator | undefined>sample(operators.value);
         counter++;
@@ -69,28 +78,33 @@ function removeTicket() {
     operator && remove(operator.tickets, (ticket, index) => index === random(0, operator!.tickets.length - 1));
 }
 
-function flipOperators() {
+async function flipOperators() {
+    await nextTick();
     operators.value = reverse(operators.value);
 }
 
-function shuffleOperators() {
+async function shuffleOperators() {
+    await nextTick();
     operators.value = shuffle(operators.value);
 }
 
-function shuffleTickets() {
+async function shuffleTickets() {
+    await nextTick();
     for (const operator of operators.value) {
+        //await nextTick();
         operator.tickets = shuffle(operator.tickets);
     }
 }
 
 async function shuffleBoth() {
+    await nextTick();
     shuffleOperators();
     await nextTick();
     shuffleTickets();
 }
 
-function randomAction() {
-    sample([
+async function randomAction() {
+    await sample([
         shuffleOperators,
         shuffleOperators,
         addTicket,
@@ -102,7 +116,8 @@ function randomAction() {
     ])?.();
 }
 
-function reset() {
+async function reset() {
+    await nextTick();
     operators.value = [];
 }
 </script>

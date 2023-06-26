@@ -1,17 +1,14 @@
 <template>
     <TransitionGroup tag="td" name="tickets">
-        <v-btn v-for="ticket in tickets" :key="ticket.id" size="small" width="100" class="mr-1 mb-1">
-            {{ ticket.name }}
-        </v-btn>
+        <TransTicket v-for="ticket in tickets" :key="ticket.id" :ticket="ticket" />
     </TransitionGroup>
 </template>
 
 <script setup lang="ts">
+import TransTicket from "@/pages/TransTicket.vue";
 import type { Ticket } from "@/types/trans.d";
 
-defineProps<{
-    tickets: Ticket[];
-}>();
+defineProps<{ tickets: Ticket[] }>();
 </script>
 
 <style scoped>
