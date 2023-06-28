@@ -96,10 +96,8 @@ async function shuffleTickets() {
 }
 
 async function shuffleBoth() {
-    await nextTick();
-    shuffleOperators();
-    await nextTick();
-    shuffleTickets();
+    await shuffleTickets();
+    await shuffleOperators();
 }
 
 async function randomAction() {
