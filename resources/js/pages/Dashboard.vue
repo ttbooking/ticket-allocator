@@ -122,6 +122,8 @@ const sortedOperators = computed(() =>
             .with("tickets", (query) => {
                 query.with("category").where("meta", metaFilter).orderBy(mode.value, "desc");
             })
+            .where("online", true)
+            .orWhereHas("tickets")
             .get()
     ).sortBy([
         ["online", "desc"],
