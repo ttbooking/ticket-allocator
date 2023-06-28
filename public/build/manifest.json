@@ -4,7 +4,7 @@
     "src": "Default.css"
   },
   "VAutocomplete.css": {
-    "file": "assets/VAutocomplete-a8afb971.css",
+    "file": "assets/VAutocomplete-3797a128.css",
     "src": "VAutocomplete.css"
   },
   "VCard.css": {
@@ -27,84 +27,88 @@
     "file": "assets/VTextarea-b2a3667a.css",
     "src": "VTextarea.css"
   },
-  "_Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js": {
+  "_Default.vue_vue_type_script_setup_true_lang-a35df365.js": {
     "css": [
       "assets/Default-00c545c3.css"
     ],
-    "file": "assets/Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js",
+    "file": "assets/Default.vue_vue_type_script_setup_true_lang-a35df365.js",
     "imports": [
+      "__plugin-vue_export-helper-c27b6911.js",
       "resources/js/app.ts"
     ]
   },
-  "_VAutocomplete-3183ee07.js": {
+  "_VAutocomplete-981fc1bc.js": {
     "css": [
-      "assets/VAutocomplete-a8afb971.css"
+      "assets/VAutocomplete-3797a128.css"
     ],
-    "file": "assets/VAutocomplete-3183ee07.js",
+    "file": "assets/VAutocomplete-981fc1bc.js",
     "imports": [
       "resources/js/app.ts"
     ]
   },
-  "_VCard-7081bb7c.js": {
+  "_VCard-562b17bf.js": {
     "css": [
       "assets/VCard-dd1b786b.css"
     ],
-    "file": "assets/VCard-7081bb7c.js",
+    "file": "assets/VCard-562b17bf.js",
     "imports": [
       "resources/js/app.ts"
     ]
   },
-  "_VCheckbox-c2c374a4.js": {
+  "_VCheckbox-4f26b6d1.js": {
     "css": [
       "assets/VCheckbox-1ea139e1.css"
     ],
-    "file": "assets/VCheckbox-c2c374a4.js",
+    "file": "assets/VCheckbox-4f26b6d1.js",
     "imports": [
       "resources/js/app.ts"
     ]
   },
-  "_VContainer-0ffe278d.js": {
-    "file": "assets/VContainer-0ffe278d.js",
+  "_VContainer-8372c7b9.js": {
+    "file": "assets/VContainer-8372c7b9.js",
     "imports": [
-      "_VRow-97423ce6.js",
+      "_VRow-def39893.js",
       "resources/js/app.ts"
     ]
   },
-  "_VForm-3aa3135f.js": {
-    "file": "assets/VForm-3aa3135f.js",
+  "_VForm-d4d63727.js": {
+    "file": "assets/VForm-d4d63727.js",
     "imports": [
       "resources/js/app.ts"
     ]
   },
-  "_VRow-97423ce6.js": {
+  "_VRow-def39893.js": {
     "css": [
       "assets/VRow-37f80755.css"
     ],
-    "file": "assets/VRow-97423ce6.js",
+    "file": "assets/VRow-def39893.js",
     "imports": [
       "resources/js/app.ts"
     ]
   },
-  "_VSpacer-43c0d4b5.js": {
+  "_VSpacer-9189d504.js": {
     "css": [
       "assets/VSpacer-cc48fbf3.css"
     ],
-    "file": "assets/VSpacer-43c0d4b5.js",
+    "file": "assets/VSpacer-9189d504.js",
     "imports": [
       "resources/js/app.ts"
     ]
   },
-  "_VTextarea-cc0c99c2.js": {
+  "_VTextarea-71edccd9.js": {
     "css": [
       "assets/VTextarea-b2a3667a.css"
     ],
-    "file": "assets/VTextarea-cc0c99c2.js",
+    "file": "assets/VTextarea-71edccd9.js",
     "imports": [
       "resources/js/app.ts"
     ]
   },
-  "_webfontloader-8537eacc.js": {
-    "file": "assets/webfontloader-8537eacc.js",
+  "__plugin-vue_export-helper-c27b6911.js": {
+    "file": "assets/_plugin-vue_export-helper-c27b6911.js"
+  },
+  "_webfontloader-c1d6f190.js": {
+    "file": "assets/webfontloader-c1d6f190.js",
     "imports": [
       "resources/js/app.ts"
     ],
@@ -116,7 +120,7 @@
     "src": "lang/en.json"
   },
   "lang/php_en.json": {
-    "file": "assets/php_en-e5ae0f17.js",
+    "file": "assets/php_en-ceb86500.js",
     "isDynamicEntry": true,
     "src": "lang/php_en.json"
   },
@@ -151,7 +155,7 @@
     "src": "resources/images/favicon.png"
   },
   "resources/js/app.css": {
-    "file": "assets/app-53e26767.css",
+    "file": "assets/app-a581244a.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.ts": {
@@ -162,10 +166,10 @@
       "assets/materialdesignicons-webfont-a58ecb54.ttf"
     ],
     "css": [
-      "assets/app-53e26767.css"
+      "assets/app-a581244a.css"
     ],
     "dynamicImports": [
-      "_webfontloader-8537eacc.js",
+      "_webfontloader-c1d6f190.js",
       "resources/js/pages/Dashboard.vue",
       "resources/js/pages/Factor/CreateEdit.vue",
       "resources/js/pages/Factor/Index.vue",
@@ -179,12 +183,15 @@
       "resources/js/pages/TicketCategory/CreateEdit.vue",
       "resources/js/pages/TicketCategory/Index.vue",
       "resources/js/pages/Trans.vue",
+      "resources/js/pages/TransOperator.vue",
+      "resources/js/pages/TransSub.vue",
+      "resources/js/pages/TransTicket.vue",
       "lang/en.json",
       "lang/php_en.json",
       "lang/php_ru.json",
       "lang/ru.json"
     ],
-    "file": "assets/app-85221258.js",
+    "file": "assets/app-960e20cd.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
   },
@@ -196,28 +203,30 @@
     "css": [
       "assets/Dashboard-84405112.css"
     ],
-    "file": "assets/Dashboard-2fe05a16.js",
+    "file": "assets/Dashboard-6f33be61.js",
     "imports": [
       "resources/js/app.ts",
-      "_Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js",
-      "_VCard-7081bb7c.js",
-      "_VContainer-0ffe278d.js",
-      "_VRow-97423ce6.js",
-      "_VAutocomplete-3183ee07.js"
+      "_Default.vue_vue_type_script_setup_true_lang-a35df365.js",
+      "_VCard-562b17bf.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "_VContainer-8372c7b9.js",
+      "_VRow-def39893.js",
+      "_VAutocomplete-981fc1bc.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/Dashboard.vue"
   },
   "resources/js/pages/Factor/CreateEdit.vue": {
-    "file": "assets/CreateEdit-0889f0ea.js",
+    "file": "assets/CreateEdit-39114734.js",
     "imports": [
       "resources/js/app.ts",
-      "_Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js",
-      "_VForm-3aa3135f.js",
-      "_VContainer-0ffe278d.js",
-      "_VRow-97423ce6.js",
-      "_VCheckbox-c2c374a4.js",
-      "_VTextarea-cc0c99c2.js"
+      "_Default.vue_vue_type_script_setup_true_lang-a35df365.js",
+      "_VForm-d4d63727.js",
+      "_VContainer-8372c7b9.js",
+      "_VRow-def39893.js",
+      "_VCheckbox-4f26b6d1.js",
+      "_VTextarea-71edccd9.js",
+      "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/Factor/CreateEdit.vue"
@@ -230,134 +239,196 @@
     "css": [
       "assets/Index-2dcf3722.css"
     ],
-    "file": "assets/Index-b2e743df.js",
+    "file": "assets/Index-2ce543fd.js",
     "imports": [
-      "_Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js",
+      "_Default.vue_vue_type_script_setup_true_lang-a35df365.js",
       "resources/js/app.ts",
-      "_VSpacer-43c0d4b5.js",
-      "_VCard-7081bb7c.js",
-      "_VContainer-0ffe278d.js",
-      "_VRow-97423ce6.js"
+      "_VSpacer-9189d504.js",
+      "_VCard-562b17bf.js",
+      "_VContainer-8372c7b9.js",
+      "_VRow-def39893.js",
+      "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/Factor/Index.vue"
   },
   "resources/js/pages/Factor/Partials/AssociationForm.vue": {
-    "file": "assets/AssociationForm-b8d0001e.js",
+    "file": "assets/AssociationForm-aaf446fc.js",
     "imports": [
       "resources/js/app.ts",
-      "_VRow-97423ce6.js",
-      "_VSpacer-43c0d4b5.js",
-      "_VAutocomplete-3183ee07.js"
+      "_VRow-def39893.js",
+      "_VSpacer-9189d504.js",
+      "_VAutocomplete-981fc1bc.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/Factor/Partials/AssociationForm.vue"
   },
   "resources/js/pages/Factor/Partials/ExpressionForm.vue": {
-    "file": "assets/ExpressionForm-efc73d25.js",
+    "file": "assets/ExpressionForm-b132babc.js",
     "imports": [
-      "_VRow-97423ce6.js",
-      "_VTextarea-cc0c99c2.js",
+      "_VRow-def39893.js",
+      "_VTextarea-71edccd9.js",
       "resources/js/app.ts"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/Factor/Partials/ExpressionForm.vue"
   },
   "resources/js/pages/Factor/Partials/FixedForm.vue": {
-    "file": "assets/FixedForm-529be61f.js",
+    "file": "assets/FixedForm-bee098e8.js",
     "imports": [
-      "_VRow-97423ce6.js",
+      "_VRow-def39893.js",
       "resources/js/app.ts"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/Factor/Partials/FixedForm.vue"
   },
   "resources/js/pages/Operator/CreateEdit.vue": {
-    "file": "assets/CreateEdit-f17b5063.js",
+    "file": "assets/CreateEdit-f9c348d2.js",
     "imports": [
       "resources/js/app.ts",
-      "_Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js",
-      "_VForm-3aa3135f.js",
-      "_VContainer-0ffe278d.js",
-      "_VRow-97423ce6.js",
-      "_VAutocomplete-3183ee07.js"
+      "_Default.vue_vue_type_script_setup_true_lang-a35df365.js",
+      "_VForm-d4d63727.js",
+      "_VContainer-8372c7b9.js",
+      "_VRow-def39893.js",
+      "_VAutocomplete-981fc1bc.js",
+      "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/Operator/CreateEdit.vue"
   },
   "resources/js/pages/Operator/Index.vue": {
-    "file": "assets/Index-da2af0f0.js",
+    "file": "assets/Index-f0d730bd.js",
     "imports": [
-      "_Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js",
+      "_Default.vue_vue_type_script_setup_true_lang-a35df365.js",
       "resources/js/app.ts",
-      "_VSpacer-43c0d4b5.js"
+      "_VSpacer-9189d504.js",
+      "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/Operator/Index.vue"
   },
   "resources/js/pages/OperatorTeam/CreateEdit.vue": {
-    "file": "assets/CreateEdit-dfa6242b.js",
+    "file": "assets/CreateEdit-069ef741.js",
     "imports": [
       "resources/js/app.ts",
-      "_Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js",
-      "_VForm-3aa3135f.js",
-      "_VContainer-0ffe278d.js",
-      "_VRow-97423ce6.js",
-      "_VCheckbox-c2c374a4.js",
-      "_VTextarea-cc0c99c2.js",
-      "_VAutocomplete-3183ee07.js"
+      "_Default.vue_vue_type_script_setup_true_lang-a35df365.js",
+      "_VForm-d4d63727.js",
+      "_VContainer-8372c7b9.js",
+      "_VRow-def39893.js",
+      "_VCheckbox-4f26b6d1.js",
+      "_VTextarea-71edccd9.js",
+      "_VAutocomplete-981fc1bc.js",
+      "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/OperatorTeam/CreateEdit.vue"
   },
   "resources/js/pages/OperatorTeam/Index.vue": {
-    "file": "assets/Index-9252cd69.js",
+    "file": "assets/Index-25ad8868.js",
     "imports": [
-      "_Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js",
+      "_Default.vue_vue_type_script_setup_true_lang-a35df365.js",
       "resources/js/app.ts",
-      "_VSpacer-43c0d4b5.js"
+      "_VSpacer-9189d504.js",
+      "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/OperatorTeam/Index.vue"
   },
   "resources/js/pages/TicketCategory/CreateEdit.vue": {
-    "file": "assets/CreateEdit-c16fa2bc.js",
+    "file": "assets/CreateEdit-b7eeaf26.js",
     "imports": [
       "resources/js/app.ts",
-      "_Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js",
-      "_VForm-3aa3135f.js",
-      "_VContainer-0ffe278d.js",
-      "_VRow-97423ce6.js"
+      "_Default.vue_vue_type_script_setup_true_lang-a35df365.js",
+      "_VForm-d4d63727.js",
+      "_VContainer-8372c7b9.js",
+      "_VRow-def39893.js",
+      "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/TicketCategory/CreateEdit.vue"
   },
   "resources/js/pages/TicketCategory/Index.vue": {
-    "file": "assets/Index-770d1080.js",
+    "file": "assets/Index-1ecc8a02.js",
     "imports": [
-      "_Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js",
+      "_Default.vue_vue_type_script_setup_true_lang-a35df365.js",
       "resources/js/app.ts",
-      "_VSpacer-43c0d4b5.js"
+      "_VSpacer-9189d504.js",
+      "__plugin-vue_export-helper-c27b6911.js"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/TicketCategory/Index.vue"
   },
   "resources/js/pages/Trans.css": {
-    "file": "assets/Trans-2a4e3ffb.css",
+    "file": "assets/Trans-3bee570a.css",
     "src": "resources/js/pages/Trans.css"
   },
   "resources/js/pages/Trans.vue": {
     "css": [
-      "assets/Trans-2a4e3ffb.css"
+      "assets/Trans-3bee570a.css"
     ],
-    "file": "assets/Trans-40ab9871.js",
+    "file": "assets/Trans-b89f019b.js",
     "imports": [
       "resources/js/app.ts",
-      "_Default.vue_vue_type_script_setup_true_lang-ad01c3d1.js",
-      "_VContainer-0ffe278d.js",
-      "_VRow-97423ce6.js"
+      "_Default.vue_vue_type_script_setup_true_lang-a35df365.js",
+      "resources/js/pages/TransOperator.vue",
+      "_VContainer-8372c7b9.js",
+      "_VRow-def39893.js",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "resources/js/pages/TransSub.vue",
+      "resources/js/pages/TransTicket.vue"
     ],
     "isDynamicEntry": true,
     "src": "resources/js/pages/Trans.vue"
+  },
+  "resources/js/pages/TransOperator.css": {
+    "file": "assets/TransOperator-c500705b.css",
+    "src": "resources/js/pages/TransOperator.css"
+  },
+  "resources/js/pages/TransOperator.vue": {
+    "css": [
+      "assets/TransOperator-c500705b.css"
+    ],
+    "file": "assets/TransOperator-fa31beed.js",
+    "imports": [
+      "resources/js/app.ts",
+      "resources/js/pages/TransSub.vue",
+      "__plugin-vue_export-helper-c27b6911.js",
+      "resources/js/pages/TransTicket.vue"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/TransOperator.vue"
+  },
+  "resources/js/pages/TransSub.css": {
+    "file": "assets/TransSub-5139ea74.css",
+    "src": "resources/js/pages/TransSub.css"
+  },
+  "resources/js/pages/TransSub.vue": {
+    "css": [
+      "assets/TransSub-5139ea74.css"
+    ],
+    "file": "assets/TransSub-a2397642.js",
+    "imports": [
+      "resources/js/app.ts",
+      "resources/js/pages/TransTicket.vue",
+      "__plugin-vue_export-helper-c27b6911.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/TransSub.vue"
+  },
+  "resources/js/pages/TransTicket.css": {
+    "file": "assets/TransTicket-24cb3eca.css",
+    "src": "resources/js/pages/TransTicket.css"
+  },
+  "resources/js/pages/TransTicket.vue": {
+    "css": [
+      "assets/TransTicket-24cb3eca.css"
+    ],
+    "file": "assets/TransTicket-5dba7f20.js",
+    "imports": [
+      "resources/js/app.ts",
+      "__plugin-vue_export-helper-c27b6911.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/pages/TransTicket.vue"
   }
 }

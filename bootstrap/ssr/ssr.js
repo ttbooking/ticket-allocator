@@ -177,6 +177,7 @@ const __vite_glob_1_1 = {
   "validation.between.numeric": "The :attribute field must be between :min and :max.",
   "validation.between.string": "The :attribute field must be between :min and :max characters.",
   "validation.boolean": "The :attribute field must be true or false.",
+  "validation.can": "The :attribute field contains an unauthorized value.",
   "validation.confirmed": "The :attribute field confirmation does not match.",
   "validation.current_password": "The password is incorrect.",
   "validation.date": "The :attribute field must be a valid date.",
@@ -859,6 +860,9 @@ function focusChild(el, location) {
       focusChild(el, location === "next" ? "first" : "last");
   }
 }
+function isEmpty(val) {
+  return val === null || val === void 0 || typeof val === "string" && val.trim() === "";
+}
 function noop() {
 }
 const block = ["top", "bottom"];
@@ -1470,6 +1474,7 @@ function injectSelf(key) {
   if (provides && key in provides) {
     return provides[key];
   }
+  return void 0;
 }
 function isFixedPosition(el) {
   while (el) {
@@ -3144,7 +3149,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.5";
+const version = "3.3.6";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -5823,11 +5828,11 @@ function useValidation(props) {
       const result = await handler(validationModel.value);
       if (result === true)
         continue;
-      if (typeof result !== "string") {
+      if (result !== false && typeof result !== "string") {
         console.warn(`${result} is not a valid value. Rule functions must return boolean true or a string.`);
         continue;
       }
-      results.push(result);
+      results.push(result || "");
     }
     internalErrorMessages.value = results;
     isValidating.value = false;
@@ -9015,7 +9020,7 @@ const makeVOverlayProps = propsFactory({
   modelValue: Boolean,
   persistent: Boolean,
   scrim: {
-    type: [String, Boolean],
+    type: [Boolean, String],
     default: true
   },
   zIndex: {
@@ -9964,12 +9969,10 @@ const VTextField = genericComponent()({
               }]]);
               return createVNode(Fragment, null, [props.prefix && createVNode("span", {
                 "class": "v-text-field__prefix"
-              }, [props.prefix]), slots.default ? createVNode("div", {
+              }, [props.prefix]), createVNode("div", {
                 "class": fieldClass,
                 "data-no-activator": ""
-              }, [slots.default(), inputNode]) : cloneVNode(inputNode, {
-                class: fieldClass
-              }), props.suffix && createVNode("span", {
+              }, [slots.default ? createVNode(Fragment, null, [slots.default(), inputNode]) : cloneVNode(inputNode)]), props.suffix && createVNode("span", {
                 "class": "v-text-field__suffix"
               }, [props.suffix])]);
             }
@@ -11030,6 +11033,12 @@ function sortItems(items, sortByItems, locale, customSorters) {
       }
       [sortA, sortB] = [sortA, sortB].map((s2) => s2 != null ? s2.toString().toLocaleLowerCase() : s2);
       if (sortA !== sortB) {
+        if (isEmpty(sortA) && isEmpty(sortB))
+          return 0;
+        if (isEmpty(sortA))
+          return -1;
+        if (isEmpty(sortB))
+          return 1;
         if (!isNaN(sortA) && !isNaN(sortB))
           return Number(sortA) - Number(sortB);
         return stringCollator.compare(sortA, sortB);
@@ -12604,7 +12613,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-8c4d5c69.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-1a1aea6a.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-bb505e01.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-699fb808.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-1f082832.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-53579c37.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-760e9536.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-83c571cf.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-92087fcd.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-73d6a354.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-5fecd728.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-9e317c51.js"), "./pages/Trans.vue": () => import("./assets/Trans-36e6dc69.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-ad5a1557.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-baccc2fe.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-ffadb073.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-9625117f.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-1f082832.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-53579c37.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-9977560e.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-2aeec99b.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-012544a7.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-c82b3fa7.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-98a297be.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-441ddbe5.js"), "./pages/Trans.vue": () => import("./assets/Trans-95f24a53.js"), "./pages/TransOperator.vue": () => import("./assets/TransOperator-9ce33736.js"), "./pages/TransSub.vue": () => import("./assets/TransSub-7a0bfd86.js"), "./pages/TransTicket.vue": () => import("./assets/TransTicket-9cb203ea.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
