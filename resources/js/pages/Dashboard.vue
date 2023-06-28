@@ -84,6 +84,7 @@ import * as Events from "@/types/events.d";
 
 import { useRepo } from "pinia-orm";
 import { useCollect } from "pinia-orm/dist/helpers.js";
+import OperatorModel from "@/models/Operator";
 import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
 import TicketCategoryRepository from "@/models/TicketCategory";
@@ -122,8 +123,8 @@ const sortedOperators = computed(() =>
             .with("tickets", (query) => {
                 query.with("category").where("meta", metaFilter).orderBy(mode.value, "desc");
             })
-            .where("online", true)
-            .orWhereHas("tickets")
+            .whereHas("tickets")
+            .orWhere((operator: OperatorModel) => !options.hideEmpty && operator.online)
             .get()
     ).sortBy([
         ["online", "desc"],
