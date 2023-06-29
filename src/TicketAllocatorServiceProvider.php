@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Spatie\EventSourcing\Facades\Projectionist;
 use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorProjector;
-use TTBooking\TicketAllocator\Domain\Operator\Reactors\SyncTicketCategories;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
 //use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
 use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyFactors;
@@ -91,9 +90,8 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     protected function registerObservers(): void
     {
         Models\Factor::observe(Observers\InvalidatingObserver::class);
-        Models\OperatorTeam::observe([Observers\OperatorTeamObserver::class, Observers\InvalidatingObserver::class]);
+        Models\OperatorTeam::observe(Observers\InvalidatingObserver::class);
         Models\TicketCategory::observe([Observers\TicketCategoryObserver::class, Observers\InvalidatingObserver::class]);
-        Models\TeamCategory::observe(Observers\TeamCategoryObserver::class);
         Models\TeamOperator::observe(Observers\TeamOperatorObserver::class);
     }
 
@@ -102,7 +100,6 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         Projectionist::addEventHandlers([
             OperatorProjector::class,
             TicketProjector::class,
-            SyncTicketCategories::class,
             ApplyFactors::class,
             //ApplyCategoryInfo::class,
         ]);

@@ -19,8 +19,6 @@ export enum Operator {
     Online = ".operator.online",
     Ready = ".operator.ready",
     Resigned = ".operator.resigned",
-    TicketCategoryAttached = ".operator.ticket-category-attached",
-    TicketCategoryDetached = ".operator.ticket-category-detached",
     TicketLimitAdjusted = ".operator.ticket-limit-adjusted",
 }
 
@@ -95,16 +93,6 @@ declare namespace Operator {
 
     export interface ResignedPayload {
         uuid: string;
-    }
-
-    export interface TicketCategoryAttachedPayload {
-        uuid: string;
-        ticketCategoryUuid: string;
-    }
-
-    export interface TicketCategoryDetachedPayload {
-        uuid: string;
-        ticketCategoryUuid: string;
     }
 
     export interface TicketLimitAdjustedPayload {

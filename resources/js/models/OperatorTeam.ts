@@ -2,8 +2,6 @@ import { Model } from "pinia-orm";
 import { Attr, Str, Uid, BelongsToMany } from "pinia-orm/decorators";
 import Operator from "./Operator";
 import TeamOperator from "./TeamOperator";
-import TicketCategory from "./TicketCategory";
-import TeamCategory from "./TeamCategory";
 
 export default class OperatorTeam extends Model {
     static entity = "operatorTeams";
@@ -19,6 +17,4 @@ export default class OperatorTeam extends Model {
     @Attr() declare deleted_at: string | null;
 
     @BelongsToMany(() => Operator, () => TeamOperator, "team_uuid", "operator_uuid") declare operators: Operator[];
-    @BelongsToMany(() => TicketCategory, () => TeamCategory, "team_uuid", "category_uuid")
-    declare ticketCategories: TicketCategory[];
 }

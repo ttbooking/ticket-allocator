@@ -176,28 +176,4 @@ class OperatorAggregateRoot extends AggregateRoot
     protected function applyOperatorSetTeams(Events\OperatorSetTeams $event): void
     {
     }
-
-    public function attachTicketCategories(Commands\AttachTicketCategories $command): static
-    {
-        return $this->recordThat(new Events\OperatorTicketCategoriesAttached(
-            uuid: $this->uuid(),
-            ticketCategoryUuids: $command->ticketCategoryUuids,
-        ));
-    }
-
-    protected function applyOperatorTicketCategoriesAttached(Events\OperatorTicketCategoriesAttached $event): void
-    {
-    }
-
-    public function detachTicketCategories(Commands\DetachTicketCategories $command): static
-    {
-        return $this->recordThat(new Events\OperatorTicketCategoriesDetached(
-            uuid: $this->uuid(),
-            ticketCategoryUuids: $command->ticketCategoryUuids,
-        ));
-    }
-
-    protected function applyOperatorTicketCategoriesDetached(Events\OperatorTicketCategoriesDetached $event): void
-    {
-    }
 }

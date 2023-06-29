@@ -28,31 +28,18 @@ class OperatorTeamFactory extends Factory
      */
     public function definition(): array
     {
-        //$ticketCategoryUuids = TicketCategory::query()->pluck('uuid')->all();
+        $ticketCategoryUuids = TicketCategory::query()->pluck('uuid')->all();
 
         return [
             'uuid' => fake()->uuid(),
             'name' => Str::ucfirst(fake()->words(3, true)),
             'description' => fake()->sentence(),
-            /*'matching' => [
-                'categories' => fake()
-                    ->randomElements($ticketCategoryUuids, fake()->numberBetween(0, count($ticketCategoryUuids)))
-            ],*/
+            'matching' => [
+                'categories' => fake()->randomElements(
+                    $ticketCategoryUuids,
+                    fake()->optional(.9, 0)->numberBetween(1, count($ticketCategoryUuids))
+                )
+            ],
         ];
-    }
-
-    /**
-     * Configure the factory.
-     *
-     * @return $this
-     */
-    public function configure(): static
-    {
-        return $this->afterCreating(function (OperatorTeam $team) {
-            $ticketCategoryUuids = TicketCategory::query()->pluck('uuid')->all();
-            $team->ticketCategories()->sync(fake()->randomElements($ticketCategoryUuids,
-                fake()->optional(.9, 0)->numberBetween(1, count($ticketCategoryUuids))
-            ));
-        });
     }
 }

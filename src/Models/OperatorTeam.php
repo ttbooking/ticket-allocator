@@ -20,12 +20,11 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
  * @property non-empty-string $uuid
  * @property string $name
  * @property string $description
- * @property array|null $matching
+ * @property array<string, mixed>|null $matching
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Carbon|null $deleted_at
  * @property Collection<int, Operator> $operators
- * @property Collection<int, TicketCategory> $ticketCategories
  */
 class OperatorTeam extends Model
 {
@@ -58,14 +57,5 @@ class OperatorTeam extends Model
     {
         return $this->belongsToMany(Operator::class, 'ticket_allocator_team_operator', 'team_uuid', 'operator_uuid')
             ->using(TeamOperator::class);
-    }
-
-    /**
-     * @return BelongsToMany<TicketCategory>
-     */
-    public function ticketCategories(): BelongsToMany
-    {
-        return $this->belongsToMany(TicketCategory::class, 'ticket_allocator_team_category', 'team_uuid', 'category_uuid')
-            ->using(TeamCategory::class);
     }
 }

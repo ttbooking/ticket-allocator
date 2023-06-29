@@ -36,7 +36,6 @@ class OperatorTeamResource extends JsonResource
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
             'operators' => OperatorResource::collection($this->whenLoaded('operators')),
-            'ticket_categories' => TicketCategoryResource::collection($this->whenLoaded('ticketCategories')),
         ];
     }
 }

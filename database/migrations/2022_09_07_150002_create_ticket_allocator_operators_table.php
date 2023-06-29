@@ -22,7 +22,6 @@ return new class extends Migration
             $table->boolean('ready')->default(false);
             $table->unsignedInteger('ticket_limit')->nullable();
             $table->unsignedInteger('complexity_limit')->nullable();
-            $table->json('matching')->nullable();
 
             // calculated properties
             $table->unsignedInteger('bound_tickets')->default(0);
@@ -35,11 +34,6 @@ return new class extends Migration
             // timestamps
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
-
-            $table->rawIndex(
-                '(CAST(matching->"$.categories" AS CHAR(36) ARRAY))',
-                'ticket_allocator_operators_matching_categories_index'
-            );
         });
     }
 

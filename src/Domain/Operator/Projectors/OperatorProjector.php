@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TTBooking\TicketAllocator\Domain\Operator\Projectors;
 
-use Illuminate\Support\Facades\DB;
 use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
 use TTBooking\TicketAllocator\Domain\Operator\Events;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
@@ -84,23 +83,6 @@ class OperatorProjector extends Projector
     public function onOperatorSetTeams(Events\OperatorSetTeams $event): void
     {
         //Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
-    }
-
-    public function onOperatorTicketCategoriesAttached(Events\OperatorTicketCategoriesAttached $event): void
-    {
-        Operator::find($event->uuid)?->writeable()->ticketCategories()
-            ->syncWithPivotValues($event->ticketCategoryUuids, ['team_count' => DB::raw('team_count + 1')], false);
-    }
-
-    public function onOperatorTicketCategoriesDetached(Events\OperatorTicketCategoriesDetached $event): void
-    {
-        DB::transaction(function () use ($event) {
-            Operator::find($event->uuid)?->writeable()->ticketCategories()
-                ->syncWithPivotValues($event->ticketCategoryUuids, ['team_count' => DB::raw('team_count - 1')], false);
-
-            Operator::find($event->uuid)?->writeable()->ticketCategories()
-                ->wherePivot('team_count', 0)->detach($event->ticketCategoryUuids);
-        });
     }
 
     public function onTicketBound(TicketEvents\TicketBound $event): void

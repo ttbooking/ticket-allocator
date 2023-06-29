@@ -41,6 +41,10 @@ class MatchQuery
 
             // ... и операторов
             Operator::query()
+                ->select('o.*', 'tm.matching')
+                // с учётом команд, в которые он входит
+                ->join('ticket_allocator_team_operator as tmo', 'tmo.operator_uuid', 'o.uuid')
+                ->join('ticket_allocator_operator_teams as tm', 'tmo.team_uuid', 'tm.uuid')
                 // оператор онлайн и готов к работе
                 ->where('online', true)
                 ->where('ready', true)
@@ -67,15 +71,10 @@ class MatchQuery
                     ->whereNull('t.handler_uuid')
                     ->orWhereColumn('t.handler_uuid', '<>', 'o.uuid')
                 )
-                //->whereJsonContains('o.matching->categories', DB::raw('json_quote(t.category_uuid)'))
+                // оператору позволено работать с заданной категорией тикетов
+                ->whereJsonContains('o.matching->category', DB::raw('json_quote(t.category_uuid)'))
             )
 
-        )
-
-        // ... при том, что оператору позволено работать с заданной категорией тикетов
-        ->join('ticket_allocator_operator_category as otc', static fn (JoinClause $join) => $join
-            ->on('otc.operator_uuid', 'o.uuid')
-            ->on('otc.category_uuid', 't.category_uuid')
         )
 
         // взять первую пару

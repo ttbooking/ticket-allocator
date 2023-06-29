@@ -9,10 +9,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use TTBooking\TicketAllocator\Database\Factories\TicketCategoryFactory;
-use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 
 /**
@@ -23,8 +21,6 @@ use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
  * @property string $short
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Collection<int, OperatorTeam> $operatorTeams
- * @property Collection<int, Operator> $operators
  * @property Collection<int, Ticket> $tickets
  */
 class TicketCategory extends Model
@@ -47,24 +43,6 @@ class TicketCategory extends Model
     protected static function newFactory(): TicketCategoryFactory
     {
         return TicketCategoryFactory::new();
-    }
-
-    /**
-     * @return BelongsToMany<OperatorTeam>
-     */
-    public function operatorTeams(): BelongsToMany
-    {
-        return $this->belongsToMany(OperatorTeam::class, 'ticket_allocator_team_category', 'category_uuid', 'team_uuid')
-            ->using(TeamCategory::class);
-    }
-
-    /**
-     * @return BelongsToMany<Operator>
-     */
-    public function operators(): BelongsToMany
-    {
-        return $this->belongsToMany(Operator::class, 'ticket_allocator_operator_category', 'category_uuid', 'operator_uuid')
-            ->withPivot('team_count');
     }
 
     /**

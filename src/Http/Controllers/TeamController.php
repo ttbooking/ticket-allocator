@@ -15,9 +15,7 @@ use TTBooking\TicketAllocator\Http\Requests\StoreOperatorTeamRequest;
 use TTBooking\TicketAllocator\Http\Requests\UpdateOperatorTeamRequest;
 use TTBooking\TicketAllocator\Http\Resources\OperatorResource;
 use TTBooking\TicketAllocator\Http\Resources\OperatorTeamResource;
-use TTBooking\TicketAllocator\Http\Resources\TicketCategoryResource;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
-use TTBooking\TicketAllocator\Models\TicketCategory;
 use TTBooking\TicketAllocator\TicketAllocator;
 
 class TeamController extends Controller
@@ -38,13 +36,12 @@ class TeamController extends Controller
     public function create(): InertiaResponse
     {
         $operators = OperatorResource::collection(Operator::all())->resolve();
-        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
         $matchers = TicketAllocator::matchers()->mapWithKeys(
             /** @param class-string<MatcherContract> $matcher */
             static fn (string $matcher, string $alias) => [$alias => $matcher::getProps()]
         );
 
-        return Inertia::render('OperatorTeam/CreateEdit', compact('operators', 'ticketCategories', 'matchers'));
+        return Inertia::render('OperatorTeam/CreateEdit', compact('operators', 'matchers'));
     }
 
     /**
@@ -56,7 +53,6 @@ class TeamController extends Controller
         $team = OperatorTeam::query()->create($request->safe(['name', 'description', 'matching']));
         $request->validated('active') ? $team->restore() : $team->delete();
         $team->operators()->sync($request->validated('operators'));
-        $team->ticketCategories()->sync($request->validated('ticket_categories'));
 
         return Response::redirectToRoute('ticket-allocator.teams.index', status: 303);
     }
@@ -66,7 +62,7 @@ class TeamController extends Controller
      */
     public function show(OperatorTeam $team): InertiaResponse
     {
-        $team = new OperatorTeamResource($team->load('operators', 'ticketCategories'));
+        $team = new OperatorTeamResource($team->load('operators'));
 
         return Inertia::render('OperatorTeam/Show', compact('team'));
     }
@@ -76,15 +72,14 @@ class TeamController extends Controller
      */
     public function edit(OperatorTeam $team): InertiaResponse
     {
-        $team = new OperatorTeamResource($team->load('operators', 'ticketCategories'));
+        $team = new OperatorTeamResource($team->load('operators'));
         $operators = OperatorResource::collection(Operator::all())->resolve();
-        $ticketCategories = TicketCategoryResource::collection(TicketCategory::all())->resolve();
         $matchers = TicketAllocator::matchers()->mapWithKeys(
             /** @param class-string<MatcherContract> $matcher */
             static fn (string $matcher, string $alias) => [$alias => $matcher::getProps()]
         );
 
-        return Inertia::render('OperatorTeam/CreateEdit', compact('team', 'operators', 'ticketCategories', 'matchers'));
+        return Inertia::render('OperatorTeam/CreateEdit', compact('team', 'operators', 'matchers'));
     }
 
     /**
@@ -100,10 +95,6 @@ class TeamController extends Controller
 
         if (! is_null($operators = $request->validated('operators'))) {
             $team->operators()->sync($operators);
-        }
-
-        if (! is_null($ticketCategories = $request->validated('ticket_categories'))) {
-            $team->ticketCategories()->sync($ticketCategories);
         }
 
         return Response::redirectToRoute('ticket-allocator.teams.index', status: 303);

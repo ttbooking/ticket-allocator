@@ -54,7 +54,6 @@ export interface OperatorTeam {
     updated_at: string;
     deleted_at: string | null;
     operators: Operator[];
-    ticket_categories: TicketCategory[];
 }
 
 export interface Entry {

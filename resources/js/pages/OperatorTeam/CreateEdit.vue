@@ -52,22 +52,6 @@
                             />
                         </v-col>
                     </v-row>
-                    <v-row>
-                        <v-col cols="12" md="12">
-                            <v-autocomplete
-                                v-model="form.ticket_categories"
-                                multiple
-                                clearable
-                                chips
-                                closable-chips
-                                :label="$t('ticket_categories')"
-                                :items="ticketCategories"
-                                item-title="name"
-                                item-value="uuid"
-                                :error-messages="errors.ticket_categories"
-                            />
-                        </v-col>
-                    </v-row>
                     <v-row v-for="(items, matcher) in matchers" :key="matcher">
                         <v-col cols="12" md="12">
                             <v-autocomplete
@@ -99,13 +83,12 @@
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head, useForm } from "@inertiajs/vue3";
-import type { OperatorTeam, Operator, TicketCategory } from "@/types";
+import type { OperatorTeam, Operator } from "@/types";
 import route from "ziggy-js";
 
 const props = defineProps<{
     team?: OperatorTeam;
     operators: Operator[];
-    ticketCategories: TicketCategory[];
     matchers: Record<string, Record<string | number, string>>;
     errors: Record<string, string>;
 }>();
@@ -115,7 +98,6 @@ const form = useForm({
     name: props.team?.name ?? "",
     description: props.team?.description ?? "",
     operators: props.team?.operators.map((operator) => operator.uuid) ?? [],
-    ticket_categories: props.team?.ticket_categories.map((category) => category.uuid) ?? [],
     matching: props.team?.matching ?? {},
 });
 
