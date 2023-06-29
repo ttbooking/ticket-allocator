@@ -2328,13 +2328,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"laravel-vue-i18n@npm:^2.5.2":
-  version: 2.5.2
-  resolution: "laravel-vue-i18n@npm:2.5.2"
+"laravel-vue-i18n@npm:^2.6.1":
+  version: 2.6.1
+  resolution: "laravel-vue-i18n@npm:2.6.1"
   dependencies:
     php-parser: 3.1.3
     vue: ^3.2.45
-  checksum: 40ff129fe6564a0bae88c31512b097d4d17c5707a3b31f6bc2a9c523ee12d3dd67426f544c1380b91452bf674707e05e39c28452239998616ea4e17012bf507d
+  checksum: 04b62ffeec4b3ffdf669753555f24492f04850960fbb6e6998dbb008425582ff0e4bee4fcae2d6717fb616c50b0972c558e9a57f6444296137896c974ebe2bc4
   languageName: node
   linkType: hard
 
@@ -3308,7 +3308,7 @@ __metadata:
     eslint-plugin-vue: ^9.15.1
     laravel-echo: ^1.15.1
     laravel-vite-plugin: ^0.7.8
-    laravel-vue-i18n: ^2.5.2
+    laravel-vue-i18n: ^2.6.1
     lodash: ^4.17.21
     markdown-it: ^13.0.1
     pinia: ^2.1.4
@@ -3318,7 +3318,7 @@ __metadata:
     roboto-fontface: "*"
     sass: ^1.63.6
     tailwindcss: ^3.3.2
-    typescript: ^5.1.5
+    typescript: ^5.1.6
     vite: ^4.3.9
     vite-plugin-vuetify: ^1.0.2
     vue: ^3.3.4
@@ -3704,23 +3704,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.1.5":
-  version: 5.1.5
-  resolution: "typescript@npm:5.1.5"
+"typescript@npm:^5.1.6":
+  version: 5.1.6
+  resolution: "typescript@npm:5.1.6"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 0eef8699e05ae767096924dbed633c340b4d36e953bb8ed87fb12e9dd9dcea5055ceac7182c614a556dbd346a8a82df799d330e1e286ae66e17c84e1710f6a6f
+  checksum: b2f2c35096035fe1f5facd1e38922ccb8558996331405eb00a5111cc948b2e733163cc22fab5db46992aba7dd520fff637f2c1df4996ff0e134e77d3249a7350
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.1.5#~builtin<compat/typescript>":
-  version: 5.1.5
-  resolution: "typescript@patch:typescript@npm%3A5.1.5#~builtin<compat/typescript>::version=5.1.5&hash=5da071"
+"typescript@patch:typescript@^5.1.6#~builtin<compat/typescript>":
+  version: 5.1.6
+  resolution: "typescript@patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 12ff5d14888805f24479e54bc8a3f83647107a6345f6c29dffcd429fb345be55f584a37e262cca58a0105203e41d4cb4e31b1b9096c9abeca0e2ace8eb00935e
+  checksum: f53bfe97f7c8b2b6d23cf572750d4e7d1e0c5fff1c36d859d0ec84556a827b8785077bc27676bf7e71fae538e517c3ecc0f37e7f593be913d884805d931bc8be
   languageName: node
   linkType: hard
 
