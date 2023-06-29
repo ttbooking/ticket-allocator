@@ -37,9 +37,6 @@ class TicketCategory extends Model
 
     protected $fillable = ['uuid', 'name', 'short'];
 
-    /** @var string[] */
-    protected $touches = ['operatorTeams'];
-
     protected static function newFactory(): TicketCategoryFactory
     {
         return TicketCategoryFactory::new();
