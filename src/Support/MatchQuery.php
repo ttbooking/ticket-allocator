@@ -42,7 +42,8 @@ class MatchQuery
             // ... и операторов
             Operator::query()
                 ->select('o.*', 'tm.matching')
-                // с учётом команд, в которые он входит
+                ->from('ticket_allocator_operators', 'o')
+                // с учётом команд, в которые они входят
                 ->join('ticket_allocator_team_operator as tmo', 'tmo.operator_uuid', 'o.uuid')
                 ->join('ticket_allocator_operator_teams as tm', 'tmo.team_uuid', 'tm.uuid')
                 // оператор онлайн и готов к работе
