@@ -89,7 +89,7 @@ import route from "ziggy-js";
 const props = defineProps<{
     team?: OperatorTeam;
     operators: Operator[];
-    matchers: Record<string, Record<string | number, string>>;
+    matchers: Record<string, Record<string, string | number>>;
     errors: Record<string, string>;
 }>();
 
@@ -101,7 +101,7 @@ const form = useForm({
     matching: props.team?.matching ?? {},
 });
 
-const itemify = (items: object) => Object.entries(items).map(([value, title]) => ({ title, value }));
+const itemify = (items: object) => Object.entries(items).map(([title, value]) => ({ title, value }));
 
 function submit() {
     props.team

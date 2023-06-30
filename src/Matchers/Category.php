@@ -15,7 +15,7 @@ class Category extends Matcher
         return TicketCategory::query()
             ->select(['uuid', 'name'])
             ->orderBy('name')
-            ->pluck('name', 'uuid')
+            ->pluck('uuid', 'name')
             ->all();
     }
 

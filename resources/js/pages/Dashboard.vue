@@ -94,7 +94,7 @@ const props = defineProps<{
     tickets: Ticket[];
     ticketCategories: TicketCategory[];
     factors: Record<string, Factor>;
-    matchers: Record<string, Record<string | number, string>>;
+    matchers: Record<string, Record<string, string | number>>;
 }>();
 
 const options = useSharedOptions();
@@ -189,7 +189,7 @@ onUnmounted(() => {
     removeSuccessEventListener();
 });
 
-const itemify = (items: object) => Object.entries(items).map(([value, title]) => ({ title, value }));
+const itemify = (items: object) => Object.entries(items).map(([title, value]) => ({ title, value }));
 </script>
 
 <style scoped>

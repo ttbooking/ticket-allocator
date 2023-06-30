@@ -74,6 +74,8 @@ class MatchQuery
                 )
                 // оператору позволено работать с заданной категорией тикетов
                 ->whereJsonContains('o.matching->category', DB::raw('json_quote(t.category_uuid)'))
+                //->whereJsonContains('o.matching->agency', DB::raw('t.meta->"$.agency"'))
+                //->whereJsonContains('o.matching->product', DB::raw('t.meta->"$.product"'))
             )
 
         )
