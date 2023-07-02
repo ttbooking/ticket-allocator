@@ -49,7 +49,7 @@ export interface OperatorTeam {
     uuid: string;
     name: string;
     description: string | null;
-    matching: Record<string, Array<string | number>> | null;
+    matching: Record<string, Array<string | number>> | Array | null;
     created_at: string;
     updated_at: string;
     deleted_at: string | null;

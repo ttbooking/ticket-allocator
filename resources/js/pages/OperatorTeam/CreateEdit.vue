@@ -55,7 +55,6 @@
                     <v-row v-for="(items, matcher) in matchers" :key="matcher">
                         <v-col cols="12" md="12">
                             <v-autocomplete
-                                v-model="form.matching[matcher]"
                                 multiple
                                 clearable
                                 chips
@@ -63,6 +62,8 @@
                                 :label="$t(matcher)"
                                 :items="itemify(items)"
                                 :error-messages="errors[matcher]"
+                                :model-value="form.matching[matcher]"
+                                @update:model-value="form.matching[matcher] = $event.length ? $event : undefined"
                             />
                         </v-col>
                     </v-row>
@@ -98,7 +99,7 @@ const form = useForm({
     name: props.team?.name ?? "",
     description: props.team?.description ?? "",
     operators: props.team?.operators.map((operator) => operator.uuid) ?? [],
-    matching: props.team?.matching ?? {},
+    matching: Array.isArray(props.team?.matching) ? {} : props.team?.matching ?? {},
 });
 
 const itemify = (items: object) => Object.entries(items).map(([title, value]) => ({ title, value }));
