@@ -112,6 +112,17 @@ class OperatorProjector extends Projector
         $operator->decrement('total_complexity', $ticket->complexity);
     }
 
+    public function onTicketClosed(TicketEvents\TicketClosed $event): void
+    {
+        $ticket = Ticket::find($event->uuid);
+        if (! $operator = $ticket?->operator?->writeable()) {
+            return;
+        }
+
+        $operator->decrement('bound_tickets');
+        $operator->decrement('total_complexity', $ticket->complexity);
+    }
+
     public function onTicketComplexityIncremented(TicketEvents\TicketComplexityIncremented $event): void
     {
         Ticket::find($event->uuid)?->operator?->writeable()->increment('total_complexity', $event->complexityPoints);
