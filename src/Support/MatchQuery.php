@@ -73,9 +73,20 @@ class MatchQuery
                     ->orWhereColumn('t.handler_uuid', '<>', 'o.uuid')
                 )
                 // оператору позволено работать с заданной категорией тикетов
-                ->whereJsonContains('o.matching->category', DB::raw('json_quote(t.category_uuid)'))
-                //->whereJsonContains('o.matching->agency', DB::raw('t.meta->"$.agency"'))
-                //->whereJsonContains('o.matching->product', DB::raw('t.meta->"$.product"'))
+                ->where(static fn (Builder $query) => $query
+                    ->whereJsonDoesntContainKey('o.matching->category')
+                    ->orWhereJsonContains('o.matching->category', DB::raw('json_quote(t.category_uuid)'))
+                )
+                // оператору позволено работать с заданным агентством
+                ->where(static fn (Builder $query) => $query
+                    ->whereJsonDoesntContainKey('o.matching->agency')
+                    ->orWhereJsonContains('o.matching->agency', DB::raw('t.meta->"$.agency"'))
+                )
+                // оператору позволено работать с заданным продуктом
+                ->where(static fn (Builder $query) => $query
+                    ->whereJsonDoesntContainKey('o.matching->product')
+                    ->orWhereJsonContains('o.matching->product', DB::raw('t.meta->"$.product"'))
+                )
             )
 
         )

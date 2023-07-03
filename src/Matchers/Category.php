@@ -21,6 +21,8 @@ class Category extends Matcher
 
     public static function qualify(Builder $query): Builder
     {
-        return $query->whereJsonContains('o.matching->categories', DB::raw('json_quote(t.category_uuid)'));
+        return $query
+            ->whereJsonDoesntContainKey('o.matching->categories')
+            ->orWhereJsonContains('o.matching->categories', DB::raw('json_quote(t.category_uuid)'));
     }
 }
