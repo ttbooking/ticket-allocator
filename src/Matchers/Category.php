@@ -10,7 +10,7 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class Category extends Matcher
 {
-    public static function getProps(): array
+    public function getProps(): array
     {
         return TicketCategory::query()
             ->select(['uuid', 'name'])
@@ -19,7 +19,7 @@ class Category extends Matcher
             ->all();
     }
 
-    public static function qualify(Builder $query): Builder
+    public function qualify(Builder $query): Builder
     {
         return $query
             ->whereJsonDoesntContainKey('o.matching->categories')

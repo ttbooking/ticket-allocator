@@ -10,6 +10,7 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
+use TTBooking\TicketAllocator\TicketAllocator;
 
 class MatchQuery
 {
@@ -75,21 +76,10 @@ class MatchQuery
                     ->whereNull('t.handler_uuid')
                     ->orWhereColumn('t.handler_uuid', '<>', 'o.uuid')
                 )
-                // оператору позволено работать с заданной категорией тикетов
-                ->where(static fn (Builder $query) => $query
-                    ->whereJsonDoesntContainKey('o.matching->category')
-                    ->orWhereJsonContains('o.matching->category', DB::raw('json_quote(t.category_uuid)'))
-                )
-                // оператору позволено работать с заданным агентством
-                ->where(static fn (Builder $query) => $query
-                    ->whereJsonDoesntContainKey('o.matching->agency')
-                    ->orWhereJsonContains('o.matching->agency', DB::raw('t.meta->"$.agency"'))
-                )
-                // оператору позволено работать с заданным продуктом
-                ->where(static fn (Builder $query) => $query
-                    ->whereJsonDoesntContainKey('o.matching->product')
-                    ->orWhereJsonContains('o.matching->product', DB::raw('t.meta->"$.product"'))
-                )
+                // тикет удовлетворяет всем правилам матчинга команды
+                ->tap(static fn (Builder $query) => TicketAllocator::matchers()->each(static fn (string $matcher) =>
+                    $query->where(static fn (Builder $query) => app($matcher)->qualify($query))
+                ))
             )
 
         )

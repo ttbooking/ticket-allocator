@@ -38,7 +38,7 @@ abstract class Matcher implements MatcherContract
         return (bool) self::attribute(Attributes\Excluded::class, true);
     }
 
-    public static function getProps(): array
+    public function getProps(): array
     {
         return [];
     }
