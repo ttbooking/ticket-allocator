@@ -39,7 +39,7 @@ class TeamController extends Controller
         $operators = OperatorResource::collection(Operator::all())->resolve();
         $matchers = TicketAllocator::matchers()->mapWithKeys(
             /** @param class-string<MatcherContract> $matcher */
-            static fn (string $matcher, string $alias) => [Str::plural($alias) => $matcher::getProps()]
+            static fn (string $matcher, string $alias) => [Str::plural($alias) => app($matcher)->getProps()]
         );
 
         return Inertia::render('OperatorTeam/CreateEdit', compact('operators', 'matchers'));
@@ -77,7 +77,7 @@ class TeamController extends Controller
         $operators = OperatorResource::collection(Operator::all())->resolve();
         $matchers = TicketAllocator::matchers()->mapWithKeys(
             /** @param class-string<MatcherContract> $matcher */
-            static fn (string $matcher, string $alias) => [Str::plural($alias) => $matcher::getProps()]
+            static fn (string $matcher, string $alias) => [Str::plural($alias) => app($matcher)->getProps()]
         );
 
         return Inertia::render('OperatorTeam/CreateEdit', compact('team', 'operators', 'matchers'));

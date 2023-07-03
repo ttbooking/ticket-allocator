@@ -37,7 +37,7 @@ class DashboardController extends Controller
         )->resolve();
         $matchers = TicketAllocator::matchers()->mapWithKeys(
             /** @param class-string<MatcherContract> $matcher */
-            static fn (string $matcher, string $alias) => [Str::plural($alias) => $matcher::getProps()]
+            static fn (string $matcher, string $alias) => [Str::plural($alias) => app($matcher)->getProps()]
         );
 
         return Inertia::render('Dashboard', compact('operators', 'tickets', 'ticketCategories', 'factors', 'matchers'));
