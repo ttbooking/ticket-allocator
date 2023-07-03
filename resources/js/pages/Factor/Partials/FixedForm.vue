@@ -1,19 +1,43 @@
 <template>
     <v-row>
         <v-col cols="2">
-            <v-text-field v-model="config.initial_weight" :label="$t('initial_weight')" />
+            <v-text-field
+                v-model.number="config.initial_weight"
+                type="number"
+                min="0"
+                max="9999999"
+                :label="$t('initial_weight')"
+            />
         </v-col>
         <v-col cols="2">
-            <v-text-field v-model="config.weight_increment" :label="$t('weight_increment')" />
+            <v-text-field
+                v-model.number="config.weight_increment"
+                type="number"
+                min="0"
+                max="99999"
+                :label="$t('weight_increment')"
+            />
         </v-col>
         <v-col cols="2">
-            <v-text-field v-model="config.complexity" :label="$t('complexity')" />
+            <v-text-field
+                v-model.number="config.complexity"
+                type="number"
+                min="0"
+                max="9999"
+                :label="$t('complexity')"
+            />
         </v-col>
         <v-col cols="2">
-            <v-text-field v-model="config.delay" :label="$t('delay_sec')" />
+            <v-text-field v-model.number="config.delay" type="number" min="0" max="99999" :label="$t('delay_sec')" />
         </v-col>
         <v-col cols="2">
-            <v-text-field v-model="config.reservation" :label="$t('reservation_sec')" />
+            <v-text-field
+                v-model.number="config.reservation"
+                type="number"
+                min="0"
+                max="99999"
+                :label="$t('reservation_sec')"
+            />
         </v-col>
     </v-row>
 </template>
