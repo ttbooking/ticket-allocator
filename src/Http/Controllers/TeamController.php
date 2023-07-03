@@ -7,6 +7,7 @@ namespace TTBooking\TicketAllocator\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 use TTBooking\TicketAllocator\Contracts\Matcher as MatcherContract;
@@ -38,7 +39,7 @@ class TeamController extends Controller
         $operators = OperatorResource::collection(Operator::all())->resolve();
         $matchers = TicketAllocator::matchers()->mapWithKeys(
             /** @param class-string<MatcherContract> $matcher */
-            static fn (string $matcher, string $alias) => [$alias => $matcher::getProps()]
+            static fn (string $matcher, string $alias) => [Str::plural($alias) => $matcher::getProps()]
         );
 
         return Inertia::render('OperatorTeam/CreateEdit', compact('operators', 'matchers'));
@@ -76,7 +77,7 @@ class TeamController extends Controller
         $operators = OperatorResource::collection(Operator::all())->resolve();
         $matchers = TicketAllocator::matchers()->mapWithKeys(
             /** @param class-string<MatcherContract> $matcher */
-            static fn (string $matcher, string $alias) => [$alias => $matcher::getProps()]
+            static fn (string $matcher, string $alias) => [Str::plural($alias) => $matcher::getProps()]
         );
 
         return Inertia::render('OperatorTeam/CreateEdit', compact('team', 'operators', 'matchers'));
