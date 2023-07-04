@@ -27,4 +27,14 @@ class Triage implements ShouldQueue
             $bindTicket($pair['ticket_uuid'], $pair['operator_uuid'], [Ticket::META_TRIAGE => true]);
         }
     }
+
+    /**
+     * Get the tags that should be assigned to the job.
+     *
+     * @return string[]
+     */
+    public function tags(): array
+    {
+        return ['ticket-allocator', 'ticket-allocator:triage'];
+    }
 }
