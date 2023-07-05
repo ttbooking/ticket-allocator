@@ -132,7 +132,7 @@ const headers = computed(() => [
 
 function getEntries(uuid?: string) {
     return props.entries.filter(
-        (entry) => entry.uuid === uuid || !config.value.map((item) => item.value).includes(entry.uuid)
+        (entry) => entry.uuid === uuid || !config.value.map((item) => item.value).includes(entry.uuid),
     );
 }
 

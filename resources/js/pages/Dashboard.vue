@@ -125,18 +125,18 @@ const sortedOperators = computed(() =>
             })
             .whereHas("tickets")
             .orWhere((operator: OperatorModel) => !options.hideEmpty && operator.online)
-            .get()
+            .get(),
     ).sortBy([
         ["online", "desc"],
         ["ready", "desc"],
         ["free_slots", "desc"],
         ["ticket_count", "asc"],
         ["name", "asc"],
-    ])
+    ]),
 );
 
 const sortedTickets = computed(() =>
-    ticketRepo.value.unbound().with("category").where("meta", metaFilter).orderBy(mode.value, "desc").get()
+    ticketRepo.value.unbound().with("category").where("meta", metaFilter).orderBy(mode.value, "desc").get(),
 );
 
 const api = useSupervisorApi();
@@ -149,7 +149,7 @@ const { isOverDropZone } = useDropZone(
         if (!uuid) throw new Error("Ticket UUID undefined.");
         return await api.close(uuid);
     },
-    false
+    false,
 );
 
 onMounted(() => {

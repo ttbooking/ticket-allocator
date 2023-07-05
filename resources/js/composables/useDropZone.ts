@@ -10,7 +10,7 @@ export type DataDropHandler = (arg: DataTransfer | null) => void;
 export function useDropZone(
     target: MaybeRefOrGetter<HTMLElement | null | undefined>,
     onDrop?: DataDropHandler,
-    filesOnly = true
+    filesOnly = true,
 ) {
     const isOverDropZone = ref(false);
     let counter = 0;

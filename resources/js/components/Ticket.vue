@@ -159,28 +159,28 @@ const acceptedAt = computed(() => (props.ticket.accepted_at ? dayjs(props.ticket
 const createdAtInfo = computed(() => `${createdAt.value.format("lll")} (${createdAt.value.fromNow()})`);
 
 const delayedUntilInfo = computed(
-    () => `${delayedUntil.value.format("lll")} (${trans("time_left", { time: delayedUntil.value.fromNow(true) })})`
+    () => `${delayedUntil.value.format("lll")} (${trans("time_left", { time: delayedUntil.value.fromNow(true) })})`,
 );
 
 const boundAtInfo = computed(() =>
-    boundAt.value ? `${boundAt.value!.format("lll")} (${boundAt.value!.fromNow()})` : null
+    boundAt.value ? `${boundAt.value!.format("lll")} (${boundAt.value!.fromNow()})` : null,
 );
 
 const reservedUntilInfo = computed(() =>
     reservedUntil.value
         ? `${reservedUntil.value!.format("lll")} (${trans("time_left", { time: reservedUntil.value!.fromNow(true) })})`
-        : null
+        : null,
 );
 
 const acceptedAtInfo = computed(() =>
-    acceptedAt.value ? `${acceptedAt.value!.format("lll")} (${acceptedAt.value!.fromNow()})` : null
+    acceptedAt.value ? `${acceptedAt.value!.format("lll")} (${acceptedAt.value!.fromNow()})` : null,
 );
 
 const currentWeightInfo = computed(
     () =>
         `${compact(props.ticket.weight)} (${trans("increment_per_second", {
             units: props.ticket.weight_increment.toString(),
-        })})`
+        })})`,
 );
 
 const threshold = computed(() => config.value[`${mode.value}_threshold`]);

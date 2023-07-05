@@ -26,6 +26,11 @@ export default createVuetify({
             },
         },
     },
+    defaults: {
+        global: {
+            transition: "scale-transition",
+        },
+    },
     locale: {
         messages: { en, ru },
     },

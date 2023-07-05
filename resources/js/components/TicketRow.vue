@@ -57,7 +57,7 @@ const { isOverDropZone } = useDropZone(
         const operatorUuid = ticketRow.value?.dataset.uuid;
         return await api.handler(uuid, operatorUuid);
     },
-    false
+    false,
 );
 </script>
 

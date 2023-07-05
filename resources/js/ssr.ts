@@ -43,5 +43,5 @@ createServer((page) =>
                 .component("v-btn-ex", VBtnEx)
                 .provide("resolveComponent", props.resolveComponent);
         },
-    })
+    }),
 );

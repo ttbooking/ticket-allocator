@@ -6,7 +6,7 @@ export type DragStartHandler = (element: HTMLElement, dataTransfer: DataTransfer
 
 export function useDragAndDrop(
     target: MaybeRefOrGetter<HTMLElement | null | undefined>,
-    onDragStart?: DragStartHandler | string
+    onDragStart?: DragStartHandler | string,
 ) {
     const element = ref<HTMLElement | null | undefined>();
 

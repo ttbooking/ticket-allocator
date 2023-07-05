@@ -18,7 +18,7 @@ export const useSharedOptions = createSharedComposable(() => {
 });
 
 export const useSharedDisplayMode = createSharedComposable(() =>
-    useLocalStorage<TicketSortBy>("ticket-allocator.display-mode", "weight")
+    useLocalStorage<TicketSortBy>("ticket-allocator.display-mode", "weight"),
 );
 
 export const useSharedTimestamp = createSharedComposable(() => useTimestamp({ interval: 1000 }));
