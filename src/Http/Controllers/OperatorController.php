@@ -43,7 +43,7 @@ class OperatorController extends Controller
         $userQuery = $userClass::eligibleToProcessTickets()->doesntHave('operator');
 
         $users = UserResource::collection($userQuery->get(['id', 'name']))->resolve();
-        $teams = OperatorTeamResource::collection(OperatorTeam::all())->resolve();
+        $teams = OperatorTeamResource::collection(OperatorTeam::withTrashed()->get())->resolve();
 
         return Inertia::render('Operator/CreateEdit', compact('users', 'teams'));
     }
@@ -84,7 +84,7 @@ class OperatorController extends Controller
     public function edit(Operator $operator): InertiaResponse
     {
         $operator = new OperatorResource($operator->load('user', 'teams'));
-        $teams = OperatorTeamResource::collection(OperatorTeam::all())->resolve();
+        $teams = OperatorTeamResource::collection(OperatorTeam::withTrashed()->get())->resolve();
 
         return Inertia::render('Operator/CreateEdit', compact('operator', 'teams'));
     }

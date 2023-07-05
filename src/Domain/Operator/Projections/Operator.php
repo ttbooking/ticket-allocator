@@ -93,7 +93,7 @@ class Operator extends Projection
     protected function operatorTeams(): BelongsToMany
     {
         return $this->belongsToMany(OperatorTeam::class, 'ticket_allocator_team_operator', 'operator_uuid', 'team_uuid')
-            ->using(TeamOperator::class);
+            ->using(TeamOperator::class)->withTrashed();
     }
 
     /**
