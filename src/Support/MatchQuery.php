@@ -25,10 +25,11 @@ class MatchQuery
 
             // из подмножества тикетов...
             Ticket::query()
-                // тикет не закреплён либо время резервации вышло
+                // тикет не закреплён, резервация не ограничена по времени либо время резервации вышло
                 ->where(static fn (EloquentBuilder $query) => $query
                     ->whereNull('handler_uuid')
                     ->orWhereNull('accepted_at')
+                    ->whereNotNull('reserved_until')
                     ->where('reserved_until', '<=', DB::raw('NOW()'))
                 )
                 // тикет не задержан либо время задержки вышло
@@ -84,9 +85,10 @@ class MatchQuery
 
         )
 
-        // в порядке убывания веса
+        // в порядке убывания веса заявки
         ->orderByRaw('t.initial_weight + TIMESTAMPDIFF(SECOND, t.created_at, NOW()) * t.weight_increment DESC')
-        // в порядке убывания числа свободных слотов и единиц сложности
+
+        // в порядке убывания числа свободных слотов и единиц сложности оператора
         ->orderByDesc('o.free_slots')
         ->orderByDesc('o.free_complexity')
 

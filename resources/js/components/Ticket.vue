@@ -150,9 +150,11 @@ const delayedUntil = computed(() => createdAt.value.add(delay.value));
 
 const boundAt = computed(() => (props.ticket.bound_at ? dayjs(props.ticket.bound_at) : null));
 
-const reservation = computed(() => dayjs.duration(props.ticket.reservation, "s"));
+const reservation = computed(() => (props.ticket.reservation ? dayjs.duration(props.ticket.reservation, "s") : null));
 
-const reservedUntil = computed(() => (boundAt.value ? boundAt.value!.add(reservation.value) : null));
+const reservedUntil = computed(() =>
+    boundAt.value && reservation.value ? boundAt.value!.add(reservation.value!) : null,
+);
 
 const acceptedAt = computed(() => (props.ticket.accepted_at ? dayjs(props.ticket.accepted_at) : null));
 
