@@ -28,6 +28,7 @@ class Triage implements ShouldQueue
         $query = MatchQuery::make();
 
         while (! is_null($pair = $bench->measure('Query', static fn () => $query->first()))) {
+            $duplicates[$pair['ticket_uuid']] ??= 0;
             $duplicates[$pair['ticket_uuid']]++;
 
             $bench->measure('Binding',
