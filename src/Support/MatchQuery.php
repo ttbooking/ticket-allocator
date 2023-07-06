@@ -32,9 +32,9 @@ class MatchQuery
                     ->where('reserved_until', '<=', DB::raw('NOW()'))
                 )
                 // тикет не задержан либо время задержки вышло
-                ->where('delayed_until', '<=', DB::raw('NOW()'))
+                ->where('delayed_until', '<=', DB::raw('NOW()')),
                 // в порядке убывания веса
-                ->orderByRaw('initial_weight + TIMESTAMPDIFF(SECOND, created_at, NOW()) * weight_increment DESC'),
+                //->orderByRaw('initial_weight + TIMESTAMPDIFF(SECOND, created_at, NOW()) * weight_increment DESC'),
 
             't'
 
@@ -57,10 +57,10 @@ class MatchQuery
                 ->where(static fn (EloquentBuilder $query) => $query
                     ->whereNull('free_slots')
                     ->orWhere('free_slots', '>', 0)
-                )
+                ),
                 // в порядке убывания числа свободных слотов и единиц сложности
-                ->orderByDesc('free_slots')
-                ->orderByDesc('free_complexity'),
+                //->orderByDesc('free_slots')
+                //->orderByDesc('free_complexity'),
 
             'o',
 
@@ -83,6 +83,12 @@ class MatchQuery
             )
 
         )
+
+        // в порядке убывания веса
+        ->orderByRaw('t.initial_weight + TIMESTAMPDIFF(SECOND, t.created_at, NOW()) * t.weight_increment DESC')
+        // в порядке убывания числа свободных слотов и единиц сложности
+        ->orderByDesc('o.free_slots')
+        ->orderByDesc('o.free_complexity')
 
         // взять первую пару
         ->take(1);
