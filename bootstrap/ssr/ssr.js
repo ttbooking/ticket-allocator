@@ -3,7 +3,7 @@ import "dayjs/locale/ru.js";
 import duration from "dayjs/plugin/duration.js";
 import LocalizedFormat from "dayjs/plugin/localizedFormat.js";
 import RelativeTime from "dayjs/plugin/relativeTime.js";
-import { computed, watch, onScopeDispose, effectScope, Fragment, reactive, watchEffect, toRefs, capitalize, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, inject as inject$1, unref, provide, shallowRef, createVNode, mergeProps, toRaw, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, Teleport, cloneVNode, createTextVNode, withModifiers, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
+import { computed, watch, onScopeDispose, effectScope, Fragment, reactive, watchEffect, toRefs, capitalize, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, inject as inject$1, unref, provide, shallowRef, createVNode, mergeProps, toRaw, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, Teleport, cloneVNode, createTextVNode, withModifiers, toValue, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
 import { usePage, router, createInertiaApp } from "@inertiajs/vue3";
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
@@ -1437,8 +1437,9 @@ getUid.reset = () => {
   _map = /* @__PURE__ */ new WeakMap();
 };
 function getScrollParent(el) {
+  let includeHidden = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : false;
   while (el) {
-    if (hasScrollbar(el))
+    if (includeHidden ? isPotentiallyScrollable(el) : hasScrollbar(el))
       return el;
     el = el.parentElement;
   }
@@ -1462,6 +1463,12 @@ function hasScrollbar(el) {
     return false;
   const style = window.getComputedStyle(el);
   return style.overflowY === "scroll" || style.overflowY === "auto" && el.scrollHeight > el.clientHeight;
+}
+function isPotentiallyScrollable(el) {
+  if (!el || el.nodeType !== Node.ELEMENT_NODE)
+    return false;
+  const style = window.getComputedStyle(el);
+  return ["scroll", "auto"].includes(style.overflowY);
 }
 const IN_BROWSER = typeof window !== "undefined";
 const SUPPORTS_INTERSECTION = IN_BROWSER && "IntersectionObserver" in window;
@@ -3037,6 +3044,7 @@ function createDate(options) {
   }, options);
 }
 function useResizeObserver(callback) {
+  let box = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "content";
   const resizeRef = ref();
   const contentRect = ref();
   if (IN_BROWSER) {
@@ -3044,7 +3052,11 @@ function useResizeObserver(callback) {
       callback == null ? void 0 : callback(entries2, observer);
       if (!entries2.length)
         return;
-      contentRect.value = entries2[0].contentRect;
+      if (box === "content") {
+        contentRect.value = entries2[0].contentRect;
+      } else {
+        contentRect.value = entries2[0].target.getBoundingClientRect();
+      }
     });
     onBeforeUnmount(() => {
       observer.disconnect();
@@ -3149,7 +3161,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.6";
+const version = "3.3.7";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -4689,7 +4701,7 @@ const VBtn = genericComponent()({
     });
     function onClick(e2) {
       var _a;
-      if (isDisabled.value)
+      if (isDisabled.value || link2.isLink.value && (e2.metaKey || e2.ctrlKey || e2.shiftKey || e2.button !== 0 || attrs.target === "_blank"))
         return;
       (_a = link2.navigate) == null ? void 0 : _a.call(link2, e2);
       group == null ? void 0 : group.toggle();
@@ -5133,7 +5145,10 @@ const VSelectionControlGroup = "";
 const VSelectionControlGroupSymbol = Symbol.for("vuetify:selection-control-group");
 const makeSelectionControlGroupProps = propsFactory({
   color: String,
-  disabled: Boolean,
+  disabled: {
+    type: Boolean,
+    default: null
+  },
   defaultsTarget: String,
   error: Boolean,
   id: String,
@@ -5359,12 +5374,12 @@ const VSelectionControl = genericComponent()({
       }, null), createVNode("input", mergeProps({
         "ref": input,
         "checked": model.value,
-        "disabled": props.disabled,
+        "disabled": !!(props.readonly || props.disabled),
         "id": id.value,
         "onBlur": onBlur,
         "onFocus": onFocus,
         "onInput": onInput,
-        "aria-disabled": props.readonly,
+        "aria-disabled": !!(props.readonly || props.disabled),
         "type": props.type,
         "value": trueValue.value,
         "name": props.name,
@@ -6313,7 +6328,9 @@ const VImg = genericComponent()({
         "class": ["v-img", {
           "v-img--booting": !isBooted.value
         }, props.class],
-        "style": props.style
+        "style": [{
+          width: convertToUnit(props.width === "auto" ? naturalWidth.value : props.width)
+        }, props.style]
       }, responsiveProps, {
         "aspectRatio": aspectRatio.value,
         "aria-label": props.alt,
@@ -8479,7 +8496,9 @@ function blockScrollStrategy(data, props) {
   scrollElements.forEach((el, i2) => {
     el.style.setProperty("--v-body-scroll-x", convertToUnit(-el.scrollLeft));
     el.style.setProperty("--v-body-scroll-y", convertToUnit(-el.scrollTop));
-    el.style.setProperty("--v-scrollbar-offset", convertToUnit(scrollbarWidth));
+    if (el !== document.documentElement) {
+      el.style.setProperty("--v-scrollbar-offset", convertToUnit(scrollbarWidth));
+    }
     el.classList.add("v-overlay-scroll-blocked");
   });
   onScopeDispose(() => {
@@ -9969,12 +9988,16 @@ const VTextField = genericComponent()({
               }]]);
               return createVNode(Fragment, null, [props.prefix && createVNode("span", {
                 "class": "v-text-field__prefix"
-              }, [props.prefix]), createVNode("div", {
+              }, [createVNode("span", {
+                "class": "v-text-field__prefix__text"
+              }, [props.prefix])]), createVNode("div", {
                 "class": fieldClass,
                 "data-no-activator": ""
               }, [slots.default ? createVNode(Fragment, null, [slots.default(), inputNode]) : cloneVNode(inputNode)]), props.suffix && createVNode("span", {
                 "class": "v-text-field__suffix"
-              }, [props.suffix])]);
+              }, [createVNode("span", {
+                "class": "v-text-field__suffix__text"
+              }, [props.suffix])])]);
             }
           });
         },
@@ -9991,6 +10014,304 @@ const VTextField = genericComponent()({
     return forwardRefs({}, vInputRef, vFieldRef, inputRef);
   }
 });
+const VVirtualScroll$1 = "";
+const makeVVirtualScrollItemProps = propsFactory({
+  renderless: Boolean,
+  ...makeComponentProps()
+}, "VVirtualScrollItem");
+const VVirtualScrollItem = genericComponent()({
+  name: "VVirtualScrollItem",
+  inheritAttrs: false,
+  props: makeVVirtualScrollItemProps(),
+  emits: {
+    "update:height": (height) => true
+  },
+  setup(props, _ref) {
+    let {
+      attrs,
+      emit,
+      slots
+    } = _ref;
+    const {
+      resizeRef,
+      contentRect
+    } = useResizeObserver(void 0, "border");
+    watch(() => {
+      var _a;
+      return (_a = contentRect.value) == null ? void 0 : _a.height;
+    }, (height) => {
+      if (height != null)
+        emit("update:height", height);
+    });
+    useRender(() => {
+      var _a, _b;
+      return props.renderless ? createVNode(Fragment, null, [(_a = slots.default) == null ? void 0 : _a.call(slots, {
+        itemRef: resizeRef
+      })]) : createVNode("div", mergeProps({
+        "ref": resizeRef,
+        "class": ["v-virtual-scroll__item", props.class],
+        "style": props.style
+      }, attrs), [(_b = slots.default) == null ? void 0 : _b.call(slots)]);
+    });
+  }
+});
+const UP = -1;
+const DOWN = 1;
+const makeVirtualProps = propsFactory({
+  itemHeight: {
+    type: [Number, String],
+    default: 48
+  }
+}, "virtual");
+function useVirtual(props, items, offset) {
+  const first = shallowRef(0);
+  const baseItemHeight = shallowRef(props.itemHeight);
+  const itemHeight = computed({
+    get: () => parseInt(baseItemHeight.value ?? 0, 10),
+    set(val) {
+      baseItemHeight.value = val;
+    }
+  });
+  const containerRef = ref();
+  const {
+    resizeRef,
+    contentRect
+  } = useResizeObserver();
+  watchEffect(() => {
+    resizeRef.value = containerRef.value;
+  });
+  const display = useDisplay();
+  const sizeMap = /* @__PURE__ */ new Map();
+  let sizes = Array.from({
+    length: items.value.length
+  });
+  const visibleItems = computed(() => {
+    const height = (!contentRect.value || containerRef.value === document.documentElement ? display.height.value : contentRect.value.height) - ((offset == null ? void 0 : offset.value) ?? 0);
+    return Math.ceil(height / itemHeight.value * 1.7 + 1);
+  });
+  function handleItemResize(index, height) {
+    itemHeight.value = Math.max(itemHeight.value, height);
+    sizes[index] = height;
+    sizeMap.set(items.value[index], height);
+  }
+  function calculateOffset(index) {
+    return sizes.slice(0, index).reduce((acc, val) => acc + (val || itemHeight.value), 0);
+  }
+  function calculateMidPointIndex(scrollTop) {
+    const end = items.value.length;
+    let middle = 0;
+    let middleOffset = 0;
+    while (middleOffset < scrollTop && middle < end) {
+      middleOffset += sizes[middle++] || itemHeight.value;
+    }
+    return middle - 1;
+  }
+  let lastScrollTop = 0;
+  function handleScroll() {
+    if (!containerRef.value || !contentRect.value)
+      return;
+    const height = contentRect.value.height - 56;
+    const scrollTop = containerRef.value.scrollTop;
+    const direction = scrollTop < lastScrollTop ? UP : DOWN;
+    const midPointIndex = calculateMidPointIndex(scrollTop + height / 2);
+    const buffer = Math.round(visibleItems.value / 3);
+    const firstIndex = midPointIndex - buffer;
+    const lastIndex = first.value + buffer * 2 - 1;
+    if (direction === UP && midPointIndex <= lastIndex) {
+      first.value = clamp(firstIndex, 0, items.value.length);
+    } else if (direction === DOWN && midPointIndex >= lastIndex) {
+      first.value = clamp(firstIndex, 0, items.value.length - visibleItems.value);
+    }
+    lastScrollTop = scrollTop;
+  }
+  function scrollToIndex(index) {
+    if (!containerRef.value)
+      return;
+    const offset2 = calculateOffset(index);
+    containerRef.value.scrollTop = offset2;
+  }
+  const last = computed(() => Math.min(items.value.length, first.value + visibleItems.value));
+  const computedItems = computed(() => {
+    return items.value.slice(first.value, last.value).map((item, index) => ({
+      raw: item,
+      index: index + first.value
+    }));
+  });
+  const paddingTop = computed(() => calculateOffset(first.value));
+  const paddingBottom = computed(() => calculateOffset(items.value.length) - calculateOffset(last.value));
+  watch(() => items.value.length, () => {
+    sizes = createRange(items.value.length).map(() => itemHeight.value);
+    sizeMap.forEach((height, item) => {
+      const index = items.value.indexOf(item);
+      if (index === -1) {
+        sizeMap.delete(item);
+      } else {
+        sizes[index] = height;
+      }
+    });
+  });
+  return {
+    containerRef,
+    computedItems,
+    itemHeight,
+    paddingTop,
+    paddingBottom,
+    scrollToIndex,
+    handleScroll,
+    handleItemResize
+  };
+}
+const makeVVirtualScrollProps = propsFactory({
+  items: {
+    type: Array,
+    default: () => []
+  },
+  renderless: Boolean,
+  ...makeVirtualProps(),
+  ...makeComponentProps(),
+  ...makeDimensionProps()
+}, "VVirtualScroll");
+const VVirtualScroll = genericComponent()({
+  name: "VVirtualScroll",
+  props: makeVVirtualScrollProps(),
+  setup(props, _ref) {
+    let {
+      slots
+    } = _ref;
+    const vm = getCurrentInstance("VVirtualScroll");
+    const {
+      dimensionStyles
+    } = useDimension(props);
+    const {
+      containerRef,
+      handleScroll,
+      handleItemResize,
+      scrollToIndex,
+      paddingTop,
+      paddingBottom,
+      computedItems
+    } = useVirtual(props, toRef(props, "items"));
+    useToggleScope(() => props.renderless, () => {
+      onMounted(() => {
+        var _a;
+        containerRef.value = getScrollParent(vm.vnode.el, true);
+        (_a = containerRef.value) == null ? void 0 : _a.addEventListener("scroll", handleScroll);
+      });
+      onScopeDispose(() => {
+        var _a;
+        (_a = containerRef.value) == null ? void 0 : _a.removeEventListener("scroll", handleScroll);
+      });
+    });
+    useRender(() => {
+      const children = computedItems.value.map((item) => createVNode(VVirtualScrollItem, {
+        "key": item.index,
+        "renderless": props.renderless,
+        "onUpdate:height": (height) => handleItemResize(item.index, height)
+      }, {
+        default: (slotProps) => {
+          var _a;
+          return (_a = slots.default) == null ? void 0 : _a.call(slots, {
+            item: item.raw,
+            index: item.index,
+            ...slotProps
+          });
+        }
+      }));
+      return props.renderless ? createVNode(Fragment, null, [createVNode("div", {
+        "class": "v-virtual-scroll__spacer",
+        "style": {
+          paddingTop: convertToUnit(paddingTop.value)
+        }
+      }, null), children, createVNode("div", {
+        "class": "v-virtual-scroll__spacer",
+        "style": {
+          paddingBottom: convertToUnit(paddingBottom.value)
+        }
+      }, null)]) : createVNode("div", {
+        "ref": containerRef,
+        "class": ["v-virtual-scroll", props.class],
+        "onScroll": handleScroll,
+        "style": [dimensionStyles.value, props.style]
+      }, [createVNode("div", {
+        "class": "v-virtual-scroll__container",
+        "style": {
+          paddingTop: convertToUnit(paddingTop.value),
+          paddingBottom: convertToUnit(paddingBottom.value)
+        }
+      }, [children])]);
+    });
+    return {
+      scrollToIndex
+    };
+  }
+});
+function useScrolling(listRef, textFieldRef) {
+  const isScrolling = shallowRef(false);
+  let scrollTimeout;
+  function onListScroll(e2) {
+    cancelAnimationFrame(scrollTimeout);
+    isScrolling.value = true;
+    scrollTimeout = requestAnimationFrame(() => {
+      scrollTimeout = requestAnimationFrame(() => {
+        isScrolling.value = false;
+      });
+    });
+  }
+  async function finishScrolling() {
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    await new Promise((resolve) => {
+      if (isScrolling.value) {
+        const stop = watch(isScrolling, () => {
+          stop();
+          resolve();
+        });
+      } else
+        resolve();
+    });
+  }
+  async function onListKeydown(e2) {
+    var _a, _b;
+    if (e2.key === "Tab") {
+      (_a = textFieldRef.value) == null ? void 0 : _a.focus();
+    }
+    if (!["PageDown", "PageUp", "Home", "End"].includes(e2.key))
+      return;
+    const el = (_b = listRef.value) == null ? void 0 : _b.$el;
+    if (!el)
+      return;
+    if (e2.key === "Home" || e2.key === "End") {
+      el.scrollTo({
+        top: e2.key === "Home" ? 0 : el.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+    await finishScrolling();
+    const children = el.querySelectorAll(":scope > :not(.v-virtual-scroll__spacer)");
+    if (e2.key === "PageDown" || e2.key === "Home") {
+      const top = el.getBoundingClientRect().top;
+      for (const child of children) {
+        if (child.getBoundingClientRect().top >= top) {
+          child.focus();
+          break;
+        }
+      }
+    } else {
+      const bottom = el.getBoundingClientRect().bottom;
+      for (const child of [...children].reverse()) {
+        if (child.getBoundingClientRect().bottom <= bottom) {
+          child.focus();
+          break;
+        }
+      }
+    }
+  }
+  return {
+    onListScroll,
+    onListKeydown
+  };
+}
 const makeSelectProps = propsFactory({
   chips: Boolean,
   closableChips: Boolean,
@@ -10084,6 +10405,10 @@ const VSelect = genericComponent()({
     });
     const menuDisabled = computed(() => props.hideNoData && !items.value.length || props.readonly || (form == null ? void 0 : form.isReadonly.value));
     const listRef = ref();
+    const {
+      onListScroll,
+      onListKeydown
+    } = useScrolling(listRef, vTextFieldRef);
     function onClear(e2) {
       if (props.openOnClear) {
         menu.value = true;
@@ -10129,12 +10454,6 @@ const VSelect = genericComponent()({
       const item = items.value.find((item2) => item2.title.toLowerCase().startsWith(keyboardLookupPrefix));
       if (item !== void 0) {
         model.value = [item];
-      }
-    }
-    function onListKeydown(e2) {
-      var _a;
-      if (e2.key === "Tab") {
-        (_a = vTextFieldRef.value) == null ? void 0 : _a.focus();
       }
     }
     function select(item) {
@@ -10222,37 +10541,49 @@ const VSelect = genericComponent()({
             "onMousedown": (e2) => e2.preventDefault(),
             "onKeydown": onListKeydown,
             "onFocusin": onFocusin,
+            "onScrollPassive": onListScroll,
             "tabindex": "-1"
           }, {
             default: () => {
               var _a, _b, _c;
               return [(_a = slots["prepend-item"]) == null ? void 0 : _a.call(slots), !displayItems.value.length && !props.hideNoData && (((_b = slots["no-data"]) == null ? void 0 : _b.call(slots)) ?? createVNode(VListItem, {
                 "title": t4(props.noDataText)
-              }, null)), displayItems.value.map((item, index) => {
-                var _a2;
-                const itemProps = mergeProps(item.props, {
-                  key: index,
-                  onClick: () => select(item)
-                });
-                return ((_a2 = slots.item) == null ? void 0 : _a2.call(slots, {
-                  item,
-                  index,
-                  props: itemProps
-                })) ?? createVNode(VListItem, itemProps, {
-                  prepend: (_ref2) => {
-                    let {
-                      isSelected
-                    } = _ref2;
-                    return createVNode(Fragment, null, [props.multiple && !props.hideSelected ? createVNode(VCheckboxBtn, {
-                      "key": item.value,
-                      "modelValue": isSelected,
-                      "ripple": false,
-                      "tabindex": "-1"
-                    }, null) : void 0, item.props.prependIcon && createVNode(VIcon, {
-                      "icon": item.props.prependIcon
-                    }, null)]);
-                  }
-                });
+              }, null)), createVNode(VVirtualScroll, {
+                "renderless": true,
+                "items": displayItems.value
+              }, {
+                default: (_ref2) => {
+                  var _a2;
+                  let {
+                    item,
+                    index,
+                    itemRef
+                  } = _ref2;
+                  const itemProps = mergeProps(item.props, {
+                    ref: itemRef,
+                    key: index,
+                    onClick: () => select(item)
+                  });
+                  return ((_a2 = slots.item) == null ? void 0 : _a2.call(slots, {
+                    item,
+                    index,
+                    props: itemProps
+                  })) ?? createVNode(VListItem, itemProps, {
+                    prepend: (_ref3) => {
+                      let {
+                        isSelected
+                      } = _ref3;
+                      return createVNode(Fragment, null, [props.multiple && !props.hideSelected ? createVNode(VCheckboxBtn, {
+                        "key": item.value,
+                        "modelValue": isSelected,
+                        "ripple": false,
+                        "tabindex": "-1"
+                      }, null) : void 0, item.props.prependIcon && createVNode(VIcon, {
+                        "icon": item.props.prependIcon
+                      }, null)]);
+                    }
+                  });
+                }
               }), (_c = slots["append-item"]) == null ? void 0 : _c.call(slots)];
             }
           })]
@@ -10699,7 +11030,11 @@ function createHeaders(props, options) {
         column,
         row
       } = _ref4;
-      const key = column.key;
+      let key = column.key;
+      if (key == null) {
+        consoleWarn("The header key value must not be null or undefined");
+        key = "";
+      }
       for (let i2 = row; i2 <= row + (column.rowspan ?? 1) - 1; i2++) {
         fixedRows[i2].push({
           ...column,
@@ -11835,14 +12170,12 @@ function filterItems(items, query, options) {
   return array;
 }
 function useFilter(props, items, query, options) {
-  const strQuery = computed(() => typeof (query == null ? void 0 : query.value) !== "string" && typeof (query == null ? void 0 : query.value) !== "number" ? "" : String(query.value));
   const filteredItems = ref([]);
   const filteredMatches = ref(/* @__PURE__ */ new Map());
   const transformedItems = computed(() => (options == null ? void 0 : options.transform) ? unref(items).map(options == null ? void 0 : options.transform) : unref(items));
   watchEffect(() => {
-    filteredItems.value = [];
-    filteredMatches.value = /* @__PURE__ */ new Map();
-    const results = filterItems(transformedItems.value, strQuery.value, {
+    const strQuery = typeof toValue(query) !== "string" && typeof toValue(query) !== "number" ? "" : String(toValue(query));
+    const results = filterItems(transformedItems.value, strQuery, {
       customKeyFilter: props.customKeyFilter,
       default: props.customFilter,
       filterKeys: props.filterKeys,
@@ -11850,15 +12183,19 @@ function useFilter(props, items, query, options) {
       noFilter: props.noFilter
     });
     const originalItems = unref(items);
+    const _filteredItems = [];
+    const _filteredMatches = /* @__PURE__ */ new Map();
     results.forEach((_ref) => {
       let {
         index,
         matches
       } = _ref;
       const item = originalItems[index];
-      filteredItems.value.push(item);
-      filteredMatches.value.set(item.value, matches);
+      _filteredItems.push(item);
+      _filteredMatches.set(item.value, matches);
     });
+    filteredItems.value = _filteredItems;
+    filteredMatches.value = _filteredMatches;
   });
   function getMatches(item) {
     return filteredMatches.value.get(item.value);
@@ -12618,7 +12955,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-2cd27020.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-baccc2fe.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-ffadb073.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-9625117f.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-1f082832.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-379e8c25.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-9977560e.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-2aeec99b.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-40c3f382.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-c82b3fa7.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-98a297be.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-441ddbe5.js"), "./pages/Trans.vue": () => import("./assets/Trans-95f24a53.js"), "./pages/TransOperator.vue": () => import("./assets/TransOperator-9ce33736.js"), "./pages/TransSub.vue": () => import("./assets/TransSub-7a0bfd86.js"), "./pages/TransTicket.vue": () => import("./assets/TransTicket-9cb203ea.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-27ef7712.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-e42a20bf.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-3a97cfb8.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-8c8e8385.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-dff2175a.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-12c0d808.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-0d1c6eb6.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-670c5199.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-80cef757.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-b068f1a9.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-14b707eb.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-67f1e822.js"), "./pages/Trans.vue": () => import("./assets/Trans-f0d1101e.js"), "./pages/TransOperator.vue": () => import("./assets/TransOperator-9ce33736.js"), "./pages/TransSub.vue": () => import("./assets/TransSub-7a0bfd86.js"), "./pages/TransTicket.vue": () => import("./assets/TransTicket-9cb203ea.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
@@ -12681,21 +13018,23 @@ export {
   useItems as aE,
   useForm as aF,
   useFilter as aG,
-  VMenu as aH,
-  VList as aI,
-  VListItem as aJ,
-  VChip as aK,
-  noop as aL,
-  wrapInArray as aM,
-  makeFormProps as aN,
-  createForm as aO,
-  VExpandTransition as aP,
-  breakpoints as aQ,
-  getCurrentInstance as aR,
-  findChildrenWithProvide as aS,
-  CircularBuffer as aT,
-  useRouter as aU,
-  toPhysical as aV,
+  useScrolling as aH,
+  VMenu as aI,
+  VList as aJ,
+  VListItem as aK,
+  VVirtualScroll as aL,
+  VChip as aM,
+  noop as aN,
+  wrapInArray as aO,
+  makeFormProps as aP,
+  createForm as aQ,
+  VExpandTransition as aR,
+  breakpoints as aS,
+  getCurrentInstance as aT,
+  findChildrenWithProvide as aU,
+  CircularBuffer as aV,
+  useRouter as aW,
+  toPhysical as aX,
   makeDimensionProps as aa,
   makeElevationProps as ab,
   makeLoaderProps as ac,
