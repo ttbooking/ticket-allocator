@@ -23,13 +23,20 @@ class Triage implements ShouldQueue
     public function handle(BindTicketAction $bindTicket): void
     {
         $bench = new Benchmark;
+        $duplicates = [];
 
         $query = MatchQuery::make();
 
         while (! is_null($pair = $bench->measure('Query', static fn () => $query->first()))) {
+            $duplicates[$pair['ticket_uuid']]++;
+
             $bench->measure('Binding',
                 static fn () => $bindTicket($pair['ticket_uuid'], $pair['operator_uuid'], [Ticket::META_TRIAGE => true])
             );
+        }
+
+        if ($duplicates = array_filter($duplicates, static fn (int $times) => $times > 1)) {
+            info('Duplicate binding occurred.', $duplicates);
         }
 
         info($bench);
