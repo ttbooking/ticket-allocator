@@ -34,6 +34,7 @@ return new class extends Migration
             // timestamps
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamp('last_bound_at')->nullable();
         });
     }
 

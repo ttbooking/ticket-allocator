@@ -99,6 +99,7 @@ class OperatorProjector extends Projector
 
         $newOperator->increment('bound_tickets');
         $newOperator->increment('total_complexity', $ticket->complexity);
+        $newOperator->update(['last_bound_at' => now()]);
     }
 
     public function onTicketUnbound(TicketEvents\TicketUnbound $event): void

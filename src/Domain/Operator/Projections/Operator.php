@@ -30,6 +30,7 @@ use TTBooking\TicketAllocator\Models\TeamOperator;
  * @property-read int|null $free_complexity
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property Carbon|null $last_bound_at
  * @property Model $user
  * @property Collection<int, OperatorTeam> $teams
  * @property Collection<int, Ticket> $tickets
@@ -54,6 +55,7 @@ class Operator extends Projection
         'total_complexity' => 0,
         //'free_slots' => null,
         //'free_complexity' => null,
+        'last_bound_at' => null,
     ];
 
     /** @var array<string, string> */
@@ -66,6 +68,7 @@ class Operator extends Projection
         'total_complexity' => 'integer',
         'free_slots' => 'integer',
         'free_complexity' => 'integer',
+        'last_bound_at' => 'datetime',
     ];
 
     // @var string[]

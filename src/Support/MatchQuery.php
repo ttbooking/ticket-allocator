@@ -89,11 +89,14 @@ class MatchQuery
         ->orderByRaw('t.initial_weight + TIMESTAMPDIFF(SECOND, t.created_at, NOW()) * t.weight_increment DESC')
 
         // в порядке убывания числа свободных слотов и единиц сложности оператора
-        ->orderByDesc('o.free_slots')
-        ->orderByDesc('o.free_complexity')
+        //->orderByDesc('o.free_slots')
+        //->orderByDesc('o.free_complexity')
 
         // учитывая приоритет команды, в которую входит оператор
         ->orderBy('o.priority')
+
+        // в порядке возрастания времени последней привязки
+        ->orderBy('o.last_bound_at')
 
         // взять первую пару
         ->take(1);
