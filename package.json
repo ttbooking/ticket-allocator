@@ -16,7 +16,7 @@
         "@vueuse/core": "^10.2.1",
         "axios": "^1.4.0",
         "dayjs": "^1.11.9",
-        "laravel-echo": "^1.15.1",
+        "laravel-echo": "^1.15.2",
         "laravel-vue-i18n": "^2.6.1",
         "lodash": "^4.17.21",
         "markdown-it": "^13.0.1",
@@ -47,7 +47,7 @@
         "prettier": "^3.0.0",
         "sass": "^1.63.6",
         "typescript": "^5.1.6",
-        "vite": "^4.4.2",
+        "vite": "^4.4.3",
         "vite-plugin-vuetify": "^1.0.2",
         "vue-router": "^4.2.4",
         "vue-tsc": "^1.8.4"

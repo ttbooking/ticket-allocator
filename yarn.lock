@@ -2320,10 +2320,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"laravel-echo@npm:^1.15.1":
-  version: 1.15.1
-  resolution: "laravel-echo@npm:1.15.1"
-  checksum: db66163610b2ea8cf5232dff759646e1f90cf4adca2d3b1f1bff021528f039965c9534d362c33bc3707cb71a006d98196ae57ef350ea6e4e609cadcf2f721d42
+"laravel-echo@npm:^1.15.2":
+  version: 1.15.2
+  resolution: "laravel-echo@npm:1.15.2"
+  checksum: 117e44d6e77dcd3da513a6a2b6b2e94ae0c7df029eeed9b01705156492568d3235b1cbfcc9e55b20462487b072d4bb548a0d339f304e33ce57cb0f8718b75f60
   languageName: node
   linkType: hard
 
@@ -3119,7 +3119,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.1.10, postcss@npm:^8.4.23, postcss@npm:^8.4.24, postcss@npm:^8.4.25":
+"postcss@npm:^8.1.10, postcss@npm:^8.4.23, postcss@npm:^8.4.25":
   version: 8.4.25
   resolution: "postcss@npm:8.4.25"
   dependencies:
@@ -3317,7 +3317,7 @@ __metadata:
     eslint: ^8.44.0
     eslint-config-prettier: ^8.8.0
     eslint-plugin-vue: ^9.15.1
-    laravel-echo: ^1.15.1
+    laravel-echo: ^1.15.2
     laravel-vite-plugin: ^0.7.8
     laravel-vue-i18n: ^2.6.1
     lodash: ^4.17.21
@@ -3330,7 +3330,7 @@ __metadata:
     sass: ^1.63.6
     tailwindcss: ^3.3.2
     typescript: ^5.1.6
-    vite: ^4.4.2
+    vite: ^4.4.3
     vite-plugin-vuetify: ^1.0.2
     vue: ^3.3.4
     vue-router: ^4.2.4
@@ -3814,13 +3814,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^4.4.2":
-  version: 4.4.2
-  resolution: "vite@npm:4.4.2"
+"vite@npm:^4.4.3":
+  version: 4.4.3
+  resolution: "vite@npm:4.4.3"
   dependencies:
     esbuild: ^0.18.10
     fsevents: ~2.3.2
-    postcss: ^8.4.24
+    postcss: ^8.4.25
     rollup: ^3.25.2
   peerDependencies:
     "@types/node": ">= 14"
@@ -3850,7 +3850,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 37a1c3a0ccc4b80c0a696203d3608d6bf7dc98219ddc178e528b972e3305af9ab8f92dea455421024e98c59372f6a97b1b4cc409a05f757a64bff830610053c6
+  checksum: 2f7c90de35c840ed7f33000d65006053885c0342aa7c19cee7369d7b3d92473a9bae790f910eb3e9900bdb7ca89559a772ee4782f35636ec4e6bd10717e7f5ff
   languageName: node
   linkType: hard
 
