@@ -18,6 +18,7 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
  * @method static static create(array $parameters = [])
  * @method static static|null find(string $uuid)
  * @property non-empty-string $uuid
+ * @property int $priority
  * @property string $name
  * @property string $description
  * @property array<string, mixed>|null $matching
@@ -38,7 +39,7 @@ class OperatorTeam extends Model
 
     public $incrementing = false;
 
-    protected $fillable = ['uuid', 'name', 'description', 'matching'];
+    protected $fillable = ['uuid', 'priority', 'name', 'description', 'matching'];
 
     /** @var array<string, string> */
     protected $casts = [

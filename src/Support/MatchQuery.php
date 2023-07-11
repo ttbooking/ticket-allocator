@@ -43,7 +43,7 @@ class MatchQuery
 
             // ... и операторов
             Operator::query()
-                ->select('o.*', 'tm.matching')
+                ->select('o.*', 'tm.priority', 'tm.matching')
                 ->from('ticket_allocator_operators', 'o')
                 // с учётом команд, в которые они входят
                 ->join('ticket_allocator_team_operator as tmo', 'tmo.operator_uuid', 'o.uuid')
@@ -91,6 +91,9 @@ class MatchQuery
         // в порядке убывания числа свободных слотов и единиц сложности оператора
         ->orderByDesc('o.free_slots')
         ->orderByDesc('o.free_complexity')
+
+        // учитывая приоритет команды, в которую входит оператор
+        ->orderBy('o.priority')
 
         // взять первую пару
         ->take(1);

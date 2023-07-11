@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ticket_allocator_operator_teams', function (Blueprint $table) {
             $table->uuid()->primary();
+            $table->increments('priority')->index();
             $table->string('name');
             $table->text('description')->nullable();
             $table->json('matching')->nullable();

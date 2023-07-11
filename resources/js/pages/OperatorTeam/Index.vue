@@ -37,6 +37,22 @@
                         variant="plain"
                     />
                     <v-btn-ex
+                        :to="route('ticket-allocator.teams.raise-priority', item.raw.uuid)"
+                        method="put"
+                        icon="mdi-arrow-up-thick"
+                        :title="$t('raise_priority')"
+                        size="small"
+                        variant="plain"
+                    />
+                    <v-btn-ex
+                        :to="route('ticket-allocator.teams.lower-priority', item.raw.uuid)"
+                        method="put"
+                        icon="mdi-arrow-down-thick"
+                        :title="$t('lower_priority')"
+                        size="small"
+                        variant="plain"
+                    />
+                    <v-btn-ex
                         :to="route('ticket-allocator.teams.destroy', item.raw.uuid)"
                         method="delete"
                         icon="mdi-delete"
