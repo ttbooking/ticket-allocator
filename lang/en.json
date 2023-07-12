@@ -65,6 +65,7 @@
     "user": "User",
     "value": "Value",
     "variables": "Variables",
+    "weight": "Weight",
     "weight_increment": "Weight increment",
     "weight_increment_expression": "Weight increment expression"
 }

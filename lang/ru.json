@@ -65,6 +65,7 @@
     "user": "Пользователь",
     "value": "Значение",
     "variables": "Переменные",
+    "weight": "Вес",
     "weight_increment": "Приращение веса",
     "weight_increment_expression": "Выражение для вычисления приращения веса тикета"
 }

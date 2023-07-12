@@ -77,6 +77,7 @@ const unknown$1 = "Unknown";
 const user$1 = "User";
 const value$1 = "Value";
 const variables$1 = "Variables";
+const weight$1 = "Weight";
 const weight_increment$1 = "Weight increment";
 const weight_increment_expression$1 = "Weight increment expression";
 const __vite_glob_1_0 = {
@@ -146,6 +147,7 @@ const __vite_glob_1_0 = {
   user: user$1,
   value: value$1,
   variables: variables$1,
+  weight: weight$1,
   weight_increment: weight_increment$1,
   weight_increment_expression: weight_increment_expression$1
 };
@@ -394,6 +396,7 @@ const unknown = "Неизвестный";
 const user = "Пользователь";
 const value = "Значение";
 const variables = "Переменные";
+const weight = "Вес";
 const weight_increment = "Приращение веса";
 const weight_increment_expression = "Выражение для вычисления приращения веса тикета";
 const __vite_glob_1_3 = {
@@ -463,6 +466,7 @@ const __vite_glob_1_3 = {
   user,
   value,
   variables,
+  weight,
   weight_increment,
   weight_increment_expression
 };
