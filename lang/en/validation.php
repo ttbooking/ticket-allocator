@@ -27,6 +27,7 @@ return [
         'ticket_limit' => 'ticket limit',
         'type' => 'type',
         'user' => 'user',
+        'weight' => 'weight',
         'weight_increment' => 'weight increment',
     ],
 
