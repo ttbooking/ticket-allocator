@@ -18,8 +18,6 @@ Route::put('/operators', 'OperatorController@discover')->name('operators.discove
 Route::patch('/operators/{operator}/ready', 'OperatorController@ready')->name('operators.ready');
 
 Route::resource('teams', TeamController::class)->withTrashed(['show', 'edit', 'update', 'destroy']);
-Route::put('/teams/{team}/raise-priority', 'TeamController@raisePriority')->withTrashed()->name('teams.raise-priority');
-Route::put('/teams/{team}/lower-priority', 'TeamController@lowerPriority')->withTrashed()->name('teams.lower-priority');
 
 Route::resource('ticket-categories', TicketCategoryController::class);
 

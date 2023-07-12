@@ -27,6 +27,7 @@ class StoreOperatorTeamRequest extends FormRequest
             'active' => 'required|boolean',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:65535',
+            'weight' => 'required|integer|between:0,1000',
             'operators' => 'array',
             'operators.*' => 'required|uuid',
             'matching' => 'array',

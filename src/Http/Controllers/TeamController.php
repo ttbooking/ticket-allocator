@@ -26,7 +26,7 @@ class TeamController extends Controller
      */
     public function index(): InertiaResponse
     {
-        $teams = OperatorTeamResource::collection(OperatorTeam::withTrashed()->orderBy('priority')->get())->resolve();
+        $teams = OperatorTeamResource::collection(OperatorTeam::withTrashed()->get())->resolve();
 
         return Inertia::render('OperatorTeam/Index', compact('teams'));
     }
@@ -51,7 +51,7 @@ class TeamController extends Controller
     public function store(StoreOperatorTeamRequest $request): RedirectResponse
     {
         /** @var OperatorTeam $team */
-        $team = OperatorTeam::query()->create($request->safe(['name', 'description', 'matching']));
+        $team = OperatorTeam::query()->create($request->safe(['name', 'description', 'weight', 'matching']));
         $request->validated('active') ? $team->restore() : $team->delete();
         $team->operators()->sync($request->validated('operators'));
 
@@ -92,7 +92,7 @@ class TeamController extends Controller
             $active ? $team->restore() : $team->delete();
         }
 
-        $team->update($request->safe(['name', 'description', 'matching']));
+        $team->update($request->safe(['name', 'description', 'weight', 'matching']));
 
         if (! is_null($operators = $request->validated('operators'))) {
             $team->operators()->sync($operators);
@@ -109,32 +109,5 @@ class TeamController extends Controller
         $team->forceDelete();
 
         return Response::redirectToRoute('ticket-allocator.teams.index', status: 303);
-    }
-
-    /**
-     * Raise the specified team's priority.
-     */
-    public function raisePriority(OperatorTeam $team, bool $lower = false): RedirectResponse
-    {
-        /** @var OperatorTeam|null $neighbor */
-        $neighbor = OperatorTeam::withTrashed()
-            ->where('priority', $lower ? '>' : '<', $team->priority)
-            ->orderBy('priority', $lower ? 'asc' : 'desc')
-            ->first();
-
-        if (! is_null($neighborPriority = $neighbor?->priority)) {
-            $neighbor->update(['priority' => $team->priority]);
-            $team->update(['priority' => $neighborPriority]);
-        }
-
-        return Response::redirectToRoute('ticket-allocator.teams.index', status: 303);
-    }
-
-    /**
-     * Lower the specified team's priority.
-     */
-    public function lowerPriority(OperatorTeam $team): RedirectResponse
-    {
-        return $this->raisePriority($team, true);
     }
 }

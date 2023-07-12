@@ -27,6 +27,7 @@ class UpdateOperatorTeamRequest extends FormRequest
             'active' => 'sometimes|required|boolean',
             'name' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|nullable|string|max:65535',
+            'weight' => 'sometimes|required|integer|between:0,1000',
             'operators' => 'sometimes|array',
             'operators.*' => 'sometimes|required|uuid',
             'matching' => 'sometimes|array',

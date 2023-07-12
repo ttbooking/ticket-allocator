@@ -29,9 +29,9 @@ class OperatorTeamResource extends JsonResource
     {
         return [
             'uuid' => $this->uuid,
-            'priority' => $this->priority,
             'name' => $this->name,
             'description' => $this->description,
+            'weight' => $this->weight,
             'matching' => $this->matching,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

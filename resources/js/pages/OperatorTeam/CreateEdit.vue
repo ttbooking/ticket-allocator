@@ -17,13 +17,24 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="12">
+                        <v-col cols="12" md="6">
                             <v-text-field
                                 v-model="form.name"
                                 required
                                 maxlength="255"
                                 :label="$t('name')"
                                 :error-messages="errors.name"
+                            />
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-text-field
+                                v-model.number="form.weight"
+                                type="number"
+                                min="0"
+                                max="1000"
+                                :label="$t('weight')"
+                                placeholder="100"
+                                :error-messages="errors.weight"
                             />
                         </v-col>
                     </v-row>
@@ -98,6 +109,7 @@ const form = useForm({
     active: !props.team?.deleted_at,
     name: props.team?.name ?? "",
     description: props.team?.description ?? "",
+    weight: props.team?.weight ?? 100,
     operators: props.team?.operators.map((operator) => operator.uuid) ?? [],
     matching: Array.isArray(props.team?.matching) ? {} : props.team?.matching ?? {},
 });
