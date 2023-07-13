@@ -12,6 +12,7 @@
     "dependencies": {
         "@inertiajs/vue3": "^1.0.9",
         "@mdi/font": "7.2.96",
+        "@tailwindcss/container-queries": "^0.1.1",
         "@tailwindcss/typography": "^0.5.9",
         "@vueuse/core": "^10.2.1",
         "axios": "^1.4.0",

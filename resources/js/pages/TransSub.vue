@@ -1,5 +1,5 @@
 <template>
-    <TransitionGroup tag="td" name="tickets">
+    <TransitionGroup tag="td" name="tickets" class="@container">
         <TransTicket v-for="ticket in tickets" :key="ticket.id" :ticket="ticket" />
     </TransitionGroup>
 </template>
@@ -12,13 +12,16 @@ defineProps<{ tickets: Ticket[] }>();
 </script>
 
 <style scoped>
-.tickets-move,
+.tickets-move {
+    transition: transform 2s ease-in-out;
+}
+
 .tickets-enter-active {
-    transition: transform 2s linear;
+    transition: transform 2s ease-out;
 }
 
 .tickets-enter-from {
-    transform: translateX(300px);
+    transform: translateX(100cqw);
 }
 
 .tickets-leave-active {

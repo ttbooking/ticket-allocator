@@ -1,17 +1,22 @@
 <template>
-    <div ref="ticketPool" @mouseup="unlock">
-        <TransitionGroup name="ticket-pool" :css="animationEnabled">
-            <TicketComponent
-                v-for="ticket in tickets"
-                :key="ticket.uuid"
-                :data-uuid="ticket.uuid"
-                :ticket="ticket"
-                draggable="true"
-                class="mr-1 mb-1"
-                @mousedown.ctrl="lock"
-            />
-        </TransitionGroup>
-    </div>
+    <TransitionGroup
+        ref="ticketPool"
+        tag="td"
+        name="ticket-pool"
+        class="@container tickets pt-1"
+        :css="animationEnabled"
+        @mouseup="unlock"
+    >
+        <TicketComponent
+            v-for="ticket in tickets"
+            :key="ticket.uuid"
+            :data-uuid="ticket.uuid"
+            :ticket="ticket"
+            draggable="true"
+            class="mr-1 mb-1"
+            @mousedown.ctrl="lock"
+        />
+    </TransitionGroup>
 </template>
 
 <script setup lang="ts">
@@ -58,13 +63,16 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.ticket-pool-move,
+.ticket-pool-move {
+    transition: transform 0.5s ease-in-out;
+}
+
 .ticket-pool-enter-active {
-    transition: all 0.5s ease;
+    transition: transform 0.5s ease-out;
 }
 
 .ticket-pool-enter-from {
-    transform: translateX(300px);
+    transform: translateX(100cqw);
 }
 
 .ticket-pool-leave-active {
@@ -74,5 +82,13 @@ onMounted(() => {
 
 .ticket-pool-leave-to {
     opacity: 0;
+}
+
+.tickets {
+    overflow: hidden;
+}
+.tickets.collapsed {
+    white-space: nowrap;
+    mask-image: linear-gradient(to right, black 85%, transparent);
 }
 </style>

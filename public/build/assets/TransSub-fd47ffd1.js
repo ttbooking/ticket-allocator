@@ -1,0 +1,2 @@
+import{ak as r,as as t,ar as n,aI as o,ap as a,aq as c,az as _,ay as p}from"./app-62d4d38f.js";import i from"./TransTicket-e100aa9c.js";import{_ as u}from"./_plugin-vue_export-helper-c27b6911.js";const l=r({__name:"TransSub",props:{tickets:{}},setup(f){return(s,m)=>(a(),t(o,{tag:"td",name:"tickets",class:"@container"},{default:n(()=>[(a(!0),c(p,null,_(s.tickets,e=>(a(),t(i,{key:e.id,ticket:e},null,8,["ticket"]))),128))]),_:1}))}});const x=u(l,[["__scopeId","data-v-9ffc36a7"]]);export{x as default};
+//# sourceMappingURL=TransSub-fd47ffd1.js.map

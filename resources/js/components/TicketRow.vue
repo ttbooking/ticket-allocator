@@ -18,9 +18,7 @@
             >/<slot name="complexity-max">&infin;</slot>
         </td>
 
-        <td class="tickets pt-1" :class="{ collapsed }">
-            <TicketPool :tickets="tickets" />
-        </td>
+        <TicketPool :tickets="tickets" :class="{ collapsed }" />
 
         <td class="more text-center">
             <v-btn size="x-small" variant="tonal" :icon="moreIcon" @click="collapsed = !collapsed" />
@@ -79,13 +77,5 @@ const { isOverDropZone } = useDropZone(
 }
 .ticket-row.dragover {
     background-color: #def2de !important;
-}
-
-.tickets {
-    overflow: hidden;
-}
-.tickets.collapsed {
-    white-space: nowrap;
-    mask-image: linear-gradient(to right, black 85%, transparent);
 }
 </style>
