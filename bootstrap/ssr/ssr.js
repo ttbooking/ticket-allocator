@@ -3,7 +3,7 @@ import "dayjs/locale/ru.js";
 import duration from "dayjs/plugin/duration.js";
 import LocalizedFormat from "dayjs/plugin/localizedFormat.js";
 import RelativeTime from "dayjs/plugin/relativeTime.js";
-import { computed, watch, onScopeDispose, effectScope, Fragment, reactive, watchEffect, toRefs, capitalize, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, inject as inject$1, unref, provide, shallowRef, createVNode, mergeProps, toRaw, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, Teleport, cloneVNode, createTextVNode, withModifiers, toValue, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
+import { computed, watch, onScopeDispose, effectScope, Fragment, reactive, watchEffect, toRefs, capitalize, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, inject as inject$1, unref, provide, shallowRef, createVNode, mergeProps, toRaw, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, Teleport, cloneVNode, createTextVNode, withModifiers, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
 import { usePage, router, createInertiaApp } from "@inertiajs/vue3";
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
@@ -304,6 +304,7 @@ const __vite_glob_1_1 = {
   "validation.attributes.ticket_limit": "ticket limit",
   "validation.attributes.type": "type",
   "validation.attributes.user": "user",
+  "validation.attributes.weight": "weight",
   "validation.attributes.weight_increment": "weight increment"
 };
 const __vite_glob_1_2 = {
@@ -328,6 +329,7 @@ const __vite_glob_1_2 = {
   "validation.attributes.ticket_limit": "максимальное число тикетов",
   "validation.attributes.type": "тип",
   "validation.attributes.user": "пользователь",
+  "validation.attributes.weight": "вес",
   "validation.attributes.weight_increment": "приращение веса"
 };
 const accepted_at = "Подтверждена";
@@ -2448,7 +2450,7 @@ function parseThemeOptions() {
   });
 }
 function createTheme(options) {
-  const parsedOptions = reactive(parseThemeOptions(options));
+  const parsedOptions = parseThemeOptions(options);
   const name2 = ref(parsedOptions.defaultTheme);
   const themes = ref(parsedOptions.themes);
   const computedThemes = computed(() => {
@@ -3165,7 +3167,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.7";
+const version = "3.3.8";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -9224,11 +9226,11 @@ const VOverlay = genericComponent()({
         props: mergeProps({
           ref: activatorRef
         }, activatorEvents.value, props.activatorProps)
-      }), isMounted.value && createVNode(Teleport, {
+      }), isMounted.value && hasContent.value && createVNode(Teleport, {
         "disabled": !teleportTarget.value,
         "to": teleportTarget.value
       }, {
-        default: () => [hasContent.value && createVNode("div", mergeProps({
+        default: () => [createVNode("div", mergeProps({
           "class": ["v-overlay", {
             "v-overlay--absolute": props.absolute || props.contained,
             "v-overlay--active": isActive.value,
@@ -12178,7 +12180,8 @@ function useFilter(props, items, query, options) {
   const filteredMatches = ref(/* @__PURE__ */ new Map());
   const transformedItems = computed(() => (options == null ? void 0 : options.transform) ? unref(items).map(options == null ? void 0 : options.transform) : unref(items));
   watchEffect(() => {
-    const strQuery = typeof toValue(query) !== "string" && typeof toValue(query) !== "number" ? "" : String(toValue(query));
+    const _query = typeof query === "function" ? query() : unref(query);
+    const strQuery = typeof _query !== "string" && typeof _query !== "number" ? "" : String(_query);
     const results = filterItems(transformedItems.value, strQuery, {
       customKeyFilter: props.customKeyFilter,
       default: props.customFilter,
