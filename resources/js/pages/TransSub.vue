@@ -1,6 +1,6 @@
 <template>
-    <TransitionGroup tag="td" name="tickets" class="@container">
-        <TransTicket v-for="ticket in tickets" :key="ticket.id" :ticket="ticket" />
+    <TransitionGroup tag="td" name="tickets" class="@container pt-1">
+        <TransTicket v-for="ticket in tickets" :key="ticket.id" :ticket="ticket" class="mr-1 mb-1" />
     </TransitionGroup>
 </template>
 
@@ -17,7 +17,7 @@ defineProps<{ tickets: Ticket[] }>();
 }
 
 .tickets-enter-active {
-    transition: transform 2s ease-out;
+    transition: transform 3s ease-out;
 }
 
 .tickets-enter-from {

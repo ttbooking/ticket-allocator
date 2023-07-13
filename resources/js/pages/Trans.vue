@@ -130,6 +130,6 @@ async function reset() {
 }
 
 .operators-move {
-    transition: transform 2s linear;
+    transition: transform 2s ease-in-out;
 }
 </style>

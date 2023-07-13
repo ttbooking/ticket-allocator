@@ -1,6 +1,6 @@
 <template>
     <div class="ticket-wrapper relative d-inline-block">
-        <v-btn size="small" width="100" class="ticket text-white mr-1 mb-1">{{ ticket.name }}</v-btn>
+        <v-btn size="small" width="100" class="ticket text-white">{{ ticket.name }}</v-btn>
     </div>
 </template>
 

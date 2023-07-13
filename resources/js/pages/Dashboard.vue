@@ -197,6 +197,6 @@ const itemify = (items: object) => Object.entries(items).map(([title, value]) =>
     table-layout: fixed;
 }
 .operator-pool-move {
-    transition: all 0.5s ease;
+    transition: transform 0.5s ease-in-out;
 }
 </style>

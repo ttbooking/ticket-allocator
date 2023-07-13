@@ -68,7 +68,7 @@ onMounted(() => {
 }
 
 .ticket-pool-enter-active {
-    transition: transform 0.5s ease-out;
+    transition: transform 1s ease-out;
 }
 
 .ticket-pool-enter-from {
