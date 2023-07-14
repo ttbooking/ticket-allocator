@@ -56,15 +56,15 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-table density="compact" class="ticket-monitor">
-                <tbody class="align-text-top">
-                    <TicketRow :tickets="sortedTickets">
+            <v-table fixed-header height="600px" density="compact" class="ticket-monitor">
+                <thead class="align-top">
+                    <TicketRow pool :tickets="sortedTickets">
                         <template #name>{{ $t("ticket_pool") }}</template>
                     </TicketRow>
-                    <TransitionGroup name="operator-pool">
-                        <OperatorRow v-for="operator in sortedOperators" :key="operator.uuid" :operator="operator" />
-                    </TransitionGroup>
-                </tbody>
+                </thead>
+                <TransitionGroup tag="tbody" class="align-top" name="operator-pool">
+                    <OperatorRow v-for="operator in sortedOperators" :key="operator.uuid" :operator="operator" />
+                </TransitionGroup>
             </v-table>
         </div>
     </DefaultLayout>

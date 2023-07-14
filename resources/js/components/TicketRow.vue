@@ -1,28 +1,28 @@
 <template>
     <tr ref="ticketRow" class="ticket-row" :class="{ dragover: isOverDropZone }">
-        <td class="status">
+        <component :is="cell" class="status py-1">
             <slot name="status" />
-        </td>
+        </component>
 
-        <td class="name font-weight-bold">
+        <component :is="cell" class="name !pt-[6px] font-weight-bold">
             <slot name="name" />
-        </td>
+        </component>
 
-        <td class="load text-center">
+        <component :is="cell" class="load !pt-[6px] text-center">
             <slot name="load">{{ tickets.length }}</slot
             >/<slot name="load-max">&infin;</slot>
-        </td>
+        </component>
 
-        <td class="complexity text-center">
+        <component :is="cell" class="complexity !pt-[6px] text-center">
             <slot name="complexity">{{ complexity }}</slot
             >/<slot name="complexity-max">&infin;</slot>
-        </td>
+        </component>
 
-        <TicketPool :tickets="tickets" :class="{ collapsed }" />
+        <TicketPool :tag="cell" :tickets="tickets" :class="{ collapsed }" />
 
-        <td class="more text-center">
+        <component :is="cell" class="more !pt-[2px] text-center">
             <v-btn size="x-small" variant="tonal" :icon="moreIcon" @click="collapsed = !collapsed" />
-        </td>
+        </component>
     </tr>
 </template>
 
@@ -36,9 +36,12 @@ import Ticket from "@/models/Ticket";
 
 const props = defineProps<{
     tickets: Collection<Ticket>;
+    pool?: boolean;
 }>();
 
 let collapsed = ref(false);
+
+const cell = computed(() => (props.pool ? "th" : "td"));
 
 const complexity = computed(() => props.tickets.reduce((n, { complexity }) => n + complexity, 0));
 

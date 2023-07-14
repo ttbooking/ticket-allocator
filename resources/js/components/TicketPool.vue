@@ -1,9 +1,8 @@
 <template>
     <TransitionGroup
         ref="ticketPool"
-        tag="td"
         name="ticket-pool"
-        class="@container tickets pt-1"
+        class="@container tickets leading-8 !pt-[1px] !pb-[3px]"
         :css="animationEnabled"
         @mouseup="unlock"
     >
@@ -13,7 +12,7 @@
             :data-uuid="ticket.uuid"
             :ticket="ticket"
             draggable="true"
-            class="mr-1 mb-1"
+            class="mr-1"
             @mousedown.ctrl="lock"
         />
     </TransitionGroup>
