@@ -8,9 +8,9 @@
 
         <div>
             <v-table density="compact" class="monitor bg-transparent overflow-hidden">
-                <TransitionGroup tag="tbody" name="operators">
+                <TransGroup tag="tbody" name="operators">
                     <TransOperator v-for="operator in operators" :key="operator.id" :operator="operator" />
-                </TransitionGroup>
+                </TransGroup>
             </v-table>
             <v-container>
                 <v-row>
@@ -36,6 +36,7 @@ import DefaultLayout from "@/layouts/Default.vue";
 import { Head, usePage } from "@inertiajs/vue3";
 import { ref, computed, nextTick } from "vue";
 import { random, remove, reverse, sample, shuffle, uniqueId } from "lodash";
+import { TransitionGroup as TransGroup } from "@/components/TransitionGroup";
 import TransOperator from "@/pages/TransOperator.vue";
 import type { DisplayOptions } from "@/types";
 import type { Operator } from "@/types/trans";
