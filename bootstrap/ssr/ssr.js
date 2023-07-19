@@ -2802,13 +2802,26 @@ function startOfMonth(date2) {
 function endOfMonth(date2) {
   return new Date(date2.getFullYear(), date2.getMonth() + 1, 0);
 }
+function formatYyyyMmDd(value2) {
+  const formattedValue = value2.split("-").map((d2) => d2.padStart(2, "0")).join("-");
+  const offsetMin = (/* @__PURE__ */ new Date()).getTimezoneOffset() / -60;
+  const offsetSign = offsetMin < 0 ? "-" : "+";
+  const offsetValue = Math.abs(offsetMin).toString().padStart(2, "0");
+  return `${formattedValue}T00:00:00.000${offsetSign}${offsetValue}:00`;
+}
+const _YYYMMDD = /([12]\d{3}-([1-9]|0[1-9]|1[0-2])-([1-9]|0[1-9]|[12]\d|3[01]))/;
 function date(value2) {
   if (value2 == null)
     return /* @__PURE__ */ new Date();
   if (value2 instanceof Date)
     return value2;
   if (typeof value2 === "string") {
-    const parsed = Date.parse(value2);
+    let parsed;
+    if (_YYYMMDD.test(value2)) {
+      parsed = Date.parse(formatYyyyMmDd(value2));
+    } else {
+      parsed = Date.parse(value2);
+    }
     if (!isNaN(parsed))
       return new Date(parsed);
   }
@@ -3167,7 +3180,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.8";
+const version = "3.3.9";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -8129,6 +8142,11 @@ function useLocationStrategies(props, data) {
 function staticLocationStrategy() {
 }
 function getIntrinsicSize(el, isRtl) {
+  if (isRtl) {
+    el.style.removeProperty("left");
+  } else {
+    el.style.removeProperty("right");
+  }
   const contentBox = nullifyTransforms(el);
   if (isRtl) {
     contentBox.x += parseFloat(el.style.right || 0);
@@ -9732,7 +9750,7 @@ const VField = genericComponent()({
       }, null), createVNode(LoaderSlot, {
         "name": "v-field",
         "active": !!props.loading,
-        "color": props.error ? "error" : props.color
+        "color": props.error ? "error" : typeof props.loading === "string" ? props.loading : props.color
       }, {
         default: slots.loader
       }), hasPrepend && createVNode("div", {
@@ -11967,7 +11985,7 @@ const VDataTableRows = genericComponent()({
         const itemSlotProps = {
           ...slotProps,
           props: {
-            key: `item_${item.value}`,
+            key: `item_${item.key ?? item.index}`,
             onClick: expandOnClick.value || props["onClick:row"] ? (event) => {
               var _a3;
               if (expandOnClick.value) {
@@ -12059,6 +12077,7 @@ function transformItem(props, item, index, columns) {
   }, {});
   return {
     type: "item",
+    key: props.returnObject ? getPropertyFromItem(item, props.itemValue) : value2,
     index,
     value: value2,
     selectable,
@@ -12962,7 +12981,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-1a9e6d68.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-e42a20bf.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c20ec808.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-dbcfdeeb.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-dff2175a.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-12c0d808.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-176f4b08.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-0aaf5532.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-4cb22700.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-ddec1a8a.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-14b707eb.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-a43eadc5.js"), "./pages/Trans.vue": () => import("./assets/Trans-af16e321.js"), "./pages/TransOperator.vue": () => import("./assets/TransOperator-4327e0be.js"), "./pages/TransSub.vue": () => import("./assets/TransSub-eb33a626.js"), "./pages/TransTicket.vue": () => import("./assets/TransTicket-ea6b7d20.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-194c1c9c.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-e42a20bf.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c20ec808.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-c5315d7c.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-dff2175a.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-12c0d808.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-aa9048ea.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-0aaf5532.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-008263cc.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-ddec1a8a.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-14b707eb.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-a43eadc5.js"), "./pages/Trans.vue": () => import("./assets/Trans-af16e321.js"), "./pages/TransOperator.vue": () => import("./assets/TransOperator-4327e0be.js"), "./pages/TransSub.vue": () => import("./assets/TransSub-eb33a626.js"), "./pages/TransTicket.vue": () => import("./assets/TransTicket-ea6b7d20.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
