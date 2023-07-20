@@ -85,16 +85,6 @@ class OperatorProjector extends Projector
         //Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
     }
 
-    public function onTicketCreated(TicketEvents\TicketCreated $event): void
-    {
-        if (! $operator = Operator::find($event->operatorUuid)?->writeable()) {
-            return;
-        }
-
-        $operator->increment('bound_tickets');
-        $operator->update(['last_bound_at' => now()]);
-    }
-
     public function onTicketBound(TicketEvents\TicketBound $event): void
     {
         $ticket = Ticket::find($event->uuid);
@@ -110,17 +100,6 @@ class OperatorProjector extends Projector
         $newOperator->increment('bound_tickets');
         $newOperator->increment('total_complexity', $ticket->complexity);
         $newOperator->update(['last_bound_at' => now()]);
-    }
-
-    public function onTicketMetricsAdjusted(TicketEvents\TicketMetricsAdjusted $event): void
-    {
-        $ticket = Ticket::find($event->uuid);
-        if (! $operator = $ticket?->operator?->writeable()) {
-            return;
-        }
-
-        $totalComplexity = max(0, $operator->total_complexity + $event->adjustments->complexity);
-        $operator->update(['total_complexity' => $totalComplexity]);
     }
 
     public function onTicketUnbound(TicketEvents\TicketUnbound $event): void
@@ -143,5 +122,15 @@ class OperatorProjector extends Projector
 
         $operator->decrement('bound_tickets');
         $operator->decrement('total_complexity', $ticket->complexity);
+    }
+
+    public function onTicketComplexityIncremented(TicketEvents\TicketComplexityIncremented $event): void
+    {
+        Ticket::find($event->uuid)?->operator?->writeable()->increment('total_complexity', $event->complexityPoints);
+    }
+
+    public function onTicketComplexityDecremented(TicketEvents\TicketComplexityDecremented $event): void
+    {
+        Ticket::find($event->uuid)?->operator?->writeable()->decrement('total_complexity', $event->complexityPoints);
     }
 }
