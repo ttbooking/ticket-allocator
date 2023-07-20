@@ -87,23 +87,17 @@ class OperatorProjector extends Projector
         //Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
     }
 
-    public function onTicketCreatedOrBound(TicketEvents\TicketCreated|TicketEvents\TicketBound $event): void
+    public function onTicketCreated(TicketEvents\TicketCreated $event): void
     {
         $ticket = Ticket::find($event->uuid);
-        $newOperator = Operator::find($event->operatorUuid)?->writeable();
-        if (! $ticket || ! $newOperator) {
+        $operator = Operator::find($event->operatorUuid)?->writeable();
+        if (! $ticket || ! $operator) {
             return;
         }
 
-        if ($event instanceof TicketEvents\TicketBound) {
-            $operator = $ticket->operator?->writeable();
-            $operator?->decrement('bound_tickets');
-            $operator?->decrement('total_complexity', $ticket->complexity);
-        }
-
-        $newOperator->increment('bound_tickets');
-        $newOperator->increment('total_complexity', $ticket->complexity);
-        $newOperator->update(['last_bound_at' => now()]);
+        $operator->increment('bound_tickets');
+        $operator->increment('total_complexity', $ticket->complexity);
+        $operator->update(['last_bound_at' => now()]);
     }
 
     public function onTicketMetricsAdjusted(TicketEvents\TicketMetricsAdjusted $event): void
