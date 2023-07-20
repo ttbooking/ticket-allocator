@@ -12,6 +12,8 @@ use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 
 class OperatorProjector extends Projector
 {
+    public int $weight = 10;
+
     public function onOperatorEnrolled(Events\OperatorEnrolled $event): void
     {
         (new Operator)->writeable()->create([
@@ -85,7 +87,7 @@ class OperatorProjector extends Projector
         //Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
     }
 
-    public function onTicketBound(TicketEvents\TicketBound $event): void
+    public function onTicketCreatedOrBound(TicketEvents\TicketCreated|TicketEvents\TicketBound $event): void
     {
         $ticket = Ticket::find($event->uuid);
         $newOperator = Operator::find($event->operatorUuid)?->writeable();
@@ -93,24 +95,15 @@ class OperatorProjector extends Projector
             return;
         }
 
-        $operator = $ticket->operator?->writeable();
-        $operator?->decrement('bound_tickets');
-        $operator?->decrement('total_complexity', $ticket->complexity);
+        if ($event instanceof TicketEvents\TicketBound) {
+            $operator = $ticket->operator?->writeable();
+            $operator?->decrement('bound_tickets');
+            $operator?->decrement('total_complexity', $ticket->complexity);
+        }
 
         $newOperator->increment('bound_tickets');
         $newOperator->increment('total_complexity', $ticket->complexity);
         $newOperator->update(['last_bound_at' => now()]);
-    }
-
-    public function onTicketUnbound(TicketEvents\TicketUnbound $event): void
-    {
-        $ticket = Ticket::find($event->uuid);
-        if (! $operator = $ticket?->operator?->writeable()) {
-            return;
-        }
-
-        $operator->decrement('bound_tickets');
-        $operator->decrement('total_complexity', $ticket->complexity);
     }
 
     public function onTicketClosed(TicketEvents\TicketClosed $event): void
