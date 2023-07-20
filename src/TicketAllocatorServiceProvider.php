@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Spatie\EventSourcing\Facades\Projectionist;
-use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorPostProjector;
 use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorProjector;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
 //use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
@@ -101,7 +100,6 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         Projectionist::addEventHandlers([
             OperatorProjector::class,
             TicketProjector::class,
-            OperatorPostProjector::class,
             ApplyFactors::class,
             //ApplyCategoryInfo::class,
         ]);

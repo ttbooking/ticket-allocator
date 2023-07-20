@@ -85,6 +85,16 @@ class OperatorProjector extends Projector
         //Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
     }
 
+    public function onTicketCreated(TicketEvents\TicketCreated $event): void
+    {
+        if (! $operator = Operator::find($event->operatorUuid)?->writeable()) {
+            return;
+        }
+
+        $operator->increment('bound_tickets');
+        $operator->update(['last_bound_at' => now()]);
+    }
+
     public function onTicketBound(TicketEvents\TicketBound $event): void
     {
         $ticket = Ticket::find($event->uuid);
