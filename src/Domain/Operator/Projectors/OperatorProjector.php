@@ -102,6 +102,17 @@ class OperatorProjector extends Projector
         $newOperator->update(['last_bound_at' => now()]);
     }
 
+    public function onTicketMetricsAdjusted(TicketEvents\TicketMetricsAdjusted $event): void
+    {
+        $ticket = Ticket::find($event->uuid);
+        if (! $operator = $ticket?->operator?->writeable()) {
+            return;
+        }
+
+        $totalComplexity = max(0, $operator->total_complexity + $event->adjustments->complexity);
+        $operator->update(['total_complexity' => $totalComplexity]);
+    }
+
     public function onTicketUnbound(TicketEvents\TicketUnbound $event): void
     {
         $ticket = Ticket::find($event->uuid);
