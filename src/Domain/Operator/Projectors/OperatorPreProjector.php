@@ -38,4 +38,15 @@ class OperatorPreProjector extends Projector
         $operator->decrement('bound_tickets');
         $operator->decrement('total_complexity', $ticket->complexity);
     }
+
+    public function onTicketClosed(TicketEvents\TicketClosed $event): void
+    {
+        $ticket = Ticket::find($event->uuid);
+        if (! $operator = $ticket?->operator?->writeable()) {
+            return;
+        }
+
+        $operator->decrement('bound_tickets');
+        $operator->decrement('total_complexity', $ticket->complexity);
+    }
 }

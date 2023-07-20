@@ -110,15 +110,4 @@ class OperatorProjector extends Projector
         $totalComplexity = max(0, $operator->total_complexity + $event->adjustments->complexity);
         $operator->update(['total_complexity' => $totalComplexity]);
     }
-
-    public function onTicketClosed(TicketEvents\TicketClosed $event): void
-    {
-        $ticket = Ticket::find($event->uuid);
-        if (! $operator = $ticket?->operator?->writeable()) {
-            return;
-        }
-
-        $operator->decrement('bound_tickets');
-        $operator->decrement('total_complexity', $ticket->complexity);
-    }
 }
