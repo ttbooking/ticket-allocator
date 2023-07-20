@@ -7,7 +7,7 @@ namespace TTBooking\TicketAllocator\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Inertia\Response;
+use Illuminate\Support\Facades\Response;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Actions;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
