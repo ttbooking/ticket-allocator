@@ -45,6 +45,6 @@ class DashboardController extends Controller
 
     public function trans(): Response
     {
-        return Inertia::render('Trans');
+        return Inertia::render('Trans/Index');
     }
 }
