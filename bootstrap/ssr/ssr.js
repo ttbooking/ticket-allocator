@@ -3180,7 +3180,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.9";
+const version = "3.3.10";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -9341,6 +9341,19 @@ function forwardRefs(target) {
       }
       return false;
     },
+    set(target2, key, value2) {
+      if (Reflect.has(target2, key)) {
+        return Reflect.set(target2, key, value2);
+      }
+      if (typeof key === "symbol" || key.startsWith("__"))
+        return false;
+      for (const ref2 of refs) {
+        if (ref2.value && Reflect.has(ref2.value, key)) {
+          return Reflect.set(ref2.value, key, value2);
+        }
+      }
+      return false;
+    },
     getOwnPropertyDescriptor(target2, key) {
       var _a;
       const descriptor = Reflect.getOwnPropertyDescriptor(target2, key);
@@ -10445,7 +10458,7 @@ const VSelect = genericComponent()({
     }
     function onKeydown(e2) {
       var _a, _b;
-      if (props.readonly || (form == null ? void 0 : form.isReadonly.value))
+      if (!e2.key || props.readonly || (form == null ? void 0 : form.isReadonly.value))
         return;
       if (["Enter", " ", "ArrowDown", "ArrowUp", "Home", "End"].includes(e2.key)) {
         e2.preventDefault();
@@ -10510,6 +10523,19 @@ const VSelect = genericComponent()({
     function onFocusin(e2) {
       isFocused.value = true;
     }
+    function onModelUpdate(v2) {
+      var _a, _b;
+      if (v2 == null)
+        model.value = [];
+      else if (((_a = vTextFieldRef.value) == null ? void 0 : _a.matches(":autofill")) || ((_b = vTextFieldRef.value) == null ? void 0 : _b.matches(":-webkit-autofill"))) {
+        const item = items.value.find((item2) => item2.title === v2);
+        if (item) {
+          select(item);
+        }
+      } else if (vTextFieldRef.value) {
+        vTextFieldRef.value.value = "";
+      }
+    }
     useRender(() => {
       const hasChips = !!(props.chips || slots.chip);
       const hasList = !!(!props.hideNoData || displayItems.value.length || slots["prepend-item"] || slots["append-item"] || slots["no-data"]);
@@ -10520,10 +10546,7 @@ const VSelect = genericComponent()({
         "ref": vTextFieldRef
       }, textFieldProps, {
         "modelValue": model.value.map((v2) => v2.props.value).join(", "),
-        "onUpdate:modelValue": (v2) => {
-          if (v2 == null)
-            model.value = [];
-        },
+        "onUpdate:modelValue": onModelUpdate,
         "focused": isFocused.value,
         "onUpdate:focused": ($event) => isFocused.value = $event,
         "validationValue": model.externalValue,
@@ -10536,7 +10559,7 @@ const VSelect = genericComponent()({
           "v-select--selection-slot": !!slots.selection
         }, props.class],
         "style": props.style,
-        "readonly": true,
+        "inputmode": "none",
         "placeholder": placeholder,
         "onClick:clear": onClear,
         "onMousedown:control": onMousedownControl,
@@ -12981,7 +13004,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-194c1c9c.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-e42a20bf.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c20ec808.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-c5315d7c.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-dff2175a.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-12c0d808.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-aa9048ea.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-0aaf5532.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-008263cc.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-ddec1a8a.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-14b707eb.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-a43eadc5.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-36ebe1f5.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-a7253c64.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-059644e1.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-d736ea43.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-3a10b2ee.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-093893d2.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-12c0d808.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-48fe7731.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-528bfd44.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-d6f69e66.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-66d7f4fd.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-5a303be3.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-e81d7c1d.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-3cbd9360.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
