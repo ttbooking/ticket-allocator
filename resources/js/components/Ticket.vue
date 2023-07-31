@@ -122,6 +122,7 @@ import { computed, ref } from "vue";
 import { trans } from "laravel-vue-i18n";
 import dayjs from "dayjs";
 import MarkdownIt from "markdown-it";
+import MarkdownItAttrs from "markdown-it-attrs";
 import { usePage } from "@inertiajs/vue3";
 import Ticket from "@/models/Ticket";
 import { Factor, DisplayOptions } from "@/types";
@@ -135,7 +136,7 @@ const factors = computed(() => usePage().props.factors as Record<string, Factor>
 
 const tab = ref(null);
 
-const md = new MarkdownIt({ linkify: true });
+const md = new MarkdownIt({ linkify: true }).use(MarkdownItAttrs);
 
 const options = useSharedOptions();
 const mode = useSharedDisplayMode();
