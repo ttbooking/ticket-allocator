@@ -531,6 +531,9 @@ function useToggleScope(source, fn) {
     scope == null ? void 0 : scope.stop();
   });
 }
+const IN_BROWSER = typeof window !== "undefined";
+const SUPPORTS_INTERSECTION = IN_BROWSER && "IntersectionObserver" in window;
+const SUPPORTS_TOUCH = IN_BROWSER && ("ontouchstart" in window || window.navigator.maxTouchPoints > 0);
 function _classPrivateFieldInitSpec(obj, privateMap, value2) {
   _checkPrivateRedeclaration(obj, privateMap);
   privateMap.set(obj, value2);
@@ -837,13 +840,23 @@ function callEvent(handler) {
   }
 }
 function focusableChildren(el) {
-  const targets = ["button", "[href]", 'input:not([type="hidden"])', "select", "textarea", "[tabindex]"].map((s2) => `${s2}:not([tabindex="-1"]):not([disabled])`).join(", ");
+  let filterByTabIndex = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : true;
+  const targets = ["button", "[href]", 'input:not([type="hidden"])', "select", "textarea", "[tabindex]"].map((s2) => `${s2}${filterByTabIndex ? ':not([tabindex="-1"])' : ""}:not([disabled])`).join(", ");
   return [...el.querySelectorAll(targets)];
 }
+function getNextElement(elements, location, condition) {
+  let _el;
+  let idx = elements.indexOf(document.activeElement);
+  const inc = location === "next" ? 1 : -1;
+  do {
+    idx += inc;
+    _el = elements[idx];
+  } while ((!_el || _el.offsetParent == null || !((condition == null ? void 0 : condition(_el)) ?? true)) && idx < elements.length && idx >= 0);
+  return _el;
+}
 function focusChild(el, location) {
-  var _a, _b, _c;
+  var _a, _b, _c, _d;
   const focusable = focusableChildren(el);
-  const idx = focusable.indexOf(document.activeElement);
   if (!location) {
     if (el === document.activeElement || !el.contains(document.activeElement)) {
       (_a = focusable[0]) == null ? void 0 : _a.focus();
@@ -852,14 +865,10 @@ function focusChild(el, location) {
     (_b = focusable[0]) == null ? void 0 : _b.focus();
   } else if (location === "last") {
     (_c = focusable.at(-1)) == null ? void 0 : _c.focus();
+  } else if (typeof location === "number") {
+    (_d = focusable[location]) == null ? void 0 : _d.focus();
   } else {
-    let _el;
-    let idxx = idx;
-    const inc = location === "next" ? 1 : -1;
-    do {
-      idxx += inc;
-      _el = focusable[idxx];
-    } while ((!_el || _el.offsetParent == null) && idxx < focusable.length && idxx >= 0);
+    const _el = getNextElement(focusable, location);
     if (_el)
       _el.focus();
     else
@@ -870,6 +879,16 @@ function isEmpty(val) {
   return val === null || val === void 0 || typeof val === "string" && val.trim() === "";
 }
 function noop() {
+}
+function matchesSelector(el, selector) {
+  const supportsSelector = IN_BROWSER && typeof CSS !== "undefined" && typeof CSS.supports !== "undefined" && CSS.supports(`selector(${selector})`);
+  if (!supportsSelector)
+    return null;
+  try {
+    return !!el && el.matches(selector);
+  } catch (err) {
+    return null;
+  }
 }
 const block = ["top", "bottom"];
 const inline = ["start", "end", "left", "right"];
@@ -1476,10 +1495,6 @@ function isPotentiallyScrollable(el) {
   const style = window.getComputedStyle(el);
   return ["scroll", "auto"].includes(style.overflowY);
 }
-const IN_BROWSER = typeof window !== "undefined";
-const SUPPORTS_INTERSECTION = IN_BROWSER && "IntersectionObserver" in window;
-const SUPPORTS_TOUCH = IN_BROWSER && ("ontouchstart" in window || window.navigator.maxTouchPoints > 0);
-const SUPPORTS_FOCUS_VISIBLE = IN_BROWSER && typeof CSS !== "undefined" && typeof CSS.supports !== "undefined" && CSS.supports("selector(:focus-visible)");
 function injectSelf(key) {
   const {
     provides
@@ -1973,7 +1988,8 @@ const en = {
   input: {
     clear: "Clear {0}",
     prependAction: "{0} prepended action",
-    appendAction: "{0} appended action"
+    appendAction: "{0} appended action",
+    otp: "Please enter OTP character {0}"
   },
   fileInput: {
     counter: "{0} files",
@@ -1993,6 +2009,10 @@ const en = {
       first: "First page",
       last: "Last page"
     }
+  },
+  stepper: {
+    next: "Next",
+    prev: "Previous"
   },
   rating: {
     ariaLabel: {
@@ -2063,7 +2083,8 @@ const ru = {
   input: {
     clear: "Clear {0}",
     prependAction: "{0} prepended action",
-    appendAction: "{0} appended action"
+    appendAction: "{0} appended action",
+    otp: "Please enter OTP character {0}"
   },
   fileInput: {
     counter: "Файлов: {0}",
@@ -2083,6 +2104,10 @@ const ru = {
       first: "First page",
       last: "Last page"
     }
+  },
+  stepper: {
+    next: "Next",
+    prev: "Previous"
   },
   rating: {
     ariaLabel: {
@@ -2528,9 +2553,11 @@ function createTheme(options) {
     if (head) {
       if (head.push) {
         const entry = head.push(getHead);
-        watch(styles, () => {
-          entry.patch(getHead);
-        });
+        if (IN_BROWSER) {
+          watch(styles, () => {
+            entry.patch(getHead);
+          });
+        }
       } else {
         if (IN_BROWSER) {
           head.addHeadObjs(computed(getHead));
@@ -2554,9 +2581,13 @@ function createTheme(options) {
           styleEl.innerHTML = styles.value;
       };
       let styleEl = IN_BROWSER ? document.getElementById("vuetify-theme-stylesheet") : null;
-      watch(styles, updateStyles, {
-        immediate: true
-      });
+      if (IN_BROWSER) {
+        watch(styles, updateStyles, {
+          immediate: true
+        });
+      } else {
+        updateStyles();
+      }
     }
   }
   const themeClasses = computed(() => parsedOptions.isDisabled ? void 0 : `v-theme--${name2.value}`);
@@ -2802,12 +2833,9 @@ function startOfMonth(date2) {
 function endOfMonth(date2) {
   return new Date(date2.getFullYear(), date2.getMonth() + 1, 0);
 }
-function formatYyyyMmDd(value2) {
-  const formattedValue = value2.split("-").map((d2) => d2.padStart(2, "0")).join("-");
-  const offsetMin = (/* @__PURE__ */ new Date()).getTimezoneOffset() / -60;
-  const offsetSign = offsetMin < 0 ? "-" : "+";
-  const offsetValue = Math.abs(offsetMin).toString().padStart(2, "0");
-  return `${formattedValue}T00:00:00.000${offsetSign}${offsetValue}:00`;
+function parseLocalDate(value2) {
+  const parts = value2.split("-").map(Number);
+  return new Date(parts[0], parts[1] - 1, parts[2]);
 }
 const _YYYMMDD = /([12]\d{3}-([1-9]|0[1-9]|1[0-2])-([1-9]|0[1-9]|[12]\d|3[01]))/;
 function date(value2) {
@@ -2818,7 +2846,7 @@ function date(value2) {
   if (typeof value2 === "string") {
     let parsed;
     if (_YYYMMDD.test(value2)) {
-      parsed = Date.parse(formatYyyyMmDd(value2));
+      return parseLocalDate(value2);
     } else {
       parsed = Date.parse(value2);
     }
@@ -3180,7 +3208,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.10";
+const version = "3.3.11";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -3465,7 +3493,7 @@ function useGroupItem(props, injectKey) {
     throw new Error(`[Vuetify] Could not find useGroup injection with symbol ${injectKey.description}`);
   }
   const value2 = toRef(props, "value");
-  const disabled = computed(() => group.disabled.value || props.disabled);
+  const disabled = computed(() => !!(group.disabled.value || props.disabled));
   group.register({
     id,
     value: value2,
@@ -5348,7 +5376,7 @@ const VSelectionControl = genericComponent()({
     });
     function onFocus(e2) {
       isFocused.value = true;
-      if (!SUPPORTS_FOCUS_VISIBLE || SUPPORTS_FOCUS_VISIBLE && e2.target.matches(":focus-visible")) {
+      if (matchesSelector(e2.target, ":focus-visible") !== false) {
         isFocusVisible.value = true;
       }
     }
@@ -6662,7 +6690,7 @@ const VChip = genericComponent()({
             }, [!slots.filter ? createVNode(VIcon, {
               "key": "filter-icon",
               "icon": props.filterIcon
-            }, null) : withDirectives(createVNode(VDefaultsProvider, {
+            }, null) : createVNode(VDefaultsProvider, {
               "key": "filter-defaults",
               "disabled": !props.filterIcon,
               "defaults": {
@@ -6670,7 +6698,7 @@ const VChip = genericComponent()({
                   icon: props.filterIcon
                 }
               }
-            }, null), [[resolveDirective("slot"), slots.filter, "default"]])]), [[vShow, group.isSelected.value]])]
+            }, slots.filter)]), [[vShow, group.isSelected.value]])]
           }), hasPrepend && createVNode("div", {
             "key": "prepend",
             "class": "v-chip__prepend"
@@ -8675,7 +8703,7 @@ function useActivator(props, _ref) {
       runCloseDelay();
     },
     onFocus: (e2) => {
-      if (SUPPORTS_FOCUS_VISIBLE && !e2.target.matches(":focus-visible"))
+      if (matchesSelector(e2.target, ":focus-visible") === false)
         return;
       isFocused = true;
       e2.stopPropagation();
@@ -9438,19 +9466,42 @@ const VMenu = genericComponent()({
         }, 40);
       }
     });
+    function onFocusIn(e2) {
+      var _a, _b, _c;
+      const before = e2.relatedTarget;
+      const after = e2.target;
+      if (before !== after && ((_a = overlay.value) == null ? void 0 : _a.contentEl) && // We're the topmost menu
+      ((_b = overlay.value) == null ? void 0 : _b.globalTop) && // It isn't the document or the menu body
+      ![document, overlay.value.contentEl].includes(after) && // It isn't inside the menu body
+      !overlay.value.contentEl.contains(after)) {
+        const focusable = focusableChildren(overlay.value.contentEl);
+        (_c = focusable[0]) == null ? void 0 : _c.focus();
+      }
+    }
     watch(isActive, (val) => {
-      val ? parent == null ? void 0 : parent.register() : parent == null ? void 0 : parent.unregister();
+      if (val) {
+        parent == null ? void 0 : parent.register();
+        document.addEventListener("focusin", onFocusIn, {
+          once: true
+        });
+      } else {
+        parent == null ? void 0 : parent.unregister();
+        document.removeEventListener("focusin", onFocusIn);
+      }
     });
     function onClickOutside() {
       parent == null ? void 0 : parent.closeParents();
     }
     function onKeydown(e2) {
-      var _a, _b;
+      var _a, _b, _c;
       if (props.disabled)
         return;
       if (e2.key === "Tab") {
-        isActive.value = false;
-        (_b = (_a = overlay.value) == null ? void 0 : _a.activatorEl) == null ? void 0 : _b.focus();
+        const nextElement = getNextElement(focusableChildren((_a = overlay.value) == null ? void 0 : _a.contentEl, false), e2.shiftKey ? "prev" : "next", (el) => el.tabIndex >= 0);
+        if (!nextElement) {
+          isActive.value = false;
+          (_c = (_b = overlay.value) == null ? void 0 : _b.activatorEl) == null ? void 0 : _c.focus();
+        }
       }
     }
     function onActivatorKeydown(e2) {
@@ -10373,6 +10424,7 @@ const makeSelectProps = propsFactory({
     type: Function,
     default: deepEqual
   },
+  itemColor: String,
   ...makeItemsProps({
     itemChildren: false
   })
@@ -10427,7 +10479,13 @@ const VSelect = genericComponent()({
     const form = useForm();
     const selections = computed(() => {
       return model.value.map((v2) => {
-        return items.value.find((item) => props.valueComparator(item.value, v2.value)) || v2;
+        return items.value.find((item) => {
+          const itemRawValue = getPropertyFromItem(item.raw, props.itemValue);
+          const modelRawValue = getPropertyFromItem(v2.raw, props.itemValue);
+          if (itemRawValue === void 0 || modelRawValue === void 0)
+            return false;
+          return props.returnObject ? props.valueComparator(itemRawValue, modelRawValue) : props.valueComparator(item.value, v2.value);
+        }) || v2;
       });
     });
     const selected = computed(() => selections.value.map((selection) => selection.props.value));
@@ -10524,10 +10582,9 @@ const VSelect = genericComponent()({
       isFocused.value = true;
     }
     function onModelUpdate(v2) {
-      var _a, _b;
       if (v2 == null)
         model.value = [];
-      else if (((_a = vTextFieldRef.value) == null ? void 0 : _a.matches(":autofill")) || ((_b = vTextFieldRef.value) == null ? void 0 : _b.matches(":-webkit-autofill"))) {
+      else if (matchesSelector(vTextFieldRef.value, ":autofill") || matchesSelector(vTextFieldRef.value, ":-webkit-autofill")) {
         const item = items.value.find((item2) => item2.title === v2);
         if (item) {
           select(item);
@@ -10589,7 +10646,8 @@ const VSelect = genericComponent()({
             "onKeydown": onListKeydown,
             "onFocusin": onFocusin,
             "onScrollPassive": onListScroll,
-            "tabindex": "-1"
+            "tabindex": "-1",
+            "color": props.itemColor ?? props.color
           }, {
             default: () => {
               var _a, _b, _c;
@@ -12480,20 +12538,8 @@ async function resolvePageComponent(path, pages) {
 function t(t4, r2) {
   for (var n2 = 0; n2 < r2.length; n2++) {
     var e2 = r2[n2];
-    e2.enumerable = e2.enumerable || false, e2.configurable = true, "value" in e2 && (e2.writable = true), Object.defineProperty(t4, "symbol" == typeof (o2 = function(t5, r3) {
-      if ("object" != typeof t5 || null === t5)
-        return t5;
-      var n3 = t5[Symbol.toPrimitive];
-      if (void 0 !== n3) {
-        var e3 = n3.call(t5, "string");
-        if ("object" != typeof e3)
-          return e3;
-        throw new TypeError("@@toPrimitive must return a primitive value.");
-      }
-      return String(t5);
-    }(e2.key)) ? o2 : String(o2), e2);
+    e2.enumerable = e2.enumerable || false, e2.configurable = true, "value" in e2 && (e2.writable = true), Object.defineProperty(t4, e2.key, e2);
   }
-  var o2;
 }
 function r(r2, n2, e2) {
   return n2 && t(r2.prototype, n2), e2 && t(r2, e2), Object.defineProperty(r2, "prototype", { writable: false }), r2;
@@ -12693,19 +12739,19 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
     var C2 = Object.keys(h2);
     k2 = a2 ? C2.sort(a2) : C2;
   }
-  for (var T2 = 0; T2 < k2.length; ++T2) {
-    var N2 = k2[T2], F2 = "object" == typeof N2 && void 0 !== N2.value ? N2.value : h2[N2];
+  for (var N2 = 0; N2 < k2.length; ++N2) {
+    var T2 = k2[N2], F2 = "object" == typeof T2 && void 0 !== T2.value ? T2.value : h2[T2];
     if (!i2 || null !== F2) {
-      var D2 = m(h2) ? "function" == typeof e2 ? e2(n2, N2) : n2 : n2 + (c2 ? "." + N2 : "[" + N2 + "]");
+      var D2 = m(h2) ? "function" == typeof e2 ? e2(n2, T2) : n2 : n2 + (c2 ? "." + T2 : "[" + T2 + "]");
       w(x2, t3(F2, D2, e2, o2, i2, u2, f2, a2, c2, l2, s2, v2, p2, y2));
     }
   }
   return x2;
-}, k = Object.prototype.hasOwnProperty, x = Array.isArray, C = { allowDots: false, allowPrototypes: false, arrayLimit: 20, charset: "utf-8", charsetSentinel: false, comma: false, decoder: d.decode, delimiter: "&", depth: 5, ignoreQueryPrefix: false, interpretNumericEntities: false, parameterLimit: 1e3, parseArrays: true, plainObjects: false, strictNullHandling: false }, T = function(t4) {
+}, k = Object.prototype.hasOwnProperty, x = Array.isArray, C = { allowDots: false, allowPrototypes: false, arrayLimit: 20, charset: "utf-8", charsetSentinel: false, comma: false, decoder: d.decode, delimiter: "&", depth: 5, ignoreQueryPrefix: false, interpretNumericEntities: false, parameterLimit: 1e3, parseArrays: true, plainObjects: false, strictNullHandling: false }, N = function(t4) {
   return t4.replace(/&#(\d+);/g, function(t5, r2) {
     return String.fromCharCode(parseInt(r2, 10));
   });
-}, N = function(t4, r2) {
+}, T = function(t4, r2) {
   return t4 && "string" == typeof t4 && r2.comma && t4.indexOf(",") > -1 ? t4.split(",") : t4;
 }, F = function(t4, r2, n2, e2) {
   if (t4) {
@@ -12721,7 +12767,7 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
       a2.push(u2[1]);
     }
     return u2 && a2.push("[" + o2.slice(u2.index) + "]"), function(t5, r3, n3, e3) {
-      for (var o3 = e3 ? r3 : N(r3, n3), i3 = t5.length - 1; i3 >= 0; --i3) {
+      for (var o3 = e3 ? r3 : T(r3, n3), i3 = t5.length - 1; i3 >= 0; --i3) {
         var u3, f3 = t5[i3];
         if ("[]" === f3 && n3.parseArrays)
           u3 = [].concat(o3);
@@ -12755,9 +12801,9 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
     for (n3 = 0; n3 < o3.length; ++n3)
       if (n3 !== i3) {
         var f3, a3, c2 = o3[n3], l2 = c2.indexOf("]="), s2 = -1 === l2 ? c2.indexOf("=") : l2 + 1;
-        -1 === s2 ? (f3 = r3.decoder(c2, C.decoder, u3, "key"), a3 = r3.strictNullHandling ? null : "") : (f3 = r3.decoder(c2.slice(0, s2), C.decoder, u3, "key"), a3 = d.maybeMap(N(c2.slice(s2 + 1), r3), function(t6) {
+        -1 === s2 ? (f3 = r3.decoder(c2, C.decoder, u3, "key"), a3 = r3.strictNullHandling ? null : "") : (f3 = r3.decoder(c2.slice(0, s2), C.decoder, u3, "key"), a3 = d.maybeMap(T(c2.slice(s2 + 1), r3), function(t6) {
           return r3.decoder(t6, C.decoder, u3, "value");
-        })), a3 && r3.interpretNumericEntities && "iso-8859-1" === u3 && (a3 = T(a3)), c2.indexOf("[]=") > -1 && (a3 = x(a3) ? [a3] : a3), e3[f3] = k.call(e3, f3) ? d.combine(e3[f3], a3) : a3;
+        })), a3 && r3.interpretNumericEntities && "iso-8859-1" === u3 && (a3 = N(a3)), c2.indexOf("[]=") > -1 && (a3 = x(a3) ? [a3] : a3), e3[f3] = k.call(e3, f3) ? d.combine(e3[f3], a3) : a3;
       }
     return e3;
   }(t4, n2) : t4, o2 = n2.plainObjects ? /* @__PURE__ */ Object.create(null) : {}, i2 = Object.keys(e2), u2 = 0; u2 < i2.length; ++u2) {
@@ -12807,7 +12853,7 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
       return { name: t6.replace(/{|\??}/g, ""), required: !/\?}$/.test(t6) };
     })) ? t5 : [];
   } }]), t4;
-}(), P = /* @__PURE__ */ function(t4) {
+}(), $ = /* @__PURE__ */ function(t4) {
   var e2, i2;
   function u2(r2, e3, o2, i3) {
     var u3;
@@ -12943,10 +12989,10 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
     var t5 = this.v();
     return n({}, t5.params, t5.query);
   } }]), u2;
-}(/* @__PURE__ */ f(String)), $ = { install: function(t4, r2) {
+}(/* @__PURE__ */ f(String)), A = { install: function(t4, r2) {
   var n2 = function(t5, n3, e2, o2) {
     return void 0 === o2 && (o2 = r2), function(t6, r3, n4, e3) {
-      var o3 = new P(t6, r3, n4, e3);
+      var o3 = new $(t6, r3, n4, e3);
       return t6 ? o3.toString() : o3;
     }(t5, n3, e2, o2);
   };
@@ -13004,14 +13050,14 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-c92dd782.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-059644e1.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-d736ea43.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-3a10b2ee.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-093893d2.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-12c0d808.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-48fe7731.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-528bfd44.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-d6f69e66.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-66d7f4fd.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-5a303be3.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-e81d7c1d.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-3cbd9360.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-8601cd1d.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-e152637b.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-aaea7d58.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-079ead8e.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-3584b5d2.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-46786e15.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-f7b80e30.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-4b469c2a.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-86e1b754.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-e359d85f.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-f6f1c756.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-e6a75712.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-fe52cdec.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
           const languages = /* @__PURE__ */ Object.assign({ "../../lang/en.json": __vite_glob_1_0, "../../lang/php_en.json": __vite_glob_1_1, "../../lang/php_ru.json": __vite_glob_1_2, "../../lang/ru.json": __vite_glob_1_3 });
           return languages[`../../lang/${lang}.json`];
         }
-      }).use($, {
+      }).use(A, {
         // @ts-expect-error
         ...page.props.ziggy,
         // @ts-expect-error
@@ -13067,23 +13113,25 @@ export {
   useItems as aE,
   useForm as aF,
   useFilter as aG,
-  useScrolling as aH,
-  VMenu as aI,
-  VList as aJ,
-  VListItem as aK,
-  VVirtualScroll as aL,
-  VChip as aM,
-  noop as aN,
-  wrapInArray as aO,
-  makeFormProps as aP,
-  createForm as aQ,
-  VExpandTransition as aR,
-  breakpoints as aS,
-  getCurrentInstance as aT,
-  findChildrenWithProvide as aU,
-  CircularBuffer as aV,
-  useRouter as aW,
-  toPhysical as aX,
+  getPropertyFromItem as aH,
+  useScrolling as aI,
+  VMenu as aJ,
+  VList as aK,
+  VListItem as aL,
+  VVirtualScroll as aM,
+  VChip as aN,
+  noop as aO,
+  matchesSelector as aP,
+  wrapInArray as aQ,
+  makeFormProps as aR,
+  createForm as aS,
+  VExpandTransition as aT,
+  breakpoints as aU,
+  getCurrentInstance as aV,
+  findChildrenWithProvide as aW,
+  CircularBuffer as aX,
+  useRouter as aY,
+  toPhysical as aZ,
   makeDimensionProps as aa,
   makeElevationProps as ab,
   makeLoaderProps as ac,
