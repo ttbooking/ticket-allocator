@@ -2862,7 +2862,7 @@ function getWeekdays(locale) {
     const weekday = new Date(sundayJanuarySecond2000);
     weekday.setDate(sundayJanuarySecond2000.getDate() + daysFromSunday + i2);
     return new Intl.DateTimeFormat(locale, {
-      weekday: "short"
+      weekday: "narrow"
     }).format(weekday);
   });
 }
@@ -3208,7 +3208,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.11";
+const version = "3.3.12";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -6637,6 +6637,7 @@ const VChip = genericComponent()({
     const closeProps = computed(() => ({
       "aria-label": t4(props.closeLabel),
       onClick(e2) {
+        e2.stopPropagation();
         isActive.value = false;
         emit("click:close", e2);
       }
@@ -7529,6 +7530,7 @@ const VListItem = genericComponent()({
         "style": [colorStyles.value, dimensionStyles.value, props.style],
         "href": link2.href.value,
         "tabindex": isClickable.value ? list ? -2 : 0 : void 0,
+        "title": props.title,
         "onClick": onClick,
         "onKeydown": isClickable.value && !isLink.value && onKeyDown
       }, {
@@ -13050,7 +13052,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-8601cd1d.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-e152637b.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-aaea7d58.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-079ead8e.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-3584b5d2.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-46786e15.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-f7b80e30.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-4b469c2a.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-86e1b754.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-e359d85f.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-f6f1c756.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-e6a75712.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-fe52cdec.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-d712789d.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-d88551d1.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c0f51d10.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-6d050ded.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-6814006f.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-b61e44cb.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-ee124750.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-0fc32380.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-502d741d.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-28a661d6.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-51c92e53.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-d097a6b0.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-67a49e04.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
