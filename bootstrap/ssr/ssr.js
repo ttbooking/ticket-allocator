@@ -3,7 +3,7 @@ import "dayjs/locale/ru.js";
 import duration from "dayjs/plugin/duration.js";
 import LocalizedFormat from "dayjs/plugin/localizedFormat.js";
 import RelativeTime from "dayjs/plugin/relativeTime.js";
-import { computed, watch, onScopeDispose, effectScope, Fragment, reactive, watchEffect, toRefs, capitalize, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, inject as inject$1, unref, provide, shallowRef, createVNode, mergeProps, toRaw, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, Teleport, cloneVNode, createTextVNode, withModifiers, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
+import { computed, Fragment, reactive, watchEffect, toRefs, capitalize, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, inject as inject$1, unref, provide, shallowRef, createVNode, mergeProps, watch, onScopeDispose, effectScope, toRaw, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, Teleport, cloneVNode, createTextVNode, withModifiers, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
 import { usePage, router, createInertiaApp } from "@inertiajs/vue3";
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
@@ -508,29 +508,6 @@ const link = {
 const pinia = createPinia().use(createORM());
 const materialdesignicons = "";
 const main = "";
-function useToggleScope(source, fn) {
-  let scope;
-  function start() {
-    scope = effectScope();
-    scope.run(() => fn.length ? fn(() => {
-      scope == null ? void 0 : scope.stop();
-      start();
-    }) : fn());
-  }
-  watch(source, (active2) => {
-    if (active2 && !scope) {
-      start();
-    } else if (!active2) {
-      scope == null ? void 0 : scope.stop();
-      scope = void 0;
-    }
-  }, {
-    immediate: true
-  });
-  onScopeDispose(() => {
-    scope == null ? void 0 : scope.stop();
-  });
-}
 const IN_BROWSER = typeof window !== "undefined";
 const SUPPORTS_INTERSECTION = IN_BROWSER && "IntersectionObserver" in window;
 const SUPPORTS_TOUCH = IN_BROWSER && ("ontouchstart" in window || window.navigator.maxTouchPoints > 0);
@@ -698,8 +675,16 @@ function omit(obj, exclude) {
   exclude.forEach((prop) => delete clone[prop]);
   return clone;
 }
+const onRE = /^on[^a-z]/;
+const isOn = (key) => onRE.test(key);
+const bubblingEvents = ["onAfterscriptexecute", "onAnimationcancel", "onAnimationend", "onAnimationiteration", "onAnimationstart", "onAuxclick", "onBeforeinput", "onBeforescriptexecute", "onChange", "onClick", "onCompositionend", "onCompositionstart", "onCompositionupdate", "onContextmenu", "onCopy", "onCut", "onDblclick", "onFocusin", "onFocusout", "onFullscreenchange", "onFullscreenerror", "onGesturechange", "onGestureend", "onGesturestart", "onGotpointercapture", "onInput", "onKeydown", "onKeypress", "onKeyup", "onLostpointercapture", "onMousedown", "onMousemove", "onMouseout", "onMouseover", "onMouseup", "onMousewheel", "onPaste", "onPointercancel", "onPointerdown", "onPointerenter", "onPointerleave", "onPointermove", "onPointerout", "onPointerover", "onPointerup", "onReset", "onSelect", "onSubmit", "onTouchcancel", "onTouchend", "onTouchmove", "onTouchstart", "onTransitioncancel", "onTransitionend", "onTransitionrun", "onTransitionstart", "onWheel"];
 function filterInputAttrs(attrs) {
-  return pick(attrs, ["class", "style", "id", /^data-/]);
+  const [events, props] = pick(attrs, [onRE]);
+  const inputEvents = omit(events, bubblingEvents);
+  const [rootAttrs, inputAttrs] = pick(props, ["class", "style", "id", /^data-/]);
+  Object.assign(rootAttrs, events);
+  Object.assign(inputAttrs, inputEvents);
+  return [rootAttrs, inputAttrs];
 }
 function wrapInArray(v2) {
   return v2 == null ? [] : Array.isArray(v2) ? v2 : [v2];
@@ -817,8 +802,6 @@ function destructComputed(getter) {
 function includes(arr, val) {
   return arr.includes(val);
 }
-const onRE = /^on[^a-z]/;
-const isOn = (key) => onRE.test(key);
 function eventName(propName) {
   return propName[2].toLowerCase() + propName.slice(3);
 }
@@ -1086,6 +1069,48 @@ function unbindProps(el, props) {
     }
   });
 }
+const mainTRC = 2.4;
+const Rco = 0.2126729;
+const Gco = 0.7151522;
+const Bco = 0.072175;
+const normBG = 0.55;
+const normTXT = 0.58;
+const revTXT = 0.57;
+const revBG = 0.62;
+const blkThrs = 0.03;
+const blkClmp = 1.45;
+const deltaYmin = 5e-4;
+const scaleBoW = 1.25;
+const scaleWoB = 1.25;
+const loConThresh = 0.078;
+const loConFactor = 12.82051282051282;
+const loConOffset = 0.06;
+const loClip = 1e-3;
+function APCAcontrast(text, background) {
+  const Rtxt = (text.r / 255) ** mainTRC;
+  const Gtxt = (text.g / 255) ** mainTRC;
+  const Btxt = (text.b / 255) ** mainTRC;
+  const Rbg = (background.r / 255) ** mainTRC;
+  const Gbg = (background.g / 255) ** mainTRC;
+  const Bbg = (background.b / 255) ** mainTRC;
+  let Ytxt = Rtxt * Rco + Gtxt * Gco + Btxt * Bco;
+  let Ybg = Rbg * Rco + Gbg * Gco + Bbg * Bco;
+  if (Ytxt <= blkThrs)
+    Ytxt += (blkThrs - Ytxt) ** blkClmp;
+  if (Ybg <= blkThrs)
+    Ybg += (blkThrs - Ybg) ** blkClmp;
+  if (Math.abs(Ybg - Ytxt) < deltaYmin)
+    return 0;
+  let outputContrast;
+  if (Ybg > Ytxt) {
+    const SAPC = (Ybg ** normBG - Ytxt ** normTXT) * scaleBoW;
+    outputContrast = SAPC < loClip ? 0 : SAPC < loConThresh ? SAPC - SAPC * loConFactor * loConOffset : SAPC - loConOffset;
+  } else {
+    const SAPC = (Ybg ** revBG - Ytxt ** revTXT) * scaleWoB;
+    outputContrast = SAPC > -loClip ? 0 : SAPC > -loConThresh ? SAPC - SAPC * loConFactor * loConOffset : SAPC + loConOffset;
+  }
+  return outputContrast * 100;
+}
 function consoleWarn(message) {
   warn(`Vuetify: ${message}`);
 }
@@ -1324,6 +1349,11 @@ function getLuma(color) {
   const rgb = parseColor(color);
   return toXYZ(rgb)[1];
 }
+function getForeground(color) {
+  const blackContrast = Math.abs(APCAcontrast(parseColor(0), parseColor(color)));
+  const whiteContrast = Math.abs(APCAcontrast(parseColor(16777215), parseColor(color)));
+  return whiteContrast > Math.min(blackContrast, 50) ? "#fff" : "#000";
+}
 function propsFactory(props, source) {
   return (defaults) => {
     return Object.keys(props).reduce((obj, prop) => {
@@ -1496,9 +1526,10 @@ function isPotentiallyScrollable(el) {
   return ["scroll", "auto"].includes(style.overflowY);
 }
 function injectSelf(key) {
+  let vm = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : getCurrentInstance("injectSelf");
   const {
     provides
-  } = getCurrentInstance("injectSelf");
+  } = vm;
   if (provides && key in provides) {
     return provides[key];
   }
@@ -1537,6 +1568,8 @@ function provideDefaults(defaults, options) {
     const scoped = unref(options == null ? void 0 : options.scoped);
     const reset = unref(options == null ? void 0 : options.reset);
     const root = unref(options == null ? void 0 : options.root);
+    if (providedDefaults.value == null && !(scoped || reset || root))
+      return injectedDefaults.value;
     let properties2 = mergeDeep(providedDefaults.value, {
       prev: injectedDefaults.value
     });
@@ -1598,15 +1631,16 @@ function internalUseDefaults() {
         let [key] = _ref;
         return key.startsWith(key[0].toUpperCase());
       });
-      if (subComponents.length)
-        _subcomponentDefaults.value = Object.fromEntries(subComponents);
+      _subcomponentDefaults.value = subComponents.length ? Object.fromEntries(subComponents) : void 0;
+    } else {
+      _subcomponentDefaults.value = void 0;
     }
   });
   function provideSubDefaults() {
-    useToggleScope(_subcomponentDefaults, () => {
-      var _a;
-      provideDefaults(mergeDeep(((_a = injectSelf(DefaultsSymbol)) == null ? void 0 : _a.value) ?? {}, _subcomponentDefaults.value));
-    });
+    const injected = injectSelf(DefaultsSymbol, vm);
+    provide(DefaultsSymbol, computed(() => {
+      return _subcomponentDefaults.value ? mergeDeep((injected == null ? void 0 : injected.value) ?? {}, _subcomponentDefaults.value) : injected == null ? void 0 : injected.value;
+    }));
   }
   return {
     props: _props,
@@ -1932,6 +1966,7 @@ const useIcon = (props) => {
 };
 const en = {
   badge: "Badge",
+  open: "Open",
   close: "Close",
   dataIterator: {
     noResultsText: "No matching records found",
@@ -2027,6 +2062,7 @@ const en = {
 };
 const ru = {
   badge: "знак",
+  open: "Open",
   close: "Закрыть",
   dataIterator: {
     noResultsText: "Не найдено подходящих записей",
@@ -2163,6 +2199,29 @@ const defaultRtl = {
   zhHans: false,
   zhHant: false
 };
+function useToggleScope(source, fn) {
+  let scope;
+  function start() {
+    scope = effectScope();
+    scope.run(() => fn.length ? fn(() => {
+      scope == null ? void 0 : scope.stop();
+      start();
+    }) : fn());
+  }
+  watch(source, (active2) => {
+    if (active2 && !scope) {
+      start();
+    } else if (!active2) {
+      scope == null ? void 0 : scope.stop();
+      scope = void 0;
+    }
+  }, {
+    immediate: true
+  });
+  onScopeDispose(() => {
+    scope == null ? void 0 : scope.stop();
+  });
+}
 function useProxiedModel(props, prop, defaultValue) {
   let transformIn = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : (v2) => v2;
   let transformOut = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : (v2) => v2;
@@ -2330,48 +2389,6 @@ function useRtl() {
     rtlClasses: locale.rtlClasses
   };
 }
-const mainTRC = 2.4;
-const Rco = 0.2126729;
-const Gco = 0.7151522;
-const Bco = 0.072175;
-const normBG = 0.55;
-const normTXT = 0.58;
-const revTXT = 0.57;
-const revBG = 0.62;
-const blkThrs = 0.03;
-const blkClmp = 1.45;
-const deltaYmin = 5e-4;
-const scaleBoW = 1.25;
-const scaleWoB = 1.25;
-const loConThresh = 0.078;
-const loConFactor = 12.82051282051282;
-const loConOffset = 0.06;
-const loClip = 1e-3;
-function APCAcontrast(text, background) {
-  const Rtxt = (text.r / 255) ** mainTRC;
-  const Gtxt = (text.g / 255) ** mainTRC;
-  const Btxt = (text.b / 255) ** mainTRC;
-  const Rbg = (background.r / 255) ** mainTRC;
-  const Gbg = (background.g / 255) ** mainTRC;
-  const Bbg = (background.b / 255) ** mainTRC;
-  let Ytxt = Rtxt * Rco + Gtxt * Gco + Btxt * Bco;
-  let Ybg = Rbg * Rco + Gbg * Gco + Bbg * Bco;
-  if (Ytxt <= blkThrs)
-    Ytxt += (blkThrs - Ytxt) ** blkClmp;
-  if (Ybg <= blkThrs)
-    Ybg += (blkThrs - Ybg) ** blkClmp;
-  if (Math.abs(Ybg - Ytxt) < deltaYmin)
-    return 0;
-  let outputContrast;
-  if (Ybg > Ytxt) {
-    const SAPC = (Ybg ** normBG - Ytxt ** normTXT) * scaleBoW;
-    outputContrast = SAPC < loClip ? 0 : SAPC < loConThresh ? SAPC - SAPC * loConFactor * loConOffset : SAPC - loConOffset;
-  } else {
-    const SAPC = (Ybg ** revBG - Ytxt ** revTXT) * scaleWoB;
-    outputContrast = SAPC > -loClip ? 0 : SAPC > -loConThresh ? SAPC - SAPC * loConFactor * loConOffset : SAPC + loConOffset;
-  }
-  return outputContrast * 100;
-}
 const ThemeSymbol = Symbol.for("vuetify:theme");
 const makeThemeProps = propsFactory({
   theme: String
@@ -2505,9 +2522,7 @@ function createTheme(options) {
           continue;
         const onColor = `on-${color}`;
         const colorVal = parseColor(theme.colors[color]);
-        const blackContrast = Math.abs(APCAcontrast(parseColor(0), colorVal));
-        const whiteContrast = Math.abs(APCAcontrast(parseColor(16777215), colorVal));
-        theme.colors[onColor] = whiteContrast > Math.min(blackContrast, 50) ? "#fff" : "#000";
+        theme.colors[onColor] = getForeground(colorVal);
       }
     }
     return acc;
@@ -3208,7 +3223,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.12";
+const version = "3.3.14";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -3322,6 +3337,11 @@ function useColor(colors) {
     if (colors.value.background) {
       if (isCssColor(colors.value.background)) {
         styles.backgroundColor = colors.value.background;
+        if (!colors.value.text) {
+          const textColor = getForeground(styles.backgroundColor);
+          styles.color = textColor;
+          styles.caretColor = textColor;
+        }
       } else {
         classes.push(`bg-${colors.value.background}`);
       }
@@ -5150,7 +5170,7 @@ createCssTransition("fab-transition", "center center", "out-in");
 createCssTransition("dialog-bottom-transition");
 createCssTransition("dialog-top-transition");
 const VFadeTransition = createCssTransition("fade-transition");
-createCssTransition("scale-transition");
+const VScaleTransition = createCssTransition("scale-transition");
 createCssTransition("scroll-x-transition");
 createCssTransition("scroll-x-reverse-transition");
 createCssTransition("scroll-y-transition");
@@ -5399,6 +5419,20 @@ const VSelectionControl = genericComponent()({
         }
       }) : props.label;
       const [rootAttrs, inputAttrs] = filterInputAttrs(attrs);
+      const inputNode = createVNode("input", mergeProps({
+        "ref": input,
+        "checked": model.value,
+        "disabled": !!(props.readonly || props.disabled),
+        "id": id.value,
+        "onBlur": onBlur,
+        "onFocus": onFocus,
+        "onInput": onInput,
+        "aria-disabled": !!(props.readonly || props.disabled),
+        "type": props.type,
+        "value": trueValue.value,
+        "name": props.name,
+        "aria-checked": props.type === "checkbox" ? model.value : void 0
+      }, inputAttrs), null);
       return createVNode("div", mergeProps({
         "class": ["v-selection-control", {
           "v-selection-control--dirty": model.value,
@@ -5415,34 +5449,24 @@ const VSelectionControl = genericComponent()({
         "style": textColorStyles.value
       }, [(_a = slots.default) == null ? void 0 : _a.call(slots), withDirectives(createVNode("div", {
         "class": ["v-selection-control__input"]
-      }, [icon.value && createVNode(VIcon, {
-        "key": "icon",
-        "icon": icon.value
-      }, null), createVNode("input", mergeProps({
-        "ref": input,
-        "checked": model.value,
-        "disabled": !!(props.readonly || props.disabled),
-        "id": id.value,
-        "onBlur": onBlur,
-        "onFocus": onFocus,
-        "onInput": onInput,
-        "aria-disabled": !!(props.readonly || props.disabled),
-        "type": props.type,
-        "value": trueValue.value,
-        "name": props.name,
-        "aria-checked": props.type === "checkbox" ? model.value : void 0
-      }, inputAttrs), null), (_b = slots.input) == null ? void 0 : _b.call(slots, {
+      }, [((_b = slots.input) == null ? void 0 : _b.call(slots, {
         model,
         textColorClasses,
         textColorStyles,
+        inputNode,
+        icon: icon.value,
         props: {
           onFocus,
           onBlur,
           id: id.value
         }
-      })]), [[resolveDirective("ripple"), props.ripple && [!props.disabled && !props.readonly, null, ["center", "circle"]]]])]), label && createVNode(VLabel, {
+      })) ?? createVNode(Fragment, null, [icon.value && createVNode(VIcon, {
+        "key": "icon",
+        "icon": icon.value
+      }, null), inputNode])]), [[resolveDirective("ripple"), props.ripple && [!props.disabled && !props.readonly, null, ["center", "circle"]]]])]), label && createVNode(VLabel, {
         "for": id.value,
-        "clickable": true
+        "clickable": true,
+        "onClick": (e2) => e2.stopPropagation()
       }, {
         default: () => [label]
       })]);
@@ -5488,16 +5512,19 @@ const VCheckboxBtn = genericComponent()({
     const trueIcon = computed(() => {
       return indeterminate.value ? props.indeterminateIcon : props.trueIcon;
     });
-    useRender(() => createVNode(VSelectionControl, mergeProps(props, {
-      "modelValue": model.value,
-      "onUpdate:modelValue": [($event) => model.value = $event, onChange],
-      "class": ["v-checkbox-btn", props.class],
-      "style": props.style,
-      "type": "checkbox",
-      "falseIcon": falseIcon.value,
-      "trueIcon": trueIcon.value,
-      "aria-checked": indeterminate.value ? "mixed" : void 0
-    }), slots));
+    useRender(() => {
+      const controlProps = omit(VSelectionControl.filterProps(props)[0], ["modelValue"]);
+      return createVNode(VSelectionControl, mergeProps(controlProps, {
+        "modelValue": model.value,
+        "onUpdate:modelValue": [($event) => model.value = $event, onChange],
+        "class": ["v-checkbox-btn", props.class],
+        "style": props.style,
+        "type": "checkbox",
+        "falseIcon": falseIcon.value,
+        "trueIcon": trueIcon.value,
+        "aria-checked": indeterminate.value ? "mixed" : void 0
+      }), slots);
+    });
     return {};
   }
 });
@@ -7530,7 +7557,6 @@ const VListItem = genericComponent()({
         "style": [colorStyles.value, dimensionStyles.value, props.style],
         "href": link2.href.value,
         "tabindex": isClickable.value ? list ? -2 : 0 : void 0,
-        "title": props.title,
         "onClick": onClick,
         "onKeydown": isClickable.value && !isLink.value && onKeyDown
       }, {
@@ -7568,7 +7594,9 @@ const VListItem = genericComponent()({
               var _a2;
               return [(_a2 = slots.prepend) == null ? void 0 : _a2.call(slots, slotProps.value)];
             }
-          })]), createVNode("div", {
+          }), createVNode("div", {
+            "class": "v-list-item__spacer"
+          }, null)]), createVNode("div", {
             "class": "v-list-item__content",
             "data-no-activator": ""
           }, [hasTitle && createVNode(VListItemTitle, {
@@ -7621,7 +7649,9 @@ const VListItem = genericComponent()({
               var _a2;
               return [(_a2 = slots.append) == null ? void 0 : _a2.call(slots, slotProps.value)];
             }
-          })])];
+          }), createVNode("div", {
+            "class": "v-list-item__spacer"
+          }, null)])];
         }
       }), [[resolveDirective("ripple"), isClickable.value && props.ripple]]);
     });
@@ -9468,11 +9498,12 @@ const VMenu = genericComponent()({
         }, 40);
       }
     });
-    function onFocusIn(e2) {
+    async function onFocusIn(e2) {
       var _a, _b, _c;
       const before = e2.relatedTarget;
       const after = e2.target;
-      if (before !== after && ((_a = overlay.value) == null ? void 0 : _a.contentEl) && // We're the topmost menu
+      await nextTick();
+      if (isActive.value && before !== after && ((_a = overlay.value) == null ? void 0 : _a.contentEl) && // We're the topmost menu
       ((_b = overlay.value) == null ? void 0 : _b.globalTop) && // It isn't the document or the menu body
       ![document, overlay.value.contentEl].includes(after) && // It isn't inside the menu body
       !overlay.value.contentEl.contains(after)) {
@@ -9809,7 +9840,7 @@ const VField = genericComponent()({
           "v-field--no-label": !label,
           [`v-field--variant-${props.variant}`]: true
         }, themeClasses.value, backgroundColorClasses.value, focusClasses.value, loaderClasses.value, roundedClasses.value, rtlClasses.value, props.class],
-        "style": [backgroundColorStyles.value, textColorStyles.value, props.style],
+        "style": [backgroundColorStyles.value, props.style],
         "onClick": onClick
       }, attrs), [createVNode("div", {
         "class": "v-field__overlay"
@@ -9833,7 +9864,8 @@ const VField = genericComponent()({
         "ref": floatingLabelRef,
         "class": [textColorClasses.value],
         "floating": true,
-        "for": id.value
+        "for": id.value,
+        "style": textColorStyles.value
       }, {
         default: () => [label]
       }), createVNode(VFieldLabel, {
@@ -9869,7 +9901,8 @@ const VField = genericComponent()({
         "key": "append-icon",
         "name": "appendInner"
       }, null)]), createVNode("div", {
-        "class": ["v-field__outline", textColorClasses.value]
+        "class": ["v-field__outline", textColorClasses.value],
+        "style": textColorStyles.value
       }, [isOutlined && createVNode(Fragment, null, [createVNode("div", {
         "class": "v-field__outline__start"
       }, null), hasLabel.value && createVNode("div", {
@@ -9909,6 +9942,7 @@ const makeVTextFieldProps = propsFactory({
   persistentPlaceholder: Boolean,
   persistentCounter: Boolean,
   suffix: String,
+  role: String,
   type: {
     type: String,
     default: "text"
@@ -10041,7 +10075,7 @@ const VTextField = genericComponent()({
             "onClick:clear": onClear,
             "onClick:prependInner": props["onClick:prependInner"],
             "onClick:appendInner": props["onClick:appendInner"],
-            "role": "textbox"
+            "role": props.role
           }, fieldProps, {
             "id": id.value,
             "active": isActive.value || isDirty.value,
@@ -10080,10 +10114,12 @@ const VTextField = genericComponent()({
                 "class": "v-text-field__prefix"
               }, [createVNode("span", {
                 "class": "v-text-field__prefix__text"
-              }, [props.prefix])]), createVNode("div", {
+              }, [props.prefix])]), slots.default ? createVNode("div", {
                 "class": fieldClass,
                 "data-no-activator": ""
-              }, [slots.default ? createVNode(Fragment, null, [slots.default(), inputNode]) : cloneVNode(inputNode)]), props.suffix && createVNode("span", {
+              }, [slots.default(), inputNode]) : cloneVNode(inputNode, {
+                class: fieldClass
+              }), props.suffix && createVNode("span", {
                 "class": "v-text-field__suffix"
               }, [createVNode("span", {
                 "class": "v-text-field__suffix__text"
@@ -10405,6 +10441,14 @@ function useScrolling(listRef, textFieldRef) {
 const makeSelectProps = propsFactory({
   chips: Boolean,
   closableChips: Boolean,
+  closeText: {
+    type: String,
+    default: "$vuetify.close"
+  },
+  openText: {
+    type: String,
+    default: "$vuetify.open"
+  },
   eager: Boolean,
   hideNoData: Boolean,
   hideSelected: Boolean,
@@ -10434,7 +10478,8 @@ const makeSelectProps = propsFactory({
 const makeVSelectProps = propsFactory({
   ...makeSelectProps(),
   ...omit(makeVTextFieldProps({
-    modelValue: null
+    modelValue: null,
+    role: "button"
   }), ["validationValue", "dirty", "appendInnerIcon"]),
   ...makeTransitionProps({
     transition: {
@@ -10459,6 +10504,7 @@ const VSelect = genericComponent()({
     } = useLocale();
     const vTextFieldRef = ref();
     const vMenuRef = ref();
+    const vVirtualScrollRef = ref();
     const _menu = useProxiedModel(props, "menu");
     const menu = computed({
       get: () => _menu.value,
@@ -10492,6 +10538,7 @@ const VSelect = genericComponent()({
     });
     const selected = computed(() => selections.value.map((selection) => selection.props.value));
     const isFocused = shallowRef(false);
+    const label = computed(() => menu.value ? props.closeText : props.openText);
     let keyboardLookupPrefix = "";
     let keyboardLookupLastTime;
     const displayItems = computed(() => {
@@ -10595,6 +10642,15 @@ const VSelect = genericComponent()({
         vTextFieldRef.value.value = "";
       }
     }
+    watch(menu, () => {
+      if (!props.hideSelected && menu.value && selections.value.length) {
+        const index = displayItems.value.findIndex((item) => selections.value.some((s2) => item.value === s2.value));
+        IN_BROWSER && window.requestAnimationFrame(() => {
+          var _a;
+          index >= 0 && ((_a = vVirtualScrollRef.value) == null ? void 0 : _a.scrollToIndex(index));
+        });
+      }
+    });
     useRender(() => {
       const hasChips = !!(props.chips || slots.chip);
       const hasList = !!(!props.hideNoData || displayItems.value.length || slots["prepend-item"] || slots["append-item"] || slots["no-data"]);
@@ -10623,7 +10679,9 @@ const VSelect = genericComponent()({
         "onClick:clear": onClear,
         "onMousedown:control": onMousedownControl,
         "onBlur": onBlur,
-        "onKeydown": onKeydown
+        "onKeydown": onKeydown,
+        "aria-label": t4(label.value),
+        "title": t4(label.value)
       }), {
         ...slots,
         default: () => createVNode(Fragment, null, [createVNode(VMenu, mergeProps({
@@ -10656,6 +10714,7 @@ const VSelect = genericComponent()({
               return [(_a = slots["prepend-item"]) == null ? void 0 : _a.call(slots), !displayItems.value.length && !props.hideNoData && (((_b = slots["no-data"]) == null ? void 0 : _b.call(slots)) ?? createVNode(VListItem, {
                 "title": t4(props.noDataText)
               }, null)), createVNode(VVirtualScroll, {
+                "ref": vVirtualScrollRef,
                 "renderless": true,
                 "items": displayItems.value
               }, {
@@ -12540,8 +12599,20 @@ async function resolvePageComponent(path, pages) {
 function t(t4, r2) {
   for (var n2 = 0; n2 < r2.length; n2++) {
     var e2 = r2[n2];
-    e2.enumerable = e2.enumerable || false, e2.configurable = true, "value" in e2 && (e2.writable = true), Object.defineProperty(t4, e2.key, e2);
+    e2.enumerable = e2.enumerable || false, e2.configurable = true, "value" in e2 && (e2.writable = true), Object.defineProperty(t4, "symbol" == typeof (o2 = function(t5, r3) {
+      if ("object" != typeof t5 || null === t5)
+        return t5;
+      var n3 = t5[Symbol.toPrimitive];
+      if (void 0 !== n3) {
+        var e3 = n3.call(t5, "string");
+        if ("object" != typeof e3)
+          return e3;
+        throw new TypeError("@@toPrimitive must return a primitive value.");
+      }
+      return String(t5);
+    }(e2.key)) ? o2 : String(o2), e2);
   }
+  var o2;
 }
 function r(r2, n2, e2) {
   return n2 && t(r2.prototype, n2), e2 && t(r2, e2), Object.defineProperty(r2, "prototype", { writable: false }), r2;
@@ -12566,31 +12637,30 @@ function o(t4, r2) {
     return t5.__proto__ = r3, t5;
   }, o(t4, r2);
 }
-function i() {
-  if ("undefined" == typeof Reflect || !Reflect.construct)
-    return false;
-  if (Reflect.construct.sham)
-    return false;
-  if ("function" == typeof Proxy)
-    return true;
-  try {
-    return Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {
-    })), true;
-  } catch (t4) {
-    return false;
-  }
-}
-function u(t4, r2, n2) {
-  return u = i() ? Reflect.construct.bind() : function(t5, r3, n3) {
+function i(t4, r2, n2) {
+  return i = function() {
+    if ("undefined" == typeof Reflect || !Reflect.construct)
+      return false;
+    if (Reflect.construct.sham)
+      return false;
+    if ("function" == typeof Proxy)
+      return true;
+    try {
+      return Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {
+      })), true;
+    } catch (t5) {
+      return false;
+    }
+  }() ? Reflect.construct.bind() : function(t5, r3, n3) {
     var e2 = [null];
     e2.push.apply(e2, r3);
     var i2 = new (Function.bind.apply(t5, e2))();
     return n3 && o(i2, n3.prototype), i2;
-  }, u.apply(null, arguments);
+  }, i.apply(null, arguments);
 }
-function f(t4) {
+function u(t4) {
   var r2 = "function" == typeof Map ? /* @__PURE__ */ new Map() : void 0;
-  return f = function(t5) {
+  return u = function(t5) {
     if (null === t5 || -1 === Function.toString.call(t5).indexOf("[native code]"))
       return t5;
     if ("function" != typeof t5)
@@ -12601,16 +12671,16 @@ function f(t4) {
       r2.set(t5, n2);
     }
     function n2() {
-      return u(t5, arguments, e(this).constructor);
+      return i(t5, arguments, e(this).constructor);
     }
     return n2.prototype = Object.create(t5.prototype, { constructor: { value: n2, enumerable: false, writable: true, configurable: true } }), o(n2, t5);
-  }, f(t4);
+  }, u(t4);
 }
-var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatters: { RFC1738: function(t4) {
-  return a.call(t4, c, "+");
+var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, formatters: { RFC1738: function(t4) {
+  return f.call(t4, a, "+");
 }, RFC3986: function(t4) {
   return String(t4);
-} }, RFC1738: "RFC1738", RFC3986: "RFC3986" }, s = Object.prototype.hasOwnProperty, v = Array.isArray, p = function() {
+} }, RFC1738: "RFC1738", RFC3986: c }, s = Object.prototype.hasOwnProperty, v = Array.isArray, p = function() {
   for (var t4 = [], r2 = 0; r2 < 256; ++r2)
     t4.push("%" + ((r2 < 16 ? "0" : "") + r2.toString(16)).toUpperCase());
   return t4;
@@ -12738,24 +12808,24 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
   else if (m(f2))
     k2 = f2;
   else {
-    var C2 = Object.keys(h2);
-    k2 = a2 ? C2.sort(a2) : C2;
+    var T2 = Object.keys(h2);
+    k2 = a2 ? T2.sort(a2) : T2;
   }
-  for (var N2 = 0; N2 < k2.length; ++N2) {
-    var T2 = k2[N2], F2 = "object" == typeof T2 && void 0 !== T2.value ? T2.value : h2[T2];
-    if (!i2 || null !== F2) {
-      var D2 = m(h2) ? "function" == typeof e2 ? e2(n2, T2) : n2 : n2 + (c2 ? "." + T2 : "[" + T2 + "]");
-      w(x2, t3(F2, D2, e2, o2, i2, u2, f2, a2, c2, l2, s2, v2, p2, y2));
+  for (var C2 = 0; C2 < k2.length; ++C2) {
+    var N2 = k2[C2], D2 = "object" == typeof N2 && void 0 !== N2.value ? N2.value : h2[N2];
+    if (!i2 || null !== D2) {
+      var F2 = m(h2) ? "function" == typeof e2 ? e2(n2, N2) : n2 : n2 + (c2 ? "." + N2 : "[" + N2 + "]");
+      w(x2, t3(D2, F2, e2, o2, i2, u2, f2, a2, c2, l2, s2, v2, p2, y2));
     }
   }
   return x2;
-}, k = Object.prototype.hasOwnProperty, x = Array.isArray, C = { allowDots: false, allowPrototypes: false, arrayLimit: 20, charset: "utf-8", charsetSentinel: false, comma: false, decoder: d.decode, delimiter: "&", depth: 5, ignoreQueryPrefix: false, interpretNumericEntities: false, parameterLimit: 1e3, parseArrays: true, plainObjects: false, strictNullHandling: false }, N = function(t4) {
+}, k = Object.prototype.hasOwnProperty, x = Array.isArray, T = { allowDots: false, allowPrototypes: false, arrayLimit: 20, charset: "utf-8", charsetSentinel: false, comma: false, decoder: d.decode, delimiter: "&", depth: 5, ignoreQueryPrefix: false, interpretNumericEntities: false, parameterLimit: 1e3, parseArrays: true, plainObjects: false, strictNullHandling: false }, C = function(t4) {
   return t4.replace(/&#(\d+);/g, function(t5, r2) {
     return String.fromCharCode(parseInt(r2, 10));
   });
-}, T = function(t4, r2) {
+}, N = function(t4, r2) {
   return t4 && "string" == typeof t4 && r2.comma && t4.indexOf(",") > -1 ? t4.split(",") : t4;
-}, F = function(t4, r2, n2, e2) {
+}, D = function(t4, r2, n2, e2) {
   if (t4) {
     var o2 = n2.allowDots ? t4.replace(/\.([^.[]+)/g, "[$1]") : t4, i2 = /(\[[^[\]]*])/g, u2 = n2.depth > 0 && /(\[[^[\]]*])/.exec(o2), f2 = u2 ? o2.slice(0, u2.index) : o2, a2 = [];
     if (f2) {
@@ -12769,7 +12839,7 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
       a2.push(u2[1]);
     }
     return u2 && a2.push("[" + o2.slice(u2.index) + "]"), function(t5, r3, n3, e3) {
-      for (var o3 = e3 ? r3 : T(r3, n3), i3 = t5.length - 1; i3 >= 0; --i3) {
+      for (var o3 = e3 ? r3 : N(r3, n3), i3 = t5.length - 1; i3 >= 0; --i3) {
         var u3, f3 = t5[i3];
         if ("[]" === f3 && n3.parseArrays)
           u3 = [].concat(o3);
@@ -12783,15 +12853,15 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
       return o3;
     }(a2, r2, n2, e2);
   }
-}, D = function(t4, r2) {
+}, F = function(t4, r2) {
   var n2 = function(t5) {
     if (!t5)
-      return C;
+      return T;
     if (null != t5.decoder && "function" != typeof t5.decoder)
       throw new TypeError("Decoder has to be a function.");
     if (void 0 !== t5.charset && "utf-8" !== t5.charset && "iso-8859-1" !== t5.charset)
       throw new TypeError("The charset option must be either utf-8, iso-8859-1, or undefined");
-    return { allowDots: void 0 === t5.allowDots ? C.allowDots : !!t5.allowDots, allowPrototypes: "boolean" == typeof t5.allowPrototypes ? t5.allowPrototypes : C.allowPrototypes, arrayLimit: "number" == typeof t5.arrayLimit ? t5.arrayLimit : C.arrayLimit, charset: void 0 === t5.charset ? C.charset : t5.charset, charsetSentinel: "boolean" == typeof t5.charsetSentinel ? t5.charsetSentinel : C.charsetSentinel, comma: "boolean" == typeof t5.comma ? t5.comma : C.comma, decoder: "function" == typeof t5.decoder ? t5.decoder : C.decoder, delimiter: "string" == typeof t5.delimiter || d.isRegExp(t5.delimiter) ? t5.delimiter : C.delimiter, depth: "number" == typeof t5.depth || false === t5.depth ? +t5.depth : C.depth, ignoreQueryPrefix: true === t5.ignoreQueryPrefix, interpretNumericEntities: "boolean" == typeof t5.interpretNumericEntities ? t5.interpretNumericEntities : C.interpretNumericEntities, parameterLimit: "number" == typeof t5.parameterLimit ? t5.parameterLimit : C.parameterLimit, parseArrays: false !== t5.parseArrays, plainObjects: "boolean" == typeof t5.plainObjects ? t5.plainObjects : C.plainObjects, strictNullHandling: "boolean" == typeof t5.strictNullHandling ? t5.strictNullHandling : C.strictNullHandling };
+    return { allowDots: void 0 === t5.allowDots ? T.allowDots : !!t5.allowDots, allowPrototypes: "boolean" == typeof t5.allowPrototypes ? t5.allowPrototypes : T.allowPrototypes, arrayLimit: "number" == typeof t5.arrayLimit ? t5.arrayLimit : T.arrayLimit, charset: void 0 === t5.charset ? T.charset : t5.charset, charsetSentinel: "boolean" == typeof t5.charsetSentinel ? t5.charsetSentinel : T.charsetSentinel, comma: "boolean" == typeof t5.comma ? t5.comma : T.comma, decoder: "function" == typeof t5.decoder ? t5.decoder : T.decoder, delimiter: "string" == typeof t5.delimiter || d.isRegExp(t5.delimiter) ? t5.delimiter : T.delimiter, depth: "number" == typeof t5.depth || false === t5.depth ? +t5.depth : T.depth, ignoreQueryPrefix: true === t5.ignoreQueryPrefix, interpretNumericEntities: "boolean" == typeof t5.interpretNumericEntities ? t5.interpretNumericEntities : T.interpretNumericEntities, parameterLimit: "number" == typeof t5.parameterLimit ? t5.parameterLimit : T.parameterLimit, parseArrays: false !== t5.parseArrays, plainObjects: "boolean" == typeof t5.plainObjects ? t5.plainObjects : T.plainObjects, strictNullHandling: "boolean" == typeof t5.strictNullHandling ? t5.strictNullHandling : T.strictNullHandling };
   }(r2);
   if ("" === t4 || null == t4)
     return n2.plainObjects ? /* @__PURE__ */ Object.create(null) : {};
@@ -12803,13 +12873,13 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
     for (n3 = 0; n3 < o3.length; ++n3)
       if (n3 !== i3) {
         var f3, a3, c2 = o3[n3], l2 = c2.indexOf("]="), s2 = -1 === l2 ? c2.indexOf("=") : l2 + 1;
-        -1 === s2 ? (f3 = r3.decoder(c2, C.decoder, u3, "key"), a3 = r3.strictNullHandling ? null : "") : (f3 = r3.decoder(c2.slice(0, s2), C.decoder, u3, "key"), a3 = d.maybeMap(T(c2.slice(s2 + 1), r3), function(t6) {
-          return r3.decoder(t6, C.decoder, u3, "value");
-        })), a3 && r3.interpretNumericEntities && "iso-8859-1" === u3 && (a3 = N(a3)), c2.indexOf("[]=") > -1 && (a3 = x(a3) ? [a3] : a3), e3[f3] = k.call(e3, f3) ? d.combine(e3[f3], a3) : a3;
+        -1 === s2 ? (f3 = r3.decoder(c2, T.decoder, u3, "key"), a3 = r3.strictNullHandling ? null : "") : (f3 = r3.decoder(c2.slice(0, s2), T.decoder, u3, "key"), a3 = d.maybeMap(N(c2.slice(s2 + 1), r3), function(t6) {
+          return r3.decoder(t6, T.decoder, u3, "value");
+        })), a3 && r3.interpretNumericEntities && "iso-8859-1" === u3 && (a3 = C(a3)), c2.indexOf("[]=") > -1 && (a3 = x(a3) ? [a3] : a3), e3[f3] = k.call(e3, f3) ? d.combine(e3[f3], a3) : a3;
       }
     return e3;
   }(t4, n2) : t4, o2 = n2.plainObjects ? /* @__PURE__ */ Object.create(null) : {}, i2 = Object.keys(e2), u2 = 0; u2 < i2.length; ++u2) {
-    var f2 = i2[u2], a2 = F(f2, e2[f2], n2, "string" == typeof t4);
+    var f2 = i2[u2], a2 = D(f2, e2[f2], n2, "string" == typeof t4);
     o2 = d.merge(o2, a2, n2);
   }
   return d.compact(o2);
@@ -12830,20 +12900,23 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
     if (u2) {
       for (var f2 in u2.groups)
         u2.groups[f2] = "string" == typeof u2.groups[f2] ? decodeURIComponent(u2.groups[f2]) : u2.groups[f2];
-      return { params: u2.groups, query: D(i2) };
+      return { params: u2.groups, query: F(i2) };
     }
     return false;
   }, n2.compile = function(t5) {
     var r2 = this, n3 = this.parameterSegments;
     return n3.length ? this.template.replace(/{([^}?]+)(\??)}/g, function(e2, o2, i2) {
-      var u2, f2, a2;
+      var u2;
       if (!i2 && [null, void 0].includes(t5[o2]))
         throw new Error("Ziggy error: '" + o2 + "' parameter is required for route '" + r2.name + "'.");
-      if (n3[n3.length - 1].name === o2 && ".*" === r2.wheres[o2])
-        return encodeURIComponent(null != (a2 = t5[o2]) ? a2 : "").replace(/%2F/g, "/");
-      if (r2.wheres[o2] && !new RegExp("^" + (i2 ? "(" + r2.wheres[o2] + ")?" : r2.wheres[o2]) + "$").test(null != (u2 = t5[o2]) ? u2 : ""))
-        throw new Error("Ziggy error: '" + o2 + "' parameter does not match required format '" + r2.wheres[o2] + "' for route '" + r2.name + "'.");
-      return encodeURIComponent(null != (f2 = t5[o2]) ? f2 : "");
+      if (r2.wheres[o2]) {
+        var f2, a2;
+        if (!new RegExp("^" + (i2 ? "(" + r2.wheres[o2] + ")?" : r2.wheres[o2]) + "$").test(null != (f2 = t5[o2]) ? f2 : ""))
+          throw new Error("Ziggy error: '" + o2 + "' parameter does not match required format '" + r2.wheres[o2] + "' for route '" + r2.name + "'.");
+        if (n3[n3.length - 1].name === o2)
+          return encodeURIComponent(null != (a2 = t5[o2]) ? a2 : "").replace(/%2F/g, "/");
+      }
+      return encodeURIComponent(null != (u2 = t5[o2]) ? u2 : "");
     }).replace(this.origin + "//", this.origin + "/").replace(/\/+$/, "") : this.template;
   }, r(t4, [{ key: "template", get: function() {
     return (this.origin + "/" + this.definition.uri).replace(/\/+$/, "");
@@ -12855,7 +12928,7 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
       return { name: t6.replace(/{|\??}/g, ""), required: !/\?}$/.test(t6) };
     })) ? t5 : [];
   } }]), t4;
-}(), $ = /* @__PURE__ */ function(t4) {
+}(), P = /* @__PURE__ */ function(t4) {
   var e2, i2;
   function u2(r2, e3, o2, i3) {
     var u3;
@@ -12991,10 +13064,10 @@ var a = String.prototype.replace, c = /%20/g, l = { default: "RFC3986", formatte
     var t5 = this.v();
     return n({}, t5.params, t5.query);
   } }]), u2;
-}(/* @__PURE__ */ f(String)), A = { install: function(t4, r2) {
+}(/* @__PURE__ */ u(String)), $ = { install: function(t4, r2) {
   var n2 = function(t5, n3, e2, o2) {
     return void 0 === o2 && (o2 = r2), function(t6, r3, n4, e3) {
-      var o3 = new $(t6, r3, n4, e3);
+      var o3 = new P(t6, r3, n4, e3);
       return t6 ? o3.toString() : o3;
     }(t5, n3, e2, o2);
   };
@@ -13052,14 +13125,14 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-d712789d.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-d88551d1.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c0f51d10.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-6d050ded.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-6814006f.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-b61e44cb.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-ee124750.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-0fc32380.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-502d741d.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-28a661d6.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-51c92e53.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-d097a6b0.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-67a49e04.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-f362187c.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-160ed0b6.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-dddb2a06.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-00d10372.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-50682bc8.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-8d41f366.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-a2d19b38.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-ff6b3fb3.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-b4ddff3e.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-14a5f736.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-b85fe6cc.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-2ab2fa6e.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-a1ccbd43.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
           const languages = /* @__PURE__ */ Object.assign({ "../../lang/en.json": __vite_glob_1_0, "../../lang/php_en.json": __vite_glob_1_1, "../../lang/php_ru.json": __vite_glob_1_2, "../../lang/ru.json": __vite_glob_1_3 });
           return languages[`../../lang/${lang}.json`];
         }
-      }).use(A, {
+      }).use($, {
         // @ts-expect-error
         ...page.props.ziggy,
         // @ts-expect-error
@@ -13069,7 +13142,7 @@ createServer(
   })
 );
 export {
-  makeVOverlayProps as $,
+  VTextField as $,
   makeVSelectionControlProps as A,
   useProxiedModel as B,
   useLoader as C,
@@ -13079,87 +13152,88 @@ export {
   VInput as G,
   VSelectionControl as H,
   IconValue as I,
-  VProgressCircular as J,
-  omit as K,
+  VScaleTransition as J,
+  VProgressCircular as K,
   LoaderSlot as L,
   MaybeTransition as M,
-  makeVBtnProps as N,
-  useTextColor as O,
-  animate as P,
-  standardEasing as Q,
-  makeDensityProps as R,
-  useDensity as S,
-  useBackgroundColor as T,
-  provideDefaults as U,
+  omit as N,
+  makeVBtnProps as O,
+  useTextColor as P,
+  animate as Q,
+  standardEasing as R,
+  makeDensityProps as S,
+  useDensity as T,
+  useBackgroundColor as U,
   VBtn as V,
-  VOverlay as W,
-  VBtnToggle as X,
-  VBtnGroup as Y,
-  VTable as Z,
-  VTextField as _,
+  provideDefaults as W,
+  VOverlay as X,
+  VBtnToggle as Y,
+  VBtnGroup as Z,
+  VTable as _,
   makeTagProps as a,
-  VDialogTransition as a0,
-  useScopeId as a1,
-  VDefaultsProvider as a2,
-  forwardRefs as a3,
-  VDivider as a4,
-  VSelect as a5,
-  VCheckboxBtn as a6,
-  createSimpleFunctional as a7,
-  VAvatar as a8,
-  makeBorderProps as a9,
-  makeFilterProps as aA,
-  makeSelectProps as aB,
-  makeVTextFieldProps as aC,
-  makeTransitionProps as aD,
-  useItems as aE,
-  useForm as aF,
-  useFilter as aG,
-  getPropertyFromItem as aH,
-  useScrolling as aI,
-  VMenu as aJ,
-  VList as aK,
-  VListItem as aL,
-  VVirtualScroll as aM,
-  VChip as aN,
-  noop as aO,
-  matchesSelector as aP,
-  wrapInArray as aQ,
-  makeFormProps as aR,
-  createForm as aS,
-  VExpandTransition as aT,
-  breakpoints as aU,
-  getCurrentInstance as aV,
-  findChildrenWithProvide as aW,
-  CircularBuffer as aX,
-  useRouter as aY,
-  toPhysical as aZ,
-  makeDimensionProps as aa,
-  makeElevationProps as ab,
-  makeLoaderProps as ac,
-  makeLocationProps as ad,
-  makePositionProps as ae,
-  makeRoundedProps as af,
-  makeRouterProps as ag,
-  makeVariantProps as ah,
-  Ripple as ai,
-  useBorder as aj,
-  useVariant as ak,
-  useDimension as al,
-  useElevation as am,
-  useLocation as an,
-  usePosition as ao,
-  useRounded as ap,
-  useLink as aq,
-  VImg as ar,
-  genOverlays as as,
-  makeVCheckboxBtnProps as at,
-  makeVFieldProps as au,
-  Intersect$1 as av,
-  filterFieldProps as aw,
-  VField as ax,
-  VCounter as ay,
-  callEvent as az,
+  makeVOverlayProps as a0,
+  VDialogTransition as a1,
+  useScopeId as a2,
+  VDefaultsProvider as a3,
+  forwardRefs as a4,
+  VDivider as a5,
+  VSelect as a6,
+  VCheckboxBtn as a7,
+  createSimpleFunctional as a8,
+  VAvatar as a9,
+  callEvent as aA,
+  makeFilterProps as aB,
+  makeSelectProps as aC,
+  makeVTextFieldProps as aD,
+  makeTransitionProps as aE,
+  useItems as aF,
+  useForm as aG,
+  useFilter as aH,
+  getPropertyFromItem as aI,
+  useScrolling as aJ,
+  VMenu as aK,
+  VList as aL,
+  VListItem as aM,
+  VVirtualScroll as aN,
+  VChip as aO,
+  noop as aP,
+  matchesSelector as aQ,
+  wrapInArray as aR,
+  makeFormProps as aS,
+  createForm as aT,
+  VExpandTransition as aU,
+  breakpoints as aV,
+  getCurrentInstance as aW,
+  findChildrenWithProvide as aX,
+  CircularBuffer as aY,
+  useRouter as aZ,
+  toPhysical as a_,
+  makeBorderProps as aa,
+  makeDimensionProps as ab,
+  makeElevationProps as ac,
+  makeLoaderProps as ad,
+  makeLocationProps as ae,
+  makePositionProps as af,
+  makeRoundedProps as ag,
+  makeRouterProps as ah,
+  makeVariantProps as ai,
+  Ripple as aj,
+  useBorder as ak,
+  useVariant as al,
+  useDimension as am,
+  useElevation as an,
+  useLocation as ao,
+  usePosition as ap,
+  useRounded as aq,
+  useLink as ar,
+  VImg as as,
+  genOverlays as at,
+  makeVCheckboxBtnProps as au,
+  makeVFieldProps as av,
+  Intersect$1 as aw,
+  filterFieldProps as ax,
+  VField as ay,
+  VCounter as az,
   makeThemeProps as b,
   provideTheme as c,
   useLocale as d,
