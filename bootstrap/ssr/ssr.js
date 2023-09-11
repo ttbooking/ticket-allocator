@@ -2406,6 +2406,7 @@ const defaultThemeOptions = {
       colors: {
         background: "#FFFFFF",
         surface: "#FFFFFF",
+        "surface-bright": "#FFFFFF",
         "surface-variant": "#424242",
         "on-surface-variant": "#EEEEEE",
         primary: "#6200EE",
@@ -2441,7 +2442,8 @@ const defaultThemeOptions = {
       colors: {
         background: "#121212",
         surface: "#212121",
-        "surface-variant": "#BDBDBD",
+        "surface-bright": "#ccbfd6",
+        "surface-variant": "#a3a3a3",
         "on-surface-variant": "#424242",
         primary: "#BB86FC",
         "primary-darken-1": "#3700B3",
@@ -2627,12 +2629,14 @@ function provideTheme(props) {
   if (!theme)
     throw new Error("Could not find Vuetify theme injection");
   const name2 = computed(() => {
-    return props.theme ?? (theme == null ? void 0 : theme.name.value);
+    return props.theme ?? theme.name.value;
   });
+  const current = computed(() => theme.themes.value[name2.value]);
   const themeClasses = computed(() => theme.isDisabled ? void 0 : `v-theme--${name2.value}`);
   const newTheme = {
     ...theme,
     name: name2,
+    current,
     themeClasses
   };
   provide(ThemeSymbol, newTheme);
@@ -3223,7 +3227,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.14";
+const version = "3.3.15";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -5348,6 +5352,12 @@ function useSelectionControl(props) {
   } = useTextColor(computed(() => {
     return model.value && !props.error && !props.disabled ? props.color : void 0;
   }));
+  const {
+    backgroundColorClasses,
+    backgroundColorStyles
+  } = useBackgroundColor(computed(() => {
+    return model.value && !props.error && !props.disabled ? props.color : void 0;
+  }));
   const icon = computed(() => model.value ? props.trueIcon : props.falseIcon);
   return {
     group,
@@ -5357,6 +5367,8 @@ function useSelectionControl(props) {
     model,
     textColorClasses,
     textColorStyles,
+    backgroundColorClasses,
+    backgroundColorStyles,
     icon
   };
 }
@@ -5382,6 +5394,8 @@ const VSelectionControl = genericComponent()({
       model,
       textColorClasses,
       textColorStyles,
+      backgroundColorClasses,
+      backgroundColorStyles,
       trueValue
     } = useSelectionControl(props);
     const uid = getUid();
@@ -5447,12 +5461,17 @@ const VSelectionControl = genericComponent()({
       }), [createVNode("div", {
         "class": ["v-selection-control__wrapper", textColorClasses.value],
         "style": textColorStyles.value
-      }, [(_a = slots.default) == null ? void 0 : _a.call(slots), withDirectives(createVNode("div", {
+      }, [(_a = slots.default) == null ? void 0 : _a.call(slots, {
+        backgroundColorClasses,
+        backgroundColorStyles
+      }), withDirectives(createVNode("div", {
         "class": ["v-selection-control__input"]
       }, [((_b = slots.input) == null ? void 0 : _b.call(slots, {
         model,
         textColorClasses,
         textColorStyles,
+        backgroundColorClasses,
+        backgroundColorStyles,
         inputNode,
         icon: icon.value,
         props: {
@@ -8896,7 +8915,7 @@ function _useActivator(props, vm, _ref2) {
     if (selector) {
       if (selector === "parent") {
         let el = (_b = (_a = vm == null ? void 0 : vm.proxy) == null ? void 0 : _a.$el) == null ? void 0 : _b.parentNode;
-        while (el.hasAttribute("data-no-activator")) {
+        while (el == null ? void 0 : el.hasAttribute("data-no-activator")) {
           el = el.parentNode;
         }
         activator = el;
@@ -13125,7 +13144,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-f362187c.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-160ed0b6.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-dddb2a06.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-00d10372.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-50682bc8.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-8d41f366.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-a2d19b38.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-ff6b3fb3.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-b4ddff3e.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-14a5f736.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-b85fe6cc.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-2ab2fa6e.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-a1ccbd43.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-d882b59e.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-24e3dbe7.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-dddb2a06.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-00d10372.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-a62693de.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-8d41f366.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-a2d19b38.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-ff6b3fb3.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-c629d553.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-14a5f736.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-b85fe6cc.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-2ab2fa6e.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-a1ccbd43.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
