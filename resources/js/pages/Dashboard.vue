@@ -84,7 +84,7 @@ import { useSharedOptions, useSharedDisplayMode } from "@/shared";
 import * as Events from "@/types/events.d";
 
 import { useRepo } from "pinia-orm";
-import { useCollect } from "pinia-orm/dist/helpers.js";
+import { useCollect } from "pinia-orm/helpers";
 import OperatorModel from "@/models/Operator";
 import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";

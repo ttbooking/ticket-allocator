@@ -2958,6 +2958,8 @@ function isWithinRange(date2, range) {
   return isAfter(date2, range[0]) && isBefore(date2, range[1]);
 }
 function isValid(date2) {
+  if (!date2 || date2 == null)
+    return false;
   const d2 = new Date(date2);
   return d2 instanceof Date && !isNaN(d2.getTime());
 }
@@ -2988,6 +2990,12 @@ function setYear(date2, year) {
   const d2 = new Date(date2);
   d2.setFullYear(year);
   return d2;
+}
+function startOfDay(date2) {
+  return new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+}
+function endOfDay(date2) {
+  return new Date(date2.getFullYear(), date2.getMonth(), date2.getDate(), 23, 59, 59, 999);
 }
 class VuetifyDateAdapter {
   constructor(options) {
@@ -3052,6 +3060,12 @@ class VuetifyDateAdapter {
   }
   getMonth(date2) {
     return getMonth(date2);
+  }
+  startOfDay(date2) {
+    return startOfDay(date2);
+  }
+  endOfDay(date2) {
+    return endOfDay(date2);
   }
   startOfYear(date2) {
     return startOfYear(date2);
@@ -3227,7 +3241,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.15";
+const version = "3.3.16";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -7872,11 +7886,15 @@ const makeItemsProps = propsFactory({
     type: [Boolean, String, Array, Function],
     default: "props"
   },
-  returnObject: Boolean
+  returnObject: Boolean,
+  valueComparator: {
+    type: Function,
+    default: deepEqual
+  }
 }, "list-items");
 function transformItem$2(props, item) {
   const title2 = getPropertyFromItem(item, props.itemTitle, item);
-  const value2 = props.returnObject ? item : getPropertyFromItem(item, props.itemValue, title2);
+  const value2 = getPropertyFromItem(item, props.itemValue, title2);
   const children = getPropertyFromItem(item, props.itemChildren);
   const itemProps = props.itemProps === true ? typeof item === "object" && item != null && !Array.isArray(item) ? "children" in item ? pick(item, ["children"])[1] : item : void 0 : getPropertyFromItem(item, props.itemProps);
   const _props = {
@@ -7901,20 +7919,28 @@ function transformItems$2(props, items) {
 }
 function useItems(props) {
   const items = computed(() => transformItems$2(props, props.items));
-  return useTransformItems(items, (value2) => transformItem$2(props, value2));
-}
-function useTransformItems(items, transform2) {
+  const hasNullItem = computed(() => items.value.some((item) => item.value === null));
   function transformIn(value2) {
-    return value2.filter((v2) => v2 !== null || items.value.some((item) => item.value === null)).map((v2) => {
-      const existingItem = items.value.find((item) => deepEqual(v2, item.value));
-      return existingItem ?? transform2(v2);
+    if (!hasNullItem.value) {
+      value2 = value2.filter((v2) => v2 !== null);
+    }
+    return value2.map((v2) => {
+      if (props.returnObject && typeof v2 === "string") {
+        return transformItem$2(props, v2);
+      }
+      return items.value.find((item) => props.valueComparator(v2, item.value)) || transformItem$2(props, v2);
     });
   }
   function transformOut(value2) {
-    return value2.map((_ref) => {
+    return props.returnObject ? value2.map((_ref) => {
+      let {
+        raw
+      } = _ref;
+      return raw;
+    }) : value2.map((_ref2) => {
       let {
         value: value3
-      } = _ref;
+      } = _ref2;
       return value3;
     });
   }
@@ -10485,10 +10511,6 @@ const makeSelectProps = propsFactory({
     default: "$vuetify.noDataText"
   },
   openOnClear: Boolean,
-  valueComparator: {
-    type: Function,
-    default: deepEqual
-  },
   itemColor: String,
   ...makeItemsProps({
     itemChildren: false
@@ -10544,25 +10566,14 @@ const VSelect = genericComponent()({
       return props.multiple ? transformed : transformed[0] ?? null;
     });
     const form = useForm();
-    const selections = computed(() => {
-      return model.value.map((v2) => {
-        return items.value.find((item) => {
-          const itemRawValue = getPropertyFromItem(item.raw, props.itemValue);
-          const modelRawValue = getPropertyFromItem(v2.raw, props.itemValue);
-          if (itemRawValue === void 0 || modelRawValue === void 0)
-            return false;
-          return props.returnObject ? props.valueComparator(itemRawValue, modelRawValue) : props.valueComparator(item.value, v2.value);
-        }) || v2;
-      });
-    });
-    const selected = computed(() => selections.value.map((selection) => selection.props.value));
+    const selectedValues = computed(() => model.value.map((selection) => selection.value));
     const isFocused = shallowRef(false);
     const label = computed(() => menu.value ? props.closeText : props.openText);
     let keyboardLookupPrefix = "";
     let keyboardLookupLastTime;
     const displayItems = computed(() => {
       if (props.hideSelected) {
-        return items.value.filter((item) => !selections.value.some((s2) => s2 === item));
+        return items.value.filter((item) => !model.value.some((s2) => s2 === item));
       }
       return items.value;
     });
@@ -10621,7 +10632,7 @@ const VSelect = genericComponent()({
     }
     function select(item) {
       if (props.multiple) {
-        const index = selected.value.findIndex((selection) => props.valueComparator(selection, item.value));
+        const index = model.value.findIndex((selection) => props.valueComparator(selection.value, item.value));
         if (index === -1) {
           model.value = [...model.value, item];
         } else {
@@ -10662,8 +10673,8 @@ const VSelect = genericComponent()({
       }
     }
     watch(menu, () => {
-      if (!props.hideSelected && menu.value && selections.value.length) {
-        const index = displayItems.value.findIndex((item) => selections.value.some((s2) => item.value === s2.value));
+      if (!props.hideSelected && menu.value && model.value.length) {
+        const index = displayItems.value.findIndex((item) => model.value.some((s2) => props.valueComparator(s2.value, item.value)));
         IN_BROWSER && window.requestAnimationFrame(() => {
           var _a;
           index >= 0 && ((_a = vVirtualScrollRef.value) == null ? void 0 : _a.scrollToIndex(index));
@@ -10719,7 +10730,7 @@ const VSelect = genericComponent()({
         }, props.menuProps), {
           default: () => [hasList && createVNode(VList, {
             "ref": listRef,
-            "selected": selected.value,
+            "selected": selectedValues.value,
             "selectStrategy": props.multiple ? "independent" : "single-independent",
             "onMousedown": (e2) => e2.preventDefault(),
             "onKeydown": onListKeydown,
@@ -10772,7 +10783,7 @@ const VSelect = genericComponent()({
               }), (_c = slots["append-item"]) == null ? void 0 : _c.call(slots)];
             }
           })]
-        }), selections.value.map((item, index) => {
+        }), model.value.map((item, index) => {
           var _a;
           function onChipClose(e2) {
             e2.stopPropagation();
@@ -10819,7 +10830,7 @@ const VSelect = genericComponent()({
             index
           })) ?? createVNode("span", {
             "class": "v-select__selection-text"
-          }, [item.title, props.multiple && index < selections.value.length - 1 && createVNode("span", {
+          }, [item.title, props.multiple && index < model.value.length - 1 && createVNode("span", {
             "class": "v-select__selection-comma"
           }, [createTextVNode(",")])])]);
         })]),
@@ -12310,15 +12321,15 @@ function filterItems(items, query, options) {
     return array;
   loop:
     for (let i2 = 0; i2 < items.length; i2++) {
-      const item = items[i2];
+      const [item, transformed = item] = wrapInArray(items[i2]);
       const customMatches = {};
       const defaultMatches = {};
       let match = -1;
       if (query && !(options == null ? void 0 : options.noFilter)) {
         if (typeof item === "object") {
-          const filterKeys = keys2 || Object.keys(item);
+          const filterKeys = keys2 || Object.keys(transformed);
           for (const key of filterKeys) {
-            const value2 = getPropertyFromItem(item, key, item);
+            const value2 = getPropertyFromItem(transformed, key, transformed);
             const keyFilter = (_a = options == null ? void 0 : options.customKeyFilter) == null ? void 0 : _a[key];
             match = keyFilter ? keyFilter(value2, query, item) : filter(value2, query, item);
             if (match !== -1 && match !== false) {
@@ -12358,7 +12369,7 @@ function filterItems(items, query, options) {
 function useFilter(props, items, query, options) {
   const filteredItems = ref([]);
   const filteredMatches = ref(/* @__PURE__ */ new Map());
-  const transformedItems = computed(() => (options == null ? void 0 : options.transform) ? unref(items).map(options == null ? void 0 : options.transform) : unref(items));
+  const transformedItems = computed(() => (options == null ? void 0 : options.transform) ? unref(items).map((item) => [item, options.transform(item)]) : unref(items));
   watchEffect(() => {
     const _query = typeof query === "function" ? query() : unref(query);
     const strQuery = typeof _query !== "string" && typeof _query !== "number" ? "" : String(_query);
@@ -13144,7 +13155,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-d882b59e.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-24e3dbe7.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-dddb2a06.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-00d10372.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-a62693de.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-8d41f366.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-a2d19b38.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-ff6b3fb3.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-c629d553.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-14a5f736.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-b85fe6cc.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-2ab2fa6e.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-a1ccbd43.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-826435f3.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-8562fab2.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c15fc57a.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-ac6c55a1.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-23b41418.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-9ed3fccc.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-68ebbc0b.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-d6c87846.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-2bf263c7.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-1714311e.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-de91b083.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-47290ff3.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-66632eba.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
@@ -13208,25 +13219,24 @@ export {
   useItems as aF,
   useForm as aG,
   useFilter as aH,
-  getPropertyFromItem as aI,
-  useScrolling as aJ,
-  VMenu as aK,
-  VList as aL,
-  VListItem as aM,
-  VVirtualScroll as aN,
-  VChip as aO,
-  noop as aP,
-  matchesSelector as aQ,
-  wrapInArray as aR,
-  makeFormProps as aS,
-  createForm as aT,
-  VExpandTransition as aU,
-  breakpoints as aV,
-  getCurrentInstance as aW,
-  findChildrenWithProvide as aX,
-  CircularBuffer as aY,
-  useRouter as aZ,
-  toPhysical as a_,
+  useScrolling as aI,
+  VMenu as aJ,
+  VList as aK,
+  VListItem as aL,
+  VVirtualScroll as aM,
+  VChip as aN,
+  noop as aO,
+  matchesSelector as aP,
+  wrapInArray as aQ,
+  makeFormProps as aR,
+  createForm as aS,
+  VExpandTransition as aT,
+  breakpoints as aU,
+  getCurrentInstance as aV,
+  findChildrenWithProvide as aW,
+  CircularBuffer as aX,
+  useRouter as aY,
+  toPhysical as aZ,
   makeBorderProps as aa,
   makeDimensionProps as ab,
   makeElevationProps as ac,
