@@ -2924,6 +2924,11 @@ function format(value2, formatString, locale) {
         day: "numeric"
       };
       break;
+    case "shortDate":
+      options = {
+        year: "numeric"
+      };
+      break;
     default:
       options = {
         timeZone: "UTC",
@@ -3241,7 +3246,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.16";
+const version = "3.3.17";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -3356,9 +3361,12 @@ function useColor(colors) {
       if (isCssColor(colors.value.background)) {
         styles.backgroundColor = colors.value.background;
         if (!colors.value.text) {
-          const textColor = getForeground(styles.backgroundColor);
-          styles.color = textColor;
-          styles.caretColor = textColor;
+          const backgroundColor = parseColor(colors.value.background);
+          if (backgroundColor.a == null || backgroundColor.a === 1) {
+            const textColor = getForeground(backgroundColor);
+            styles.color = textColor;
+            styles.caretColor = textColor;
+          }
         }
       } else {
         classes.push(`bg-${colors.value.background}`);
@@ -11432,7 +11440,7 @@ function provideSelection(props, _ref9) {
       allItems: allSelectable.value,
       currentPage: currentPageSelectable.value
     });
-    return isSelected(items);
+    return !!items.length && isSelected(items);
   });
   const data = {
     toggleSelect,
@@ -13155,7 +13163,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-826435f3.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-8562fab2.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c15fc57a.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-ac6c55a1.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-23b41418.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-9ed3fccc.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-68ebbc0b.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-d6c87846.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-2bf263c7.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-1714311e.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-de91b083.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-47290ff3.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-66632eba.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-40ff75b2.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-1ffbc9e8.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-16349eac.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-8f9b347d.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-df3dfddd.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-14a307ba.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-4a635736.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-4b6dfd47.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-5d90bc08.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-2be73a05.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-a6354970.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-fdae7866.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-5c0e3608.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
@@ -13172,7 +13180,7 @@ createServer(
   })
 );
 export {
-  VTextField as $,
+  VTable as $,
   makeVSelectionControlProps as A,
   useProxiedModel as B,
   useLoader as C,
@@ -13196,73 +13204,74 @@ export {
   useBackgroundColor as U,
   VBtn as V,
   provideDefaults as W,
-  VOverlay as X,
-  VBtnToggle as Y,
-  VBtnGroup as Z,
-  VTable as _,
+  isObject as X,
+  VOverlay as Y,
+  VBtnToggle as Z,
+  VBtnGroup as _,
   makeTagProps as a,
-  makeVOverlayProps as a0,
-  VDialogTransition as a1,
-  useScopeId as a2,
-  VDefaultsProvider as a3,
-  forwardRefs as a4,
-  VDivider as a5,
-  VSelect as a6,
-  VCheckboxBtn as a7,
-  createSimpleFunctional as a8,
-  VAvatar as a9,
-  callEvent as aA,
-  makeFilterProps as aB,
-  makeSelectProps as aC,
-  makeVTextFieldProps as aD,
-  makeTransitionProps as aE,
-  useItems as aF,
-  useForm as aG,
-  useFilter as aH,
-  useScrolling as aI,
-  VMenu as aJ,
-  VList as aK,
-  VListItem as aL,
-  VVirtualScroll as aM,
-  VChip as aN,
-  noop as aO,
-  matchesSelector as aP,
-  wrapInArray as aQ,
-  makeFormProps as aR,
-  createForm as aS,
-  VExpandTransition as aT,
-  breakpoints as aU,
-  getCurrentInstance as aV,
-  findChildrenWithProvide as aW,
-  CircularBuffer as aX,
-  useRouter as aY,
-  toPhysical as aZ,
-  makeBorderProps as aa,
-  makeDimensionProps as ab,
-  makeElevationProps as ac,
-  makeLoaderProps as ad,
-  makeLocationProps as ae,
-  makePositionProps as af,
-  makeRoundedProps as ag,
-  makeRouterProps as ah,
-  makeVariantProps as ai,
-  Ripple as aj,
-  useBorder as ak,
-  useVariant as al,
-  useDimension as am,
-  useElevation as an,
-  useLocation as ao,
-  usePosition as ap,
-  useRounded as aq,
-  useLink as ar,
-  VImg as as,
-  genOverlays as at,
-  makeVCheckboxBtnProps as au,
-  makeVFieldProps as av,
-  Intersect$1 as aw,
-  filterFieldProps as ax,
-  VField as ay,
-  VCounter as az,
+  VTextField as a0,
+  makeVOverlayProps as a1,
+  VDialogTransition as a2,
+  useScopeId as a3,
+  VDefaultsProvider as a4,
+  forwardRefs as a5,
+  VDivider as a6,
+  VSelect as a7,
+  VCheckboxBtn as a8,
+  createSimpleFunctional as a9,
+  VCounter as aA,
+  callEvent as aB,
+  makeFilterProps as aC,
+  makeSelectProps as aD,
+  makeVTextFieldProps as aE,
+  makeTransitionProps as aF,
+  useItems as aG,
+  useForm as aH,
+  useFilter as aI,
+  useScrolling as aJ,
+  VMenu as aK,
+  VList as aL,
+  VListItem as aM,
+  VVirtualScroll as aN,
+  VChip as aO,
+  noop as aP,
+  matchesSelector as aQ,
+  wrapInArray as aR,
+  makeFormProps as aS,
+  createForm as aT,
+  VExpandTransition as aU,
+  breakpoints as aV,
+  getCurrentInstance as aW,
+  findChildrenWithProvide as aX,
+  CircularBuffer as aY,
+  useRouter as aZ,
+  toPhysical as a_,
+  VAvatar as aa,
+  makeBorderProps as ab,
+  makeDimensionProps as ac,
+  makeElevationProps as ad,
+  makeLoaderProps as ae,
+  makeLocationProps as af,
+  makePositionProps as ag,
+  makeRoundedProps as ah,
+  makeRouterProps as ai,
+  makeVariantProps as aj,
+  Ripple as ak,
+  useBorder as al,
+  useVariant as am,
+  useDimension as an,
+  useElevation as ao,
+  useLocation as ap,
+  usePosition as aq,
+  useRounded as ar,
+  useLink as as,
+  VImg as at,
+  genOverlays as au,
+  makeVCheckboxBtnProps as av,
+  makeVFieldProps as aw,
+  Intersect$1 as ax,
+  filterFieldProps as ay,
+  VField as az,
   makeThemeProps as b,
   provideTheme as c,
   useLocale as d,
