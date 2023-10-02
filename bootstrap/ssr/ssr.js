@@ -3,7 +3,7 @@ import "dayjs/locale/ru.js";
 import duration from "dayjs/plugin/duration.js";
 import LocalizedFormat from "dayjs/plugin/localizedFormat.js";
 import RelativeTime from "dayjs/plugin/relativeTime.js";
-import { computed, Fragment, reactive, watchEffect, toRefs, capitalize, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, inject as inject$1, unref, provide, shallowRef, createVNode, mergeProps, watch, onScopeDispose, effectScope, toRaw, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, Teleport, cloneVNode, createTextVNode, withModifiers, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
+import { computed, Fragment, reactive, watchEffect, toRefs, capitalize, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, inject as inject$1, unref, provide, shallowRef, createVNode, mergeProps, watch, onScopeDispose, effectScope, toRaw, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, Teleport, cloneVNode, createTextVNode, withModifiers, toDisplayString, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
 import { usePage, router, createInertiaApp } from "@inertiajs/vue3";
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
@@ -590,8 +590,10 @@ function getObjectValueByPath(obj, path, fallback) {
   return getNestedValue(obj, path.split("."), fallback);
 }
 function getPropertyFromItem(item, property, fallback) {
-  if (property == null)
+  if (property === true)
     return item === void 0 ? fallback : item;
+  if (property == null || typeof property === "boolean")
+    return fallback;
   if (item !== Object(item)) {
     if (typeof property !== "function")
       return fallback;
@@ -2823,8 +2825,8 @@ function getWeekArray(date2, locale) {
   let currentWeek = [];
   const firstDayOfMonth = startOfMonth(date2);
   const lastDayOfMonth = endOfMonth(date2);
-  const firstDayWeekIndex = firstDayOfMonth.getDay() - firstDay[locale.slice(-2).toUpperCase()];
-  const lastDayWeekIndex = lastDayOfMonth.getDay() - firstDay[locale.slice(-2).toUpperCase()];
+  const firstDayWeekIndex = (firstDayOfMonth.getDay() - firstDay[locale.slice(-2).toUpperCase()] + 7) % 7;
+  const lastDayWeekIndex = (lastDayOfMonth.getDay() - firstDay[locale.slice(-2).toUpperCase()] + 7) % 7;
   for (let i2 = 0; i2 < firstDayWeekIndex; i2++) {
     const adjacentDay = new Date(firstDayOfMonth);
     adjacentDay.setDate(adjacentDay.getDate() - (firstDayWeekIndex - i2));
@@ -3246,7 +3248,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.17";
+const version = "3.3.19";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -7788,7 +7790,8 @@ const VDivider = genericComponent()({
   }
 });
 const makeVListChildrenProps = propsFactory({
-  items: Array
+  items: Array,
+  returnObject: Boolean
 }, "VListChildren");
 const VListChildren = genericComponent()({
   name: "VListChildren",
@@ -7856,19 +7859,23 @@ const VListChildren = genericComponent()({
             let {
               props: activatorProps
             } = _ref3;
+            const listItemProps = {
+              ...itemProps,
+              ...activatorProps,
+              value: props.returnObject ? item : itemProps.value
+            };
             return slots.header ? slots.header({
-              props: {
-                ...itemProps,
-                ...activatorProps
-              }
-            }) : createVNode(VListItem, mergeProps(itemProps, activatorProps), slotsWithItem);
+              props: listItemProps
+            }) : createVNode(VListItem, listItemProps, slotsWithItem);
           },
           default: () => createVNode(VListChildren, {
             "items": children
           }, slots)
         }) : slots.item ? slots.item({
           props: itemProps
-        }) : createVNode(VListItem, itemProps, slotsWithItem);
+        }) : createVNode(VListItem, mergeProps(itemProps, {
+          "value": props.returnObject ? item : itemProps.value
+        }), slotsWithItem);
       }));
     };
   }
@@ -8143,7 +8150,8 @@ const VList = genericComponent()({
         "onKeydown": onKeydown
       }, {
         default: () => [createVNode(VListChildren, {
-          "items": items.value
+          "items": items.value,
+          "returnObject": props.returnObject
         }, slots)]
       });
     });
@@ -9989,7 +9997,7 @@ const activeTypes = ["color", "file", "time", "date", "datetime-local", "week", 
 const makeVTextFieldProps = propsFactory({
   autofocus: Boolean,
   counter: [Boolean, Number, String],
-  counterValue: Function,
+  counterValue: [Number, Function],
   prefix: String,
   placeholder: String,
   persistentPlaceholder: Boolean,
@@ -10030,7 +10038,7 @@ const VTextField = genericComponent()({
       blur
     } = useFocus(props);
     const counterValue = computed(() => {
-      return typeof props.counterValue === "function" ? props.counterValue(model.value) : (model.value ?? "").toString().length;
+      return typeof props.counterValue === "function" ? props.counterValue(model.value) : typeof props.counterValue === "number" ? props.counterValue : (model.value ?? "").toString().length;
     });
     const max = computed(() => {
       if (attrs.maxlength)
@@ -10703,6 +10711,7 @@ const VSelect = genericComponent()({
         "focused": isFocused.value,
         "onUpdate:focused": ($event) => isFocused.value = $event,
         "validationValue": model.externalValue,
+        "counterValue": model.value.length,
         "dirty": isDirty,
         "class": ["v-select", {
           "v-select--active-menu": menu.value,
@@ -10814,7 +10823,8 @@ const VSelect = genericComponent()({
             "key": "chip",
             "closable": props.closableChips,
             "size": "small",
-            "text": item.title
+            "text": item.title,
+            "disabled": item.props.disabled
           }, slotProps), null) : createVNode(VDefaultsProvider, {
             "key": "chip-defaults",
             "defaults": {
@@ -11234,17 +11244,15 @@ function createHeaders(props, options) {
         column,
         row
       } = _ref4;
-      let key = column.key;
-      if (key == null) {
-        consoleWarn("The header key value must not be null or undefined");
-        key = "";
-      }
+      const key = column.key ?? (typeof column.value === "string" ? column.value : null);
+      const value2 = column.value ?? column.key ?? null;
       for (let i2 = row; i2 <= row + (column.rowspan ?? 1) - 1; i2++) {
         fixedRows[i2].push({
           ...column,
           key,
+          value: value2,
           fixedOffset: fixedOffsets[i2],
-          sortable: column.sortable ?? !!column.key
+          sortable: column.sortable ?? key != null
         });
         fixedOffsets[i2] += Number(column.width ?? 0);
       }
@@ -11292,7 +11300,7 @@ const singleSelectStrategy = {
       items,
       value: value2
     } = _ref;
-    return new Set(value2 ? [(_a = items[0]) == null ? void 0 : _a.value] : []);
+    return new Set(value2 ? [toRaw((_a = items[0]) == null ? void 0 : _a.value)] : []);
   },
   selectAll: (_ref2) => {
     let {
@@ -11317,9 +11325,9 @@ const pageSelectStrategy = {
     } = _ref4;
     for (const item of items) {
       if (value2)
-        selected.add(item.value);
+        selected.add(toRaw(item.value));
       else
-        selected.delete(item.value);
+        selected.delete(toRaw(item.value));
     }
     return selected;
   },
@@ -11352,9 +11360,9 @@ const allSelectStrategy = {
     } = _ref7;
     for (const item of items) {
       if (value2)
-        selected.add(item.value);
+        selected.add(toRaw(item.value));
       else
-        selected.delete(item.value);
+        selected.delete(toRaw(item.value));
     }
     return selected;
   },
@@ -11380,6 +11388,10 @@ const makeDataTableSelectProps = propsFactory({
   modelValue: {
     type: Array,
     default: () => []
+  },
+  valueComparator: {
+    type: Function,
+    default: deepEqual
   }
 }, "DataTable-select");
 const VDataTableSelectionSymbol = Symbol.for("vuetify:data-table-selection");
@@ -11389,7 +11401,10 @@ function provideSelection(props, _ref9) {
     currentPage
   } = _ref9;
   const selected = useProxiedModel(props, "modelValue", props.modelValue, (v2) => {
-    return new Set(v2);
+    return new Set(wrapInArray(v2).map((v3) => {
+      var _a;
+      return ((_a = allItems.value.find((item) => props.valueComparator(v3, item.value))) == null ? void 0 : _a.value) ?? v3;
+    }));
   }, (v2) => {
     return [...v2.values()];
   });
@@ -11409,10 +11424,10 @@ function provideSelection(props, _ref9) {
     }
   });
   function isSelected(items) {
-    return wrapInArray(items).every((item) => selected.value.has(item.value));
+    return wrapInArray(items).every((item) => selected.value.has(toRaw(item.value)));
   }
   function isSomeSelected(items) {
-    return wrapInArray(items).some((item) => selected.value.has(item.value));
+    return wrapInArray(items).some((item) => selected.value.has(toRaw(item.value)));
   }
   function select(items, value2) {
     const newSelected = selectStrategy.value.select({
@@ -11489,6 +11504,8 @@ function provideSort(options) {
     page
   } = options;
   const toggleSort = (column) => {
+    if (column.key == null)
+      return;
     let newSortBy = sortBy.value.map((x2) => ({
       ...x2
     })) ?? [];
@@ -12006,7 +12023,7 @@ const makeVDataTableRowProps = propsFactory({
   item: Object,
   onClick: Function
 }, "VDataTableRow");
-const VDataTableRow = defineComponent({
+const VDataTableRow = genericComponent()({
   name: "VDataTableRow",
   props: makeVDataTableRowProps(),
   setup(props, _ref) {
@@ -12043,8 +12060,10 @@ const VDataTableRow = defineComponent({
         const slotName = `item.${column.key}`;
         const slotProps = {
           index: props.index,
-          item: props.item,
-          columns: columns.value,
+          item: item.raw,
+          internalItem: item,
+          value: getObjectValueByPath(item.columns, column.key),
+          column,
           isSelected,
           toggleSelect,
           isExpanded,
@@ -12067,7 +12086,7 @@ const VDataTableRow = defineComponent({
             "onClick": withModifiers(() => toggleExpand(item), ["stop"])
           }, null);
         }
-        return getPropertyFromItem(item.columns, column.key);
+        return toDisplayString(slotProps.value);
       }
     }))]));
   }
@@ -12118,14 +12137,14 @@ const VDataTableRows = genericComponent()({
       t: t4
     } = useLocale();
     useRender(() => {
-      var _a;
-      if (props.loading && slots.loading) {
+      var _a, _b;
+      if (props.loading) {
         return createVNode("tr", {
           "class": "v-data-table-rows-loading",
           "key": "loading"
         }, [createVNode("td", {
           "colspan": columns.value.length
-        }, [slots.loading()])]);
+        }, [((_a = slots.loading) == null ? void 0 : _a.call(slots)) ?? t4(props.loadingText)])]);
       }
       if (!props.loading && !props.items.length && !props.hideNoData) {
         return createVNode("tr", {
@@ -12133,7 +12152,7 @@ const VDataTableRows = genericComponent()({
           "key": "no-data"
         }, [createVNode("td", {
           "colspan": columns.value.length
-        }, [((_a = slots["no-data"]) == null ? void 0 : _a.call(slots)) ?? t4(props.noDataText)])]);
+        }, [((_b = slots["no-data"]) == null ? void 0 : _b.call(slots)) ?? t4(props.noDataText)])]);
       }
       return createVNode(Fragment, null, [props.items.map((item, index) => {
         var _a2;
@@ -12155,7 +12174,8 @@ const VDataTableRows = genericComponent()({
         }
         const slotProps = {
           index,
-          item,
+          item: item.raw,
+          internalItem: item,
           columns: columns.value,
           isExpanded,
           toggleExpand,
@@ -12172,7 +12192,8 @@ const VDataTableRows = genericComponent()({
                 toggleExpand(item);
               }
               (_a3 = props["onClick:row"]) == null ? void 0 : _a3.call(props, event, {
-                item
+                item: item.raw,
+                internalItem: item
               });
             } : void 0,
             index,
@@ -12252,7 +12273,8 @@ function transformItem(props, item, index, columns) {
   const value2 = props.returnObject ? item : getPropertyFromItem(item, props.itemValue);
   const selectable = getPropertyFromItem(item, props.itemSelectable, true);
   const itemColumns = columns.reduce((obj, column) => {
-    obj[column.key] = getPropertyFromItem(item, column.value ?? column.key);
+    if (column.key != null)
+      obj[column.key] = getPropertyFromItem(item, column.value);
     return obj;
   }, {});
   return {
@@ -13163,7 +13185,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-40ff75b2.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-1ffbc9e8.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-16349eac.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-8f9b347d.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-df3dfddd.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-14a307ba.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-4a635736.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-4b6dfd47.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-5d90bc08.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-2be73a05.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-a6354970.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-fdae7866.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-5c0e3608.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-93003ffb.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-1ffbc9e8.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-16349eac.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-c0bbd974.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-df3dfddd.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-14a307ba.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-68908fb8.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-4b6dfd47.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-077f7f3f.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-2be73a05.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-a6354970.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-fdae7866.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-5c0e3608.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
