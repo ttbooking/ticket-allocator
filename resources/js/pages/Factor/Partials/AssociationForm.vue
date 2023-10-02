@@ -14,8 +14,8 @@
                 </template>
                 <template #[`item.value`]="{ item }">
                     <v-autocomplete
-                        v-model="item.raw.value"
-                        :items="getEntries(item.raw.value)"
+                        v-model="item.value"
+                        :items="getEntries(item.value)"
                         item-title="name"
                         item-value="uuid"
                         variant="plain"
@@ -25,7 +25,7 @@
                 </template>
                 <template #[`item.initial_weight`]="{ item }">
                     <v-text-field
-                        v-model.number="item.raw.initial_weight"
+                        v-model.number="item.initial_weight"
                         type="number"
                         min="0"
                         max="9999999"
@@ -37,7 +37,7 @@
                 </template>
                 <template #[`item.weight_increment`]="{ item }">
                     <v-text-field
-                        v-model.number="item.raw.weight_increment"
+                        v-model.number="item.weight_increment"
                         type="number"
                         min="0"
                         max="99999"
@@ -49,7 +49,7 @@
                 </template>
                 <template #[`item.complexity`]="{ item }">
                     <v-text-field
-                        v-model.number="item.raw.complexity"
+                        v-model.number="item.complexity"
                         type="number"
                         min="0"
                         max="9999"
@@ -61,7 +61,7 @@
                 </template>
                 <template #[`item.delay`]="{ item }">
                     <v-text-field
-                        v-model.number="item.raw.delay"
+                        v-model.number="item.delay"
                         type="number"
                         min="0"
                         max="99999"
@@ -73,7 +73,7 @@
                 </template>
                 <template #[`item.reservation`]="{ item }">
                     <v-text-field
-                        v-model.number="item.raw.reservation"
+                        v-model.number="item.reservation"
                         type="number"
                         min="0"
                         max="99999"
@@ -89,7 +89,7 @@
                         :title="$t('remove')"
                         size="small"
                         variant="plain"
-                        @click="removeEntry(item.raw.value)"
+                        @click="removeEntry(item.value)"
                     />
                 </template>
             </v-data-table>

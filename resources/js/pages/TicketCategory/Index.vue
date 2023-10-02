@@ -20,14 +20,14 @@
                 </template>
                 <template #[`item.actions`]="{ item }">
                     <v-btn
-                        :to="route('ticket-allocator.ticket-categories.edit', item.raw.uuid)"
+                        :to="route('ticket-allocator.ticket-categories.edit', item.uuid)"
                         icon="mdi-pencil"
                         :title="$t('edit')"
                         size="small"
                         variant="plain"
                     />
                     <v-btn-ex
-                        :to="route('ticket-allocator.ticket-categories.destroy', item.raw.uuid)"
+                        :to="route('ticket-allocator.ticket-categories.destroy', item.uuid)"
                         method="delete"
                         icon="mdi-delete"
                         :title="$t('remove')"

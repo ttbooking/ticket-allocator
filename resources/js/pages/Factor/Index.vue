@@ -57,31 +57,31 @@
                 <template #[`item.active`]="{ item }">
                     <Link
                         as="span"
-                        :href="route('ticket-allocator.factors.update', item.raw.uuid)"
+                        :href="route('ticket-allocator.factors.update', item.uuid)"
                         method="patch"
-                        :data="{ active: !!item.raw.deleted_at }"
+                        :data="{ active: !!item.deleted_at }"
                     >
-                        <v-checkbox-btn :model-value="!item.raw.deleted_at" />
+                        <v-checkbox-btn :model-value="!item.deleted_at" />
                     </Link>
                 </template>
                 <template #[`item.type.name`]="{ item }">
-                    <span :class="{ italic: item.raw.type.excluded }">{{ item.raw.type.name }}</span>
+                    <span :class="{ italic: item.type.excluded }">{{ item.type.name }}</span>
                 </template>
                 <template #[`item.name`]="{ item }">
-                    <span :class="{ italic: item.raw.type.excluded && !item.raw.display_name }">
-                        {{ item.raw.name }}
+                    <span :class="{ italic: item.type.excluded && !item.display_name }">
+                        {{ item.name }}
                     </span>
                 </template>
                 <template #[`item.actions`]="{ item }">
                     <v-btn
-                        :to="route('ticket-allocator.factors.edit', item.raw.uuid)"
+                        :to="route('ticket-allocator.factors.edit', item.uuid)"
                         icon="mdi-pencil"
                         :title="$t('edit')"
                         size="small"
                         variant="plain"
                     />
                     <v-btn-ex
-                        :to="route('ticket-allocator.factors.raise-priority', item.raw.uuid)"
+                        :to="route('ticket-allocator.factors.raise-priority', item.uuid)"
                         method="put"
                         icon="mdi-arrow-up-thick"
                         :title="$t('raise_priority')"
@@ -89,7 +89,7 @@
                         variant="plain"
                     />
                     <v-btn-ex
-                        :to="route('ticket-allocator.factors.lower-priority', item.raw.uuid)"
+                        :to="route('ticket-allocator.factors.lower-priority', item.uuid)"
                         method="put"
                         icon="mdi-arrow-down-thick"
                         :title="$t('lower_priority')"
@@ -97,7 +97,7 @@
                         variant="plain"
                     />
                     <v-btn-ex
-                        :to="route('ticket-allocator.factors.destroy', item.raw.uuid)"
+                        :to="route('ticket-allocator.factors.destroy', item.uuid)"
                         method="delete"
                         icon="mdi-delete"
                         :title="$t('remove')"

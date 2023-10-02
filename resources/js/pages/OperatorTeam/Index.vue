@@ -21,23 +21,23 @@
                 <template #[`item.active`]="{ item }">
                     <Link
                         as="span"
-                        :href="route('ticket-allocator.teams.update', item.raw.uuid)"
+                        :href="route('ticket-allocator.teams.update', item.uuid)"
                         method="patch"
-                        :data="{ active: !!item.raw.deleted_at }"
+                        :data="{ active: !!item.deleted_at }"
                     >
-                        <v-checkbox-btn :model-value="!item.raw.deleted_at" />
+                        <v-checkbox-btn :model-value="!item.deleted_at" />
                     </Link>
                 </template>
                 <template #[`item.actions`]="{ item }">
                     <v-btn
-                        :to="route('ticket-allocator.teams.edit', item.raw.uuid)"
+                        :to="route('ticket-allocator.teams.edit', item.uuid)"
                         icon="mdi-pencil"
                         :title="$t('edit')"
                         size="small"
                         variant="plain"
                     />
                     <v-btn-ex
-                        :to="route('ticket-allocator.teams.destroy', item.raw.uuid)"
+                        :to="route('ticket-allocator.teams.destroy', item.uuid)"
                         method="delete"
                         icon="mdi-delete"
                         :title="$t('remove')"

@@ -21,19 +21,19 @@
                         </v-btn>
                     </v-toolbar>
                 </template>
-                <template #[`item.name`]="{ item }">{{ item.raw.name ?? item.raw.user.name ?? "" }}</template>
-                <template #[`item.ticket_limit`]="{ item }">{{ item.raw.ticket_limit ?? "&infin;" }}</template>
-                <template #[`item.complexity_limit`]="{ item }">{{ item.raw.complexity_limit ?? "&infin;" }}</template>
+                <template #[`item.name`]="{ item }">{{ item.name ?? item.user.name ?? "" }}</template>
+                <template #[`item.ticket_limit`]="{ item }">{{ item.ticket_limit ?? "&infin;" }}</template>
+                <template #[`item.complexity_limit`]="{ item }">{{ item.complexity_limit ?? "&infin;" }}</template>
                 <template #[`item.actions`]="{ item }">
                     <v-btn
-                        :to="route('ticket-allocator.operators.edit', item.raw.uuid)"
+                        :to="route('ticket-allocator.operators.edit', item.uuid)"
                         icon="mdi-pencil"
                         :title="$t('edit')"
                         size="small"
                         variant="plain"
                     />
                     <v-btn-ex
-                        :to="route('ticket-allocator.operators.destroy', item.raw.uuid)"
+                        :to="route('ticket-allocator.operators.destroy', item.uuid)"
                         method="delete"
                         icon="mdi-delete"
                         :title="$t('remove')"
