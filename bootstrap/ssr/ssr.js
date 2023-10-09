@@ -3110,7 +3110,7 @@ function createDate(options) {
       lv: "lv-LV",
       lt: "lt-LT",
       nl: "nl-NL",
-      no: "nn-NO",
+      no: "no-NO",
       pl: "pl-PL",
       pt: "pt-PT",
       ro: "ro-RO",
@@ -3248,7 +3248,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.19";
+const version = "3.3.20";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -5862,7 +5862,8 @@ function useValidation(props) {
   const isDisabled = computed(() => !!(props.disabled ?? (form == null ? void 0 : form.isDisabled.value)));
   const isReadonly = computed(() => !!(props.readonly ?? (form == null ? void 0 : form.isReadonly.value)));
   const errorMessages = computed(() => {
-    return props.errorMessages.length ? wrapInArray(props.errorMessages).slice(0, Math.max(0, +props.maxErrors)) : internalErrorMessages.value;
+    var _a;
+    return ((_a = props.errorMessages) == null ? void 0 : _a.length) ? wrapInArray(props.errorMessages).slice(0, Math.max(0, +props.maxErrors)) : internalErrorMessages.value;
   });
   const validateOn = computed(() => {
     let value2 = (props.validateOn ?? (form == null ? void 0 : form.validateOn.value)) || "input";
@@ -5877,7 +5878,8 @@ function useValidation(props) {
     };
   });
   const isValid2 = computed(() => {
-    if (props.error || props.errorMessages.length)
+    var _a;
+    if (props.error || ((_a = props.errorMessages) == null ? void 0 : _a.length))
       return false;
     if (!props.rules.length)
       return true;
@@ -9440,7 +9442,7 @@ function forwardRefs(target) {
       if (Reflect.has(target2, key)) {
         return Reflect.get(target2, key);
       }
-      if (typeof key === "symbol" || key.startsWith("__"))
+      if (typeof key === "symbol" || key.startsWith("$") || key.startsWith("__"))
         return;
       for (const ref2 of refs) {
         if (ref2.value && Reflect.has(ref2.value, key)) {
@@ -9453,7 +9455,7 @@ function forwardRefs(target) {
       if (Reflect.has(target2, key)) {
         return true;
       }
-      if (typeof key === "symbol" || key.startsWith("__"))
+      if (typeof key === "symbol" || key.startsWith("$") || key.startsWith("__"))
         return false;
       for (const ref2 of refs) {
         if (ref2.value && Reflect.has(ref2.value, key)) {
@@ -9466,7 +9468,7 @@ function forwardRefs(target) {
       if (Reflect.has(target2, key)) {
         return Reflect.set(target2, key, value2);
       }
-      if (typeof key === "symbol" || key.startsWith("__"))
+      if (typeof key === "symbol" || key.startsWith("$") || key.startsWith("__"))
         return false;
       for (const ref2 of refs) {
         if (ref2.value && Reflect.has(ref2.value, key)) {
@@ -9480,7 +9482,7 @@ function forwardRefs(target) {
       const descriptor = Reflect.getOwnPropertyDescriptor(target2, key);
       if (descriptor)
         return descriptor;
-      if (typeof key === "symbol" || key.startsWith("__"))
+      if (typeof key === "symbol" || key.startsWith("$") || key.startsWith("__"))
         return;
       for (const ref2 of refs) {
         if (!ref2.value)
@@ -10098,7 +10100,7 @@ const VTextField = genericComponent()({
       }
     }
     useRender(() => {
-      const hasCounter = !!(slots.counter || props.counter || props.counterValue);
+      const hasCounter = !!(slots.counter || props.counter !== false && props.counter != null);
       const hasDetails = !!(hasCounter || slots.details);
       const [rootAttrs, inputAttrs] = filterInputAttrs(attrs);
       const [{
@@ -11300,7 +11302,7 @@ const singleSelectStrategy = {
       items,
       value: value2
     } = _ref;
-    return new Set(value2 ? [toRaw((_a = items[0]) == null ? void 0 : _a.value)] : []);
+    return new Set(value2 ? [(_a = items[0]) == null ? void 0 : _a.value] : []);
   },
   selectAll: (_ref2) => {
     let {
@@ -11325,9 +11327,9 @@ const pageSelectStrategy = {
     } = _ref4;
     for (const item of items) {
       if (value2)
-        selected.add(toRaw(item.value));
+        selected.add(item.value);
       else
-        selected.delete(toRaw(item.value));
+        selected.delete(item.value);
     }
     return selected;
   },
@@ -11360,9 +11362,9 @@ const allSelectStrategy = {
     } = _ref7;
     for (const item of items) {
       if (value2)
-        selected.add(toRaw(item.value));
+        selected.add(item.value);
       else
-        selected.delete(toRaw(item.value));
+        selected.delete(item.value);
     }
     return selected;
   },
@@ -11424,10 +11426,10 @@ function provideSelection(props, _ref9) {
     }
   });
   function isSelected(items) {
-    return wrapInArray(items).every((item) => selected.value.has(toRaw(item.value)));
+    return wrapInArray(items).every((item) => selected.value.has(item.value));
   }
   function isSomeSelected(items) {
-    return wrapInArray(items).some((item) => selected.value.has(toRaw(item.value)));
+    return wrapInArray(items).some((item) => selected.value.has(item.value));
   }
   function select(items, value2) {
     const newSelected = selectStrategy.value.select({
@@ -12835,13 +12837,13 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
   return t4 + "[" + r2 + "]";
 }, repeat: function(t4) {
   return t4;
-} }, m = Array.isArray, g = String.prototype.split, j = Array.prototype.push, w = function(t4, r2) {
-  j.apply(t4, m(r2) ? r2 : [r2]);
+} }, g = Array.isArray, m = String.prototype.split, j = Array.prototype.push, w = function(t4, r2) {
+  j.apply(t4, g(r2) ? r2 : [r2]);
 }, O = Date.prototype.toISOString, E = l.default, R = { addQueryPrefix: false, allowDots: false, charset: "utf-8", charsetSentinel: false, delimiter: "&", encode: true, encoder: d.encode, encodeValuesOnly: false, format: E, formatter: l.formatters[E], indices: false, serializeDate: function(t4) {
   return O.call(t4);
 }, skipNulls: false, strictNullHandling: false }, S = function t3(r2, n2, e2, o2, i2, u2, f2, a2, c2, l2, s2, v2, p2, y2) {
   var b2, h2 = r2;
-  if ("function" == typeof f2 ? h2 = f2(n2, h2) : h2 instanceof Date ? h2 = l2(h2) : "comma" === e2 && m(h2) && (h2 = d.maybeMap(h2, function(t4) {
+  if ("function" == typeof f2 ? h2 = f2(n2, h2) : h2 instanceof Date ? h2 = l2(h2) : "comma" === e2 && g(h2) && (h2 = d.maybeMap(h2, function(t4) {
     return t4 instanceof Date ? l2(t4) : t4;
   })), null === h2) {
     if (o2)
@@ -12852,7 +12854,7 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
     if (u2) {
       var j2 = p2 ? n2 : u2(n2, R.encoder, y2, "key", s2);
       if ("comma" === e2 && p2) {
-        for (var O2 = g.call(String(h2), ","), E2 = "", S2 = 0; S2 < O2.length; ++S2)
+        for (var O2 = m.call(String(h2), ","), E2 = "", S2 = 0; S2 < O2.length; ++S2)
           E2 += (0 === S2 ? "" : ",") + v2(u2(O2[S2], R.encoder, y2, "value", s2));
         return [v2(j2) + "=" + E2];
       }
@@ -12863,27 +12865,27 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
   var k2, x2 = [];
   if (void 0 === h2)
     return x2;
-  if ("comma" === e2 && m(h2))
+  if ("comma" === e2 && g(h2))
     k2 = [{ value: h2.length > 0 ? h2.join(",") || null : void 0 }];
-  else if (m(f2))
+  else if (g(f2))
     k2 = f2;
   else {
     var T2 = Object.keys(h2);
     k2 = a2 ? T2.sort(a2) : T2;
   }
-  for (var C2 = 0; C2 < k2.length; ++C2) {
-    var N2 = k2[C2], D2 = "object" == typeof N2 && void 0 !== N2.value ? N2.value : h2[N2];
+  for (var N2 = 0; N2 < k2.length; ++N2) {
+    var C2 = k2[N2], D2 = "object" == typeof C2 && void 0 !== C2.value ? C2.value : h2[C2];
     if (!i2 || null !== D2) {
-      var F2 = m(h2) ? "function" == typeof e2 ? e2(n2, N2) : n2 : n2 + (c2 ? "." + N2 : "[" + N2 + "]");
-      w(x2, t3(D2, F2, e2, o2, i2, u2, f2, a2, c2, l2, s2, v2, p2, y2));
+      var $2 = g(h2) ? "function" == typeof e2 ? e2(n2, C2) : n2 : n2 + (c2 ? "." + C2 : "[" + C2 + "]");
+      w(x2, t3(D2, $2, e2, o2, i2, u2, f2, a2, c2, l2, s2, v2, p2, y2));
     }
   }
   return x2;
-}, k = Object.prototype.hasOwnProperty, x = Array.isArray, T = { allowDots: false, allowPrototypes: false, arrayLimit: 20, charset: "utf-8", charsetSentinel: false, comma: false, decoder: d.decode, delimiter: "&", depth: 5, ignoreQueryPrefix: false, interpretNumericEntities: false, parameterLimit: 1e3, parseArrays: true, plainObjects: false, strictNullHandling: false }, C = function(t4) {
+}, k = Object.prototype.hasOwnProperty, x = Array.isArray, T = { allowDots: false, allowPrototypes: false, arrayLimit: 20, charset: "utf-8", charsetSentinel: false, comma: false, decoder: d.decode, delimiter: "&", depth: 5, ignoreQueryPrefix: false, interpretNumericEntities: false, parameterLimit: 1e3, parseArrays: true, plainObjects: false, strictNullHandling: false }, N = function(t4) {
   return t4.replace(/&#(\d+);/g, function(t5, r2) {
     return String.fromCharCode(parseInt(r2, 10));
   });
-}, N = function(t4, r2) {
+}, C = function(t4, r2) {
   return t4 && "string" == typeof t4 && r2.comma && t4.indexOf(",") > -1 ? t4.split(",") : t4;
 }, D = function(t4, r2, n2, e2) {
   if (t4) {
@@ -12899,7 +12901,7 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
       a2.push(u2[1]);
     }
     return u2 && a2.push("[" + o2.slice(u2.index) + "]"), function(t5, r3, n3, e3) {
-      for (var o3 = e3 ? r3 : N(r3, n3), i3 = t5.length - 1; i3 >= 0; --i3) {
+      for (var o3 = e3 ? r3 : C(r3, n3), i3 = t5.length - 1; i3 >= 0; --i3) {
         var u3, f3 = t5[i3];
         if ("[]" === f3 && n3.parseArrays)
           u3 = [].concat(o3);
@@ -12913,7 +12915,7 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
       return o3;
     }(a2, r2, n2, e2);
   }
-}, F = function(t4, r2) {
+}, $ = function(t4, r2) {
   var n2 = function(t5) {
     if (!t5)
       return T;
@@ -12933,9 +12935,9 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
     for (n3 = 0; n3 < o3.length; ++n3)
       if (n3 !== i3) {
         var f3, a3, c2 = o3[n3], l2 = c2.indexOf("]="), s2 = -1 === l2 ? c2.indexOf("=") : l2 + 1;
-        -1 === s2 ? (f3 = r3.decoder(c2, T.decoder, u3, "key"), a3 = r3.strictNullHandling ? null : "") : (f3 = r3.decoder(c2.slice(0, s2), T.decoder, u3, "key"), a3 = d.maybeMap(N(c2.slice(s2 + 1), r3), function(t6) {
+        -1 === s2 ? (f3 = r3.decoder(c2, T.decoder, u3, "key"), a3 = r3.strictNullHandling ? null : "") : (f3 = r3.decoder(c2.slice(0, s2), T.decoder, u3, "key"), a3 = d.maybeMap(C(c2.slice(s2 + 1), r3), function(t6) {
           return r3.decoder(t6, T.decoder, u3, "value");
-        })), a3 && r3.interpretNumericEntities && "iso-8859-1" === u3 && (a3 = C(a3)), c2.indexOf("[]=") > -1 && (a3 = x(a3) ? [a3] : a3), e3[f3] = k.call(e3, f3) ? d.combine(e3[f3], a3) : a3;
+        })), a3 && r3.interpretNumericEntities && "iso-8859-1" === u3 && (a3 = N(a3)), c2.indexOf("[]=") > -1 && (a3 = x(a3) ? [a3] : a3), e3[f3] = k.call(e3, f3) ? d.combine(e3[f3], a3) : a3;
       }
     return e3;
   }(t4, n2) : t4, o2 = n2.plainObjects ? /* @__PURE__ */ Object.create(null) : {}, i2 = Object.keys(e2), u2 = 0; u2 < i2.length; ++u2) {
@@ -12943,7 +12945,7 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
     o2 = d.merge(o2, a2, n2);
   }
   return d.compact(o2);
-}, I = /* @__PURE__ */ function() {
+}, F = /* @__PURE__ */ function() {
   function t4(t5, r2, n3) {
     var e2, o2;
     this.name = t5, this.definition = r2, this.bindings = null != (e2 = r2.bindings) ? e2 : {}, this.wheres = null != (o2 = r2.wheres) ? o2 : {}, this.config = n3;
@@ -12960,26 +12962,22 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
     if (u2) {
       for (var f2 in u2.groups)
         u2.groups[f2] = "string" == typeof u2.groups[f2] ? decodeURIComponent(u2.groups[f2]) : u2.groups[f2];
-      return { params: u2.groups, query: F(i2) };
+      return { params: u2.groups, query: $(i2) };
     }
     return false;
   }, n2.compile = function(t5) {
-    var r2 = this, n3 = this.parameterSegments;
-    return n3.length ? this.template.replace(/{([^}?]+)(\??)}/g, function(e2, o2, i2) {
-      var u2;
-      if (!i2 && [null, void 0].includes(t5[o2]))
-        throw new Error("Ziggy error: '" + o2 + "' parameter is required for route '" + r2.name + "'.");
-      if (r2.wheres[o2]) {
-        var f2, a2;
-        if (!new RegExp("^" + (i2 ? "(" + r2.wheres[o2] + ")?" : r2.wheres[o2]) + "$").test(null != (f2 = t5[o2]) ? f2 : ""))
-          throw new Error("Ziggy error: '" + o2 + "' parameter does not match required format '" + r2.wheres[o2] + "' for route '" + r2.name + "'.");
-        if (n3[n3.length - 1].name === o2)
-          return encodeURIComponent(null != (a2 = t5[o2]) ? a2 : "").replace(/%2F/g, "/");
-      }
-      return encodeURIComponent(null != (u2 = t5[o2]) ? u2 : "");
+    var r2 = this;
+    return this.parameterSegments.length ? this.template.replace(/{([^}?]+)(\??)}/g, function(n3, e2, o2) {
+      var i2, u2;
+      if (!o2 && [null, void 0].includes(t5[e2]))
+        throw new Error("Ziggy error: '" + e2 + "' parameter is required for route '" + r2.name + "'.");
+      if (r2.wheres[e2] && !new RegExp("^" + (o2 ? "(" + r2.wheres[e2] + ")?" : r2.wheres[e2]) + "$").test(null != (u2 = t5[e2]) ? u2 : ""))
+        throw new Error("Ziggy error: '" + e2 + "' parameter does not match required format '" + r2.wheres[e2] + "' for route '" + r2.name + "'.");
+      return encodeURI(null != (i2 = t5[e2]) ? i2 : "").replace(/%7C/g, "|").replace(/%25/g, "%").replace(/\$/g, "%24");
     }).replace(this.origin + "//", this.origin + "/").replace(/\/+$/, "") : this.template;
   }, r(t4, [{ key: "template", get: function() {
-    return (this.origin + "/" + this.definition.uri).replace(/\/+$/, "");
+    var t5 = (this.origin + "/" + this.definition.uri).replace(/\/+$/, "");
+    return "" === t5 ? "/" : t5;
   } }, { key: "origin", get: function() {
     return this.config.absolute ? this.definition.domain ? "" + this.config.url.match(/^\w+:\/\//)[0] + this.definition.domain + (this.config.port ? ":" + this.config.port : "") : this.config.url : "";
   } }, { key: "parameterSegments", get: function() {
@@ -12995,7 +12993,7 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
     if (void 0 === o2 && (o2 = true), (u3 = t4.call(this) || this).t = null != i3 ? i3 : "undefined" != typeof Ziggy ? Ziggy : null == globalThis ? void 0 : globalThis.Ziggy, u3.t = n({}, u3.t, { absolute: o2 }), r2) {
       if (!u3.t.routes[r2])
         throw new Error("Ziggy error: route '" + r2 + "' is not in the route list.");
-      u3.i = new I(r2, u3.t.routes[r2], u3.t), u3.u = u3.l(e3);
+      u3.i = new F(r2, u3.t.routes[r2], u3.t), u3.u = u3.l(e3);
     }
     return u3;
   }
@@ -13028,9 +13026,9 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
           n3 = t7.format;
         }
         var e4 = l.formatters[n3], o3 = R.filter;
-        return ("function" == typeof t7.filter || m(t7.filter)) && (o3 = t7.filter), { addQueryPrefix: "boolean" == typeof t7.addQueryPrefix ? t7.addQueryPrefix : R.addQueryPrefix, allowDots: void 0 === t7.allowDots ? R.allowDots : !!t7.allowDots, charset: r4, charsetSentinel: "boolean" == typeof t7.charsetSentinel ? t7.charsetSentinel : R.charsetSentinel, delimiter: void 0 === t7.delimiter ? R.delimiter : t7.delimiter, encode: "boolean" == typeof t7.encode ? t7.encode : R.encode, encoder: "function" == typeof t7.encoder ? t7.encoder : R.encoder, encodeValuesOnly: "boolean" == typeof t7.encodeValuesOnly ? t7.encodeValuesOnly : R.encodeValuesOnly, filter: o3, format: n3, formatter: e4, serializeDate: "function" == typeof t7.serializeDate ? t7.serializeDate : R.serializeDate, skipNulls: "boolean" == typeof t7.skipNulls ? t7.skipNulls : R.skipNulls, sort: "function" == typeof t7.sort ? t7.sort : null, strictNullHandling: "boolean" == typeof t7.strictNullHandling ? t7.strictNullHandling : R.strictNullHandling };
+        return ("function" == typeof t7.filter || g(t7.filter)) && (o3 = t7.filter), { addQueryPrefix: "boolean" == typeof t7.addQueryPrefix ? t7.addQueryPrefix : R.addQueryPrefix, allowDots: void 0 === t7.allowDots ? R.allowDots : !!t7.allowDots, charset: r4, charsetSentinel: "boolean" == typeof t7.charsetSentinel ? t7.charsetSentinel : R.charsetSentinel, delimiter: void 0 === t7.delimiter ? R.delimiter : t7.delimiter, encode: "boolean" == typeof t7.encode ? t7.encode : R.encode, encoder: "function" == typeof t7.encoder ? t7.encoder : R.encoder, encodeValuesOnly: "boolean" == typeof t7.encodeValuesOnly ? t7.encodeValuesOnly : R.encodeValuesOnly, filter: o3, format: n3, formatter: e4, serializeDate: "function" == typeof t7.serializeDate ? t7.serializeDate : R.serializeDate, skipNulls: "boolean" == typeof t7.skipNulls ? t7.skipNulls : R.skipNulls, sort: "function" == typeof t7.sort ? t7.sort : null, strictNullHandling: "boolean" == typeof t7.strictNullHandling ? t7.strictNullHandling : R.strictNullHandling };
       }(r3);
-      "function" == typeof o2.filter ? e3 = (0, o2.filter)("", e3) : m(o2.filter) && (n2 = o2.filter);
+      "function" == typeof o2.filter ? e3 = (0, o2.filter)("", e3) : g(o2.filter) && (n2 = o2.filter);
       var i3 = [];
       if ("object" != typeof e3 || null === e3)
         return "";
@@ -13049,7 +13047,7 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
     var r2 = this;
     t5 ? this.t.absolute && t5.startsWith("/") && (t5 = this.p().host + t5) : t5 = this.h();
     var e3 = {}, o2 = Object.entries(this.t.routes).find(function(n2) {
-      return e3 = new I(n2[0], n2[1], r2.t).matchesUrl(t5);
+      return e3 = new F(n2[0], n2[1], r2.t).matchesUrl(t5);
     }) || [void 0, void 0];
     return n({ name: o2[0] }, e3, { route: o2[1] });
   }, f2.h = function() {
@@ -13062,7 +13060,7 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
     var a2 = new RegExp("^" + t5.replace(/\./g, "\\.").replace(/\*/g, ".*") + "$").test(o2);
     if ([null, void 0].includes(r2) || !a2)
       return a2;
-    var c2 = new I(o2, f3, this.t);
+    var c2 = new F(o2, f3, this.t);
     r2 = this.l(r2, c2);
     var l2 = n({}, i3, u3);
     return !(!Object.values(r2).every(function(t6) {
@@ -13092,8 +13090,8 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
       var i3;
       (i3 = {})[o2[0].name] = t5, t5 = i3;
     }
-    return n({}, this.m(r2), this.g(t5, r2));
-  }, f2.m = function(t5) {
+    return n({}, this.g(r2), this.m(t5, r2));
+  }, f2.g = function(t5) {
     var r2 = this;
     return t5.parameterSegments.filter(function(t6) {
       return r2.t.defaults[t6.name];
@@ -13101,7 +13099,7 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
       var i3, u3 = e3.name;
       return n({}, t6, ((i3 = {})[u3] = r2.t.defaults[u3], i3));
     }, {});
-  }, f2.g = function(t5, r2) {
+  }, f2.m = function(t5, r2) {
     var e3 = r2.bindings, o2 = r2.parameterSegments;
     return Object.entries(t5).reduce(function(t6, r3) {
       var i3, u3, f3 = r3[0], a2 = r3[1];
@@ -13124,7 +13122,7 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
     var t5 = this.v();
     return n({}, t5.params, t5.query);
   } }]), u2;
-}(/* @__PURE__ */ u(String)), $ = { install: function(t4, r2) {
+}(/* @__PURE__ */ u(String)), A = { install: function(t4, r2) {
   var n2 = function(t5, n3, e2, o2) {
     return void 0 === o2 && (o2 = r2), function(t6, r3, n4, e3) {
       var o3 = new P(t6, r3, n4, e3);
@@ -13185,14 +13183,14 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-93003ffb.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-1ffbc9e8.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-503f279e.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-6fd93eb2.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-df3dfddd.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-14a307ba.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-68908fb8.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-d93afba6.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-077f7f3f.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-83b27051.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-a6354970.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-8164a05b.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-5c0e3608.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-4769f95e.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-8acb528b.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-9feb5878.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-6fd93eb2.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-df3dfddd.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-14a307ba.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-9a5df914.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-92ee121c.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-2ea21ecb.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-36375e54.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-4334a6d5.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-9f82dd28.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-1e654fd5.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
           const languages = /* @__PURE__ */ Object.assign({ "../../lang/en.json": __vite_glob_1_0, "../../lang/php_en.json": __vite_glob_1_1, "../../lang/php_ru.json": __vite_glob_1_2, "../../lang/ru.json": __vite_glob_1_3 });
           return languages[`../../lang/${lang}.json`];
         }
-      }).use($, {
+      }).use(A, {
         // @ts-expect-error
         ...page.props.ziggy,
         // @ts-expect-error
@@ -13231,6 +13229,7 @@ export {
   VBtnToggle as Z,
   VBtnGroup as _,
   makeTagProps as a,
+  useToggleScope as a$,
   VTextField as a0,
   makeVOverlayProps as a1,
   VDialogTransition as a2,
