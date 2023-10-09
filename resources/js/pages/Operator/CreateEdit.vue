@@ -105,7 +105,6 @@ import DefaultLayout from "@/layouts/Default.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import { computed } from "vue";
 import type { User, Operator, OperatorTeam } from "@/types";
-import route from "ziggy-js";
 
 const props = defineProps<{
     users: User[];

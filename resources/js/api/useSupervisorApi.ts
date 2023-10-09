@@ -1,5 +1,3 @@
-import route from "ziggy-js";
-
 export function useSupervisorApi() {
     async function ready(operatorUuid: string, ready: boolean) {
         return await window.axios.patch(route("ticket-allocator.operators.ready", operatorUuid), { ready });

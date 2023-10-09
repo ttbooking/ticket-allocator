@@ -46,7 +46,6 @@ import { computed } from "vue";
 import { Head } from "@inertiajs/vue3";
 import type { TicketCategory } from "@/types";
 import { trans } from "laravel-vue-i18n";
-import route from "ziggy-js";
 
 defineProps<{
     ticketCategories: TicketCategory[];

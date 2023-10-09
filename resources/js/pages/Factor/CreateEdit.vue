@@ -67,7 +67,6 @@
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import type { Entry, Factor, FactorType } from "@/types";
-import route from "ziggy-js";
 import { computed } from "vue";
 import { useDynamicComponent } from "@/composables";
 

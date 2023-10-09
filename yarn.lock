@@ -442,13 +442,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/history@npm:^4.7.11":
-  version: 4.7.11
-  resolution: "@types/history@npm:4.7.11"
-  checksum: c92e2ba407dcab0581a9afdf98f533aa41b61a71133420a6d92b1ca9839f741ab1f9395b17454ba5b88cb86020b70b22d74a1950ccfbdfd9beeaa5459fdc3464
-  languageName: node
-  linkType: hard
-
 "@types/json-schema@npm:^7.0.12":
   version: 7.0.13
   resolution: "@types/json-schema@npm:7.0.13"
@@ -521,15 +514,6 @@ __metadata:
   version: 1.6.35
   resolution: "@types/webfontloader@npm:1.6.35"
   checksum: 8a809e1f8041fc9f7ec1df82d6e841bfc51732a3aa0b56a4e3d2abab86a8abce1b0db90dc9d2c594fd0d77034e2670cae3cfb714a902a0112985fa04fd4a61c8
-  languageName: node
-  linkType: hard
-
-"@types/ziggy-js@npm:^1.3.3":
-  version: 1.3.3
-  resolution: "@types/ziggy-js@npm:1.3.3"
-  dependencies:
-    "@types/history": ^4.7.11
-  checksum: 1a486e9174b3c6070c4620adad618a989e6b2d9dae5863853ac1ffa3b27453b1bb1f0d0b15aae4c0ed33b676e9445d5f4d4c59d94afee1c4cb3255e061fa87f0
   languageName: node
   linkType: hard
 
@@ -3299,7 +3283,6 @@ __metadata:
     "@types/markdown-it-attrs": ^4.1.1
     "@types/node": ^20.8.3
     "@types/webfontloader": ^1.6.35
-    "@types/ziggy-js": ^1.3.3
     "@typescript-eslint/eslint-plugin": ^6.7.4
     "@typescript-eslint/parser": ^6.7.4
     "@vitejs/plugin-vue": ^4.4.0
