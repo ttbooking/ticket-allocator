@@ -700,6 +700,10 @@ function padEnd(str, length) {
   let char = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "0";
   return str + char.repeat(Math.max(0, length - str.length));
 }
+function padStart(str, length) {
+  let char = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "0";
+  return char.repeat(Math.max(0, length - str.length)) + str;
+}
 function chunk(str) {
   let size = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 1;
   const chunked = [];
@@ -2939,6 +2943,17 @@ function format(value2, formatString, locale) {
   }
   return new Intl.DateTimeFormat(locale, options).format(date2);
 }
+function toISO(adapter, value2) {
+  const date2 = adapter.toJsDate(value2);
+  const year = date2.getFullYear();
+  const month = padStart(String(date2.getMonth() + 1), 2, "0");
+  const day = padStart(String(date2.getDate()), 2, "0");
+  return `${year}-${month}-${day}`;
+}
+function parseISO(value2) {
+  const [year, month, day] = value2.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
 function addDays(date2, amount) {
   const d2 = new Date(date2);
   d2.setDate(d2.getDate() + amount);
@@ -3013,6 +3028,12 @@ class VuetifyDateAdapter {
   }
   toJsDate(date2) {
     return date2;
+  }
+  toISO(date2) {
+    return toISO(this, date2);
+  }
+  parseISO(date2) {
+    return parseISO(date2);
   }
   addDays(date2, amount) {
     return addDays(date2, amount);
@@ -3248,7 +3269,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.20";
+const version = "3.3.21";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -11049,10 +11070,18 @@ const VDataTableFooter = genericComponent()({
       itemsPerPage,
       setItemsPerPage
     } = usePagination();
-    const itemsPerPageOptions = computed(() => props.itemsPerPageOptions.map((option) => ({
-      ...option,
-      title: t4(option.title)
-    })));
+    const itemsPerPageOptions = computed(() => props.itemsPerPageOptions.map((option) => {
+      if (typeof option === "number") {
+        return {
+          value: option,
+          title: option === -1 ? t4("$vuetify.dataFooter.itemsPerPageAll") : String(option)
+        };
+      }
+      return {
+        ...option,
+        title: t4(option.title)
+      };
+    }));
     return () => {
       var _a;
       return createVNode("div", {
@@ -13183,7 +13212,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-4769f95e.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-8acb528b.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-9feb5878.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-6fd93eb2.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-df3dfddd.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-14a307ba.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-9a5df914.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-92ee121c.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-2ea21ecb.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-36375e54.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-4334a6d5.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-9f82dd28.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-1e654fd5.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-83e92873.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-9cc03342.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c8920c80.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-6fd93eb2.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-df3dfddd.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-14a307ba.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-35e52162.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-649b8902.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-640b3357.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-c45d26dc.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-42f63969.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-0a9ef2f2.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-579a642a.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
