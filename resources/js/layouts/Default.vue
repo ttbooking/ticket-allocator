@@ -56,6 +56,7 @@ import ApplicationLogo from "@/components/ApplicationLogo.vue";
 import { Link } from "@inertiajs/vue3";
 import { getActiveLanguage } from "laravel-vue-i18n";
 import { useLocale } from "vuetify";
+import route from "ziggy-js";
 
 useLocale().current.value = getActiveLanguage();
 </script>

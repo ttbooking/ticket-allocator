@@ -489,12 +489,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.8.4":
-  version: 20.8.4
-  resolution: "@types/node@npm:20.8.4"
+"@types/node@npm:^20.8.5":
+  version: 20.8.5
+  resolution: "@types/node@npm:20.8.5"
   dependencies:
     undici-types: ~5.25.1
-  checksum: 2106b9ef9750297cac68249428d7067c4d22c26908854165b70a164e34e900f4c34bb9bf3887c9391206b500d3e87171d03b1846e25788925236a0354390d278
+  checksum: 4bca4e4f6307a6f5dc78812015eca9c5a998b35fcf3ba4058c9851d3dde2b22c914fa25a85b804eab5af2ab95375d15943dce8e9ba5e01d15f4bf516ca0d2816
   languageName: node
   linkType: hard
 
@@ -3281,7 +3281,7 @@ __metadata:
     "@types/lodash": ^4.14.199
     "@types/markdown-it": ^13.0.2
     "@types/markdown-it-attrs": ^4.1.1
-    "@types/node": ^20.8.4
+    "@types/node": ^20.8.5
     "@types/webfontloader": ^1.6.35
     "@typescript-eslint/eslint-plugin": ^6.7.5
     "@typescript-eslint/parser": ^6.7.5
@@ -3305,7 +3305,7 @@ __metadata:
     postcss: ^8.4.31
     prettier: ^3.0.3
     roboto-fontface: "*"
-    sass: ^1.69.2
+    sass: ^1.69.3
     tailwindcss: ^3.3.3
     typescript: ^5.2.2
     vite: ^4.4.11
@@ -3341,16 +3341,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.69.2":
-  version: 1.69.2
-  resolution: "sass@npm:1.69.2"
+"sass@npm:^1.69.3":
+  version: 1.69.3
+  resolution: "sass@npm:1.69.3"
   dependencies:
     chokidar: ">=3.0.0 <4.0.0"
     immutable: ^4.0.0
     source-map-js: ">=0.6.2 <2.0.0"
   bin:
     sass: sass.js
-  checksum: 25c6aaf993a40ce33e66c6c3a25690ce573a3c890024ba3dea5416a17c7db6ec39542d4b4e62c2c429005737630d6b48ab841f99fd534ac1b441f37d2c34e0c4
+  checksum: b89a3370c7ede462b344e2136bf1407bf375855c1ec54f73b6257b18fe59dae5377eb9f7b25f21ae4a25d8f0bc41a165d8d7e5f693d8285b1aa51ac6056c4d19
   languageName: node
   linkType: hard
 

@@ -12987,7 +12987,7 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
     var n3 = this.template.replace(/(\/?){([^}?]*)(\??)}/g, function(t6, n4, e3, o3) {
       var i3, u3 = "(?<" + e3 + ">" + ((null == (i3 = r2.wheres[e3]) ? void 0 : i3.replace(/(^\^)|(\$$)/g, "")) || "[^/?]+") + ")";
       return o3 ? "(" + n4 + u3 + ")?" : "" + n4 + u3;
-    }).replace(/^\w+:\/\//, ""), e2 = t5.replace(/^\w+:\/\//, "").split("?"), o2 = e2[0], i2 = e2[1], u2 = new RegExp("^" + n3 + "/?$").exec(o2);
+    }).replace(/^\w+:\/\//, ""), e2 = t5.replace(/^\w+:\/\//, "").split("?"), o2 = e2[0], i2 = e2[1], u2 = new RegExp("^" + n3 + "/?$").exec(decodeURI(o2));
     if (u2) {
       for (var f2 in u2.groups)
         u2.groups[f2] = "string" == typeof u2.groups[f2] ? decodeURIComponent(u2.groups[f2]) : u2.groups[f2];
@@ -13015,7 +13015,7 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
       return { name: t6.replace(/{|\??}/g, ""), required: !/\?}$/.test(t6) };
     })) ? t5 : [];
   } }]), t4;
-}(), P = /* @__PURE__ */ function(t4) {
+}(), I = /* @__PURE__ */ function(t4) {
   var e2, i2;
   function u2(r2, e3, o2, i3) {
     var u3;
@@ -13151,10 +13151,10 @@ var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, f
     var t5 = this.v();
     return n({}, t5.params, t5.query);
   } }]), u2;
-}(/* @__PURE__ */ u(String)), A = { install: function(t4, r2) {
+}(/* @__PURE__ */ u(String)), P = { install: function(t4, r2) {
   var n2 = function(t5, n3, e2, o2) {
     return void 0 === o2 && (o2 = r2), function(t6, r3, n4, e3) {
-      var o3 = new P(t6, r3, n4, e3);
+      var o3 = new I(t6, r3, n4, e3);
       return t6 ? o3.toString() : o3;
     }(t5, n3, e2, o2);
   };
@@ -13212,14 +13212,14 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-83e92873.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-9cc03342.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-c8920c80.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-6fd93eb2.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-df3dfddd.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-14a307ba.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-35e52162.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-649b8902.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-640b3357.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-c45d26dc.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-42f63969.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-0a9ef2f2.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-579a642a.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-721077e2.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-338ee77f.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-d58734d0.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-6fd93eb2.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-df3dfddd.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-14a307ba.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-fa5fcda5.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-4dc57bee.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-45662cbd.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-c4b359ce.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-36469a04.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-77e6aa91.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-06859502.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
           const languages = /* @__PURE__ */ Object.assign({ "../../lang/en.json": __vite_glob_1_0, "../../lang/php_en.json": __vite_glob_1_1, "../../lang/php_ru.json": __vite_glob_1_2, "../../lang/ru.json": __vite_glob_1_3 });
           return languages[`../../lang/${lang}.json`];
         }
-      }).use(A, {
+      }).use(P, {
         // @ts-expect-error
         ...page.props.ziggy,
         // @ts-expect-error

@@ -56,6 +56,7 @@ import { computed } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import type { OperatorTeam } from "@/types";
 import { trans } from "laravel-vue-i18n";
+import route from "ziggy-js";
 
 defineProps<{
     teams: OperatorTeam[];
