@@ -13,9 +13,7 @@ use TTBooking\TicketAllocator\Models\OperatorTeam;
 class SetOperatorTeamsAction extends Action
 {
     /**
-     * @param  Operator  $operator
      * @param  Collection<int, OperatorTeam>|string[]  $operatorTeams
-     * @return void
      */
     public function __invoke(Operator $operator, Collection|array $operatorTeams): void
     {

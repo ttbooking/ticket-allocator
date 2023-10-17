@@ -28,7 +28,6 @@ class TicketAllocator
 
     /**
      * @param  Arrayable<string, TFactor>|iterable<string, TFactor>|null  $factors
-     * @return void
      */
     public static function setFactors(Arrayable|iterable|null $factors): void
     {
@@ -42,7 +41,6 @@ class TicketAllocator
 
     /**
      * @param  Arrayable<string, TMatcher>|iterable<string, TMatcher>|null  $matchers
-     * @return void
      */
     public static function setMatchers(Arrayable|iterable|null $matchers): void
     {

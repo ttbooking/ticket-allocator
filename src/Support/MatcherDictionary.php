@@ -10,7 +10,9 @@ use TTBooking\TicketAllocator\Matchers\Unknown;
 
 /**
  * @template TKey of string
+ *
  * @template-covariant TValue of class-string<MatcherContract>
+ *
  * @template TDefault of TValue|null
  *
  * @implements Collection<TKey, TValue>

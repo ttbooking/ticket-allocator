@@ -37,7 +37,8 @@ class TicketCategoryController extends Controller
     /**
      * Store a newly created ticket category in storage.
      */
-    public function store(StoreTicketCategoryRequest $request): RedirectResponse {
+    public function store(StoreTicketCategoryRequest $request): RedirectResponse
+    {
         TicketCategory::query()->create($request->validated());
 
         return Response::redirectToRoute('ticket-allocator.ticket-categories.index', status: 303);
@@ -66,7 +67,8 @@ class TicketCategoryController extends Controller
     /**
      * Update the specified ticket category in storage.
      */
-    public function update(UpdateTicketCategoryRequest $request, TicketCategory $ticketCategory): RedirectResponse {
+    public function update(UpdateTicketCategoryRequest $request, TicketCategory $ticketCategory): RedirectResponse
+    {
         $ticketCategory->update($request->validated());
 
         return Response::redirectToRoute('ticket-allocator.ticket-categories.index', status: 303);

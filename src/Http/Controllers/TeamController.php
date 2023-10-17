@@ -38,7 +38,7 @@ class TeamController extends Controller
     {
         $operators = OperatorResource::collection(Operator::all())->resolve();
         $matchers = TicketAllocator::matchers()->mapWithKeys(
-            /** @param class-string<MatcherContract> $matcher */
+            /** @param  class-string<MatcherContract>  $matcher */
             static fn (string $matcher, string $alias) => [Str::plural($alias) => app($matcher)->getProps()]
         );
 
@@ -76,7 +76,7 @@ class TeamController extends Controller
         $team = new OperatorTeamResource($team->load('operators'));
         $operators = OperatorResource::collection(Operator::all())->resolve();
         $matchers = TicketAllocator::matchers()->mapWithKeys(
-            /** @param class-string<MatcherContract> $matcher */
+            /** @param  class-string<MatcherContract>  $matcher */
             static fn (string $matcher, string $alias) => [Str::plural($alias) => app($matcher)->getProps()]
         );
 

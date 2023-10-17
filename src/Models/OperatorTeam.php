@@ -17,6 +17,7 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 /**
  * @method static static create(array $parameters = [])
  * @method static static|null find(string $uuid)
+ *
  * @property non-empty-string $uuid
  * @property string $name
  * @property string $description
@@ -29,7 +30,7 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
  */
 class OperatorTeam extends Model
 {
-    use HasUuids, SoftDeletes, HasFactory;
+    use HasFactory, HasUuids, SoftDeletes;
 
     protected $table = 'ticket_allocator_operator_teams';
 

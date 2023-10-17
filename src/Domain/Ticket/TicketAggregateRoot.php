@@ -12,21 +12,13 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
 class TicketAggregateRoot extends AggregateRoot
 {
     const META_ICON = 'icon';
-
     const META_TRIAGE = 'triage';
-
     const META_CATEGORY_NAME = 'category_name';
-
     const META_CATEGORY_SHORT = 'category_short';
-
     const META_METRIC_ADJUSTMENTS = 'metric_adjustments';
-
     const META_TITLE = 'title';
-
     const META_CARD_TITLE = 'card_title';
-
     const META_CARD_SUBTITLE = 'card_subtitle';
-
     const META_CARD_CONTENT = 'card_content';
 
     // TODO: group by factors? Return magic sum?
@@ -178,7 +170,6 @@ class TicketAggregateRoot extends AggregateRoot
     }
 
     /**
-     * @param  string  $categoryUuid
      * @return array{category_name: string, category_short: string}
      */
     protected static function getCategoryData(string $categoryUuid): array

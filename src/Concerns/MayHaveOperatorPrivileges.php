@@ -11,7 +11,9 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 
 /**
  * @mixin Model
+ *
  * @method static static|Builder eligibleToProcessTickets()
+ *
  * @property Operator|null $operator
  */
 trait MayHaveOperatorPrivileges

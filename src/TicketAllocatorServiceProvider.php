@@ -125,7 +125,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         ], ['ticket-allocator', 'assets', 'ticket-allocator-assets']);
 
         $this->publishes([
-            __DIR__.'/../stubs' => $this->app->basePath('stubs')
+            __DIR__.'/../stubs' => $this->app->basePath('stubs'),
         ], ['ticket-allocator', 'stubs', 'ticket-allocator-stubs']);
 
         Event::listen(PublishingStubs::class, static fn (PublishingStubs $stubs) => $stubs

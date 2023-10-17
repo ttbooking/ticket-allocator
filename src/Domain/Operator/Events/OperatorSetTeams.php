@@ -9,7 +9,6 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 class OperatorSetTeams extends Event
 {
     /**
-     * @param  string  $uuid
      * @param  string[]  $operatorTeamUuids
      */
     public function __construct(

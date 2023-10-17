@@ -38,7 +38,7 @@ class OperatorTeamFactory extends Factory
                 'categories' => fake()->randomElements(
                     $ticketCategoryUuids,
                     fake()->optional(.9, 0)->numberBetween(1, count($ticketCategoryUuids))
-                )
+                ),
             ],
         ];
     }

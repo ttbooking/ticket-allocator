@@ -47,7 +47,6 @@ abstract class Matcher implements MatcherContract
      * @template TAttribute of object
      *
      * @param  class-string<TAttribute>  $attribute
-     * @param  bool  $ascend
      * @return Collection<int, TAttribute>
      */
     private static function attributes(string $attribute, bool $ascend = false): Collection
@@ -66,7 +65,6 @@ abstract class Matcher implements MatcherContract
      * @template TAttribute of object
      *
      * @param  class-string<TAttribute>  $attribute
-     * @param  bool  $ascend
      * @return TAttribute|null
      */
     private static function attribute(string $attribute, bool $ascend = false)

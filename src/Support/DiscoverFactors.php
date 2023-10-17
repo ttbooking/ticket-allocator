@@ -27,7 +27,6 @@ class DiscoverFactors
 
     /**
      * @param  class-string<FactorContract>  $factor
-     * @return bool
      */
     public static function isExplicit(string $factor): bool
     {

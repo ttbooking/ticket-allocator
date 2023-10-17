@@ -12,7 +12,9 @@ use TTBooking\TicketAllocator\Models\Factor;
 
 /**
  * @template TKey of string
+ *
  * @template-covariant TValue of class-string<FactorContract>
+ *
  * @template TDefault of TValue|null
  *
  * @implements Collection<TKey, TValue>
@@ -22,7 +24,7 @@ class FactorDictionary extends Collection
     public function visible(): static
     {
         return $this->reject(
-            /** @param class-string<FactorContract> $factor */
+            /** @param  class-string<FactorContract>  $factor */
             static fn (string $factor) => $factor::isHidden()
         );
     }
@@ -30,7 +32,7 @@ class FactorDictionary extends Collection
     public function allowed(): static
     {
         return $this->visible()->diff(Factor::all()->pluck('type')->filter(
-            /** @param class-string<FactorContract> $factor */
+            /** @param  class-string<FactorContract>  $factor */
             static fn (string $factor) => $factor::isSingular()
         ));
     }
@@ -49,7 +51,7 @@ class FactorDictionary extends Collection
     {
         return $this
             ->flatMap(
-                /** @param class-string<FactorContract> $factor */
+                /** @param  class-string<FactorContract>  $factor */
                 static fn (string $factor) => $factor::getInstanceData()
             )
             ->sortBy('priority')->values()

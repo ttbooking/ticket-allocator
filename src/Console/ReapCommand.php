@@ -39,10 +39,12 @@ class ReapCommand extends Command
 
     protected ProgressBar $bar;
 
+    /** Operator sorting modes. */
     private const OPRSORT_NONE = 0;
     private const OPRSORT_PREF = 1;
     private const OPRSORT_PREF_REV = 2;
 
+    /** Ticket sorting modes. */
     private const TCKSORT_NONE = 0;
     private const TCKSORT_WGT = 1;
     private const TCKSORT_WGT_REV = 2;
@@ -124,9 +126,6 @@ class ReapCommand extends Command
 
     /**
      * @param  Collection<array-key, Operator>|null  $operators
-     * @param  int  $sort
-     * @param  int|null  $sortTickets
-     * @return void
      */
     protected function reapOperators(Collection $operators = null, int $sort = 0, int $sortTickets = null): void
     {
@@ -165,8 +164,6 @@ class ReapCommand extends Command
 
     /**
      * @param  Collection<array-key, Ticket>|null  $tickets
-     * @param  int  $sort
-     * @return void
      */
     protected function reapTickets(Collection $tickets = null, int $sort = 0): void
     {

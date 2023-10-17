@@ -31,7 +31,6 @@ class MatcherServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param  bool  $ignoreCache
      * @return array<string, class-string<MatcherContract>>
      */
     public function getMatchers(bool $ignoreCache = false): array
@@ -61,7 +60,6 @@ class MatcherServiceProvider extends ServiceProvider
 
     /**
      * @param  class-string<MatcherContract>  $matcher
-     * @return string
      */
     private static function matcherName(string $matcher): string
     {

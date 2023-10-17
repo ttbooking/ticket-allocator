@@ -36,7 +36,7 @@ class DashboardController extends Controller
             Factor::withTrashed()->orderBy('priority')->get()->keyBy('uuid')
         )->resolve();
         $matchers = TicketAllocator::matchers()->mapWithKeys(
-            /** @param class-string<MatcherContract> $matcher */
+            /** @param  class-string<MatcherContract>  $matcher */
             static fn (string $matcher, string $alias) => [Str::plural($alias) => app($matcher)->getProps()]
         );
 

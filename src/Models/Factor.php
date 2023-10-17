@@ -15,6 +15,7 @@ use TTBooking\TicketAllocator\TicketAllocator;
 /**
  * @method static static create(array $parameters = [])
  * @method static static|null find(string $uuid)
+ *
  * @property non-empty-string $uuid
  * @property int $priority
  * @property class-string<FactorContract> $type

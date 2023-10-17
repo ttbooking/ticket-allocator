@@ -31,7 +31,6 @@ class FactorServiceProvider extends ServiceProvider
     }
 
     /**
-     * @param  bool  $ignoreCache
      * @return array<string, class-string<FactorContract>>
      */
     public function getFactors(bool $ignoreCache = false): array
@@ -61,7 +60,6 @@ class FactorServiceProvider extends ServiceProvider
 
     /**
      * @param  class-string<FactorContract>  $factor
-     * @return string
      */
     private static function factorName(string $factor): string
     {

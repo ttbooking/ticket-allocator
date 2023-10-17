@@ -16,6 +16,7 @@ use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 /**
  * @method static static create(array $parameters = [])
  * @method static static|null find(string $uuid)
+ *
  * @property non-empty-string $uuid
  * @property string $name
  * @property string $short
@@ -25,7 +26,7 @@ use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
  */
 class TicketCategory extends Model
 {
-    use HasUuids, HasFactory;
+    use HasFactory, HasUuids;
 
     protected $table = 'ticket_allocator_ticket_categories';
 

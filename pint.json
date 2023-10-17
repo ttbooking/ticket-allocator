@@ -1,0 +1,14 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "class_attributes_separation": {
+            "elements": {
+                "const": "only_if_meta",
+                "method": "one",
+                "property": "one",
+                "trait_import": "none",
+                "case": "none"
+            }
+        }
+    }
+}

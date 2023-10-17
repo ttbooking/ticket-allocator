@@ -27,7 +27,6 @@ class DiscoverMatchers
 
     /**
      * @param  class-string<MatcherContract>  $matcher
-     * @return bool
      */
     public static function isExplicit(string $matcher): bool
     {
