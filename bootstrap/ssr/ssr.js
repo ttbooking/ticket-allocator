@@ -3,7 +3,7 @@ import "dayjs/locale/ru.js";
 import duration from "dayjs/plugin/duration.js";
 import LocalizedFormat from "dayjs/plugin/localizedFormat.js";
 import RelativeTime from "dayjs/plugin/relativeTime.js";
-import { computed, Fragment, reactive, watchEffect, toRefs, capitalize, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, inject as inject$1, unref, provide, shallowRef, createVNode, mergeProps, watch, onScopeDispose, effectScope, toRaw, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, Teleport, cloneVNode, createTextVNode, withModifiers, toDisplayString, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
+import { computed, Fragment, reactive, watchEffect, toRefs, capitalize, isVNode, Comment, warn, defineComponent as defineComponent$1, camelize, h as h$1, getCurrentInstance as getCurrentInstance$1, ref, inject as inject$1, unref, provide, shallowRef, createVNode, mergeProps, watch, onScopeDispose, effectScope, toRaw, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, TransitionGroup, onBeforeMount, vShow, Teleport, cloneVNode, createTextVNode, withModifiers, toDisplayString, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
 import { usePage, router, createInertiaApp } from "@inertiajs/vue3";
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
@@ -879,6 +879,15 @@ function matchesSelector(el, selector) {
     return null;
   }
 }
+function ensureValidVNode(vnodes) {
+  return vnodes.some((child) => {
+    if (!isVNode(child))
+      return true;
+    if (child.type === Comment)
+      return false;
+    return child.type !== Fragment || ensureValidVNode(child.children);
+  }) ? vnodes : null;
+}
 const block = ["top", "bottom"];
 const inline = ["start", "end", "left", "right"];
 function parseAnchor(anchor, isRtl) {
@@ -1176,6 +1185,9 @@ function toXYZ(_ref) {
 }
 function isCssColor(color) {
   return !!color && /^(#|var\(--|(rgb|hsl)a?\()/.test(color);
+}
+function isParsableColor(color) {
+  return isCssColor(color) && !/^((rgb|hsl)a?\()?var\(--/.test(color);
 }
 const cssColorRe = /^(?<fn>(?:rgb|hsl)a?)\((?<values>.+)\)/;
 const mappers = {
@@ -2892,7 +2904,6 @@ function getWeekdays(locale) {
   });
 }
 function format(value2, formatString, locale) {
-  const date2 = new Date(value2);
   let options = {};
   switch (formatString) {
     case "fullDateWithWeekday":
@@ -2911,7 +2922,11 @@ function format(value2, formatString, locale) {
       };
       break;
     case "keyboardDate":
-      options = {};
+      options = {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      };
       break;
     case "monthAndDate":
       options = {
@@ -2941,7 +2956,7 @@ function format(value2, formatString, locale) {
         timeZoneName: "short"
       };
   }
-  return new Intl.DateTimeFormat(locale, options).format(date2);
+  return new Intl.DateTimeFormat(locale, options).format(date(value2) ?? void 0);
 }
 function toISO(adapter, value2) {
   const date2 = adapter.toJsDate(value2);
@@ -3269,7 +3284,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.3.22";
+const version = "3.3.23";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -3383,7 +3398,7 @@ function useColor(colors) {
     if (colors.value.background) {
       if (isCssColor(colors.value.background)) {
         styles.backgroundColor = colors.value.background;
-        if (!colors.value.text) {
+        if (!colors.value.text && isParsableColor(colors.value.background)) {
           const backgroundColor = parseColor(colors.value.background);
           if (backgroundColor.a == null || backgroundColor.a === 1) {
             const textColor = getForeground(backgroundColor);
@@ -10824,7 +10839,6 @@ const VSelect = genericComponent()({
             }
           })]
         }), model.value.map((item, index) => {
-          var _a;
           function onChipClose(e2) {
             e2.stopPropagation();
             e2.preventDefault();
@@ -10839,6 +10853,17 @@ const VSelect = genericComponent()({
             modelValue: true,
             "onUpdate:modelValue": void 0
           };
+          const hasSlot = hasChips ? !!slots.chip : !!slots.selection;
+          const slotContent = hasSlot ? ensureValidVNode(hasChips ? slots.chip({
+            item,
+            index,
+            props: slotProps
+          }) : slots.selection({
+            item,
+            index
+          })) : void 0;
+          if (hasSlot && !slotContent)
+            return void 0;
           return createVNode("div", {
             "key": item.value,
             "class": "v-select__selection"
@@ -10858,18 +10883,8 @@ const VSelect = genericComponent()({
               }
             }
           }, {
-            default: () => {
-              var _a2;
-              return [(_a2 = slots.chip) == null ? void 0 : _a2.call(slots, {
-                item,
-                index,
-                props: slotProps
-              })];
-            }
-          }) : ((_a = slots.selection) == null ? void 0 : _a.call(slots, {
-            item,
-            index
-          })) ?? createVNode("span", {
+            default: () => [slotContent]
+          }) : slotContent ?? createVNode("span", {
             "class": "v-select__selection-text"
           }, [item.title, props.multiple && index < model.value.length - 1 && createVNode("span", {
             "class": "v-select__selection-comma"
@@ -13190,7 +13205,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent$1({
                 ssrRenderSlot(_ctx.$slots, slot, scope || {}, null, _push2, _parent2, _scopeId);
               } else {
                 return [
-                  renderSlot(_ctx.$slots, _ctx.slot, scope || {})
+                  renderSlot(_ctx.$slots, slot, scope || {})
                 ];
               }
             })
@@ -13212,7 +13227,7 @@ createServer(
     page,
     render: renderToString,
     title: (title2) => `${title2} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-fe9577dd.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-963a704b.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-a934edb0.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-0efb3cad.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-df3dfddd.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-14a307ba.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-eb728ad2.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-12fa3349.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-11f884c3.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-fee97ddd.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-0c2e0b16.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-6a2b5713.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-1894b086.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-988e9878.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-cf9d06a8.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-9555d31d.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-2727878c.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-6c41fb5e.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-71790776.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-d1518feb.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-077c094f.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-0f71e058.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-033403af.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-aa6f4d74.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-8e4a4695.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-db0e6a9e.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-e7286460.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-d3509731.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-5d008b34.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(link).use(pinia).use(vuetify).use(i18nVue, {
         resolve: (lang) => {
@@ -13258,7 +13273,7 @@ export {
   VBtnToggle as Z,
   VBtnGroup as _,
   makeTagProps as a,
-  useToggleScope as a$,
+  toPhysical as a$,
   VTextField as a0,
   makeVOverlayProps as a1,
   VDialogTransition as a2,
@@ -13283,19 +13298,19 @@ export {
   VList as aL,
   VListItem as aM,
   VVirtualScroll as aN,
-  VChip as aO,
-  noop as aP,
-  matchesSelector as aQ,
-  wrapInArray as aR,
-  makeFormProps as aS,
-  createForm as aT,
-  VExpandTransition as aU,
-  breakpoints as aV,
-  getCurrentInstance as aW,
-  findChildrenWithProvide as aX,
-  CircularBuffer as aY,
-  useRouter as aZ,
-  toPhysical as a_,
+  ensureValidVNode as aO,
+  VChip as aP,
+  noop as aQ,
+  matchesSelector as aR,
+  wrapInArray as aS,
+  makeFormProps as aT,
+  createForm as aU,
+  VExpandTransition as aV,
+  breakpoints as aW,
+  getCurrentInstance as aX,
+  findChildrenWithProvide as aY,
+  CircularBuffer as aZ,
+  useRouter as a_,
   VAvatar as aa,
   makeBorderProps as ab,
   makeDimensionProps as ac,
@@ -13323,6 +13338,7 @@ export {
   filterFieldProps as ay,
   VField as az,
   makeThemeProps as b,
+  useToggleScope as b0,
   provideTheme as c,
   useLocale as d,
   useGroup as e,
