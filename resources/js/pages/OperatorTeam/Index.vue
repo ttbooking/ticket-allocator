@@ -55,18 +55,20 @@ import DefaultLayout from "@/layouts/Default.vue";
 import { computed } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import type { OperatorTeam } from "@/types";
-import { trans } from "laravel-vue-i18n";
+import { useI18n } from "vue-i18n";
 import route from "ziggy-js";
 
 defineProps<{
     teams: OperatorTeam[];
 }>();
 
+const { t } = useI18n();
+
 const headers = computed(() => [
-    { title: trans("active"), key: "active", sortable: false },
-    { title: trans("name"), key: "name" },
-    { title: trans("description"), key: "description" },
-    { title: trans("weight"), key: "weight" },
-    { title: trans("actions"), key: "actions", sortable: false },
+    { title: t("active"), key: "active", sortable: false },
+    { title: t("name"), key: "name" },
+    { title: t("description"), key: "description" },
+    { title: t("weight"), key: "weight" },
+    { title: t("actions"), key: "actions", sortable: false },
 ]);
 </script>

@@ -51,17 +51,19 @@ import DefaultLayout from "@/layouts/Default.vue";
 import { computed } from "vue";
 import { Head } from "@inertiajs/vue3";
 import type { Operator } from "@/types";
-import { trans } from "laravel-vue-i18n";
+import { useI18n } from "vue-i18n";
 import route from "ziggy-js";
 
 defineProps<{
     operators: Operator[];
 }>();
 
+const { t } = useI18n();
+
 const headers = computed(() => [
-    { title: trans("name"), key: "name" },
-    { title: trans("tickets"), key: "ticket_limit" },
-    { title: trans("complexity"), key: "complexity_limit" },
-    { title: trans("actions"), key: "actions", sortable: false },
+    { title: t("name"), key: "name" },
+    { title: t("tickets"), key: "ticket_limit" },
+    { title: t("complexity"), key: "complexity_limit" },
+    { title: t("actions"), key: "actions", sortable: false },
 ]);
 </script>

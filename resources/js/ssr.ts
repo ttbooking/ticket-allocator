@@ -1,4 +1,5 @@
 import dayjs from "./plugins/dayjs";
+import i18n from "./plugins/i18n";
 import link from "./plugins/link";
 import pinia from "./plugins/pinia";
 import vuetify from "./plugins/vuetify";
@@ -8,7 +9,6 @@ import { renderToString } from "@vue/server-renderer";
 import { createInertiaApp } from "@inertiajs/vue3";
 import createServer from "@inertiajs/vue3/server";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-import { i18nVue } from "laravel-vue-i18n";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import VBtnEx from "@/components/VBtnEx.vue";
 
@@ -25,15 +25,10 @@ createServer((page) =>
             return createSSRApp({ name, render: () => h(App, props) })
                 .use(plugin)
                 .use(dayjs)
+                .use(i18n)
                 .use(link)
                 .use(pinia)
                 .use(vuetify)
-                .use(i18nVue, {
-                    resolve: (lang: string) => {
-                        const languages = import.meta.glob("../../lang/*.json", { import: "default", eager: true });
-                        return languages[`../../lang/${lang}.json`];
-                    },
-                })
                 .use(ZiggyVue, {
                     // @ts-expect-error
                     ...page.props.ziggy,

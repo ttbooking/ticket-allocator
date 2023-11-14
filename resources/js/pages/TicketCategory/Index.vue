@@ -45,16 +45,18 @@ import DefaultLayout from "@/layouts/Default.vue";
 import { computed } from "vue";
 import { Head } from "@inertiajs/vue3";
 import type { TicketCategory } from "@/types";
-import { trans } from "laravel-vue-i18n";
+import { useI18n } from "vue-i18n";
 import route from "ziggy-js";
 
 defineProps<{
     ticketCategories: TicketCategory[];
 }>();
 
+const { t } = useI18n();
+
 const headers = computed(() => [
-    { title: trans("name"), key: "name" },
-    { title: trans("short_name"), key: "short" },
-    { title: trans("actions"), key: "actions", sortable: false },
+    { title: t("name"), key: "name" },
+    { title: t("short_name"), key: "short" },
+    { title: t("actions"), key: "actions", sortable: false },
 ]);
 </script>

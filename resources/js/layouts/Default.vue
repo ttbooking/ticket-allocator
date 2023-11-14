@@ -54,9 +54,11 @@
 <script setup lang="ts">
 import ApplicationLogo from "@/components/ApplicationLogo.vue";
 import { Link } from "@inertiajs/vue3";
-import { getActiveLanguage } from "laravel-vue-i18n";
+import { useI18n } from "vue-i18n";
 import { useLocale } from "vuetify";
 import route from "ziggy-js";
 
-useLocale().current.value = getActiveLanguage();
+const { locale } = useI18n();
+
+useLocale().current.value = locale.value;
 </script>

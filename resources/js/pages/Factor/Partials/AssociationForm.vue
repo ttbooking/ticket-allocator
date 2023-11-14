@@ -99,7 +99,7 @@
 
 <script setup lang="ts">
 import type { AssociativeFactorConfig, Entry } from "@/types";
-import { trans } from "laravel-vue-i18n";
+import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 
 const props = defineProps<{
@@ -120,14 +120,16 @@ const config = computed<AssociativeFactorConfig>({
     },
 });
 
+const { t } = useI18n();
+
 const headers = computed(() => [
-    { title: trans("value"), key: "value" },
-    { title: trans("initial_weight"), key: "initial_weight" },
-    { title: trans("weight_increment"), key: "weight_increment" },
-    { title: trans("complexity"), key: "complexity" },
-    { title: trans("delay_sec"), key: "delay" },
-    { title: trans("reservation_sec"), key: "reservation" },
-    { title: trans("actions"), key: "actions", sortable: false },
+    { title: t("value"), key: "value" },
+    { title: t("initial_weight"), key: "initial_weight" },
+    { title: t("weight_increment"), key: "weight_increment" },
+    { title: t("complexity"), key: "complexity" },
+    { title: t("delay_sec"), key: "delay" },
+    { title: t("reservation_sec"), key: "reservation" },
+    { title: t("actions"), key: "actions", sortable: false },
 ]);
 
 function getEntries(uuid?: string) {

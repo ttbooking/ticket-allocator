@@ -60,7 +60,7 @@
                                         </tr>
                                         <tr>
                                             <th>{{ $t("complexity") }}</th>
-                                            <td>{{ ticket.complexity + " " + trans("units") }}</td>
+                                            <td>{{ ticket.complexity + " " + t("units") }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -119,7 +119,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { trans } from "laravel-vue-i18n";
+import { useI18n } from "vue-i18n";
 import dayjs from "dayjs";
 import MarkdownIt from "markdown-it";
 import MarkdownItAttrs from "markdown-it-attrs";
@@ -131,6 +131,8 @@ import { useSharedOptions, useSharedDisplayMode } from "@/shared";
 const props = defineProps<{
     ticket: Ticket;
 }>();
+
+const { t } = useI18n();
 
 const factors = computed(() => usePage().props.factors as Record<string, Factor>);
 
@@ -162,7 +164,7 @@ const acceptedAt = computed(() => (props.ticket.accepted_at ? dayjs(props.ticket
 const createdAtInfo = computed(() => `${createdAt.value.format("lll")} (${createdAt.value.fromNow()})`);
 
 const delayedUntilInfo = computed(
-    () => `${delayedUntil.value.format("lll")} (${trans("time_left", { time: delayedUntil.value.fromNow(true) })})`,
+    () => `${delayedUntil.value.format("lll")} (${t("time_left", { time: delayedUntil.value.fromNow(true) })})`,
 );
 
 const boundAtInfo = computed(() =>
@@ -171,7 +173,7 @@ const boundAtInfo = computed(() =>
 
 const reservedUntilInfo = computed(() =>
     reservedUntil.value
-        ? `${reservedUntil.value!.format("lll")} (${trans("time_left", { time: reservedUntil.value!.fromNow(true) })})`
+        ? `${reservedUntil.value!.format("lll")} (${t("time_left", { time: reservedUntil.value!.fromNow(true) })})`
         : null,
 );
 
@@ -181,7 +183,7 @@ const acceptedAtInfo = computed(() =>
 
 const currentWeightInfo = computed(
     () =>
-        `${compact(props.ticket.weight)} (${trans("increment_per_second", {
+        `${compact(props.ticket.weight)} (${t("increment_per_second", {
             units: props.ticket.weight_increment.toString(),
         })})`,
 );

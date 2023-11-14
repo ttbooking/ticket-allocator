@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import i18n from "laravel-vue-i18n/vite";
+import i18n from "@intlify/unplugin-vue-i18n/vite";
 import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
@@ -10,7 +10,9 @@ export default defineConfig({
         sourcemap: true,
     },
     plugins: [
-        i18n(),
+        i18n({
+            include: [path.resolve(__dirname, "./lang/**")],
+        }),
         laravel({
             input: "resources/js/app.ts",
             ssr: "resources/js/ssr.ts",

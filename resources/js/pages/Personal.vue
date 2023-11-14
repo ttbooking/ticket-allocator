@@ -43,7 +43,7 @@ import DefaultLayout from "@/layouts/Default.vue";
 import PersonalTicket from "@/components/PersonalTicket.vue";
 import { Head, router } from "@inertiajs/vue3";
 import { computed, onMounted, onUnmounted } from "vue";
-import { trans } from "laravel-vue-i18n";
+import { useI18n } from "vue-i18n";
 import { usePusherChannel } from "@/composables";
 import type { Ticket, TicketCategory } from "@/types";
 import { useSharedOptions, useSharedDisplayMode } from "@/shared";
@@ -65,11 +65,13 @@ const ticketRepo = computed(() => useRepo(TicketRepository));
 const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 const channel = usePusherChannel(Events.Channel);
 
+const { t } = useI18n();
+
 const headers = computed(() => [
-    { title: trans("active"), key: "active", sortable: false },
-    { title: trans("name"), key: "name" },
-    { title: trans("description"), key: "description" },
-    { title: trans("actions"), key: "actions", sortable: false },
+    { title: t("active"), key: "active", sortable: false },
+    { title: t("name"), key: "name" },
+    { title: t("description"), key: "description" },
+    { title: t("actions"), key: "actions", sortable: false },
 ]);
 
 const sortedTickets = computed(() => ticketRepo.value.unbound().with("category").orderBy(mode.value, "desc").get());

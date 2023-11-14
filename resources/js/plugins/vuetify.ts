@@ -11,7 +11,9 @@ import "vuetify/styles";
 // Vuetify
 import { createVuetify } from "vuetify";
 import { en, ru } from "vuetify/locale";
-import { VDataTable } from "vuetify/labs/VDataTable";
+//import { createVueI18nAdapter } from "vuetify/locale/adapters/vue-i18n";
+//import { useI18n } from "vue-i18n";
+//import i18n from "./i18n";
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
@@ -32,9 +34,7 @@ export default createVuetify({
         },
     },
     locale: {
+        //adapter: createVueI18nAdapter({ i18n, useI18n }),
         messages: { en, ru },
-    },
-    components: {
-        VDataTable,
     },
 });

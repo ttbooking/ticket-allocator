@@ -115,7 +115,7 @@ import DefaultLayout from "@/layouts/Default.vue";
 import { ref, computed } from "vue";
 import { Head, Link } from "@inertiajs/vue3";
 import type { Factor, FactorType } from "@/types";
-import { trans } from "laravel-vue-i18n";
+import { useI18n } from "vue-i18n";
 import route from "ziggy-js";
 
 defineProps<{
@@ -123,12 +123,14 @@ defineProps<{
     factorDictionary: FactorType[];
 }>();
 
+const { t } = useI18n();
+
 const headers = computed(() => [
-    { title: trans("active"), key: "active", sortable: false },
-    { title: trans("type"), key: "type.name", sortable: false },
-    { title: trans("name"), key: "name", sortable: false },
-    { title: trans("description"), key: "description", sortable: false },
-    { title: trans("actions"), key: "actions", sortable: false },
+    { title: t("active"), key: "active", sortable: false },
+    { title: t("type"), key: "type.name", sortable: false },
+    { title: t("name"), key: "name", sortable: false },
+    { title: t("description"), key: "description", sortable: false },
+    { title: t("actions"), key: "actions", sortable: false },
 ]);
 
 const dialog = ref();
