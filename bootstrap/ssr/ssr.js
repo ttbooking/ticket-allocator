@@ -20,584 +20,568 @@ const dayjs = {
     app.config.globalProperties.$dayjs = dayjs$1;
   }
 };
-const isObject$1 = (item) => item && typeof item === "object" && !Array.isArray(item);
-const mergeDeep$1 = (target, ...sources) => {
-  if (!sources.length)
-    return target;
-  const source = sources.shift();
-  if (isObject$1(target) && isObject$1(source)) {
-    for (const key in source) {
-      if (isObject$1(source[key])) {
-        if (!target[key])
-          Object.assign(target, { [key]: {} });
-        mergeDeep$1(target[key], source[key]);
-      } else {
-        Object.assign(target, { [key]: source[key] });
-      }
-    }
+const resource$1 = {
+  "accepted_at": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Accepted at"]);
+  },
+  "actions": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Actions"]);
+  },
+  "active": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Active"]);
+  },
+  "bound_at": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Bound at"]);
+  },
+  "cancel": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Cancel"]);
+  },
+  "choose_factor_type": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Choose factor type"]);
+  },
+  "complexity": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Complexity"]);
+  },
+  "complexity_expression": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Complexity expression"]);
+  },
+  "complexity_limit": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Complexity limit"]);
+  },
+  "create": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Create"]);
+  },
+  "current_weight": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Current weight"]);
+  },
+  "dashboard": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Dashboard"]);
+  },
+  "delay_sec": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Delay, sec"]);
+  },
+  "delay_expression": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Delay expression"]);
+  },
+  "delayed_until": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Delayed until"]);
+  },
+  "description": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Description"]);
+  },
+  "details": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Details"]);
+  },
+  "discover": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Discover"]);
+  },
+  "display_name": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Display name"]);
+  },
+  "edit": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["edit"]);
+  },
+  "edit_category": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Edit Category"]);
+  },
+  "edit_factor": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Edit Factor"]);
+  },
+  "edit_operator": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Edit Operator"]);
+  },
+  "edit_team": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Edit Team"]);
+  },
+  "entries": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Entries"]);
+  },
+  "factor": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Factor"]);
+  },
+  "factor_type": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Factor type"]);
+  },
+  "factors": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Factors"]);
+  },
+  "increment": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["increment"]);
+  },
+  "increment_per_second": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize([":units units/sec. increment"]);
+  },
+  "initial_weight": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Initial weight"]);
+  },
+  "initial_weight_expression": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Initial weight expression"]);
+  },
+  "issued_on": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Issued on"]);
+  },
+  "lower_priority": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["lower priority"]);
+  },
+  "metrics": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Metrics"]);
+  },
+  "name": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Name"]);
+  },
+  "new_category": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["New Category"]);
+  },
+  "new_entry": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["New Entry"]);
+  },
+  "new_factor": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["New Factor"]);
+  },
+  "new_operator": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["New Operator"]);
+  },
+  "new_team": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["New Team"]);
+  },
+  "operator_teams": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Operator teams"]);
+  },
+  "operators": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Operators"]);
+  },
+  "properties": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Properties"]);
+  },
+  "raise_priority": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["raise priority"]);
+  },
+  "remove": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["remove"]);
+  },
+  "reservation_sec": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Reservation, sec"]);
+  },
+  "reservation_expression": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Reservation expression"]);
+  },
+  "reserved_until": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Reserved until"]);
+  },
+  "save": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Save"]);
+  },
+  "short_name": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Short name"]);
+  },
+  "teams": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Teams"]);
+  },
+  "ticket_categories": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Ticket categories"]);
+  },
+  "ticket_limit": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Ticket limit"]);
+  },
+  "ticket_pool": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Ticket pool"]);
+  },
+  "tickets": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Tickets"]);
+  },
+  "time_left": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize([":time left"]);
+  },
+  "title": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Ticket Allocator"]);
+  },
+  "total": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Total"]);
+  },
+  "type": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Type"]);
+  },
+  "units": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["units"]);
+  },
+  "units_per_second": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["units/sec."]);
+  },
+  "unknown": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Unknown"]);
+  },
+  "user": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["User"]);
+  },
+  "value": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Value"]);
+  },
+  "variables": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Variables"]);
+  },
+  "weight": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Weight"]);
+  },
+  "weight_increment": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Weight increment"]);
+  },
+  "weight_increment_expression": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Weight increment expression"]);
   }
-  return mergeDeep$1(target, ...sources);
 };
-const messages = mergeDeep$1(
-  {},
-  { "en": {
-    "accepted_at": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Accepted at"]);
-    },
-    "actions": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Actions"]);
-    },
-    "active": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Active"]);
-    },
-    "bound_at": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Bound at"]);
-    },
-    "cancel": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Cancel"]);
-    },
-    "choose_factor_type": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Choose factor type"]);
-    },
-    "complexity": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Complexity"]);
-    },
-    "complexity_expression": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Complexity expression"]);
-    },
-    "complexity_limit": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Complexity limit"]);
-    },
-    "create": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Create"]);
-    },
-    "current_weight": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Current weight"]);
-    },
-    "dashboard": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Dashboard"]);
-    },
-    "delay_sec": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Delay, sec"]);
-    },
-    "delay_expression": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Delay expression"]);
-    },
-    "delayed_until": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Delayed until"]);
-    },
-    "description": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Description"]);
-    },
-    "details": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Details"]);
-    },
-    "discover": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Discover"]);
-    },
-    "display_name": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Display name"]);
-    },
-    "edit": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["edit"]);
-    },
-    "edit_category": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Edit Category"]);
-    },
-    "edit_factor": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Edit Factor"]);
-    },
-    "edit_operator": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Edit Operator"]);
-    },
-    "edit_team": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Edit Team"]);
-    },
-    "entries": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Entries"]);
-    },
-    "factor": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Factor"]);
-    },
-    "factor_type": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Factor type"]);
-    },
-    "factors": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Factors"]);
-    },
-    "increment": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["increment"]);
-    },
-    "increment_per_second": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize([":units units/sec. increment"]);
-    },
-    "initial_weight": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Initial weight"]);
-    },
-    "initial_weight_expression": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Initial weight expression"]);
-    },
-    "issued_on": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Issued on"]);
-    },
-    "lower_priority": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["lower priority"]);
-    },
-    "metrics": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Metrics"]);
-    },
-    "name": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Name"]);
-    },
-    "new_category": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["New Category"]);
-    },
-    "new_entry": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["New Entry"]);
-    },
-    "new_factor": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["New Factor"]);
-    },
-    "new_operator": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["New Operator"]);
-    },
-    "new_team": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["New Team"]);
-    },
-    "operator_teams": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Operator teams"]);
-    },
-    "operators": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Operators"]);
-    },
-    "properties": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Properties"]);
-    },
-    "raise_priority": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["raise priority"]);
-    },
-    "remove": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["remove"]);
-    },
-    "reservation_sec": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Reservation, sec"]);
-    },
-    "reservation_expression": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Reservation expression"]);
-    },
-    "reserved_until": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Reserved until"]);
-    },
-    "save": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Save"]);
-    },
-    "short_name": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Short name"]);
-    },
-    "teams": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Teams"]);
-    },
-    "ticket_categories": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Ticket categories"]);
-    },
-    "ticket_limit": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Ticket limit"]);
-    },
-    "ticket_pool": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Ticket pool"]);
-    },
-    "tickets": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Tickets"]);
-    },
-    "time_left": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize([":time left"]);
-    },
-    "title": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Ticket Allocator"]);
-    },
-    "total": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Total"]);
-    },
-    "type": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Type"]);
-    },
-    "units": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["units"]);
-    },
-    "units_per_second": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["units/sec."]);
-    },
-    "unknown": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Unknown"]);
-    },
-    "user": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["User"]);
-    },
-    "value": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Value"]);
-    },
-    "variables": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Variables"]);
-    },
-    "weight": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Weight"]);
-    },
-    "weight_increment": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Weight increment"]);
-    },
-    "weight_increment_expression": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Weight increment expression"]);
-    }
-  } },
-  { "ru": {
-    "accepted_at": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Подтверждена"]);
-    },
-    "actions": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Действия"]);
-    },
-    "active": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Активна"]);
-    },
-    "bound_at": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Назначена"]);
-    },
-    "cancel": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Отменить"]);
-    },
-    "choose_factor_type": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Выберите тип фактора"]);
-    },
-    "complexity": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Сложность"]);
-    },
-    "complexity_expression": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Выражение для вычисления сложности тикета"]);
-    },
-    "complexity_limit": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Ограничение по сложности"]);
-    },
-    "create": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Создать"]);
-    },
-    "current_weight": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Текущий вес"]);
-    },
-    "dashboard": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Мониторинг"]);
-    },
-    "delay_sec": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Задержка, с"]);
-    },
-    "delay_expression": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Выражение для вычисления задержки тикета"]);
-    },
-    "delayed_until": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Задержана до"]);
-    },
-    "description": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Описание"]);
-    },
-    "details": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Подробно"]);
-    },
-    "discover": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Обнаружить"]);
-    },
-    "display_name": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Отображаемое имя"]);
-    },
-    "edit": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["редактировать"]);
-    },
-    "edit_category": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Редактировать категорию"]);
-    },
-    "edit_factor": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Редактировать фактор"]);
-    },
-    "edit_operator": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Редактировать оператора"]);
-    },
-    "edit_team": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Редактировать команду"]);
-    },
-    "entries": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Записи"]);
-    },
-    "factor": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Фактор"]);
-    },
-    "factor_type": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Тип фактора"]);
-    },
-    "factors": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Факторы"]);
-    },
-    "increment": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["приращение"]);
-    },
-    "increment_per_second": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["приращение :units ед./сек."]);
-    },
-    "initial_weight": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Начальный вес"]);
-    },
-    "initial_weight_expression": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Выражение для вычисления начального веса тикета"]);
-    },
-    "issued_on": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Время подачи"]);
-    },
-    "lower_priority": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["понизить приоритет"]);
-    },
-    "metrics": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Метрики"]);
-    },
-    "name": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Имя"]);
-    },
-    "new_category": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Новая категория"]);
-    },
-    "new_entry": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Новая запись"]);
-    },
-    "new_factor": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Новый фактор"]);
-    },
-    "new_operator": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Новый оператор"]);
-    },
-    "new_team": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Новая команда"]);
-    },
-    "operator_teams": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Команды операторов"]);
-    },
-    "operators": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Операторы"]);
-    },
-    "properties": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Свойства"]);
-    },
-    "raise_priority": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["повысить приоритет"]);
-    },
-    "remove": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["удалить"]);
-    },
-    "reservation_sec": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Резервирование, с"]);
-    },
-    "reservation_expression": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Выражение для вычисления резервирования тикета"]);
-    },
-    "reserved_until": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Зарезервирована до"]);
-    },
-    "save": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Сохранить"]);
-    },
-    "short_name": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Короткое имя"]);
-    },
-    "teams": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Команды"]);
-    },
-    "ticket_categories": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Категории тикетов"]);
-    },
-    "ticket_limit": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Ограничение по числу тикетов"]);
-    },
-    "ticket_pool": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Пул тикетов"]);
-    },
-    "tickets": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Тикеты"]);
-    },
-    "time_left": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["ост. :time"]);
-    },
-    "title": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Распределитель Заявок"]);
-    },
-    "total": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Итого"]);
-    },
-    "type": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Тип"]);
-    },
-    "units": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["ед."]);
-    },
-    "units_per_second": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["ед./сек."]);
-    },
-    "unknown": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Неизвестный"]);
-    },
-    "user": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Пользователь"]);
-    },
-    "value": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Значение"]);
-    },
-    "variables": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Переменные"]);
-    },
-    "weight": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Вес"]);
-    },
-    "weight_increment": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Приращение веса"]);
-    },
-    "weight_increment_expression": (ctx) => {
-      const { normalize: _normalize } = ctx;
-      return _normalize(["Выражение для вычисления приращения веса тикета"]);
-    }
-  } }
-);
-const i18n = createI18n({ locale: navigator.language, fallbackLocale: "en", legacy: false, messages });
+const resource = {
+  "accepted_at": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Подтверждена"]);
+  },
+  "actions": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Действия"]);
+  },
+  "active": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Активна"]);
+  },
+  "bound_at": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Назначена"]);
+  },
+  "cancel": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Отменить"]);
+  },
+  "choose_factor_type": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Выберите тип фактора"]);
+  },
+  "complexity": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Сложность"]);
+  },
+  "complexity_expression": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Выражение для вычисления сложности тикета"]);
+  },
+  "complexity_limit": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Ограничение по сложности"]);
+  },
+  "create": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Создать"]);
+  },
+  "current_weight": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Текущий вес"]);
+  },
+  "dashboard": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Мониторинг"]);
+  },
+  "delay_sec": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Задержка, с"]);
+  },
+  "delay_expression": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Выражение для вычисления задержки тикета"]);
+  },
+  "delayed_until": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Задержана до"]);
+  },
+  "description": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Описание"]);
+  },
+  "details": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Подробно"]);
+  },
+  "discover": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Обнаружить"]);
+  },
+  "display_name": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Отображаемое имя"]);
+  },
+  "edit": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["редактировать"]);
+  },
+  "edit_category": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Редактировать категорию"]);
+  },
+  "edit_factor": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Редактировать фактор"]);
+  },
+  "edit_operator": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Редактировать оператора"]);
+  },
+  "edit_team": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Редактировать команду"]);
+  },
+  "entries": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Записи"]);
+  },
+  "factor": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Фактор"]);
+  },
+  "factor_type": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Тип фактора"]);
+  },
+  "factors": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Факторы"]);
+  },
+  "increment": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["приращение"]);
+  },
+  "increment_per_second": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["приращение :units ед./сек."]);
+  },
+  "initial_weight": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Начальный вес"]);
+  },
+  "initial_weight_expression": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Выражение для вычисления начального веса тикета"]);
+  },
+  "issued_on": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Время подачи"]);
+  },
+  "lower_priority": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["понизить приоритет"]);
+  },
+  "metrics": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Метрики"]);
+  },
+  "name": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Имя"]);
+  },
+  "new_category": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Новая категория"]);
+  },
+  "new_entry": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Новая запись"]);
+  },
+  "new_factor": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Новый фактор"]);
+  },
+  "new_operator": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Новый оператор"]);
+  },
+  "new_team": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Новая команда"]);
+  },
+  "operator_teams": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Команды операторов"]);
+  },
+  "operators": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Операторы"]);
+  },
+  "properties": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Свойства"]);
+  },
+  "raise_priority": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["повысить приоритет"]);
+  },
+  "remove": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["удалить"]);
+  },
+  "reservation_sec": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Резервирование, с"]);
+  },
+  "reservation_expression": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Выражение для вычисления резервирования тикета"]);
+  },
+  "reserved_until": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Зарезервирована до"]);
+  },
+  "save": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Сохранить"]);
+  },
+  "short_name": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Короткое имя"]);
+  },
+  "teams": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Команды"]);
+  },
+  "ticket_categories": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Категории тикетов"]);
+  },
+  "ticket_limit": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Ограничение по числу тикетов"]);
+  },
+  "ticket_pool": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Пул тикетов"]);
+  },
+  "tickets": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Тикеты"]);
+  },
+  "time_left": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["ост. :time"]);
+  },
+  "title": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Распределитель Заявок"]);
+  },
+  "total": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Итого"]);
+  },
+  "type": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Тип"]);
+  },
+  "units": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["ед."]);
+  },
+  "units_per_second": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["ед./сек."]);
+  },
+  "unknown": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Неизвестный"]);
+  },
+  "user": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Пользователь"]);
+  },
+  "value": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Значение"]);
+  },
+  "variables": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Переменные"]);
+  },
+  "weight": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Вес"]);
+  },
+  "weight_increment": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Приращение веса"]);
+  },
+  "weight_increment_expression": (ctx) => {
+    const { normalize: _normalize } = ctx;
+    return _normalize(["Выражение для вычисления приращения веса тикета"]);
+  }
+};
+const i18n = createI18n({
+  locale: navigator.language,
+  fallbackLocale: "en",
+  messages: { en: resource$1, ru: resource },
+  legacy: false
+});
 const link = {
   install(app) {
     app.component("RouterLink", {
@@ -2774,7 +2758,7 @@ const replace = (str, params) => {
     return String(params[+index]);
   });
 };
-const createTranslateFunction = (current, fallback, messages2) => {
+const createTranslateFunction = (current, fallback, messages) => {
   return function(key) {
     for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       params[_key - 1] = arguments[_key];
@@ -2783,8 +2767,8 @@ const createTranslateFunction = (current, fallback, messages2) => {
       return replace(key, params);
     }
     const shortKey = key.replace(LANG_PREFIX, "");
-    const currentLocale = current.value && messages2.value[current.value];
-    const fallbackLocale = fallback.value && messages2.value[fallback.value];
+    const currentLocale = current.value && messages.value[current.value];
+    const fallbackLocale = fallback.value && messages.value[fallback.value];
     let str = getObjectValueByPath(currentLocale, shortKey, null);
     if (!str) {
       consoleWarn(`Translation key "${key}" not found in "${current.value}", trying fallback locale`);
@@ -2821,18 +2805,18 @@ function createProvideFunction(state) {
   return (props) => {
     const current = useProvided(props, "locale", state.current);
     const fallback = useProvided(props, "fallback", state.fallback);
-    const messages2 = useProvided(props, "messages", state.messages);
+    const messages = useProvided(props, "messages", state.messages);
     return {
       name: "vuetify",
       current,
       fallback,
-      messages: messages2,
-      t: createTranslateFunction(current, fallback, messages2),
+      messages,
+      t: createTranslateFunction(current, fallback, messages),
       n: createNumberFunction(current, fallback),
       provide: createProvideFunction({
         current,
         fallback,
-        messages: messages2
+        messages
       })
     };
   };
@@ -2840,7 +2824,7 @@ function createProvideFunction(state) {
 function createVuetifyAdapter(options) {
   const current = shallowRef((options == null ? void 0 : options.locale) ?? "en");
   const fallback = shallowRef((options == null ? void 0 : options.fallback) ?? "en");
-  const messages2 = ref({
+  const messages = ref({
     en,
     ...options == null ? void 0 : options.messages
   });
@@ -2848,13 +2832,13 @@ function createVuetifyAdapter(options) {
     name: "vuetify",
     current,
     fallback,
-    messages: messages2,
-    t: createTranslateFunction(current, fallback, messages2),
+    messages,
+    t: createTranslateFunction(current, fallback, messages),
     n: createNumberFunction(current, fallback),
     provide: createProvideFunction({
       current,
       fallback,
-      messages: messages2
+      messages
     })
   };
 }
