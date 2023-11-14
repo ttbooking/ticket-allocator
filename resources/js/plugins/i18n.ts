@@ -1,10 +1,11 @@
-import { createI18n } from "vue-i18n";
-import en from "../../../lang/en.json";
-import ru from "../../../lang/ru.json";
+import { createI18n, type I18nOptions } from "vue-i18n";
+import messages from "@intlify/unplugin-vue-i18n/messages";
 
-export default createI18n<[typeof en], "en" | "ru">({
+const options: I18nOptions = {
     locale: navigator.language,
     fallbackLocale: "en",
-    messages: { en, ru },
     legacy: false,
-});
+    messages,
+};
+
+export default createI18n<false, typeof options>(options);

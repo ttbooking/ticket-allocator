@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import routeFn, { Config as ZiggyConfig } from "ziggy-js";
 import { PageProps as InertiaPageProps } from "@inertiajs/core";
 import { PageProps as AppPageProps } from "./";
+import en from "../../../lang/en.json";
 
 declare global {
     interface Window {
@@ -24,4 +25,10 @@ declare module "@vue/runtime-core" {
 
 declare module "@inertiajs/core" {
     interface PageProps extends InertiaPageProps, AppPageProps {}
+}
+
+declare module "vue-i18n" {
+    type MessageSchema = typeof en;
+
+    interface DefineLocaleMessage extends MessageSchema {}
 }
