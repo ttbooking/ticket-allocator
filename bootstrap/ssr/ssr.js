@@ -629,8 +629,6 @@ const link = {
   }
 };
 const pinia = createPinia().use(createORM());
-const materialdesignicons = "";
-const main = "";
 const IN_BROWSER = typeof window !== "undefined";
 const SUPPORTS_INTERSECTION = IN_BROWSER && "IntersectionObserver" in window;
 const SUPPORTS_TOUCH = IN_BROWSER && ("ontouchstart" in window || window.navigator.maxTouchPoints > 0);
@@ -1780,7 +1778,7 @@ function parseLocalDate(value) {
   const parts = value.split("-").map(Number);
   return new Date(parts[0], parts[1] - 1, parts[2]);
 }
-const _YYYMMDD = /([12]\d{3}-([1-9]|0[1-9]|1[0-2])-([1-9]|0[1-9]|[12]\d|3[01]))/;
+const _YYYMMDD = /^([12]\d{3}-([1-9]|0[1-9]|1[0-2])-([1-9]|0[1-9]|[12]\d|3[01]))$/;
 function date(value) {
   if (value == null)
     return /* @__PURE__ */ new Date();
@@ -1910,9 +1908,6 @@ function addMonths(date2, amount) {
 function getYear(date2) {
   return date2.getFullYear();
 }
-function getNextYear(date2) {
-  return new Date(date2.getFullYear() + 1, date2.getMonth(), date2.getDate());
-}
 function getMonth(date2) {
   return date2.getMonth();
 }
@@ -1946,9 +1941,6 @@ function isSameDay(date2, comparing) {
 }
 function isSameMonth(date2, comparing) {
   return date2.getMonth() === comparing.getMonth() && date2.getFullYear() === comparing.getFullYear();
-}
-function getDate(date2) {
-  return date2.getDate();
 }
 function getDiff(date2, comparing, unit) {
   const d2 = new Date(date2);
@@ -2036,9 +2028,6 @@ class VuetifyDateAdapter {
   setYear(date2, year) {
     return setYear(date2, year);
   }
-  getDate(date2) {
-    return getDate(date2);
-  }
   getDiff(date2, comparing, unit) {
     return getDiff(date2, comparing, unit);
   }
@@ -2047,9 +2036,6 @@ class VuetifyDateAdapter {
   }
   getYear(date2) {
     return getYear(date2);
-  }
-  getNextYear(date2) {
-    return getNextYear(date2);
   }
   getMonth(date2) {
     return getMonth(date2);
@@ -2081,7 +2067,7 @@ function createDate(options2, locale) {
       bg: "bg-BG",
       ca: "ca-ES",
       ckb: "",
-      cs: "",
+      cs: "cs-CZ",
       de: "de-DE",
       el: "el-GR",
       en: "en-US",
@@ -3294,7 +3280,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.4.0";
+const version = "3.4.2";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -3994,9 +3980,6 @@ function useRounded(props) {
     roundedClasses
   };
 }
-const VBtn$1 = "";
-const VBtnToggle$1 = "";
-const VBtnGroup$1 = "";
 const allowedDensities = [null, "default", "comfortable", "compact"];
 const makeDensityProps = propsFactory({
   density: {
@@ -4351,7 +4334,6 @@ const VBtnToggle = genericComponent()({
     };
   }
 });
-const VIcon$1 = "";
 const predefinedSizes = ["x-small", "small", "default", "large", "x-large"];
 const makeSizeProps = propsFactory({
   size: {
@@ -4440,7 +4422,6 @@ const VIcon = genericComponent()({
     return {};
   }
 });
-const VProgressCircular$1 = "";
 function useIntersectionObserver(callback, options2) {
   const intersectionRef = ref();
   const isIntersecting = shallowRef(false);
@@ -4583,7 +4564,6 @@ const VProgressCircular = genericComponent()({
     return {};
   }
 });
-const VProgressLinear$1 = "";
 const oppositeMap = {
   center: "center",
   top: "bottom",
@@ -4945,7 +4925,6 @@ function useSelectLink(link2, select) {
     immediate: true
   });
 }
-const VRipple = "";
 const stopSymbol = Symbol("rippleStop");
 const DELAY_RIPPLE = 80;
 function transform(el, value) {
@@ -5337,7 +5316,7 @@ const VBtn = genericComponent()({
       return props.variant === "elevated" && !(props.disabled || props.flat || props.border);
     });
     const valueAttr = computed(() => {
-      if (props.value === void 0)
+      if (props.value === void 0 || typeof props.value === "symbol")
         return void 0;
       return Object(props.value) === props.value ? JSON.stringify(props.value, null, 0) : props.value;
     });
@@ -5491,7 +5470,7 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-de9d268e.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-f356ac6b.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-5f635142.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-43c84af0.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-dd617dd4.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-206a6170.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-fce18360.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-10e4e379.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-115b3173.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-0793a82a.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-e1f20a5b.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-3d208efd.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-c2c2b37b.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-c36d2675.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-ae031705.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-3bb95c55.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-Pchmk3PB.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-KZdr4Qw7.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-8SSJCx-E.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-lhCeBzsl.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-TlVS9bra.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-19aVhjp3.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-eYGkgFbF.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-Lv1nphEr.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-YaY9jWSo.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-IJ_2n3PT.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-eDaCUiIR.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-xsurOxSp.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-4I0dciUp.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(i18n).use(link).use(pinia).use(vuetify).use(P, {
         // @ts-expect-error
@@ -5542,17 +5521,16 @@ export {
   ensureValidVNode as a7,
   noop as a8,
   matchesSelector as a9,
-  debounce as aA,
-  getCurrentInstanceName as aB,
-  consoleWarn as aC,
-  pick as aD,
-  breakpoints as aE,
-  findChildrenWithProvide as aF,
-  CircularBuffer as aG,
-  toPhysical as aH,
-  SUPPORTS_INTERSECTION as aI,
-  defineComponent as aJ,
-  deprecate as aK,
+  getCurrentInstanceName as aA,
+  consoleWarn as aB,
+  pick as aC,
+  breakpoints as aD,
+  findChildrenWithProvide as aE,
+  CircularBuffer as aF,
+  toPhysical as aG,
+  SUPPORTS_INTERSECTION as aH,
+  defineComponent as aI,
+  deprecate as aJ,
   wrapInArray as aa,
   isOn as ab,
   getObjectValueByPath as ac,
@@ -5578,7 +5556,7 @@ export {
   useBackButton as aw,
   getNextElement as ax,
   focusChild as ay,
-  createRange as az,
+  debounce as az,
   makeThemeProps as b,
   provideTheme as c,
   useLocale as d,

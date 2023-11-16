@@ -21,7 +21,7 @@
                         </v-btn>
                     </v-toolbar>
                 </template>
-                <template #[`item.name`]="{ item }">{{ item.name ?? item.user.name ?? "" }}</template>
+                <template #[`item.name`]="{ item }">{{ item.name ?? item.user?.name ?? "" }}</template>
                 <template #[`item.ticket_limit`]="{ item }">{{ item.ticket_limit ?? "&infin;" }}</template>
                 <template #[`item.complexity_limit`]="{ item }">{{ item.complexity_limit ?? "&infin;" }}</template>
                 <template #[`item.actions`]="{ item }">
