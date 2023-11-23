@@ -4,7 +4,7 @@ import duration from "dayjs/plugin/duration.js";
 import LocalizedFormat from "dayjs/plugin/localizedFormat.js";
 import RelativeTime from "dayjs/plugin/relativeTime.js";
 import { createI18n } from "vue-i18n/dist/vue-i18n.runtime.esm-bundler.js";
-import { computed, Fragment, reactive, watchEffect, toRefs, capitalize, isVNode, Comment, unref, warn, ref, provide, inject as inject$1, shallowRef, defineComponent as defineComponent$1, getCurrentInstance as getCurrentInstance$1, watch, h as h$1, createVNode, mergeProps, onScopeDispose, effectScope, toRaw, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
+import { computed, watch, onScopeDispose, effectScope, Fragment, reactive, watchEffect, toRefs, capitalize, isVNode, Comment, unref, warn, ref, provide, inject as inject$1, shallowRef, defineComponent as defineComponent$1, getCurrentInstance as getCurrentInstance$1, toRaw, h as h$1, createVNode, mergeProps, onBeforeUnmount, readonly, nextTick, isRef, toRef, onMounted, Text, Transition, resolveDynamicComponent, withDirectives, resolveDirective, useAttrs, createSlots, renderList, withCtx, renderSlot, useSSRContext, createSSRApp } from "vue";
 import { usePage, router, createInertiaApp } from "@inertiajs/vue3";
 import { createPinia } from "pinia";
 import { createORM } from "pinia-orm";
@@ -629,6 +629,270 @@ const link = {
   }
 };
 const pinia = createPinia().use(createORM());
+const en = {
+  badge: "Badge",
+  open: "Open",
+  close: "Close",
+  confirmEdit: {
+    ok: "OK",
+    cancel: "Cancel"
+  },
+  dataIterator: {
+    noResultsText: "No matching records found",
+    loadingText: "Loading items..."
+  },
+  dataTable: {
+    itemsPerPageText: "Rows per page:",
+    ariaLabel: {
+      sortDescending: "Sorted descending.",
+      sortAscending: "Sorted ascending.",
+      sortNone: "Not sorted.",
+      activateNone: "Activate to remove sorting.",
+      activateDescending: "Activate to sort descending.",
+      activateAscending: "Activate to sort ascending."
+    },
+    sortBy: "Sort by"
+  },
+  dataFooter: {
+    itemsPerPageText: "Items per page:",
+    itemsPerPageAll: "All",
+    nextPage: "Next page",
+    prevPage: "Previous page",
+    firstPage: "First page",
+    lastPage: "Last page",
+    pageText: "{0}-{1} of {2}"
+  },
+  dateRangeInput: {
+    divider: "to"
+  },
+  datePicker: {
+    itemsSelected: "{0} selected",
+    range: {
+      title: "Select dates",
+      header: "Enter dates"
+    },
+    title: "Select date",
+    header: "Enter date",
+    input: {
+      placeholder: "Enter date"
+    }
+  },
+  noDataText: "No data available",
+  carousel: {
+    prev: "Previous visual",
+    next: "Next visual",
+    ariaLabel: {
+      delimiter: "Carousel slide {0} of {1}"
+    }
+  },
+  calendar: {
+    moreEvents: "{0} more"
+  },
+  input: {
+    clear: "Clear {0}",
+    prependAction: "{0} prepended action",
+    appendAction: "{0} appended action",
+    otp: "Please enter OTP character {0}"
+  },
+  fileInput: {
+    counter: "{0} files",
+    counterSize: "{0} files ({1} in total)"
+  },
+  timePicker: {
+    am: "AM",
+    pm: "PM"
+  },
+  pagination: {
+    ariaLabel: {
+      root: "Pagination Navigation",
+      next: "Next page",
+      previous: "Previous page",
+      page: "Go to page {0}",
+      currentPage: "Page {0}, Current page",
+      first: "First page",
+      last: "Last page"
+    }
+  },
+  stepper: {
+    next: "Next",
+    prev: "Previous"
+  },
+  rating: {
+    ariaLabel: {
+      item: "Rating {0} of {1}"
+    }
+  },
+  loading: "Loading...",
+  infiniteScroll: {
+    loadMore: "Load more",
+    empty: "No more"
+  }
+};
+const ru = {
+  badge: "знак",
+  open: "Open",
+  close: "Закрыть",
+  confirmEdit: {
+    ok: "OK",
+    cancel: "Cancel"
+  },
+  dataIterator: {
+    noResultsText: "Не найдено подходящих записей",
+    loadingText: "Запись загружается..."
+  },
+  dataTable: {
+    itemsPerPageText: "Строк на странице:",
+    ariaLabel: {
+      sortDescending: "Упорядочено по убыванию.",
+      sortAscending: "Упорядочено по возрастанию.",
+      sortNone: "Не упорядочено.",
+      activateNone: "Активируйте, чтобы убрать сортировку.",
+      activateDescending: "Активируйте для упорядочивания убыванию.",
+      activateAscending: "Активируйте для упорядочивания по возрастанию."
+    },
+    sortBy: "Сортировать по"
+  },
+  dataFooter: {
+    itemsPerPageText: "Записей на странице:",
+    itemsPerPageAll: "Все",
+    nextPage: "Следующая страница",
+    prevPage: "Предыдущая страница",
+    firstPage: "Первая страница",
+    lastPage: "Последняя страница",
+    pageText: "{0}-{1} из {2}"
+  },
+  dateRangeInput: {
+    divider: "to"
+  },
+  datePicker: {
+    itemsSelected: "{0} selected",
+    range: {
+      title: "Select dates",
+      header: "Enter dates"
+    },
+    title: "Select date",
+    header: "Enter date",
+    input: {
+      placeholder: "Enter date"
+    }
+  },
+  noDataText: "Отсутствуют данные",
+  carousel: {
+    prev: "Предыдущий слайд",
+    next: "Следующий слайд",
+    ariaLabel: {
+      delimiter: "Слайд {0} из {1}"
+    }
+  },
+  calendar: {
+    moreEvents: "Еще {0}"
+  },
+  input: {
+    clear: "Clear {0}",
+    prependAction: "{0} prepended action",
+    appendAction: "{0} appended action",
+    otp: "Please enter OTP character {0}"
+  },
+  fileInput: {
+    counter: "Файлов: {0}",
+    counterSize: "Файлов: {0} (всего {1})"
+  },
+  timePicker: {
+    am: "AM",
+    pm: "PM"
+  },
+  pagination: {
+    ariaLabel: {
+      root: "Навигация по страницам",
+      next: "Следующая страница",
+      previous: "Предыдущая страница",
+      page: "Перейти на страницу {0}",
+      currentPage: "Текущая страница, Страница {0}",
+      first: "First page",
+      last: "Last page"
+    }
+  },
+  stepper: {
+    next: "Next",
+    prev: "Previous"
+  },
+  rating: {
+    ariaLabel: {
+      item: "Rating {0} of {1}"
+    }
+  },
+  loading: "Loading...",
+  infiniteScroll: {
+    loadMore: "Load more",
+    empty: "No more"
+  }
+};
+const defaultRtl = {
+  af: false,
+  ar: true,
+  bg: false,
+  ca: false,
+  ckb: false,
+  cs: false,
+  de: false,
+  el: false,
+  en: false,
+  es: false,
+  et: false,
+  fa: true,
+  fi: false,
+  fr: false,
+  hr: false,
+  hu: false,
+  he: true,
+  id: false,
+  it: false,
+  ja: false,
+  ko: false,
+  lv: false,
+  lt: false,
+  nl: false,
+  no: false,
+  pl: false,
+  pt: false,
+  ro: false,
+  ru: false,
+  sk: false,
+  sl: false,
+  srCyrl: false,
+  srLatn: false,
+  sv: false,
+  th: false,
+  tr: false,
+  az: false,
+  uk: false,
+  vi: false,
+  zhHans: false,
+  zhHant: false
+};
+function useToggleScope(source, fn) {
+  let scope;
+  function start() {
+    scope = effectScope();
+    scope.run(() => fn.length ? fn(() => {
+      scope == null ? void 0 : scope.stop();
+      start();
+    }) : fn());
+  }
+  watch(source, (active) => {
+    if (active && !scope) {
+      start();
+    } else if (!active) {
+      scope == null ? void 0 : scope.stop();
+      scope = void 0;
+    }
+  }, {
+    immediate: true
+  });
+  onScopeDispose(() => {
+    scope == null ? void 0 : scope.stop();
+  });
+}
 const IN_BROWSER = typeof window !== "undefined";
 const SUPPORTS_INTERSECTION = IN_BROWSER && "IntersectionObserver" in window;
 const SUPPORTS_TOUCH = IN_BROWSER && ("ontouchstart" in window || window.navigator.maxTouchPoints > 0);
@@ -779,6 +1043,25 @@ const keyCodes = Object.freeze({
   pageup: 33,
   pagedown: 34,
   shift: 16
+});
+const keyValues = Object.freeze({
+  enter: "Enter",
+  tab: "Tab",
+  delete: "Delete",
+  esc: "Escape",
+  space: "Space",
+  up: "ArrowUp",
+  down: "ArrowDown",
+  left: "ArrowLeft",
+  right: "ArrowRight",
+  end: "End",
+  home: "Home",
+  del: "Delete",
+  backspace: "Backspace",
+  insert: "Insert",
+  pageup: "PageUp",
+  pagedown: "PageDown",
+  shift: "Shift"
 });
 function keys(o2) {
   return Object.keys(o2);
@@ -1587,6 +1870,173 @@ function useRender(render) {
   const vm = getCurrentInstance("useRender");
   vm.render = render;
 }
+function useProxiedModel(props, prop, defaultValue) {
+  let transformIn = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : (v2) => v2;
+  let transformOut = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : (v2) => v2;
+  const vm = getCurrentInstance("useProxiedModel");
+  const internal = ref(props[prop] !== void 0 ? props[prop] : defaultValue);
+  const kebabProp = toKebabCase(prop);
+  const checkKebab = kebabProp !== prop;
+  const isControlled = checkKebab ? computed(() => {
+    var _a, _b, _c, _d;
+    void props[prop];
+    return !!((((_a = vm.vnode.props) == null ? void 0 : _a.hasOwnProperty(prop)) || ((_b = vm.vnode.props) == null ? void 0 : _b.hasOwnProperty(kebabProp))) && (((_c = vm.vnode.props) == null ? void 0 : _c.hasOwnProperty(`onUpdate:${prop}`)) || ((_d = vm.vnode.props) == null ? void 0 : _d.hasOwnProperty(`onUpdate:${kebabProp}`))));
+  }) : computed(() => {
+    var _a, _b;
+    void props[prop];
+    return !!(((_a = vm.vnode.props) == null ? void 0 : _a.hasOwnProperty(prop)) && ((_b = vm.vnode.props) == null ? void 0 : _b.hasOwnProperty(`onUpdate:${prop}`)));
+  });
+  useToggleScope(() => !isControlled.value, () => {
+    watch(() => props[prop], (val) => {
+      internal.value = val;
+    });
+  });
+  const model = computed({
+    get() {
+      const externalValue = props[prop];
+      return transformIn(isControlled.value ? externalValue : internal.value);
+    },
+    set(internalValue) {
+      const newValue = transformOut(internalValue);
+      const value = toRaw(isControlled.value ? props[prop] : internal.value);
+      if (value === newValue || transformIn(value) === internalValue) {
+        return;
+      }
+      internal.value = newValue;
+      vm == null ? void 0 : vm.emit(`update:${prop}`, newValue);
+    }
+  });
+  Object.defineProperty(model, "externalValue", {
+    get: () => isControlled.value ? props[prop] : internal.value
+  });
+  return model;
+}
+const LANG_PREFIX = "$vuetify.";
+const replace = (str, params) => {
+  return str.replace(/\{(\d+)\}/g, (match, index) => {
+    return String(params[+index]);
+  });
+};
+const createTranslateFunction = (current, fallback, messages2) => {
+  return function(key) {
+    for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      params[_key - 1] = arguments[_key];
+    }
+    if (!key.startsWith(LANG_PREFIX)) {
+      return replace(key, params);
+    }
+    const shortKey = key.replace(LANG_PREFIX, "");
+    const currentLocale = current.value && messages2.value[current.value];
+    const fallbackLocale = fallback.value && messages2.value[fallback.value];
+    let str = getObjectValueByPath(currentLocale, shortKey, null);
+    if (!str) {
+      consoleWarn(`Translation key "${key}" not found in "${current.value}", trying fallback locale`);
+      str = getObjectValueByPath(fallbackLocale, shortKey, null);
+    }
+    if (!str) {
+      consoleError(`Translation key "${key}" not found in fallback`);
+      str = key;
+    }
+    if (typeof str !== "string") {
+      consoleError(`Translation key "${key}" has a non-string value`);
+      str = key;
+    }
+    return replace(str, params);
+  };
+};
+function createNumberFunction(current, fallback) {
+  return (value, options2) => {
+    const numberFormat = new Intl.NumberFormat([current.value, fallback.value], options2);
+    return numberFormat.format(value);
+  };
+}
+function useProvided(props, prop, provided) {
+  const internal = useProxiedModel(props, prop, props[prop] ?? provided.value);
+  internal.value = props[prop] ?? provided.value;
+  watch(provided, (v2) => {
+    if (props[prop] == null) {
+      internal.value = provided.value;
+    }
+  });
+  return internal;
+}
+function createProvideFunction(state) {
+  return (props) => {
+    const current = useProvided(props, "locale", state.current);
+    const fallback = useProvided(props, "fallback", state.fallback);
+    const messages2 = useProvided(props, "messages", state.messages);
+    return {
+      name: "vuetify",
+      current,
+      fallback,
+      messages: messages2,
+      t: createTranslateFunction(current, fallback, messages2),
+      n: createNumberFunction(current, fallback),
+      provide: createProvideFunction({
+        current,
+        fallback,
+        messages: messages2
+      })
+    };
+  };
+}
+function createVuetifyAdapter(options2) {
+  const current = shallowRef((options2 == null ? void 0 : options2.locale) ?? "en");
+  const fallback = shallowRef((options2 == null ? void 0 : options2.fallback) ?? "en");
+  const messages2 = ref({
+    en,
+    ...options2 == null ? void 0 : options2.messages
+  });
+  return {
+    name: "vuetify",
+    current,
+    fallback,
+    messages: messages2,
+    t: createTranslateFunction(current, fallback, messages2),
+    n: createNumberFunction(current, fallback),
+    provide: createProvideFunction({
+      current,
+      fallback,
+      messages: messages2
+    })
+  };
+}
+const LocaleSymbol = Symbol.for("vuetify:locale");
+function isLocaleInstance(obj) {
+  return obj.name != null;
+}
+function createLocale(options2) {
+  const i18n2 = (options2 == null ? void 0 : options2.adapter) && isLocaleInstance(options2 == null ? void 0 : options2.adapter) ? options2 == null ? void 0 : options2.adapter : createVuetifyAdapter(options2);
+  const rtl = createRtl(i18n2, options2);
+  return {
+    ...i18n2,
+    ...rtl
+  };
+}
+function useLocale() {
+  const locale = inject$1(LocaleSymbol);
+  if (!locale)
+    throw new Error("[Vuetify] Could not find injected locale instance");
+  return locale;
+}
+function createRtl(i18n2, options2) {
+  const rtl = ref((options2 == null ? void 0 : options2.rtl) ?? defaultRtl);
+  const isRtl = computed(() => rtl.value[i18n2.current.value] ?? false);
+  return {
+    isRtl,
+    rtl,
+    rtlClasses: computed(() => `v-locale--is-${isRtl.value ? "rtl" : "ltr"}`)
+  };
+}
+function useRtl() {
+  const locale = inject$1(LocaleSymbol);
+  if (!locale)
+    throw new Error("[Vuetify] Could not find injected rtl instance");
+  return {
+    isRtl: locale.isRtl,
+    rtlClasses: locale.rtlClasses
+  };
+}
 const firstDay = {
   "001": 1,
   AD: 1,
@@ -2056,10 +2506,10 @@ class VuetifyDateAdapter {
     return endOfYear(date2);
   }
 }
+const DateOptionsSymbol = Symbol.for("vuetify:date-options");
 const DateAdapterSymbol = Symbol.for("vuetify:date-adapter");
 function createDate(options2, locale) {
-  var _a;
-  const date2 = mergeDeep({
+  const _options = mergeDeep({
     adapter: VuetifyDateAdapter,
     locale: {
       af: "af-ZA",
@@ -2105,13 +2555,18 @@ function createDate(options2, locale) {
       zhHant: "zh-TW"
     }
   }, options2);
-  const instance = reactive(typeof date2.adapter === "function" ? new date2.adapter({
-    locale: ((_a = date2.locale) == null ? void 0 : _a[locale.current.value]) ?? locale.current.value,
-    formats: date2.formats
-  }) : date2.adapter);
+  return {
+    options: _options,
+    instance: createInstance(_options, locale)
+  };
+}
+function createInstance(options2, locale) {
+  const instance = reactive(typeof options2.adapter === "function" ? new options2.adapter({
+    locale: options2.locale[locale.current.value] ?? locale.current.value,
+    formats: options2.formats
+  }) : options2.adapter);
   watch(locale.current, (value) => {
-    const newLocale = date2.locale ? date2.locale[value] : value;
-    instance.locale = newLocale ?? instance.locale;
+    instance.locale = options2.locale[value] ?? value ?? instance.locale;
   });
   return instance;
 }
@@ -2455,437 +2910,6 @@ const useIcon = (props) => {
     iconData
   };
 };
-const en = {
-  badge: "Badge",
-  open: "Open",
-  close: "Close",
-  confirmEdit: {
-    ok: "OK",
-    cancel: "Cancel"
-  },
-  dataIterator: {
-    noResultsText: "No matching records found",
-    loadingText: "Loading items..."
-  },
-  dataTable: {
-    itemsPerPageText: "Rows per page:",
-    ariaLabel: {
-      sortDescending: "Sorted descending.",
-      sortAscending: "Sorted ascending.",
-      sortNone: "Not sorted.",
-      activateNone: "Activate to remove sorting.",
-      activateDescending: "Activate to sort descending.",
-      activateAscending: "Activate to sort ascending."
-    },
-    sortBy: "Sort by"
-  },
-  dataFooter: {
-    itemsPerPageText: "Items per page:",
-    itemsPerPageAll: "All",
-    nextPage: "Next page",
-    prevPage: "Previous page",
-    firstPage: "First page",
-    lastPage: "Last page",
-    pageText: "{0}-{1} of {2}"
-  },
-  dateRangeInput: {
-    divider: "to"
-  },
-  datePicker: {
-    itemsSelected: "{0} selected",
-    range: {
-      title: "Select dates",
-      header: "Enter dates"
-    },
-    title: "Select date",
-    header: "Enter date",
-    input: {
-      placeholder: "Enter date"
-    }
-  },
-  noDataText: "No data available",
-  carousel: {
-    prev: "Previous visual",
-    next: "Next visual",
-    ariaLabel: {
-      delimiter: "Carousel slide {0} of {1}"
-    }
-  },
-  calendar: {
-    moreEvents: "{0} more"
-  },
-  input: {
-    clear: "Clear {0}",
-    prependAction: "{0} prepended action",
-    appendAction: "{0} appended action",
-    otp: "Please enter OTP character {0}"
-  },
-  fileInput: {
-    counter: "{0} files",
-    counterSize: "{0} files ({1} in total)"
-  },
-  timePicker: {
-    am: "AM",
-    pm: "PM"
-  },
-  pagination: {
-    ariaLabel: {
-      root: "Pagination Navigation",
-      next: "Next page",
-      previous: "Previous page",
-      page: "Go to page {0}",
-      currentPage: "Page {0}, Current page",
-      first: "First page",
-      last: "Last page"
-    }
-  },
-  stepper: {
-    next: "Next",
-    prev: "Previous"
-  },
-  rating: {
-    ariaLabel: {
-      item: "Rating {0} of {1}"
-    }
-  },
-  loading: "Loading...",
-  infiniteScroll: {
-    loadMore: "Load more",
-    empty: "No more"
-  }
-};
-const ru = {
-  badge: "знак",
-  open: "Open",
-  close: "Закрыть",
-  confirmEdit: {
-    ok: "OK",
-    cancel: "Cancel"
-  },
-  dataIterator: {
-    noResultsText: "Не найдено подходящих записей",
-    loadingText: "Запись загружается..."
-  },
-  dataTable: {
-    itemsPerPageText: "Строк на странице:",
-    ariaLabel: {
-      sortDescending: "Упорядочено по убыванию.",
-      sortAscending: "Упорядочено по возрастанию.",
-      sortNone: "Не упорядочено.",
-      activateNone: "Активируйте, чтобы убрать сортировку.",
-      activateDescending: "Активируйте для упорядочивания убыванию.",
-      activateAscending: "Активируйте для упорядочивания по возрастанию."
-    },
-    sortBy: "Сортировать по"
-  },
-  dataFooter: {
-    itemsPerPageText: "Записей на странице:",
-    itemsPerPageAll: "Все",
-    nextPage: "Следующая страница",
-    prevPage: "Предыдущая страница",
-    firstPage: "Первая страница",
-    lastPage: "Последняя страница",
-    pageText: "{0}-{1} из {2}"
-  },
-  dateRangeInput: {
-    divider: "to"
-  },
-  datePicker: {
-    itemsSelected: "{0} selected",
-    range: {
-      title: "Select dates",
-      header: "Enter dates"
-    },
-    title: "Select date",
-    header: "Enter date",
-    input: {
-      placeholder: "Enter date"
-    }
-  },
-  noDataText: "Отсутствуют данные",
-  carousel: {
-    prev: "Предыдущий слайд",
-    next: "Следующий слайд",
-    ariaLabel: {
-      delimiter: "Слайд {0} из {1}"
-    }
-  },
-  calendar: {
-    moreEvents: "Еще {0}"
-  },
-  input: {
-    clear: "Clear {0}",
-    prependAction: "{0} prepended action",
-    appendAction: "{0} appended action",
-    otp: "Please enter OTP character {0}"
-  },
-  fileInput: {
-    counter: "Файлов: {0}",
-    counterSize: "Файлов: {0} (всего {1})"
-  },
-  timePicker: {
-    am: "AM",
-    pm: "PM"
-  },
-  pagination: {
-    ariaLabel: {
-      root: "Навигация по страницам",
-      next: "Следующая страница",
-      previous: "Предыдущая страница",
-      page: "Перейти на страницу {0}",
-      currentPage: "Текущая страница, Страница {0}",
-      first: "First page",
-      last: "Last page"
-    }
-  },
-  stepper: {
-    next: "Next",
-    prev: "Previous"
-  },
-  rating: {
-    ariaLabel: {
-      item: "Rating {0} of {1}"
-    }
-  },
-  loading: "Loading...",
-  infiniteScroll: {
-    loadMore: "Load more",
-    empty: "No more"
-  }
-};
-const defaultRtl = {
-  af: false,
-  ar: true,
-  bg: false,
-  ca: false,
-  ckb: false,
-  cs: false,
-  de: false,
-  el: false,
-  en: false,
-  es: false,
-  et: false,
-  fa: true,
-  fi: false,
-  fr: false,
-  hr: false,
-  hu: false,
-  he: true,
-  id: false,
-  it: false,
-  ja: false,
-  ko: false,
-  lv: false,
-  lt: false,
-  nl: false,
-  no: false,
-  pl: false,
-  pt: false,
-  ro: false,
-  ru: false,
-  sk: false,
-  sl: false,
-  srCyrl: false,
-  srLatn: false,
-  sv: false,
-  th: false,
-  tr: false,
-  az: false,
-  uk: false,
-  vi: false,
-  zhHans: false,
-  zhHant: false
-};
-function useToggleScope(source, fn) {
-  let scope;
-  function start() {
-    scope = effectScope();
-    scope.run(() => fn.length ? fn(() => {
-      scope == null ? void 0 : scope.stop();
-      start();
-    }) : fn());
-  }
-  watch(source, (active) => {
-    if (active && !scope) {
-      start();
-    } else if (!active) {
-      scope == null ? void 0 : scope.stop();
-      scope = void 0;
-    }
-  }, {
-    immediate: true
-  });
-  onScopeDispose(() => {
-    scope == null ? void 0 : scope.stop();
-  });
-}
-function useProxiedModel(props, prop, defaultValue) {
-  let transformIn = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : (v2) => v2;
-  let transformOut = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : (v2) => v2;
-  const vm = getCurrentInstance("useProxiedModel");
-  const internal = ref(props[prop] !== void 0 ? props[prop] : defaultValue);
-  const kebabProp = toKebabCase(prop);
-  const checkKebab = kebabProp !== prop;
-  const isControlled = checkKebab ? computed(() => {
-    var _a, _b, _c, _d;
-    void props[prop];
-    return !!((((_a = vm.vnode.props) == null ? void 0 : _a.hasOwnProperty(prop)) || ((_b = vm.vnode.props) == null ? void 0 : _b.hasOwnProperty(kebabProp))) && (((_c = vm.vnode.props) == null ? void 0 : _c.hasOwnProperty(`onUpdate:${prop}`)) || ((_d = vm.vnode.props) == null ? void 0 : _d.hasOwnProperty(`onUpdate:${kebabProp}`))));
-  }) : computed(() => {
-    var _a, _b;
-    void props[prop];
-    return !!(((_a = vm.vnode.props) == null ? void 0 : _a.hasOwnProperty(prop)) && ((_b = vm.vnode.props) == null ? void 0 : _b.hasOwnProperty(`onUpdate:${prop}`)));
-  });
-  useToggleScope(() => !isControlled.value, () => {
-    watch(() => props[prop], (val) => {
-      internal.value = val;
-    });
-  });
-  const model = computed({
-    get() {
-      const externalValue = props[prop];
-      return transformIn(isControlled.value ? externalValue : internal.value);
-    },
-    set(internalValue) {
-      const newValue = transformOut(internalValue);
-      const value = toRaw(isControlled.value ? props[prop] : internal.value);
-      if (value === newValue || transformIn(value) === internalValue) {
-        return;
-      }
-      internal.value = newValue;
-      vm == null ? void 0 : vm.emit(`update:${prop}`, newValue);
-    }
-  });
-  Object.defineProperty(model, "externalValue", {
-    get: () => isControlled.value ? props[prop] : internal.value
-  });
-  return model;
-}
-const LANG_PREFIX = "$vuetify.";
-const replace = (str, params) => {
-  return str.replace(/\{(\d+)\}/g, (match, index) => {
-    return String(params[+index]);
-  });
-};
-const createTranslateFunction = (current, fallback, messages2) => {
-  return function(key) {
-    for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      params[_key - 1] = arguments[_key];
-    }
-    if (!key.startsWith(LANG_PREFIX)) {
-      return replace(key, params);
-    }
-    const shortKey = key.replace(LANG_PREFIX, "");
-    const currentLocale = current.value && messages2.value[current.value];
-    const fallbackLocale = fallback.value && messages2.value[fallback.value];
-    let str = getObjectValueByPath(currentLocale, shortKey, null);
-    if (!str) {
-      consoleWarn(`Translation key "${key}" not found in "${current.value}", trying fallback locale`);
-      str = getObjectValueByPath(fallbackLocale, shortKey, null);
-    }
-    if (!str) {
-      consoleError(`Translation key "${key}" not found in fallback`);
-      str = key;
-    }
-    if (typeof str !== "string") {
-      consoleError(`Translation key "${key}" has a non-string value`);
-      str = key;
-    }
-    return replace(str, params);
-  };
-};
-function createNumberFunction(current, fallback) {
-  return (value, options2) => {
-    const numberFormat = new Intl.NumberFormat([current.value, fallback.value], options2);
-    return numberFormat.format(value);
-  };
-}
-function useProvided(props, prop, provided) {
-  const internal = useProxiedModel(props, prop, props[prop] ?? provided.value);
-  internal.value = props[prop] ?? provided.value;
-  watch(provided, (v2) => {
-    if (props[prop] == null) {
-      internal.value = provided.value;
-    }
-  });
-  return internal;
-}
-function createProvideFunction(state) {
-  return (props) => {
-    const current = useProvided(props, "locale", state.current);
-    const fallback = useProvided(props, "fallback", state.fallback);
-    const messages2 = useProvided(props, "messages", state.messages);
-    return {
-      name: "vuetify",
-      current,
-      fallback,
-      messages: messages2,
-      t: createTranslateFunction(current, fallback, messages2),
-      n: createNumberFunction(current, fallback),
-      provide: createProvideFunction({
-        current,
-        fallback,
-        messages: messages2
-      })
-    };
-  };
-}
-function createVuetifyAdapter(options2) {
-  const current = shallowRef((options2 == null ? void 0 : options2.locale) ?? "en");
-  const fallback = shallowRef((options2 == null ? void 0 : options2.fallback) ?? "en");
-  const messages2 = ref({
-    en,
-    ...options2 == null ? void 0 : options2.messages
-  });
-  return {
-    name: "vuetify",
-    current,
-    fallback,
-    messages: messages2,
-    t: createTranslateFunction(current, fallback, messages2),
-    n: createNumberFunction(current, fallback),
-    provide: createProvideFunction({
-      current,
-      fallback,
-      messages: messages2
-    })
-  };
-}
-const LocaleSymbol = Symbol.for("vuetify:locale");
-function isLocaleInstance(obj) {
-  return obj.name != null;
-}
-function createLocale(options2) {
-  const i18n2 = (options2 == null ? void 0 : options2.adapter) && isLocaleInstance(options2 == null ? void 0 : options2.adapter) ? options2 == null ? void 0 : options2.adapter : createVuetifyAdapter(options2);
-  const rtl = createRtl(i18n2, options2);
-  return {
-    ...i18n2,
-    ...rtl
-  };
-}
-function useLocale() {
-  const locale = inject$1(LocaleSymbol);
-  if (!locale)
-    throw new Error("[Vuetify] Could not find injected locale instance");
-  return locale;
-}
-function createRtl(i18n2, options2) {
-  const rtl = ref((options2 == null ? void 0 : options2.rtl) ?? defaultRtl);
-  const isRtl = computed(() => rtl.value[i18n2.current.value] ?? false);
-  return {
-    isRtl,
-    rtl,
-    rtlClasses: computed(() => `v-locale--is-${isRtl.value ? "rtl" : "ltr"}`)
-  };
-}
-function useRtl() {
-  const locale = inject$1(LocaleSymbol);
-  if (!locale)
-    throw new Error("[Vuetify] Could not find injected rtl instance");
-  return {
-    isRtl: locale.isRtl,
-    rtlClasses: locale.rtlClasses
-  };
-}
 const ThemeSymbol = Symbol.for("vuetify:theme");
 const makeThemeProps = propsFactory({
   theme: String
@@ -3234,7 +3258,8 @@ function createVuetify() {
     app.provide(ThemeSymbol, theme);
     app.provide(IconSymbol, icons);
     app.provide(LocaleSymbol, locale);
-    app.provide(DateAdapterSymbol, date2);
+    app.provide(DateOptionsSymbol, date2.options);
+    app.provide(DateAdapterSymbol, date2.instance);
     if (IN_BROWSER && options2.ssr) {
       if (app.$nuxt) {
         app.$nuxt.hook("app:suspense:resolve", () => {
@@ -3280,7 +3305,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.4.2";
+const version = "3.4.3";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -4841,6 +4866,13 @@ function usePosition(props) {
     positionClasses
   };
 }
+function useRoute() {
+  const vm = getCurrentInstance("useRoute");
+  return computed(() => {
+    var _a;
+    return (_a = vm == null ? void 0 : vm.proxy) == null ? void 0 : _a.$route;
+  });
+}
 function useRouter() {
   var _a, _b;
   return (_b = (_a = getCurrentInstance("useRouter")) == null ? void 0 : _a.proxy) == null ? void 0 : _b.$router;
@@ -4859,14 +4891,19 @@ function useLink(props, attrs) {
     };
   }
   const link2 = props.to ? RouterLink.useLink(props) : void 0;
+  const route = useRoute();
   return {
     isLink,
     isClickable,
     route: link2 == null ? void 0 : link2.route,
     navigate: link2 == null ? void 0 : link2.navigate,
     isActive: link2 && computed(() => {
-      var _a, _b;
-      return props.exact ? (_a = link2.isExactActive) == null ? void 0 : _a.value : (_b = link2.isActive) == null ? void 0 : _b.value;
+      var _a, _b, _c;
+      if (!props.exact)
+        return (_a = link2.isActive) == null ? void 0 : _a.value;
+      if (!route.value)
+        return (_b = link2.isExactActive) == null ? void 0 : _b.value;
+      return ((_c = link2.isExactActive) == null ? void 0 : _c.value) && deepEqual(link2.route.value.query, route.value.query);
     }),
     href: computed(() => props.to ? link2 == null ? void 0 : link2.route.value.href : props.href)
   };
@@ -5470,7 +5507,7 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-Pchmk3PB.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-KZdr4Qw7.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-8SSJCx-E.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-lhCeBzsl.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-TlVS9bra.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-19aVhjp3.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-eYGkgFbF.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-Lv1nphEr.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-YaY9jWSo.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-IJ_2n3PT.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-eDaCUiIR.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-xsurOxSp.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-4I0dciUp.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-8pc1gWFu.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-4EY_WowU.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-sF9kRnSi.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-u96Pj9xA.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-3sBrDRS2.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-D31LOvkl.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-FLRkfbHo.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-yQh6HMLw.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-AsVIQRaS.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-Ea42SvdF.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-IBO0y7E5.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-aE5ozalf.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-AglzMDba.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(i18n).use(link).use(pinia).use(vuetify).use(P, {
         // @ts-expect-error
@@ -5521,42 +5558,44 @@ export {
   ensureValidVNode as a7,
   noop as a8,
   matchesSelector as a9,
-  getCurrentInstanceName as aA,
-  consoleWarn as aB,
-  pick as aC,
-  breakpoints as aD,
-  findChildrenWithProvide as aE,
-  CircularBuffer as aF,
-  toPhysical as aG,
-  SUPPORTS_INTERSECTION as aH,
-  defineComponent as aI,
-  deprecate as aJ,
+  focusChild as aA,
+  debounce as aB,
+  getCurrentInstanceName as aC,
+  consoleWarn as aD,
+  pick as aE,
+  breakpoints as aF,
+  findChildrenWithProvide as aG,
+  CircularBuffer as aH,
+  toPhysical as aI,
+  SUPPORTS_INTERSECTION as aJ,
+  defineComponent as aK,
+  deprecate as aL,
   wrapInArray as aa,
   isOn as ab,
   getObjectValueByPath as ac,
   getCurrentInstance as ad,
   deepEqual as ae,
   isEmpty as af,
-  defineFunctionalComponent as ag,
-  consoleError as ah,
-  EventProp as ai,
-  getPropertyFromItem as aj,
-  eventName as ak,
-  makeSizeProps as al,
-  useSize as am,
-  useToggleScope as an,
-  destructComputed as ao,
-  parseAnchor as ap,
-  flipSide as aq,
-  flipAlign as ar,
-  flipCorner as as,
-  getAxis as at,
-  refElement as au,
-  useRouter as av,
-  useBackButton as aw,
-  getNextElement as ax,
-  focusChild as ay,
-  debounce as az,
+  makeSizeProps as ag,
+  createRange as ah,
+  keyValues as ai,
+  defineFunctionalComponent as aj,
+  consoleError as ak,
+  EventProp as al,
+  getPropertyFromItem as am,
+  eventName as an,
+  useSize as ao,
+  useToggleScope as ap,
+  destructComputed as aq,
+  parseAnchor as ar,
+  flipSide as as,
+  flipAlign as at,
+  flipCorner as au,
+  getAxis as av,
+  refElement as aw,
+  useRouter as ax,
+  useBackButton as ay,
+  getNextElement as az,
   makeThemeProps as b,
   provideTheme as c,
   useLocale as d,
