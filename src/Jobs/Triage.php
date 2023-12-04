@@ -24,6 +24,7 @@ class Triage implements ShouldQueue
         $query = MatchQuery::make();
 
         while (! is_null($pair = $query->first())) {
+            $pair = (array) $pair;
             $bindTicket($pair['ticket_uuid'], $pair['operator_uuid'], [Ticket::META_TRIAGE => true]);
         }
     }
