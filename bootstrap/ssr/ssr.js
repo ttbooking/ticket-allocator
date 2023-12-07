@@ -729,12 +729,12 @@ const en = {
   }
 };
 const ru = {
-  badge: "знак",
-  open: "Open",
+  badge: "Знак",
+  open: "Открыть",
   close: "Закрыть",
   confirmEdit: {
-    ok: "OK",
-    cancel: "Cancel"
+    ok: "ОК",
+    cancel: "Отмена"
   },
   dataIterator: {
     noResultsText: "Не найдено подходящих записей",
@@ -762,18 +762,18 @@ const ru = {
     pageText: "{0}-{1} из {2}"
   },
   dateRangeInput: {
-    divider: "to"
+    divider: "до"
   },
   datePicker: {
-    itemsSelected: "{0} selected",
+    itemsSelected: "{0} выбрано",
     range: {
-      title: "Select dates",
-      header: "Enter dates"
+      title: "Выбранные даты",
+      header: "Ввод дат"
     },
-    title: "Select date",
-    header: "Enter date",
+    title: "Выбор даты",
+    header: "Ввод даты",
     input: {
-      placeholder: "Enter date"
+      placeholder: "Введите дату"
     }
   },
   noDataText: "Отсутствуют данные",
@@ -788,10 +788,10 @@ const ru = {
     moreEvents: "Еще {0}"
   },
   input: {
-    clear: "Clear {0}",
-    prependAction: "{0} prepended action",
-    appendAction: "{0} appended action",
-    otp: "Please enter OTP character {0}"
+    clear: "Очистить {0}",
+    prependAction: "{0} предварительных действий",
+    appendAction: "{0} добавочных действий",
+    otp: "Пожалуйста введите символы OTP {0}"
   },
   fileInput: {
     counter: "Файлов: {0}",
@@ -808,23 +808,23 @@ const ru = {
       previous: "Предыдущая страница",
       page: "Перейти на страницу {0}",
       currentPage: "Текущая страница, Страница {0}",
-      first: "First page",
-      last: "Last page"
+      first: "Первая страница",
+      last: "Последняя страница"
     }
   },
   stepper: {
-    next: "Next",
-    prev: "Previous"
+    next: "Следующий",
+    prev: "Предыдущий"
   },
   rating: {
     ariaLabel: {
-      item: "Rating {0} of {1}"
+      item: "Рейтинг {0} из {1}"
     }
   },
-  loading: "Loading...",
+  loading: "Загрузка...",
   infiniteScroll: {
-    loadMore: "Load more",
-    empty: "No more"
+    loadMore: "Загрузить ещё",
+    empty: "Больше нечего загружать"
   }
 };
 const defaultRtl = {
@@ -2916,102 +2916,105 @@ const ThemeSymbol = Symbol.for("vuetify:theme");
 const makeThemeProps = propsFactory({
   theme: String
 }, "theme");
-const defaultThemeOptions = {
-  defaultTheme: "light",
-  variations: {
-    colors: [],
-    lighten: 0,
-    darken: 0
-  },
-  themes: {
-    light: {
-      dark: false,
-      colors: {
-        background: "#FFFFFF",
-        surface: "#FFFFFF",
-        "surface-bright": "#FFFFFF",
-        "surface-variant": "#424242",
-        "on-surface-variant": "#EEEEEE",
-        primary: "#1867C0",
-        "primary-darken-1": "#1F5592",
-        secondary: "#48A9A6",
-        "secondary-darken-1": "#018786",
-        error: "#B00020",
-        info: "#2196F3",
-        success: "#4CAF50",
-        warning: "#FB8C00"
-      },
-      variables: {
-        "border-color": "#000000",
-        "border-opacity": 0.12,
-        "high-emphasis-opacity": 0.87,
-        "medium-emphasis-opacity": 0.6,
-        "disabled-opacity": 0.38,
-        "idle-opacity": 0.04,
-        "hover-opacity": 0.04,
-        "focus-opacity": 0.12,
-        "selected-opacity": 0.08,
-        "activated-opacity": 0.12,
-        "pressed-opacity": 0.12,
-        "dragged-opacity": 0.08,
-        "theme-kbd": "#212529",
-        "theme-on-kbd": "#FFFFFF",
-        "theme-code": "#F5F5F5",
-        "theme-on-code": "#000000"
-      }
+function genDefaults() {
+  return {
+    defaultTheme: "light",
+    variations: {
+      colors: [],
+      lighten: 0,
+      darken: 0
     },
-    dark: {
-      dark: true,
-      colors: {
-        background: "#121212",
-        surface: "#212121",
-        "surface-bright": "#ccbfd6",
-        "surface-variant": "#a3a3a3",
-        "on-surface-variant": "#424242",
-        primary: "#2196F3",
-        "primary-darken-1": "#277CC1",
-        secondary: "#54B6B2",
-        "secondary-darken-1": "#48A9A6",
-        error: "#CF6679",
-        info: "#2196F3",
-        success: "#4CAF50",
-        warning: "#FB8C00"
+    themes: {
+      light: {
+        dark: false,
+        colors: {
+          background: "#FFFFFF",
+          surface: "#FFFFFF",
+          "surface-bright": "#FFFFFF",
+          "surface-variant": "#424242",
+          "on-surface-variant": "#EEEEEE",
+          primary: "#1867C0",
+          "primary-darken-1": "#1F5592",
+          secondary: "#48A9A6",
+          "secondary-darken-1": "#018786",
+          error: "#B00020",
+          info: "#2196F3",
+          success: "#4CAF50",
+          warning: "#FB8C00"
+        },
+        variables: {
+          "border-color": "#000000",
+          "border-opacity": 0.12,
+          "high-emphasis-opacity": 0.87,
+          "medium-emphasis-opacity": 0.6,
+          "disabled-opacity": 0.38,
+          "idle-opacity": 0.04,
+          "hover-opacity": 0.04,
+          "focus-opacity": 0.12,
+          "selected-opacity": 0.08,
+          "activated-opacity": 0.12,
+          "pressed-opacity": 0.12,
+          "dragged-opacity": 0.08,
+          "theme-kbd": "#212529",
+          "theme-on-kbd": "#FFFFFF",
+          "theme-code": "#F5F5F5",
+          "theme-on-code": "#000000"
+        }
       },
-      variables: {
-        "border-color": "#FFFFFF",
-        "border-opacity": 0.12,
-        "high-emphasis-opacity": 1,
-        "medium-emphasis-opacity": 0.7,
-        "disabled-opacity": 0.5,
-        "idle-opacity": 0.1,
-        "hover-opacity": 0.04,
-        "focus-opacity": 0.12,
-        "selected-opacity": 0.08,
-        "activated-opacity": 0.12,
-        "pressed-opacity": 0.16,
-        "dragged-opacity": 0.08,
-        "theme-kbd": "#212529",
-        "theme-on-kbd": "#FFFFFF",
-        "theme-code": "#343434",
-        "theme-on-code": "#CCCCCC"
+      dark: {
+        dark: true,
+        colors: {
+          background: "#121212",
+          surface: "#212121",
+          "surface-bright": "#ccbfd6",
+          "surface-variant": "#a3a3a3",
+          "on-surface-variant": "#424242",
+          primary: "#2196F3",
+          "primary-darken-1": "#277CC1",
+          secondary: "#54B6B2",
+          "secondary-darken-1": "#48A9A6",
+          error: "#CF6679",
+          info: "#2196F3",
+          success: "#4CAF50",
+          warning: "#FB8C00"
+        },
+        variables: {
+          "border-color": "#FFFFFF",
+          "border-opacity": 0.12,
+          "high-emphasis-opacity": 1,
+          "medium-emphasis-opacity": 0.7,
+          "disabled-opacity": 0.5,
+          "idle-opacity": 0.1,
+          "hover-opacity": 0.04,
+          "focus-opacity": 0.12,
+          "selected-opacity": 0.08,
+          "activated-opacity": 0.12,
+          "pressed-opacity": 0.16,
+          "dragged-opacity": 0.08,
+          "theme-kbd": "#212529",
+          "theme-on-kbd": "#FFFFFF",
+          "theme-code": "#343434",
+          "theme-on-code": "#CCCCCC"
+        }
       }
     }
-  }
-};
+  };
+}
 function parseThemeOptions() {
   var _a, _b;
-  let options2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : defaultThemeOptions;
+  let options2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : genDefaults();
+  const defaults = genDefaults();
   if (!options2)
     return {
-      ...defaultThemeOptions,
+      ...defaults,
       isDisabled: true
     };
   const themes = {};
   for (const [key, theme] of Object.entries(options2.themes ?? {})) {
-    const defaultTheme = theme.dark || key === "dark" ? (_a = defaultThemeOptions.themes) == null ? void 0 : _a.dark : (_b = defaultThemeOptions.themes) == null ? void 0 : _b.light;
+    const defaultTheme = theme.dark || key === "dark" ? (_a = defaults.themes) == null ? void 0 : _a.dark : (_b = defaults.themes) == null ? void 0 : _b.light;
     themes[key] = mergeDeep(defaultTheme, theme);
   }
-  return mergeDeep(defaultThemeOptions, {
+  return mergeDeep(defaults, {
     ...options2,
     themes
   });
@@ -3307,7 +3310,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.4.4";
+const version = "3.4.6";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -4843,6 +4846,7 @@ function LoaderSlot(props, _ref) {
     color: props.color,
     isActive: props.active
   })) || createVNode(VProgressLinear, {
+    "absolute": props.absolute,
     "active": props.active,
     "color": props.color,
     "height": "2",
@@ -5509,7 +5513,7 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-V1Sr7RN6.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-YJBSVr1u.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-j9ARVkFI.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-noDU5g3M.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-IA4LMKqM.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-KOL_Rxog.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-KpmpgtJU.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-lP0hUQr4.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-R79v83AX.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-8BLWrLYx.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-MBNTztEL.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-v1bXhgKC.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-na57azdE.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-eJ7lCBck.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-ekkqXI-V.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-XTJlucRk.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-Pu4i-cpJ.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-te2G1yM4.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-geUKDSVb.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-KC7GDTbQ.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-JavWkdjn.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-eGVAA9bb.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-czz2JANM.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-4OMdywDm.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-Xw2UPAZ4.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-na57azdE.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(i18n).use(link).use(pinia).use(vuetify).use(P, {
         // @ts-expect-error
