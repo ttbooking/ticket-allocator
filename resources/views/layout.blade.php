@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="shortcut icon" href="{{ Vite::ticketAllocatorImage('favicon.png') }}" />
+        <link rel="shortcut icon" href="{{ Vite::app('ticket-allocator')->asset('resources/images/favicon.png') }}" />
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
@@ -15,7 +15,7 @@
         <!-- Scripts -->
         @routes
         @vite('resources/js/app.js')
-        {{ Vite::ticketAllocatorEntryPoint($page) }}
+        @viteApp('ticket-allocator', "resources/js/pages/{$page['component']}.vue")
         @inertiaHead
     </head>
     <body class="font-sans antialiased">

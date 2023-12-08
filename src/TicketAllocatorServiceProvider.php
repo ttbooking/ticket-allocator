@@ -9,7 +9,6 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Events\PublishingStubs;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Spatie\EventSourcing\Facades\Projectionist;
 use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorProjector;
@@ -17,6 +16,7 @@ use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
 //use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
 use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyFactors;
 use TTBooking\TicketAllocator\Jobs\Triage;
+use TTBooking\ViteManager\Facades\Vite;
 
 class TicketAllocatorServiceProvider extends ServiceProvider
 {
@@ -27,7 +27,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->registerRoutes();
         $this->registerResources();
-        $this->registerMixins();
+        $this->registerAssets();
         $this->registerCommands();
         $this->registerObservers();
         $this->registerEventHandlers();
@@ -62,9 +62,12 @@ class TicketAllocatorServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'ticket-allocator');
     }
 
-    protected function registerMixins(): void
+    protected function registerAssets(): void
     {
-        Vite::mixin(new Support\ViteAliasMixin);
+        Vite::app('ticket-allocator')
+            ->useHotFile('vendor/ticket-allocator/hot')
+            ->useBuildDirectory('vendor/ticket-allocator/build')
+            ->withEntryPoints(['resources/js/app.ts']);
     }
 
     protected function registerCommands(): void
