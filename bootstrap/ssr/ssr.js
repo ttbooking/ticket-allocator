@@ -3343,11 +3343,14 @@ const vuetify = createVuetify({
   }
 });
 async function resolvePageComponent(path, pages) {
-  const page = pages[path];
-  if (typeof page === "undefined") {
-    throw new Error(`Page not found: ${path}`);
+  for (const p2 of Array.isArray(path) ? path : [path]) {
+    const page = pages[p2];
+    if (typeof page === "undefined") {
+      continue;
+    }
+    return typeof page === "function" ? page() : page;
   }
-  return typeof page === "function" ? page() : page;
+  throw new Error(`Page not found: ${path}`);
 }
 function t(t4, r2) {
   for (var n2 = 0; n2 < r2.length; n2++) {
@@ -5513,7 +5516,7 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-XmRCvsCw.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-ekkqXI-V.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-XLCAvR9e.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-XqGiocJt.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-te2G1yM4.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-geUKDSVb.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-2WJj8cgj.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-gVKL_LKz.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-IxmgHgZd.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-Bn0JEjvq.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-4OMdywDm.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-TnnwzX7w.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-na57azdE.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-9FuL4xri.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-ekkqXI-V.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-XLCAvR9e.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-XqGiocJt.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-te2G1yM4.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-geUKDSVb.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-2WJj8cgj.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-gVKL_LKz.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-IxmgHgZd.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-Bn0JEjvq.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-4OMdywDm.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-TnnwzX7w.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-na57azdE.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(i18n).use(link).use(pinia).use(vuetify).use(P, {
         // @ts-expect-error
