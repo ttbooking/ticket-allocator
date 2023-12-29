@@ -686,7 +686,8 @@ const en = {
     }
   },
   calendar: {
-    moreEvents: "{0} more"
+    moreEvents: "{0} more",
+    today: "Today"
   },
   input: {
     clear: "Clear {0}",
@@ -785,7 +786,8 @@ const ru = {
     }
   },
   calendar: {
-    moreEvents: "Еще {0}"
+    moreEvents: "Еще {0}",
+    today: "Today"
   },
   input: {
     clear: "Очистить {0}",
@@ -2220,6 +2222,20 @@ function getWeekArray(date2, locale) {
   }
   return weeks;
 }
+function startOfWeek(date2) {
+  const d2 = new Date(date2);
+  while (d2.getDay() !== 0) {
+    d2.setDate(d2.getDate() - 1);
+  }
+  return d2;
+}
+function endOfWeek(date2) {
+  const d2 = new Date(date2);
+  while (d2.getDay() !== 6) {
+    d2.setDate(d2.getDate() + 1);
+  }
+  return d2;
+}
 function startOfMonth(date2) {
   return new Date(date2.getFullYear(), date2.getMonth(), 1);
 }
@@ -2254,9 +2270,10 @@ function getWeekdays(locale) {
   return createRange(7).map((i2) => {
     const weekday = new Date(sundayJanuarySecond2000);
     weekday.setDate(sundayJanuarySecond2000.getDate() + daysFromSunday + i2);
-    return new Intl.DateTimeFormat(locale, {
-      weekday: "narrow"
+    const formattedDay = new Intl.DateTimeFormat(locale, {
+      weekday: "short"
     }).format(weekday);
+    return formattedDay.charAt(0).toUpperCase() + formattedDay.slice(1);
   });
 }
 function format(value, formatString, locale, formats) {
@@ -2273,6 +2290,12 @@ function format(value, formatString, locale, formats) {
         day: "numeric",
         month: "long",
         year: "numeric"
+      };
+      break;
+    case "hours12h":
+      options2 = {
+        hour: "numeric",
+        hour12: true
       };
       break;
     case "normalDateWithWeekday":
@@ -2323,6 +2346,11 @@ function format(value, formatString, locale, formats) {
         day: "numeric"
       };
       break;
+    case "weekdayShort":
+      options2 = {
+        weekday: "short"
+      };
+      break;
     case "year":
       options2 = {
         year: "numeric"
@@ -2347,9 +2375,24 @@ function parseISO(value) {
   const [year, month, day] = value.split("-").map(Number);
   return new Date(year, month - 1, day);
 }
+function addMinutes(date2, amount) {
+  const d2 = new Date(date2);
+  d2.setMinutes(d2.getMinutes() + amount);
+  return d2;
+}
+function addHours(date2, amount) {
+  const d2 = new Date(date2);
+  d2.setHours(d2.getHours() + amount);
+  return d2;
+}
 function addDays(date2, amount) {
   const d2 = new Date(date2);
   d2.setDate(d2.getDate() + amount);
+  return d2;
+}
+function addWeeks(date2, amount) {
+  const d2 = new Date(date2);
+  d2.setDate(d2.getDate() + amount * 7);
   return d2;
 }
 function addMonths(date2, amount) {
@@ -2365,6 +2408,12 @@ function getMonth(date2) {
 }
 function getNextMonth(date2) {
   return new Date(date2.getFullYear(), date2.getMonth() + 1, 1);
+}
+function getHours(date2) {
+  return date2.getHours();
+}
+function getMinutes(date2) {
+  return date2.getMinutes();
 }
 function startOfYear(date2) {
   return new Date(date2.getFullYear(), 0, 1);
@@ -2402,6 +2451,16 @@ function getDiff(date2, comparing, unit) {
   }
   return Math.floor((d2.getTime() - c2.getTime()) / (1e3 * 60 * 60 * 24));
 }
+function setHours(date2, count) {
+  const d2 = new Date(date2);
+  d2.setHours(count);
+  return d2;
+}
+function setMinutes(date2, count) {
+  const d2 = new Date(date2);
+  d2.setMinutes(count);
+  return d2;
+}
 function setMonth(date2, count) {
   const d2 = new Date(date2);
   d2.setMonth(count);
@@ -2435,14 +2494,29 @@ class VuetifyDateAdapter {
   parseISO(date2) {
     return parseISO(date2);
   }
+  addMinutes(date2, amount) {
+    return addMinutes(date2, amount);
+  }
+  addHours(date2, amount) {
+    return addHours(date2, amount);
+  }
   addDays(date2, amount) {
     return addDays(date2, amount);
+  }
+  addWeeks(date2, amount) {
+    return addWeeks(date2, amount);
   }
   addMonths(date2, amount) {
     return addMonths(date2, amount);
   }
   getWeekArray(date2) {
     return getWeekArray(date2, this.locale);
+  }
+  startOfWeek(date2) {
+    return startOfWeek(date2);
+  }
+  endOfWeek(date2) {
+    return endOfWeek(date2);
   }
   startOfMonth(date2) {
     return startOfMonth(date2);
@@ -2474,6 +2548,12 @@ class VuetifyDateAdapter {
   isSameMonth(date2, comparing) {
     return isSameMonth(date2, comparing);
   }
+  setMinutes(date2, count) {
+    return setMinutes(date2, count);
+  }
+  setHours(date2, count) {
+    return setHours(date2, count);
+  }
   setMonth(date2, count) {
     return setMonth(date2, count);
   }
@@ -2494,6 +2574,12 @@ class VuetifyDateAdapter {
   }
   getNextMonth(date2) {
     return getNextMonth(date2);
+  }
+  getHours(date2) {
+    return getHours(date2);
+  }
+  getMinutes(date2) {
+    return getMinutes(date2);
   }
   startOfDay(date2) {
     return startOfDay(date2);
@@ -3310,7 +3396,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.4.8";
+const version = "3.4.9";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
