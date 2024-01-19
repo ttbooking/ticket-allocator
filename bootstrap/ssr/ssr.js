@@ -629,249 +629,6 @@ const link = {
   }
 };
 const pinia = createPinia().use(createORM());
-const en = {
-  badge: "Badge",
-  open: "Open",
-  close: "Close",
-  confirmEdit: {
-    ok: "OK",
-    cancel: "Cancel"
-  },
-  dataIterator: {
-    noResultsText: "No matching records found",
-    loadingText: "Loading items..."
-  },
-  dataTable: {
-    itemsPerPageText: "Rows per page:",
-    ariaLabel: {
-      sortDescending: "Sorted descending.",
-      sortAscending: "Sorted ascending.",
-      sortNone: "Not sorted.",
-      activateNone: "Activate to remove sorting.",
-      activateDescending: "Activate to sort descending.",
-      activateAscending: "Activate to sort ascending."
-    },
-    sortBy: "Sort by"
-  },
-  dataFooter: {
-    itemsPerPageText: "Items per page:",
-    itemsPerPageAll: "All",
-    nextPage: "Next page",
-    prevPage: "Previous page",
-    firstPage: "First page",
-    lastPage: "Last page",
-    pageText: "{0}-{1} of {2}"
-  },
-  dateRangeInput: {
-    divider: "to"
-  },
-  datePicker: {
-    itemsSelected: "{0} selected",
-    range: {
-      title: "Select dates",
-      header: "Enter dates"
-    },
-    title: "Select date",
-    header: "Enter date",
-    input: {
-      placeholder: "Enter date"
-    }
-  },
-  noDataText: "No data available",
-  carousel: {
-    prev: "Previous visual",
-    next: "Next visual",
-    ariaLabel: {
-      delimiter: "Carousel slide {0} of {1}"
-    }
-  },
-  calendar: {
-    moreEvents: "{0} more",
-    today: "Today"
-  },
-  input: {
-    clear: "Clear {0}",
-    prependAction: "{0} prepended action",
-    appendAction: "{0} appended action",
-    otp: "Please enter OTP character {0}"
-  },
-  fileInput: {
-    counter: "{0} files",
-    counterSize: "{0} files ({1} in total)"
-  },
-  timePicker: {
-    am: "AM",
-    pm: "PM"
-  },
-  pagination: {
-    ariaLabel: {
-      root: "Pagination Navigation",
-      next: "Next page",
-      previous: "Previous page",
-      page: "Go to page {0}",
-      currentPage: "Page {0}, Current page",
-      first: "First page",
-      last: "Last page"
-    }
-  },
-  stepper: {
-    next: "Next",
-    prev: "Previous"
-  },
-  rating: {
-    ariaLabel: {
-      item: "Rating {0} of {1}"
-    }
-  },
-  loading: "Loading...",
-  infiniteScroll: {
-    loadMore: "Load more",
-    empty: "No more"
-  }
-};
-const ru = {
-  badge: "Знак",
-  open: "Открыть",
-  close: "Закрыть",
-  confirmEdit: {
-    ok: "ОК",
-    cancel: "Отмена"
-  },
-  dataIterator: {
-    noResultsText: "Не найдено подходящих записей",
-    loadingText: "Запись загружается..."
-  },
-  dataTable: {
-    itemsPerPageText: "Строк на странице:",
-    ariaLabel: {
-      sortDescending: "Упорядочено по убыванию.",
-      sortAscending: "Упорядочено по возрастанию.",
-      sortNone: "Не упорядочено.",
-      activateNone: "Активируйте, чтобы убрать сортировку.",
-      activateDescending: "Активируйте для упорядочивания убыванию.",
-      activateAscending: "Активируйте для упорядочивания по возрастанию."
-    },
-    sortBy: "Сортировать по"
-  },
-  dataFooter: {
-    itemsPerPageText: "Записей на странице:",
-    itemsPerPageAll: "Все",
-    nextPage: "Следующая страница",
-    prevPage: "Предыдущая страница",
-    firstPage: "Первая страница",
-    lastPage: "Последняя страница",
-    pageText: "{0}-{1} из {2}"
-  },
-  dateRangeInput: {
-    divider: "до"
-  },
-  datePicker: {
-    itemsSelected: "{0} выбрано",
-    range: {
-      title: "Выбранные даты",
-      header: "Ввод дат"
-    },
-    title: "Выбор даты",
-    header: "Ввод даты",
-    input: {
-      placeholder: "Введите дату"
-    }
-  },
-  noDataText: "Отсутствуют данные",
-  carousel: {
-    prev: "Предыдущий слайд",
-    next: "Следующий слайд",
-    ariaLabel: {
-      delimiter: "Слайд {0} из {1}"
-    }
-  },
-  calendar: {
-    moreEvents: "Еще {0}",
-    today: "Today"
-  },
-  input: {
-    clear: "Очистить {0}",
-    prependAction: "{0} предварительных действий",
-    appendAction: "{0} добавочных действий",
-    otp: "Пожалуйста введите символы OTP {0}"
-  },
-  fileInput: {
-    counter: "Файлов: {0}",
-    counterSize: "Файлов: {0} (всего {1})"
-  },
-  timePicker: {
-    am: "AM",
-    pm: "PM"
-  },
-  pagination: {
-    ariaLabel: {
-      root: "Навигация по страницам",
-      next: "Следующая страница",
-      previous: "Предыдущая страница",
-      page: "Перейти на страницу {0}",
-      currentPage: "Текущая страница, Страница {0}",
-      first: "Первая страница",
-      last: "Последняя страница"
-    }
-  },
-  stepper: {
-    next: "Следующий",
-    prev: "Предыдущий"
-  },
-  rating: {
-    ariaLabel: {
-      item: "Рейтинг {0} из {1}"
-    }
-  },
-  loading: "Загрузка...",
-  infiniteScroll: {
-    loadMore: "Загрузить ещё",
-    empty: "Больше нечего загружать"
-  }
-};
-const defaultRtl = {
-  af: false,
-  ar: true,
-  bg: false,
-  ca: false,
-  ckb: false,
-  cs: false,
-  de: false,
-  el: false,
-  en: false,
-  es: false,
-  et: false,
-  fa: true,
-  fi: false,
-  fr: false,
-  hr: false,
-  hu: false,
-  he: true,
-  id: false,
-  it: false,
-  ja: false,
-  ko: false,
-  lv: false,
-  lt: false,
-  nl: false,
-  no: false,
-  pl: false,
-  pt: false,
-  ro: false,
-  ru: false,
-  sk: false,
-  sl: false,
-  srCyrl: false,
-  srLatn: false,
-  sv: false,
-  th: false,
-  tr: false,
-  az: false,
-  uk: false,
-  vi: false,
-  zhHans: false,
-  zhHant: false
-};
 function useToggleScope(source, fn) {
   let scope;
   function start() {
@@ -1922,6 +1679,106 @@ function useProxiedModel(props, prop, defaultValue) {
   });
   return model;
 }
+const en = {
+  badge: "Badge",
+  open: "Open",
+  close: "Close",
+  confirmEdit: {
+    ok: "OK",
+    cancel: "Cancel"
+  },
+  dataIterator: {
+    noResultsText: "No matching records found",
+    loadingText: "Loading items..."
+  },
+  dataTable: {
+    itemsPerPageText: "Rows per page:",
+    ariaLabel: {
+      sortDescending: "Sorted descending.",
+      sortAscending: "Sorted ascending.",
+      sortNone: "Not sorted.",
+      activateNone: "Activate to remove sorting.",
+      activateDescending: "Activate to sort descending.",
+      activateAscending: "Activate to sort ascending."
+    },
+    sortBy: "Sort by"
+  },
+  dataFooter: {
+    itemsPerPageText: "Items per page:",
+    itemsPerPageAll: "All",
+    nextPage: "Next page",
+    prevPage: "Previous page",
+    firstPage: "First page",
+    lastPage: "Last page",
+    pageText: "{0}-{1} of {2}"
+  },
+  dateRangeInput: {
+    divider: "to"
+  },
+  datePicker: {
+    itemsSelected: "{0} selected",
+    range: {
+      title: "Select dates",
+      header: "Enter dates"
+    },
+    title: "Select date",
+    header: "Enter date",
+    input: {
+      placeholder: "Enter date"
+    }
+  },
+  noDataText: "No data available",
+  carousel: {
+    prev: "Previous visual",
+    next: "Next visual",
+    ariaLabel: {
+      delimiter: "Carousel slide {0} of {1}"
+    }
+  },
+  calendar: {
+    moreEvents: "{0} more",
+    today: "Today"
+  },
+  input: {
+    clear: "Clear {0}",
+    prependAction: "{0} prepended action",
+    appendAction: "{0} appended action",
+    otp: "Please enter OTP character {0}"
+  },
+  fileInput: {
+    counter: "{0} files",
+    counterSize: "{0} files ({1} in total)"
+  },
+  timePicker: {
+    am: "AM",
+    pm: "PM"
+  },
+  pagination: {
+    ariaLabel: {
+      root: "Pagination Navigation",
+      next: "Next page",
+      previous: "Previous page",
+      page: "Go to page {0}",
+      currentPage: "Page {0}, Current page",
+      first: "First page",
+      last: "Last page"
+    }
+  },
+  stepper: {
+    next: "Next",
+    prev: "Previous"
+  },
+  rating: {
+    ariaLabel: {
+      item: "Rating {0} of {1}"
+    }
+  },
+  loading: "Loading...",
+  infiniteScroll: {
+    loadMore: "Load more",
+    empty: "No more"
+  }
+};
 const LANG_PREFIX = "$vuetify.";
 const replace = (str, params) => {
   return str.replace(/\{(\d+)\}/g, (match, index) => {
@@ -2030,8 +1887,53 @@ function useLocale() {
     throw new Error("[Vuetify] Could not find injected locale instance");
   return locale;
 }
+function genDefaults$1() {
+  return {
+    af: false,
+    ar: true,
+    bg: false,
+    ca: false,
+    ckb: false,
+    cs: false,
+    de: false,
+    el: false,
+    en: false,
+    es: false,
+    et: false,
+    fa: true,
+    fi: false,
+    fr: false,
+    hr: false,
+    hu: false,
+    he: true,
+    id: false,
+    it: false,
+    ja: false,
+    ko: false,
+    lv: false,
+    lt: false,
+    nl: false,
+    no: false,
+    pl: false,
+    pt: false,
+    ro: false,
+    ru: false,
+    sk: false,
+    sl: false,
+    srCyrl: false,
+    srLatn: false,
+    sv: false,
+    th: false,
+    tr: false,
+    az: false,
+    uk: false,
+    vi: false,
+    zhHans: false,
+    zhHant: false
+  };
+}
 function createRtl(i18n2, options2) {
-  const rtl = ref((options2 == null ? void 0 : options2.rtl) ?? defaultRtl);
+  const rtl = ref((options2 == null ? void 0 : options2.rtl) ?? genDefaults$1());
   const isRtl = computed(() => rtl.value[i18n2.current.value] ?? false);
   return {
     isRtl,
@@ -2279,10 +2181,9 @@ function getWeekdays(locale) {
   return createRange(7).map((i2) => {
     const weekday = new Date(sundayJanuarySecond2000);
     weekday.setDate(sundayJanuarySecond2000.getDate() + daysFromSunday + i2);
-    const formattedDay = new Intl.DateTimeFormat(locale, {
+    return new Intl.DateTimeFormat(locale, {
       weekday: "short"
     }).format(weekday);
-    return formattedDay.charAt(0).toUpperCase() + formattedDay.slice(1);
   });
 }
 function format(value, formatString, locale, formats) {
@@ -3405,7 +3306,7 @@ function createVuetify() {
     date: date2
   };
 }
-const version = "3.4.10";
+const version = "3.4.11";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -3415,6 +3316,106 @@ function inject(key) {
     return provides[key];
   }
 }
+const ru = {
+  badge: "Знак",
+  open: "Открыть",
+  close: "Закрыть",
+  confirmEdit: {
+    ok: "ОК",
+    cancel: "Отмена"
+  },
+  dataIterator: {
+    noResultsText: "Не найдено подходящих записей",
+    loadingText: "Запись загружается..."
+  },
+  dataTable: {
+    itemsPerPageText: "Строк на странице:",
+    ariaLabel: {
+      sortDescending: "Упорядочено по убыванию.",
+      sortAscending: "Упорядочено по возрастанию.",
+      sortNone: "Не упорядочено.",
+      activateNone: "Активируйте, чтобы убрать сортировку.",
+      activateDescending: "Активируйте для упорядочивания убыванию.",
+      activateAscending: "Активируйте для упорядочивания по возрастанию."
+    },
+    sortBy: "Сортировать по"
+  },
+  dataFooter: {
+    itemsPerPageText: "Записей на странице:",
+    itemsPerPageAll: "Все",
+    nextPage: "Следующая страница",
+    prevPage: "Предыдущая страница",
+    firstPage: "Первая страница",
+    lastPage: "Последняя страница",
+    pageText: "{0}-{1} из {2}"
+  },
+  dateRangeInput: {
+    divider: "до"
+  },
+  datePicker: {
+    itemsSelected: "{0} выбрано",
+    range: {
+      title: "Выбранные даты",
+      header: "Ввод дат"
+    },
+    title: "Выбор даты",
+    header: "Ввод даты",
+    input: {
+      placeholder: "Введите дату"
+    }
+  },
+  noDataText: "Отсутствуют данные",
+  carousel: {
+    prev: "Предыдущий слайд",
+    next: "Следующий слайд",
+    ariaLabel: {
+      delimiter: "Слайд {0} из {1}"
+    }
+  },
+  calendar: {
+    moreEvents: "Еще {0}",
+    today: "Today"
+  },
+  input: {
+    clear: "Очистить {0}",
+    prependAction: "{0} предварительных действий",
+    appendAction: "{0} добавочных действий",
+    otp: "Пожалуйста введите символы OTP {0}"
+  },
+  fileInput: {
+    counter: "Файлов: {0}",
+    counterSize: "Файлов: {0} (всего {1})"
+  },
+  timePicker: {
+    am: "AM",
+    pm: "PM"
+  },
+  pagination: {
+    ariaLabel: {
+      root: "Навигация по страницам",
+      next: "Следующая страница",
+      previous: "Предыдущая страница",
+      page: "Перейти на страницу {0}",
+      currentPage: "Текущая страница, Страница {0}",
+      first: "Первая страница",
+      last: "Последняя страница"
+    }
+  },
+  stepper: {
+    next: "Следующий",
+    prev: "Предыдущий"
+  },
+  rating: {
+    ariaLabel: {
+      item: "Рейтинг {0} из {1}"
+    }
+  },
+  loading: "Загрузка...",
+  infiniteScroll: {
+    loadMore: "Загрузить ещё",
+    empty: "Больше нечего загружать"
+  }
+};
 const vuetify = createVuetify({
   //ssr: true,
   theme: {
@@ -5556,7 +5557,9 @@ const VBtn = genericComponent()({
         }
       }), [[resolveDirective("ripple"), !isDisabled.value && props.ripple, null]]);
     });
-    return {};
+    return {
+      group
+    };
   }
 });
 const _sfc_main = /* @__PURE__ */ defineComponent$1({
@@ -5611,7 +5614,7 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-sGG8qorh.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-qJV5BsQ4.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-rgg0Drp4.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-p_T-_0F5.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-VxQflRfb.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-9PwBh40b.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-wAoKOeVs.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-yp4lPHfJ.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-gN2LqKbs.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-wy08WnHZ.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-7ln3yd3-.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-Jr6HIPBx.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-6AwRlsP7.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-fnt0qyw6.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-7sdGDgHm.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-a3toeqlq.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-BoR6j6Yk.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-VxQflRfb.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-9PwBh40b.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-Jg-Thd6h.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-cuGibEwL.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-bRQk2cWl.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-CxEPwYUx.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-IuBdZrdB.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-54jjmp1d.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-cOmu4q-y.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(i18n).use(link).use(pinia).use(vuetify).use(P, {
         // @ts-expect-error
