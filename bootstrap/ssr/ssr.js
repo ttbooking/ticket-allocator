@@ -1887,7 +1887,7 @@ function useLocale() {
     throw new Error("[Vuetify] Could not find injected locale instance");
   return locale;
 }
-function genDefaults$1() {
+function genDefaults$2() {
   return {
     af: false,
     ar: true,
@@ -1909,6 +1909,7 @@ function genDefaults$1() {
     id: false,
     it: false,
     ja: false,
+    km: false,
     ko: false,
     lv: false,
     lt: false,
@@ -1933,7 +1934,7 @@ function genDefaults$1() {
   };
 }
 function createRtl(i18n2, options2) {
-  const rtl = ref((options2 == null ? void 0 : options2.rtl) ?? genDefaults$1());
+  const rtl = ref((options2 == null ? void 0 : options2.rtl) ?? genDefaults$2());
   const isRtl = computed(() => rtl.value[i18n2.current.value] ?? false);
   return {
     isRtl,
@@ -2711,6 +2712,37 @@ function useDisplay() {
     mobile
   };
 }
+const GoToSymbol = Symbol.for("vuetify:goto");
+function genDefaults$1() {
+  return {
+    container: void 0,
+    duration: 300,
+    layout: false,
+    offset: 0,
+    easing: "easeInOutCubic",
+    patterns: {
+      linear: (t4) => t4,
+      easeInQuad: (t4) => t4 ** 2,
+      easeOutQuad: (t4) => t4 * (2 - t4),
+      easeInOutQuad: (t4) => t4 < 0.5 ? 2 * t4 ** 2 : -1 + (4 - 2 * t4) * t4,
+      easeInCubic: (t4) => t4 ** 3,
+      easeOutCubic: (t4) => --t4 ** 3 + 1,
+      easeInOutCubic: (t4) => t4 < 0.5 ? 4 * t4 ** 3 : (t4 - 1) * (2 * t4 - 2) * (2 * t4 - 2) + 1,
+      easeInQuart: (t4) => t4 ** 4,
+      easeOutQuart: (t4) => 1 - --t4 ** 4,
+      easeInOutQuart: (t4) => t4 < 0.5 ? 8 * t4 ** 4 : 1 - 8 * --t4 ** 4,
+      easeInQuint: (t4) => t4 ** 5,
+      easeOutQuint: (t4) => 1 + --t4 ** 5,
+      easeInOutQuint: (t4) => t4 < 0.5 ? 16 * t4 ** 5 : 1 + 16 * --t4 ** 5
+    }
+  };
+}
+function createGoTo(options2, locale) {
+  return {
+    rtl: locale.isRtl,
+    options: mergeDeep(genDefaults$1(), options2)
+  };
+}
 const aliases = {
   collapse: "mdi-chevron-up",
   complete: "mdi-check",
@@ -2927,6 +2959,7 @@ function genDefaults() {
           background: "#FFFFFF",
           surface: "#FFFFFF",
           "surface-bright": "#FFFFFF",
+          "surface-light": "#EEEEEE",
           "surface-variant": "#424242",
           "on-surface-variant": "#EEEEEE",
           primary: "#1867C0",
@@ -2963,6 +2996,7 @@ function genDefaults() {
           background: "#121212",
           surface: "#212121",
           "surface-bright": "#ccbfd6",
+          "surface-light": "#424242",
           "surface-variant": "#a3a3a3",
           "on-surface-variant": "#424242",
           primary: "#2196F3",
@@ -3239,6 +3273,7 @@ function createVuetify() {
   const icons = createIcons(options2.icons);
   const locale = createLocale(options2.locale);
   const date2 = createDate(options2.date, locale);
+  const goTo = createGoTo(options2.goTo, locale);
   const install = (app) => {
     for (const key in directives) {
       app.directive(key, directives[key]);
@@ -3261,6 +3296,7 @@ function createVuetify() {
     app.provide(LocaleSymbol, locale);
     app.provide(DateOptionsSymbol, date2.options);
     app.provide(DateAdapterSymbol, date2.instance);
+    app.provide(GoToSymbol, goTo);
     if (IN_BROWSER && options2.ssr) {
       if (app.$nuxt) {
         app.$nuxt.hook("app:suspense:resolve", () => {
@@ -3303,10 +3339,11 @@ function createVuetify() {
     theme,
     icons,
     locale,
-    date: date2
+    date: date2,
+    goTo
   };
 }
-const version = "3.4.11";
+const version = "3.5.1";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -3981,27 +4018,6 @@ function useDimension(props) {
     dimensionStyles
   };
 }
-const makeBorderProps = propsFactory({
-  border: [Boolean, Number, String]
-}, "border");
-function useBorder(props) {
-  let name2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : getCurrentInstanceName();
-  const borderClasses = computed(() => {
-    const border = isRef(props) ? props.value : props.border;
-    const classes = [];
-    if (border === true || border === "") {
-      classes.push(`${name2}--border`);
-    } else if (typeof border === "string" || border === 0) {
-      for (const value of String(border).split(" ")) {
-        classes.push(`border-${value}`);
-      }
-    }
-    return classes;
-  });
-  return {
-    borderClasses
-  };
-}
 function useColor(colors) {
   return destructComputed(() => {
     const classes = [];
@@ -4061,30 +4077,6 @@ function useBackgroundColor(props, name2) {
     backgroundColorStyles
   };
 }
-const makeElevationProps = propsFactory({
-  elevation: {
-    type: [Number, String],
-    validator(v2) {
-      const value = parseInt(v2);
-      return !isNaN(value) && value >= 0 && // Material Design has a maximum elevation of 24
-      // https://material.io/design/environment/elevation.html#default-elevations
-      value <= 24;
-    }
-  }
-}, "elevation");
-function useElevation(props) {
-  const elevationClasses = computed(() => {
-    const elevation = isRef(props) ? props.value : props.elevation;
-    const classes = [];
-    if (elevation == null)
-      return classes;
-    classes.push(`elevation-${elevation}`);
-    return classes;
-  });
-  return {
-    elevationClasses
-  };
-}
 const makeRoundedProps = propsFactory({
   rounded: {
     type: [Boolean, Number, String],
@@ -4107,6 +4099,51 @@ function useRounded(props) {
   });
   return {
     roundedClasses
+  };
+}
+const makeBorderProps = propsFactory({
+  border: [Boolean, Number, String]
+}, "border");
+function useBorder(props) {
+  let name2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : getCurrentInstanceName();
+  const borderClasses = computed(() => {
+    const border = isRef(props) ? props.value : props.border;
+    const classes = [];
+    if (border === true || border === "") {
+      classes.push(`${name2}--border`);
+    } else if (typeof border === "string" || border === 0) {
+      for (const value of String(border).split(" ")) {
+        classes.push(`border-${value}`);
+      }
+    }
+    return classes;
+  });
+  return {
+    borderClasses
+  };
+}
+const makeElevationProps = propsFactory({
+  elevation: {
+    type: [Number, String],
+    validator(v2) {
+      const value = parseInt(v2);
+      return !isNaN(value) && value >= 0 && // Material Design has a maximum elevation of 24
+      // https://material.io/design/environment/elevation.html#default-elevations
+      value <= 24;
+    }
+  }
+}, "elevation");
+function useElevation(props) {
+  const elevationClasses = computed(() => {
+    const elevation = isRef(props) ? props.value : props.elevation;
+    const classes = [];
+    if (elevation == null)
+      return classes;
+    classes.push(`elevation-${elevation}`);
+    return classes;
+  });
+  return {
+    elevationClasses
   };
 }
 const allowedDensities = [null, "default", "comfortable", "compact"];
@@ -5614,7 +5651,7 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-fnt0qyw6.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-7sdGDgHm.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-a3toeqlq.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-BoR6j6Yk.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-VxQflRfb.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-9PwBh40b.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-Jg-Thd6h.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-cuGibEwL.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-bRQk2cWl.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-CxEPwYUx.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-IuBdZrdB.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-54jjmp1d.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-cOmu4q-y.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-pTDOxmDi.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-HhKdFx7c.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-iwWtPgkS.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-wP7B-QUE.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9jqPd4xa.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-cZK-VCr-.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-7DXACb2S.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-Wqj_4UVh.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-AP6rqlkq.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-bCyTOAgM.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-Z-Y7-mAM.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-6e_mBheg.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-FSs_nYnN.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(i18n).use(link).use(pinia).use(vuetify).use(P, {
         // @ts-expect-error
@@ -5626,45 +5663,45 @@ createServer(
   })
 );
 export {
-  useDimension as $,
-  VProgressCircular as A,
-  omit as B,
-  makeVBtnProps as C,
-  useTextColor as D,
-  makeDensityProps as E,
-  useDensity as F,
-  useBackgroundColor as G,
-  provideDefaults as H,
-  IconValue as I,
-  isObject as J,
-  VBtnToggle as K,
+  useLink as $,
+  useBackgroundColor as A,
+  provideDefaults as B,
+  isObject as C,
+  VBtnToggle as D,
+  VBtnGroup as E,
+  focusableChildren as F,
+  IconValue as G,
+  makeBorderProps as H,
+  IN_BROWSER as I,
+  makeDimensionProps as J,
+  makeElevationProps as K,
   LoaderSlot as L,
-  VBtnGroup as M,
-  VDefaultsProvider as N,
-  makeBorderProps as O,
-  makeDimensionProps as P,
-  makeElevationProps as Q,
-  makeLoaderProps as R,
-  makeLocationProps as S,
-  makePositionProps as T,
-  makeRoundedProps as U,
+  makeLoaderProps as M,
+  makeLocationProps as N,
+  makePositionProps as O,
+  makeRoundedProps as P,
+  makeRouterProps as Q,
+  makeVariantProps as R,
+  Ripple as S,
+  useBorder as T,
+  useVariant as U,
   VBtn as V,
-  makeRouterProps as W,
-  makeVariantProps as X,
-  Ripple as Y,
-  useBorder as Z,
-  useVariant as _,
+  useDimension as W,
+  useElevation as X,
+  useLocation as Y,
+  usePosition as Z,
+  useRounded as _,
   makeTagProps as a,
-  useElevation as a0,
-  useLocation as a1,
-  usePosition as a2,
-  useRounded as a3,
-  useLink as a4,
-  genOverlays as a5,
-  callEvent as a6,
-  ensureValidVNode as a7,
-  noop as a8,
-  matchesSelector as a9,
+  genOverlays as a0,
+  callEvent as a1,
+  clamp as a2,
+  ensureValidVNode as a3,
+  noop as a4,
+  matchesSelector as a5,
+  wrapInArray as a6,
+  isOn as a7,
+  getObjectValueByPath as a8,
+  getCurrentInstance as a9,
   getNextElement as aA,
   focusChild as aB,
   debounce as aC,
@@ -5678,20 +5715,20 @@ export {
   SUPPORTS_INTERSECTION as aK,
   defineComponent as aL,
   deprecate as aM,
-  wrapInArray as aa,
-  isOn as ab,
-  getObjectValueByPath as ac,
-  getCurrentInstance as ad,
-  deepEqual as ae,
-  isEmpty as af,
-  makeSizeProps as ag,
-  createRange as ah,
-  keyValues as ai,
-  defineFunctionalComponent as aj,
-  consoleError as ak,
-  EventProp as al,
-  getPropertyFromItem as am,
-  eventName as an,
+  deepEqual as aa,
+  isEmpty as ab,
+  makeSizeProps as ac,
+  useDisplay as ad,
+  useResizeObserver as ae,
+  createRange as af,
+  keyValues as ag,
+  defineFunctionalComponent as ah,
+  consoleError as ai,
+  EventProp as aj,
+  getPropertyFromItem as ak,
+  eventName as al,
+  makeDisplayProps as am,
+  makeGroupProps as an,
   useSize as ao,
   useToggleScope as ap,
   destructComputed as aq,
@@ -5714,20 +5751,20 @@ export {
   useGroupItem as i,
   convertToUnit as j,
   keys as k,
-  makeDisplayProps as l,
+  useProxiedModel as l,
   makeComponentProps as m,
-  makeGroupProps as n,
-  useDisplay as o,
+  useLoader as n,
+  getUid as o,
   propsFactory as p,
-  useResizeObserver as q,
-  IN_BROWSER as r,
+  filterInputAttrs as q,
+  VDefaultsProvider as r,
   VIcon as s,
-  focusableChildren as t,
+  VProgressCircular as t,
   useRtl as u,
-  clamp as v,
-  useProxiedModel as w,
-  useLoader as x,
-  getUid as y,
-  filterInputAttrs as z
+  omit as v,
+  makeVBtnProps as w,
+  useTextColor as x,
+  makeDensityProps as y,
+  useDensity as z
 };
 //# sourceMappingURL=ssr.js.map
