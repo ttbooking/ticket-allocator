@@ -2183,7 +2183,7 @@ function getWeekdays(locale) {
     const weekday = new Date(sundayJanuarySecond2000);
     weekday.setDate(sundayJanuarySecond2000.getDate() + daysFromSunday + i2);
     return new Intl.DateTimeFormat(locale, {
-      weekday: "short"
+      weekday: "narrow"
     }).format(weekday);
   });
 }
@@ -2246,10 +2246,7 @@ function format(value, formatString, locale, formats) {
       };
       break;
     case "dayOfMonth":
-      options2 = {
-        day: "numeric"
-      };
-      break;
+      return new Intl.NumberFormat(locale).format(newDate.getDate());
     case "shortDate":
       options2 = {
         year: "2-digit",
@@ -3343,7 +3340,7 @@ function createVuetify() {
     goTo
   };
 }
-const version = "3.5.1";
+const version = "3.5.3";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -4336,6 +4333,9 @@ function useGroup(props, injectKey) {
     const key = Symbol.for(`${injectKey.description}:id`);
     const children = findChildrenWithProvide(key, groupVm == null ? void 0 : groupVm.vnode);
     const index = children.indexOf(vm);
+    if (unref(unwrapped.value) == null) {
+      unwrapped.value = index;
+    }
     if (index > -1) {
       items.splice(index, 0, unwrapped);
     } else {
@@ -5651,7 +5651,7 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-pTDOxmDi.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-HhKdFx7c.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-iwWtPgkS.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-wP7B-QUE.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-9jqPd4xa.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-cZK-VCr-.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-7DXACb2S.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-Wqj_4UVh.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-AP6rqlkq.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-bCyTOAgM.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-Z-Y7-mAM.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-6e_mBheg.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-FSs_nYnN.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-dmTgptT5.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-eT3IQQdF.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-wI3sAPS3.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-cscu3ZYD.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-4BFNLT7-.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-32l_tCTS.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-C4VbPoKL.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-xzUYTHYD.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-PL85Ij5h.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-BinjV-bE.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-5utgCm2y.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-_6wNybEC.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-bh6SUk6e.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-xlusJRXq.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-rb4j_n-2.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-eNN20L4D.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(i18n).use(link).use(pinia).use(vuetify).use(P, {
         // @ts-expect-error
