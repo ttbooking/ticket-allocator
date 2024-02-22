@@ -56,7 +56,7 @@ import ApplicationLogo from "@/components/ApplicationLogo.vue";
 import { Link } from "@inertiajs/vue3";
 import { useI18n } from "vue-i18n";
 import { useLocale } from "vuetify";
-import route from "ziggy-js";
+import { route } from "ziggy-js";
 
 const { locale } = useI18n();
 

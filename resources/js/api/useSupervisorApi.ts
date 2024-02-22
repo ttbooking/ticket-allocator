@@ -1,4 +1,4 @@
-import route from "ziggy-js";
+import { route } from "ziggy-js";
 
 export function useSupervisorApi() {
     async function ready(operatorUuid: string, ready: boolean) {

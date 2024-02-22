@@ -1,7 +1,7 @@
 import { AxiosInstance } from "axios";
 import Echo from "laravel-echo";
 import dayjs from "dayjs";
-import routeFn, { Config as ZiggyConfig } from "ziggy-js";
+import { route as routeFn, Config as ZiggyConfig } from "ziggy-js";
 import { PageProps as InertiaPageProps } from "@inertiajs/core";
 import { PageProps as AppPageProps } from "./";
 import en from "../../../lang/en.json";

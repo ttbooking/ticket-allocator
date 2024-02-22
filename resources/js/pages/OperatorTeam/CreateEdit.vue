@@ -96,7 +96,7 @@
 import DefaultLayout from "@/layouts/Default.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import type { OperatorTeam, Operator } from "@/types";
-import route from "ziggy-js";
+import { route } from "ziggy-js";
 
 const props = defineProps<{
     team?: OperatorTeam;

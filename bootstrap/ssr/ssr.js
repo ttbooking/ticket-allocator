@@ -1092,6 +1092,16 @@ function defer(timeout, cb) {
   const timeoutId = window.setTimeout(cb, timeout);
   return () => window.clearTimeout(timeoutId);
 }
+function isClickInsideElement(event, targetDiv) {
+  const mouseX = event.clientX;
+  const mouseY = event.clientY;
+  const divRect = targetDiv.getBoundingClientRect();
+  const divLeft = divRect.left;
+  const divTop = divRect.top;
+  const divRight = divRect.right;
+  const divBottom = divRect.bottom;
+  return mouseX >= divLeft && mouseX <= divRight && mouseY >= divTop && mouseY <= divBottom;
+}
 const block = ["top", "bottom"];
 const inline = ["start", "end", "left", "right"];
 function parseAnchor(anchor, isRtl) {
@@ -1210,9 +1220,9 @@ function toXYZ$1(lab) {
   return [transform2(Ln + lab[1] / 500) * 0.95047, transform2(Ln), transform2(Ln - lab[2] / 200) * 1.08883];
 }
 const srgbForwardMatrix = [[3.2406, -1.5372, -0.4986], [-0.9689, 1.8758, 0.0415], [0.0557, -0.204, 1.057]];
-const srgbForwardTransform = (C2) => C2 <= 31308e-7 ? C2 * 12.92 : 1.055 * C2 ** (1 / 2.4) - 0.055;
+const srgbForwardTransform = (C) => C <= 31308e-7 ? C * 12.92 : 1.055 * C ** (1 / 2.4) - 0.055;
 const srgbReverseMatrix = [[0.4124, 0.3576, 0.1805], [0.2126, 0.7152, 0.0722], [0.0193, 0.1192, 0.9505]];
-const srgbReverseTransform = (C2) => C2 <= 0.04045 ? C2 / 12.92 : ((C2 + 0.055) / 1.055) ** 2.4;
+const srgbReverseTransform = (C) => C <= 0.04045 ? C / 12.92 : ((C + 0.055) / 1.055) ** 2.4;
 function fromXYZ(xyz) {
   const rgb = Array(3);
   const transform2 = srgbForwardTransform;
@@ -1887,7 +1897,7 @@ function useLocale() {
     throw new Error("[Vuetify] Could not find injected locale instance");
   return locale;
 }
-function genDefaults$2() {
+function genDefaults$3() {
   return {
     af: false,
     ar: true,
@@ -1934,7 +1944,7 @@ function genDefaults$2() {
   };
 }
 function createRtl(i18n2, options2) {
-  const rtl = ref((options2 == null ? void 0 : options2.rtl) ?? genDefaults$2());
+  const rtl = ref((options2 == null ? void 0 : options2.rtl) ?? genDefaults$3());
   const isRtl = computed(() => rtl.value[i18n2.current.value] ?? false);
   return {
     isRtl,
@@ -2710,7 +2720,7 @@ function useDisplay() {
   };
 }
 const GoToSymbol = Symbol.for("vuetify:goto");
-function genDefaults$1() {
+function genDefaults$2() {
   return {
     container: void 0,
     duration: 300,
@@ -2737,7 +2747,7 @@ function genDefaults$1() {
 function createGoTo(options2, locale) {
   return {
     rtl: locale.isRtl,
-    options: mergeDeep(genDefaults$1(), options2)
+    options: mergeDeep(genDefaults$2(), options2)
   };
 }
 const aliases = {
@@ -2870,21 +2880,25 @@ const VClassIcon = defineComponent({
     };
   }
 });
-const defaultSets = {
-  svg: {
-    component: VSvgIcon
-  },
-  class: {
-    component: VClassIcon
-  }
-};
-function createIcons(options2) {
-  return mergeDeep({
-    defaultSet: "mdi",
-    sets: {
-      ...defaultSets,
-      mdi
+function genDefaults$1() {
+  return {
+    svg: {
+      component: VSvgIcon
     },
+    class: {
+      component: VClassIcon
+    }
+  };
+}
+function createIcons(options2) {
+  const sets = genDefaults$1();
+  const defaultSet = (options2 == null ? void 0 : options2.defaultSet) ?? "mdi";
+  if (defaultSet === "mdi" && !sets.mdi) {
+    sets.mdi = mdi;
+  }
+  return mergeDeep({
+    defaultSet,
+    sets,
     aliases: {
       ...aliases,
       /* eslint-disable max-len */
@@ -3340,7 +3354,7 @@ function createVuetify() {
     goTo
   };
 }
-const version = "3.5.4";
+const version = "3.5.5";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -3482,478 +3496,376 @@ async function resolvePageComponent(path, pages) {
   }
   throw new Error(`Page not found: ${path}`);
 }
-function t(t4, r2) {
-  for (var n2 = 0; n2 < r2.length; n2++) {
-    var e2 = r2[n2];
-    e2.enumerable = e2.enumerable || false, e2.configurable = true, "value" in e2 && (e2.writable = true), Object.defineProperty(t4, "symbol" == typeof (o2 = function(t5, r3) {
-      if ("object" != typeof t5 || null === t5)
-        return t5;
-      var n3 = t5[Symbol.toPrimitive];
-      if (void 0 !== n3) {
-        var e3 = n3.call(t5, "string");
-        if ("object" != typeof e3)
-          return e3;
-        throw new TypeError("@@toPrimitive must return a primitive value.");
-      }
-      return String(t5);
-    }(e2.key)) ? o2 : String(o2), e2);
-  }
-  var o2;
-}
-function r(r2, n2, e2) {
-  return n2 && t(r2.prototype, n2), e2 && t(r2, e2), Object.defineProperty(r2, "prototype", { writable: false }), r2;
-}
-function n() {
-  return n = Object.assign ? Object.assign.bind() : function(t4) {
-    for (var r2 = 1; r2 < arguments.length; r2++) {
-      var n2 = arguments[r2];
-      for (var e2 in n2)
-        Object.prototype.hasOwnProperty.call(n2, e2) && (t4[e2] = n2[e2]);
+function t() {
+  return t = Object.assign ? Object.assign.bind() : function(t4) {
+    for (var e2 = 1; e2 < arguments.length; e2++) {
+      var r2 = arguments[e2];
+      for (var n2 in r2)
+        Object.prototype.hasOwnProperty.call(r2, n2) && (t4[n2] = r2[n2]);
     }
     return t4;
-  }, n.apply(this, arguments);
+  }, t.apply(this, arguments);
 }
-function e(t4) {
-  return e = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function(t5) {
-    return t5.__proto__ || Object.getPrototypeOf(t5);
-  }, e(t4);
-}
-function o(t4, r2) {
-  return o = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function(t5, r3) {
-    return t5.__proto__ = r3, t5;
-  }, o(t4, r2);
-}
-function i(t4, r2, n2) {
-  return i = function() {
-    if ("undefined" == typeof Reflect || !Reflect.construct)
-      return false;
-    if (Reflect.construct.sham)
-      return false;
-    if ("function" == typeof Proxy)
-      return true;
-    try {
-      return Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {
-      })), true;
-    } catch (t5) {
-      return false;
-    }
-  }() ? Reflect.construct.bind() : function(t5, r3, n3) {
-    var e2 = [null];
-    e2.push.apply(e2, r3);
-    var i2 = new (Function.bind.apply(t5, e2))();
-    return n3 && o(i2, n3.prototype), i2;
-  }, i.apply(null, arguments);
-}
-function u(t4) {
-  var r2 = "function" == typeof Map ? /* @__PURE__ */ new Map() : void 0;
-  return u = function(t5) {
-    if (null === t5 || -1 === Function.toString.call(t5).indexOf("[native code]"))
-      return t5;
-    if ("function" != typeof t5)
-      throw new TypeError("Super expression must either be null or a function");
-    if (void 0 !== r2) {
-      if (r2.has(t5))
-        return r2.get(t5);
-      r2.set(t5, n2);
-    }
-    function n2() {
-      return i(t5, arguments, e(this).constructor);
-    }
-    return n2.prototype = Object.create(t5.prototype, { constructor: { value: n2, enumerable: false, writable: true, configurable: true } }), o(n2, t5);
-  }, u(t4);
-}
-var f = String.prototype.replace, a = /%20/g, c = "RFC3986", l = { default: c, formatters: { RFC1738: function(t4) {
-  return f.call(t4, a, "+");
+var e = String.prototype.replace, r = /%20/g, n = "RFC3986", o = { default: n, formatters: { RFC1738: function(t4) {
+  return e.call(t4, r, "+");
 }, RFC3986: function(t4) {
   return String(t4);
-} }, RFC1738: "RFC1738", RFC3986: c }, s = Object.prototype.hasOwnProperty, v = Array.isArray, p = function() {
-  for (var t4 = [], r2 = 0; r2 < 256; ++r2)
-    t4.push("%" + ((r2 < 16 ? "0" : "") + r2.toString(16)).toUpperCase());
+} }, RFC1738: "RFC1738", RFC3986: n }, i = Object.prototype.hasOwnProperty, u = Array.isArray, a = function() {
+  for (var t4 = [], e2 = 0; e2 < 256; ++e2)
+    t4.push("%" + ((e2 < 16 ? "0" : "") + e2.toString(16)).toUpperCase());
   return t4;
-}(), y = function(t4, r2) {
-  for (var n2 = r2 && r2.plainObjects ? /* @__PURE__ */ Object.create(null) : {}, e2 = 0; e2 < t4.length; ++e2)
-    void 0 !== t4[e2] && (n2[e2] = t4[e2]);
-  return n2;
-}, d = { arrayToObject: y, assign: function(t4, r2) {
-  return Object.keys(r2).reduce(function(t5, n2) {
-    return t5[n2] = r2[n2], t5;
+}(), s = function(t4, e2) {
+  for (var r2 = e2 && e2.plainObjects ? /* @__PURE__ */ Object.create(null) : {}, n2 = 0; n2 < t4.length; ++n2)
+    void 0 !== t4[n2] && (r2[n2] = t4[n2]);
+  return r2;
+}, f = { arrayToObject: s, assign: function(t4, e2) {
+  return Object.keys(e2).reduce(function(t5, r2) {
+    return t5[r2] = e2[r2], t5;
   }, t4);
-}, combine: function(t4, r2) {
-  return [].concat(t4, r2);
+}, combine: function(t4, e2) {
+  return [].concat(t4, e2);
 }, compact: function(t4) {
-  for (var r2 = [{ obj: { o: t4 }, prop: "o" }], n2 = [], e2 = 0; e2 < r2.length; ++e2)
-    for (var o2 = r2[e2], i2 = o2.obj[o2.prop], u2 = Object.keys(i2), f2 = 0; f2 < u2.length; ++f2) {
-      var a2 = u2[f2], c2 = i2[a2];
-      "object" == typeof c2 && null !== c2 && -1 === n2.indexOf(c2) && (r2.push({ obj: i2, prop: a2 }), n2.push(c2));
+  for (var e2 = [{ obj: { o: t4 }, prop: "o" }], r2 = [], n2 = 0; n2 < e2.length; ++n2)
+    for (var o2 = e2[n2], i2 = o2.obj[o2.prop], a2 = Object.keys(i2), s2 = 0; s2 < a2.length; ++s2) {
+      var f2 = a2[s2], c2 = i2[f2];
+      "object" == typeof c2 && null !== c2 && -1 === r2.indexOf(c2) && (e2.push({ obj: i2, prop: f2 }), r2.push(c2));
     }
   return function(t5) {
     for (; t5.length > 1; ) {
-      var r3 = t5.pop(), n3 = r3.obj[r3.prop];
-      if (v(n3)) {
-        for (var e3 = [], o3 = 0; o3 < n3.length; ++o3)
-          void 0 !== n3[o3] && e3.push(n3[o3]);
-        r3.obj[r3.prop] = e3;
+      var e3 = t5.pop(), r3 = e3.obj[e3.prop];
+      if (u(r3)) {
+        for (var n3 = [], o3 = 0; o3 < r3.length; ++o3)
+          void 0 !== r3[o3] && n3.push(r3[o3]);
+        e3.obj[e3.prop] = n3;
       }
     }
-  }(r2), t4;
-}, decode: function(t4, r2, n2) {
-  var e2 = t4.replace(/\+/g, " ");
-  if ("iso-8859-1" === n2)
-    return e2.replace(/%[0-9a-f]{2}/gi, unescape);
+  }(e2), t4;
+}, decode: function(t4, e2, r2) {
+  var n2 = t4.replace(/\+/g, " ");
+  if ("iso-8859-1" === r2)
+    return n2.replace(/%[0-9a-f]{2}/gi, unescape);
   try {
-    return decodeURIComponent(e2);
+    return decodeURIComponent(n2);
   } catch (t5) {
-    return e2;
+    return n2;
   }
-}, encode: function(t4, r2, n2, e2, o2) {
+}, encode: function(t4, e2, r2, n2, i2) {
   if (0 === t4.length)
     return t4;
-  var i2 = t4;
-  if ("symbol" == typeof t4 ? i2 = Symbol.prototype.toString.call(t4) : "string" != typeof t4 && (i2 = String(t4)), "iso-8859-1" === n2)
-    return escape(i2).replace(/%u[0-9a-f]{4}/gi, function(t5) {
+  var u2 = t4;
+  if ("symbol" == typeof t4 ? u2 = Symbol.prototype.toString.call(t4) : "string" != typeof t4 && (u2 = String(t4)), "iso-8859-1" === r2)
+    return escape(u2).replace(/%u[0-9a-f]{4}/gi, function(t5) {
       return "%26%23" + parseInt(t5.slice(2), 16) + "%3B";
     });
-  for (var u2 = "", f2 = 0; f2 < i2.length; ++f2) {
-    var a2 = i2.charCodeAt(f2);
-    45 === a2 || 46 === a2 || 95 === a2 || 126 === a2 || a2 >= 48 && a2 <= 57 || a2 >= 65 && a2 <= 90 || a2 >= 97 && a2 <= 122 || o2 === l.RFC1738 && (40 === a2 || 41 === a2) ? u2 += i2.charAt(f2) : a2 < 128 ? u2 += p[a2] : a2 < 2048 ? u2 += p[192 | a2 >> 6] + p[128 | 63 & a2] : a2 < 55296 || a2 >= 57344 ? u2 += p[224 | a2 >> 12] + p[128 | a2 >> 6 & 63] + p[128 | 63 & a2] : (a2 = 65536 + ((1023 & a2) << 10 | 1023 & i2.charCodeAt(f2 += 1)), u2 += p[240 | a2 >> 18] + p[128 | a2 >> 12 & 63] + p[128 | a2 >> 6 & 63] + p[128 | 63 & a2]);
+  for (var s2 = "", f2 = 0; f2 < u2.length; ++f2) {
+    var c2 = u2.charCodeAt(f2);
+    45 === c2 || 46 === c2 || 95 === c2 || 126 === c2 || c2 >= 48 && c2 <= 57 || c2 >= 65 && c2 <= 90 || c2 >= 97 && c2 <= 122 || i2 === o.RFC1738 && (40 === c2 || 41 === c2) ? s2 += u2.charAt(f2) : c2 < 128 ? s2 += a[c2] : c2 < 2048 ? s2 += a[192 | c2 >> 6] + a[128 | 63 & c2] : c2 < 55296 || c2 >= 57344 ? s2 += a[224 | c2 >> 12] + a[128 | c2 >> 6 & 63] + a[128 | 63 & c2] : (c2 = 65536 + ((1023 & c2) << 10 | 1023 & u2.charCodeAt(f2 += 1)), s2 += a[240 | c2 >> 18] + a[128 | c2 >> 12 & 63] + a[128 | c2 >> 6 & 63] + a[128 | 63 & c2]);
   }
-  return u2;
+  return s2;
 }, isBuffer: function(t4) {
   return !(!t4 || "object" != typeof t4 || !(t4.constructor && t4.constructor.isBuffer && t4.constructor.isBuffer(t4)));
 }, isRegExp: function(t4) {
   return "[object RegExp]" === Object.prototype.toString.call(t4);
-}, maybeMap: function(t4, r2) {
-  if (v(t4)) {
-    for (var n2 = [], e2 = 0; e2 < t4.length; e2 += 1)
-      n2.push(r2(t4[e2]));
-    return n2;
-  }
-  return r2(t4);
-}, merge: function t2(r2, n2, e2) {
-  if (!n2)
+}, maybeMap: function(t4, e2) {
+  if (u(t4)) {
+    for (var r2 = [], n2 = 0; n2 < t4.length; n2 += 1)
+      r2.push(e2(t4[n2]));
     return r2;
-  if ("object" != typeof n2) {
-    if (v(r2))
-      r2.push(n2);
+  }
+  return e2(t4);
+}, merge: function t2(e2, r2, n2) {
+  if (!r2)
+    return e2;
+  if ("object" != typeof r2) {
+    if (u(e2))
+      e2.push(r2);
     else {
-      if (!r2 || "object" != typeof r2)
-        return [r2, n2];
-      (e2 && (e2.plainObjects || e2.allowPrototypes) || !s.call(Object.prototype, n2)) && (r2[n2] = true);
+      if (!e2 || "object" != typeof e2)
+        return [e2, r2];
+      (n2 && (n2.plainObjects || n2.allowPrototypes) || !i.call(Object.prototype, r2)) && (e2[r2] = true);
     }
-    return r2;
+    return e2;
   }
-  if (!r2 || "object" != typeof r2)
-    return [r2].concat(n2);
-  var o2 = r2;
-  return v(r2) && !v(n2) && (o2 = y(r2, e2)), v(r2) && v(n2) ? (n2.forEach(function(n3, o3) {
-    if (s.call(r2, o3)) {
-      var i2 = r2[o3];
-      i2 && "object" == typeof i2 && n3 && "object" == typeof n3 ? r2[o3] = t2(i2, n3, e2) : r2.push(n3);
+  if (!e2 || "object" != typeof e2)
+    return [e2].concat(r2);
+  var o2 = e2;
+  return u(e2) && !u(r2) && (o2 = s(e2, n2)), u(e2) && u(r2) ? (r2.forEach(function(r3, o3) {
+    if (i.call(e2, o3)) {
+      var u2 = e2[o3];
+      u2 && "object" == typeof u2 && r3 && "object" == typeof r3 ? e2[o3] = t2(u2, r3, n2) : e2.push(r3);
     } else
-      r2[o3] = n3;
-  }), r2) : Object.keys(n2).reduce(function(r3, o3) {
-    var i2 = n2[o3];
-    return r3[o3] = s.call(r3, o3) ? t2(r3[o3], i2, e2) : i2, r3;
+      e2[o3] = r3;
+  }), e2) : Object.keys(r2).reduce(function(e3, o3) {
+    var u2 = r2[o3];
+    return e3[o3] = i.call(e3, o3) ? t2(e3[o3], u2, n2) : u2, e3;
   }, o2);
-} }, b = Object.prototype.hasOwnProperty, h = { brackets: function(t4) {
+} }, c = Object.prototype.hasOwnProperty, l = { brackets: function(t4) {
   return t4 + "[]";
-}, comma: "comma", indices: function(t4, r2) {
-  return t4 + "[" + r2 + "]";
+}, comma: "comma", indices: function(t4, e2) {
+  return t4 + "[" + e2 + "]";
 }, repeat: function(t4) {
   return t4;
-} }, g = Array.isArray, m = String.prototype.split, j = Array.prototype.push, w = function(t4, r2) {
-  j.apply(t4, g(r2) ? r2 : [r2]);
-}, O = Date.prototype.toISOString, E = l.default, R = { addQueryPrefix: false, allowDots: false, charset: "utf-8", charsetSentinel: false, delimiter: "&", encode: true, encoder: d.encode, encodeValuesOnly: false, format: E, formatter: l.formatters[E], indices: false, serializeDate: function(t4) {
-  return O.call(t4);
-}, skipNulls: false, strictNullHandling: false }, S = function t3(r2, n2, e2, o2, i2, u2, f2, a2, c2, l2, s2, v2, p2, y2) {
-  var b2, h2 = r2;
-  if ("function" == typeof f2 ? h2 = f2(n2, h2) : h2 instanceof Date ? h2 = l2(h2) : "comma" === e2 && g(h2) && (h2 = d.maybeMap(h2, function(t4) {
+} }, p = Array.isArray, h = String.prototype.split, y = Array.prototype.push, d = function(t4, e2) {
+  y.apply(t4, p(e2) ? e2 : [e2]);
+}, b = Date.prototype.toISOString, g = o.default, v = { addQueryPrefix: false, allowDots: false, charset: "utf-8", charsetSentinel: false, delimiter: "&", encode: true, encoder: f.encode, encodeValuesOnly: false, format: g, formatter: o.formatters[g], indices: false, serializeDate: function(t4) {
+  return b.call(t4);
+}, skipNulls: false, strictNullHandling: false }, m = function t3(e2, r2, n2, o2, i2, u2, a2, s2, c2, l2, y2, b2, g2, m2) {
+  var j2, w2 = e2;
+  if ("function" == typeof a2 ? w2 = a2(r2, w2) : w2 instanceof Date ? w2 = l2(w2) : "comma" === n2 && p(w2) && (w2 = f.maybeMap(w2, function(t4) {
     return t4 instanceof Date ? l2(t4) : t4;
-  })), null === h2) {
+  })), null === w2) {
     if (o2)
-      return u2 && !p2 ? u2(n2, R.encoder, y2, "key", s2) : n2;
-    h2 = "";
+      return u2 && !g2 ? u2(r2, v.encoder, m2, "key", y2) : r2;
+    w2 = "";
   }
-  if ("string" == typeof (b2 = h2) || "number" == typeof b2 || "boolean" == typeof b2 || "symbol" == typeof b2 || "bigint" == typeof b2 || d.isBuffer(h2)) {
+  if ("string" == typeof (j2 = w2) || "number" == typeof j2 || "boolean" == typeof j2 || "symbol" == typeof j2 || "bigint" == typeof j2 || f.isBuffer(w2)) {
     if (u2) {
-      var j2 = p2 ? n2 : u2(n2, R.encoder, y2, "key", s2);
-      if ("comma" === e2 && p2) {
-        for (var O2 = m.call(String(h2), ","), E2 = "", S2 = 0; S2 < O2.length; ++S2)
-          E2 += (0 === S2 ? "" : ",") + v2(u2(O2[S2], R.encoder, y2, "value", s2));
-        return [v2(j2) + "=" + E2];
+      var $2 = g2 ? r2 : u2(r2, v.encoder, m2, "key", y2);
+      if ("comma" === n2 && g2) {
+        for (var O2 = h.call(String(w2), ","), E2 = "", S2 = 0; S2 < O2.length; ++S2)
+          E2 += (0 === S2 ? "" : ",") + b2(u2(O2[S2], v.encoder, m2, "value", y2));
+        return [b2($2) + "=" + E2];
       }
-      return [v2(j2) + "=" + v2(u2(h2, R.encoder, y2, "value", s2))];
+      return [b2($2) + "=" + b2(u2(w2, v.encoder, m2, "value", y2))];
     }
-    return [v2(n2) + "=" + v2(String(h2))];
+    return [b2(r2) + "=" + b2(String(w2))];
   }
-  var k2, x2 = [];
-  if (void 0 === h2)
+  var R2, x2 = [];
+  if (void 0 === w2)
     return x2;
-  if ("comma" === e2 && g(h2))
-    k2 = [{ value: h2.length > 0 ? h2.join(",") || null : void 0 }];
-  else if (g(f2))
-    k2 = f2;
+  if ("comma" === n2 && p(w2))
+    R2 = [{ value: w2.length > 0 ? w2.join(",") || null : void 0 }];
+  else if (p(a2))
+    R2 = a2;
   else {
-    var T2 = Object.keys(h2);
-    k2 = a2 ? T2.sort(a2) : T2;
+    var N2 = Object.keys(w2);
+    R2 = s2 ? N2.sort(s2) : N2;
   }
-  for (var N2 = 0; N2 < k2.length; ++N2) {
-    var C2 = k2[N2], D2 = "object" == typeof C2 && void 0 !== C2.value ? C2.value : h2[C2];
-    if (!i2 || null !== D2) {
-      var $2 = g(h2) ? "function" == typeof e2 ? e2(n2, C2) : n2 : n2 + (c2 ? "." + C2 : "[" + C2 + "]");
-      w(x2, t3(D2, $2, e2, o2, i2, u2, f2, a2, c2, l2, s2, v2, p2, y2));
+  for (var T2 = 0; T2 < R2.length; ++T2) {
+    var k2 = R2[T2], C = "object" == typeof k2 && void 0 !== k2.value ? k2.value : w2[k2];
+    if (!i2 || null !== C) {
+      var _ = p(w2) ? "function" == typeof n2 ? n2(r2, k2) : r2 : r2 + (c2 ? "." + k2 : "[" + k2 + "]");
+      d(x2, t3(C, _, n2, o2, i2, u2, a2, s2, c2, l2, y2, b2, g2, m2));
     }
   }
   return x2;
-}, k = Object.prototype.hasOwnProperty, x = Array.isArray, T = { allowDots: false, allowPrototypes: false, arrayLimit: 20, charset: "utf-8", charsetSentinel: false, comma: false, decoder: d.decode, delimiter: "&", depth: 5, ignoreQueryPrefix: false, interpretNumericEntities: false, parameterLimit: 1e3, parseArrays: true, plainObjects: false, strictNullHandling: false }, N = function(t4) {
-  return t4.replace(/&#(\d+);/g, function(t5, r2) {
-    return String.fromCharCode(parseInt(r2, 10));
+}, j = Object.prototype.hasOwnProperty, w = Array.isArray, $ = { allowDots: false, allowPrototypes: false, arrayLimit: 20, charset: "utf-8", charsetSentinel: false, comma: false, decoder: f.decode, delimiter: "&", depth: 5, ignoreQueryPrefix: false, interpretNumericEntities: false, parameterLimit: 1e3, parseArrays: true, plainObjects: false, strictNullHandling: false }, O = function(t4) {
+  return t4.replace(/&#(\d+);/g, function(t5, e2) {
+    return String.fromCharCode(parseInt(e2, 10));
   });
-}, C = function(t4, r2) {
-  return t4 && "string" == typeof t4 && r2.comma && t4.indexOf(",") > -1 ? t4.split(",") : t4;
-}, D = function(t4, r2, n2, e2) {
+}, E = function(t4, e2) {
+  return t4 && "string" == typeof t4 && e2.comma && t4.indexOf(",") > -1 ? t4.split(",") : t4;
+}, S = function(t4, e2, r2, n2) {
   if (t4) {
-    var o2 = n2.allowDots ? t4.replace(/\.([^.[]+)/g, "[$1]") : t4, i2 = /(\[[^[\]]*])/g, u2 = n2.depth > 0 && /(\[[^[\]]*])/.exec(o2), f2 = u2 ? o2.slice(0, u2.index) : o2, a2 = [];
-    if (f2) {
-      if (!n2.plainObjects && k.call(Object.prototype, f2) && !n2.allowPrototypes)
+    var o2 = r2.allowDots ? t4.replace(/\.([^.[]+)/g, "[$1]") : t4, i2 = /(\[[^[\]]*])/g, u2 = r2.depth > 0 && /(\[[^[\]]*])/.exec(o2), a2 = u2 ? o2.slice(0, u2.index) : o2, s2 = [];
+    if (a2) {
+      if (!r2.plainObjects && j.call(Object.prototype, a2) && !r2.allowPrototypes)
         return;
-      a2.push(f2);
+      s2.push(a2);
     }
-    for (var c2 = 0; n2.depth > 0 && null !== (u2 = i2.exec(o2)) && c2 < n2.depth; ) {
-      if (c2 += 1, !n2.plainObjects && k.call(Object.prototype, u2[1].slice(1, -1)) && !n2.allowPrototypes)
+    for (var f2 = 0; r2.depth > 0 && null !== (u2 = i2.exec(o2)) && f2 < r2.depth; ) {
+      if (f2 += 1, !r2.plainObjects && j.call(Object.prototype, u2[1].slice(1, -1)) && !r2.allowPrototypes)
         return;
-      a2.push(u2[1]);
+      s2.push(u2[1]);
     }
-    return u2 && a2.push("[" + o2.slice(u2.index) + "]"), function(t5, r3, n3, e3) {
-      for (var o3 = e3 ? r3 : C(r3, n3), i3 = t5.length - 1; i3 >= 0; --i3) {
-        var u3, f3 = t5[i3];
-        if ("[]" === f3 && n3.parseArrays)
+    return u2 && s2.push("[" + o2.slice(u2.index) + "]"), function(t5, e3, r3, n3) {
+      for (var o3 = n3 ? e3 : E(e3, r3), i3 = t5.length - 1; i3 >= 0; --i3) {
+        var u3, a3 = t5[i3];
+        if ("[]" === a3 && r3.parseArrays)
           u3 = [].concat(o3);
         else {
-          u3 = n3.plainObjects ? /* @__PURE__ */ Object.create(null) : {};
-          var a3 = "[" === f3.charAt(0) && "]" === f3.charAt(f3.length - 1) ? f3.slice(1, -1) : f3, c3 = parseInt(a3, 10);
-          n3.parseArrays || "" !== a3 ? !isNaN(c3) && f3 !== a3 && String(c3) === a3 && c3 >= 0 && n3.parseArrays && c3 <= n3.arrayLimit ? (u3 = [])[c3] = o3 : "__proto__" !== a3 && (u3[a3] = o3) : u3 = { 0: o3 };
+          u3 = r3.plainObjects ? /* @__PURE__ */ Object.create(null) : {};
+          var s3 = "[" === a3.charAt(0) && "]" === a3.charAt(a3.length - 1) ? a3.slice(1, -1) : a3, f3 = parseInt(s3, 10);
+          r3.parseArrays || "" !== s3 ? !isNaN(f3) && a3 !== s3 && String(f3) === s3 && f3 >= 0 && r3.parseArrays && f3 <= r3.arrayLimit ? (u3 = [])[f3] = o3 : "__proto__" !== s3 && (u3[s3] = o3) : u3 = { 0: o3 };
         }
         o3 = u3;
       }
       return o3;
-    }(a2, r2, n2, e2);
+    }(s2, e2, r2, n2);
   }
-}, $ = function(t4, r2) {
-  var n2 = function(t5) {
+}, R = function(t4, e2) {
+  var r2 = function(t5) {
     if (!t5)
-      return T;
+      return $;
     if (null != t5.decoder && "function" != typeof t5.decoder)
       throw new TypeError("Decoder has to be a function.");
     if (void 0 !== t5.charset && "utf-8" !== t5.charset && "iso-8859-1" !== t5.charset)
       throw new TypeError("The charset option must be either utf-8, iso-8859-1, or undefined");
-    return { allowDots: void 0 === t5.allowDots ? T.allowDots : !!t5.allowDots, allowPrototypes: "boolean" == typeof t5.allowPrototypes ? t5.allowPrototypes : T.allowPrototypes, arrayLimit: "number" == typeof t5.arrayLimit ? t5.arrayLimit : T.arrayLimit, charset: void 0 === t5.charset ? T.charset : t5.charset, charsetSentinel: "boolean" == typeof t5.charsetSentinel ? t5.charsetSentinel : T.charsetSentinel, comma: "boolean" == typeof t5.comma ? t5.comma : T.comma, decoder: "function" == typeof t5.decoder ? t5.decoder : T.decoder, delimiter: "string" == typeof t5.delimiter || d.isRegExp(t5.delimiter) ? t5.delimiter : T.delimiter, depth: "number" == typeof t5.depth || false === t5.depth ? +t5.depth : T.depth, ignoreQueryPrefix: true === t5.ignoreQueryPrefix, interpretNumericEntities: "boolean" == typeof t5.interpretNumericEntities ? t5.interpretNumericEntities : T.interpretNumericEntities, parameterLimit: "number" == typeof t5.parameterLimit ? t5.parameterLimit : T.parameterLimit, parseArrays: false !== t5.parseArrays, plainObjects: "boolean" == typeof t5.plainObjects ? t5.plainObjects : T.plainObjects, strictNullHandling: "boolean" == typeof t5.strictNullHandling ? t5.strictNullHandling : T.strictNullHandling };
-  }(r2);
+    return { allowDots: void 0 === t5.allowDots ? $.allowDots : !!t5.allowDots, allowPrototypes: "boolean" == typeof t5.allowPrototypes ? t5.allowPrototypes : $.allowPrototypes, arrayLimit: "number" == typeof t5.arrayLimit ? t5.arrayLimit : $.arrayLimit, charset: void 0 === t5.charset ? $.charset : t5.charset, charsetSentinel: "boolean" == typeof t5.charsetSentinel ? t5.charsetSentinel : $.charsetSentinel, comma: "boolean" == typeof t5.comma ? t5.comma : $.comma, decoder: "function" == typeof t5.decoder ? t5.decoder : $.decoder, delimiter: "string" == typeof t5.delimiter || f.isRegExp(t5.delimiter) ? t5.delimiter : $.delimiter, depth: "number" == typeof t5.depth || false === t5.depth ? +t5.depth : $.depth, ignoreQueryPrefix: true === t5.ignoreQueryPrefix, interpretNumericEntities: "boolean" == typeof t5.interpretNumericEntities ? t5.interpretNumericEntities : $.interpretNumericEntities, parameterLimit: "number" == typeof t5.parameterLimit ? t5.parameterLimit : $.parameterLimit, parseArrays: false !== t5.parseArrays, plainObjects: "boolean" == typeof t5.plainObjects ? t5.plainObjects : $.plainObjects, strictNullHandling: "boolean" == typeof t5.strictNullHandling ? t5.strictNullHandling : $.strictNullHandling };
+  }(e2);
   if ("" === t4 || null == t4)
-    return n2.plainObjects ? /* @__PURE__ */ Object.create(null) : {};
-  for (var e2 = "string" == typeof t4 ? function(t5, r3) {
-    var n3, e3 = {}, o3 = (r3.ignoreQueryPrefix ? t5.replace(/^\?/, "") : t5).split(r3.delimiter, Infinity === r3.parameterLimit ? void 0 : r3.parameterLimit), i3 = -1, u3 = r3.charset;
-    if (r3.charsetSentinel)
-      for (n3 = 0; n3 < o3.length; ++n3)
-        0 === o3[n3].indexOf("utf8=") && ("utf8=%E2%9C%93" === o3[n3] ? u3 = "utf-8" : "utf8=%26%2310003%3B" === o3[n3] && (u3 = "iso-8859-1"), i3 = n3, n3 = o3.length);
-    for (n3 = 0; n3 < o3.length; ++n3)
-      if (n3 !== i3) {
-        var f3, a3, c2 = o3[n3], l2 = c2.indexOf("]="), s2 = -1 === l2 ? c2.indexOf("=") : l2 + 1;
-        -1 === s2 ? (f3 = r3.decoder(c2, T.decoder, u3, "key"), a3 = r3.strictNullHandling ? null : "") : (f3 = r3.decoder(c2.slice(0, s2), T.decoder, u3, "key"), a3 = d.maybeMap(C(c2.slice(s2 + 1), r3), function(t6) {
-          return r3.decoder(t6, T.decoder, u3, "value");
-        })), a3 && r3.interpretNumericEntities && "iso-8859-1" === u3 && (a3 = N(a3)), c2.indexOf("[]=") > -1 && (a3 = x(a3) ? [a3] : a3), e3[f3] = k.call(e3, f3) ? d.combine(e3[f3], a3) : a3;
+    return r2.plainObjects ? /* @__PURE__ */ Object.create(null) : {};
+  for (var n2 = "string" == typeof t4 ? function(t5, e3) {
+    var r3, n3 = {}, o3 = (e3.ignoreQueryPrefix ? t5.replace(/^\?/, "") : t5).split(e3.delimiter, Infinity === e3.parameterLimit ? void 0 : e3.parameterLimit), i3 = -1, u3 = e3.charset;
+    if (e3.charsetSentinel)
+      for (r3 = 0; r3 < o3.length; ++r3)
+        0 === o3[r3].indexOf("utf8=") && ("utf8=%E2%9C%93" === o3[r3] ? u3 = "utf-8" : "utf8=%26%2310003%3B" === o3[r3] && (u3 = "iso-8859-1"), i3 = r3, r3 = o3.length);
+    for (r3 = 0; r3 < o3.length; ++r3)
+      if (r3 !== i3) {
+        var a3, s3, c2 = o3[r3], l2 = c2.indexOf("]="), p2 = -1 === l2 ? c2.indexOf("=") : l2 + 1;
+        -1 === p2 ? (a3 = e3.decoder(c2, $.decoder, u3, "key"), s3 = e3.strictNullHandling ? null : "") : (a3 = e3.decoder(c2.slice(0, p2), $.decoder, u3, "key"), s3 = f.maybeMap(E(c2.slice(p2 + 1), e3), function(t6) {
+          return e3.decoder(t6, $.decoder, u3, "value");
+        })), s3 && e3.interpretNumericEntities && "iso-8859-1" === u3 && (s3 = O(s3)), c2.indexOf("[]=") > -1 && (s3 = w(s3) ? [s3] : s3), n3[a3] = j.call(n3, a3) ? f.combine(n3[a3], s3) : s3;
       }
-    return e3;
-  }(t4, n2) : t4, o2 = n2.plainObjects ? /* @__PURE__ */ Object.create(null) : {}, i2 = Object.keys(e2), u2 = 0; u2 < i2.length; ++u2) {
-    var f2 = i2[u2], a2 = D(f2, e2[f2], n2, "string" == typeof t4);
-    o2 = d.merge(o2, a2, n2);
+    return n3;
+  }(t4, r2) : t4, o2 = r2.plainObjects ? /* @__PURE__ */ Object.create(null) : {}, i2 = Object.keys(n2), u2 = 0; u2 < i2.length; ++u2) {
+    var a2 = i2[u2], s2 = S(a2, n2[a2], r2, "string" == typeof t4);
+    o2 = f.merge(o2, s2, r2);
   }
-  return d.compact(o2);
-}, F = /* @__PURE__ */ function() {
-  function t4(t5, r2, n3) {
-    var e2, o2;
-    this.name = t5, this.definition = r2, this.bindings = null != (e2 = r2.bindings) ? e2 : {}, this.wheres = null != (o2 = r2.wheres) ? o2 : {}, this.config = n3;
+  return f.compact(o2);
+};
+class x {
+  constructor(t4, e2, r2) {
+    var n2, o2;
+    this.name = t4, this.definition = e2, this.bindings = null != (n2 = e2.bindings) ? n2 : {}, this.wheres = null != (o2 = e2.wheres) ? o2 : {}, this.config = r2;
   }
-  var n2 = t4.prototype;
-  return n2.matchesUrl = function(t5) {
-    var r2 = this;
+  get template() {
+    const t4 = `${this.origin}/${this.definition.uri}`.replace(/\/+$/, "");
+    return "" === t4 ? "/" : t4;
+  }
+  get origin() {
+    return this.config.absolute ? this.definition.domain ? `${this.config.url.match(/^\w+:\/\//)[0]}${this.definition.domain}${this.config.port ? `:${this.config.port}` : ""}` : this.config.url : "";
+  }
+  get parameterSegments() {
+    var t4, e2;
+    return null != (t4 = null == (e2 = this.template.match(/{[^}?]+\??}/g)) ? void 0 : e2.map((t5) => ({ name: t5.replace(/{|\??}/g, ""), required: !/\?}$/.test(t5) }))) ? t4 : [];
+  }
+  matchesUrl(t4) {
     if (!this.definition.methods.includes("GET"))
       return false;
-    var n3 = this.template.replace(/(\/?){([^}?]*)(\??)}/g, function(t6, n4, e3, o3) {
-      var i3, u3 = "(?<" + e3 + ">" + ((null == (i3 = r2.wheres[e3]) ? void 0 : i3.replace(/(^\^)|(\$$)/g, "")) || "[^/?]+") + ")";
-      return o3 ? "(" + n4 + u3 + ")?" : "" + n4 + u3;
-    }).replace(/^\w+:\/\//, ""), e2 = t5.replace(/^\w+:\/\//, "").split("?"), o2 = e2[0], i2 = e2[1], u2 = new RegExp("^" + n3 + "/?$").exec(decodeURI(o2));
-    if (u2) {
-      for (var f2 in u2.groups)
-        u2.groups[f2] = "string" == typeof u2.groups[f2] ? decodeURIComponent(u2.groups[f2]) : u2.groups[f2];
-      return { params: u2.groups, query: $(i2) };
+    const e2 = this.template.replace(/(\/?){([^}?]*)(\??)}/g, (t5, e3, r3, n3) => {
+      var o3;
+      const i2 = `(?<${r3}>${(null == (o3 = this.wheres[r3]) ? void 0 : o3.replace(/(^\^)|(\$$)/g, "")) || "[^/?]+"})`;
+      return n3 ? `(${e3}${i2})?` : `${e3}${i2}`;
+    }).replace(/^\w+:\/\//, ""), [r2, n2] = t4.replace(/^\w+:\/\//, "").split("?"), o2 = new RegExp(`^${e2}/?$`).exec(decodeURI(r2));
+    if (o2) {
+      for (const t5 in o2.groups)
+        o2.groups[t5] = "string" == typeof o2.groups[t5] ? decodeURIComponent(o2.groups[t5]) : o2.groups[t5];
+      return { params: o2.groups, query: R(n2) };
     }
     return false;
-  }, n2.compile = function(t5) {
-    var r2 = this;
-    return this.parameterSegments.length ? this.template.replace(/{([^}?]+)(\??)}/g, function(n3, e2, o2) {
-      var i2, u2;
-      if (!o2 && [null, void 0].includes(t5[e2]))
-        throw new Error("Ziggy error: '" + e2 + "' parameter is required for route '" + r2.name + "'.");
-      if (r2.wheres[e2] && !new RegExp("^" + (o2 ? "(" + r2.wheres[e2] + ")?" : r2.wheres[e2]) + "$").test(null != (u2 = t5[e2]) ? u2 : ""))
-        throw new Error("Ziggy error: '" + e2 + "' parameter does not match required format '" + r2.wheres[e2] + "' for route '" + r2.name + "'.");
-      return encodeURI(null != (i2 = t5[e2]) ? i2 : "").replace(/%7C/g, "|").replace(/%25/g, "%").replace(/\$/g, "%24");
-    }).replace(this.origin + "//", this.origin + "/").replace(/\/+$/, "") : this.template;
-  }, r(t4, [{ key: "template", get: function() {
-    var t5 = (this.origin + "/" + this.definition.uri).replace(/\/+$/, "");
-    return "" === t5 ? "/" : t5;
-  } }, { key: "origin", get: function() {
-    return this.config.absolute ? this.definition.domain ? "" + this.config.url.match(/^\w+:\/\//)[0] + this.definition.domain + (this.config.port ? ":" + this.config.port : "") : this.config.url : "";
-  } }, { key: "parameterSegments", get: function() {
-    var t5, r2;
-    return null != (t5 = null == (r2 = this.template.match(/{[^}?]+\??}/g)) ? void 0 : r2.map(function(t6) {
-      return { name: t6.replace(/{|\??}/g, ""), required: !/\?}$/.test(t6) };
-    })) ? t5 : [];
-  } }]), t4;
-}(), I = /* @__PURE__ */ function(t4) {
-  var e2, i2;
-  function u2(r2, e3, o2, i3) {
-    var u3;
-    if (void 0 === o2 && (o2 = true), (u3 = t4.call(this) || this).t = null != i3 ? i3 : "undefined" != typeof Ziggy ? Ziggy : null == globalThis ? void 0 : globalThis.Ziggy, u3.t = n({}, u3.t, { absolute: o2 }), r2) {
-      if (!u3.t.routes[r2])
-        throw new Error("Ziggy error: route '" + r2 + "' is not in the route list.");
-      u3.i = new F(r2, u3.t.routes[r2], u3.t), u3.u = u3.l(e3);
-    }
-    return u3;
   }
-  i2 = t4, (e2 = u2).prototype = Object.create(i2.prototype), e2.prototype.constructor = e2, o(e2, i2);
-  var f2 = u2.prototype;
-  return f2.toString = function() {
-    var t5 = this, r2 = Object.keys(this.u).filter(function(r3) {
-      return !t5.i.parameterSegments.some(function(t6) {
-        return t6.name === r3;
-      });
-    }).filter(function(t6) {
-      return "_query" !== t6;
-    }).reduce(function(r3, e3) {
-      var o2;
-      return n({}, r3, ((o2 = {})[e3] = t5.u[e3], o2));
-    }, {});
-    return this.i.compile(this.u) + function(t6, r3) {
-      var n2, e3 = t6, o2 = function(t7) {
-        if (!t7)
-          return R;
-        if (null != t7.encoder && "function" != typeof t7.encoder)
+  compile(t4) {
+    return this.parameterSegments.length ? this.template.replace(/{([^}?]+)(\??)}/g, (e2, r2, n2) => {
+      var o2, i2;
+      if (!n2 && [null, void 0].includes(t4[r2]))
+        throw new Error(`Ziggy error: '${r2}' parameter is required for route '${this.name}'.`);
+      if (this.wheres[r2] && !new RegExp(`^${n2 ? `(${this.wheres[r2]})?` : this.wheres[r2]}$`).test(null != (i2 = t4[r2]) ? i2 : ""))
+        throw new Error(`Ziggy error: '${r2}' parameter does not match required format '${this.wheres[r2]}' for route '${this.name}'.`);
+      return encodeURI(null != (o2 = t4[r2]) ? o2 : "").replace(/%7C/g, "|").replace(/%25/g, "%").replace(/\$/g, "%24");
+    }).replace(`${this.origin}//`, `${this.origin}/`).replace(/\/+$/, "") : this.template;
+  }
+}
+class N extends String {
+  constructor(e2, r2, n2 = true, o2) {
+    if (super(), this.t = null != o2 ? o2 : "undefined" != typeof Ziggy ? Ziggy : null == globalThis ? void 0 : globalThis.Ziggy, this.t = t({}, this.t, { absolute: n2 }), e2) {
+      if (!this.t.routes[e2])
+        throw new Error(`Ziggy error: route '${e2}' is not in the route list.`);
+      this.i = new x(e2, this.t.routes[e2], this.t), this.u = this.l(r2);
+    }
+  }
+  toString() {
+    const e2 = Object.keys(this.u).filter((t4) => !this.i.parameterSegments.some(({ name: e3 }) => e3 === t4)).filter((t4) => "_query" !== t4).reduce((e3, r2) => t({}, e3, { [r2]: this.u[r2] }), {});
+    return this.i.compile(this.u) + function(t4, e3) {
+      var r2, n2 = t4, i2 = function(t5) {
+        if (!t5)
+          return v;
+        if (null != t5.encoder && "function" != typeof t5.encoder)
           throw new TypeError("Encoder has to be a function.");
-        var r4 = t7.charset || R.charset;
-        if (void 0 !== t7.charset && "utf-8" !== t7.charset && "iso-8859-1" !== t7.charset)
+        var e4 = t5.charset || v.charset;
+        if (void 0 !== t5.charset && "utf-8" !== t5.charset && "iso-8859-1" !== t5.charset)
           throw new TypeError("The charset option must be either utf-8, iso-8859-1, or undefined");
-        var n3 = l.default;
-        if (void 0 !== t7.format) {
-          if (!b.call(l.formatters, t7.format))
+        var r3 = o.default;
+        if (void 0 !== t5.format) {
+          if (!c.call(o.formatters, t5.format))
             throw new TypeError("Unknown format option provided.");
-          n3 = t7.format;
+          r3 = t5.format;
         }
-        var e4 = l.formatters[n3], o3 = R.filter;
-        return ("function" == typeof t7.filter || g(t7.filter)) && (o3 = t7.filter), { addQueryPrefix: "boolean" == typeof t7.addQueryPrefix ? t7.addQueryPrefix : R.addQueryPrefix, allowDots: void 0 === t7.allowDots ? R.allowDots : !!t7.allowDots, charset: r4, charsetSentinel: "boolean" == typeof t7.charsetSentinel ? t7.charsetSentinel : R.charsetSentinel, delimiter: void 0 === t7.delimiter ? R.delimiter : t7.delimiter, encode: "boolean" == typeof t7.encode ? t7.encode : R.encode, encoder: "function" == typeof t7.encoder ? t7.encoder : R.encoder, encodeValuesOnly: "boolean" == typeof t7.encodeValuesOnly ? t7.encodeValuesOnly : R.encodeValuesOnly, filter: o3, format: n3, formatter: e4, serializeDate: "function" == typeof t7.serializeDate ? t7.serializeDate : R.serializeDate, skipNulls: "boolean" == typeof t7.skipNulls ? t7.skipNulls : R.skipNulls, sort: "function" == typeof t7.sort ? t7.sort : null, strictNullHandling: "boolean" == typeof t7.strictNullHandling ? t7.strictNullHandling : R.strictNullHandling };
-      }(r3);
-      "function" == typeof o2.filter ? e3 = (0, o2.filter)("", e3) : g(o2.filter) && (n2 = o2.filter);
-      var i3 = [];
-      if ("object" != typeof e3 || null === e3)
+        var n3 = o.formatters[r3], i3 = v.filter;
+        return ("function" == typeof t5.filter || p(t5.filter)) && (i3 = t5.filter), { addQueryPrefix: "boolean" == typeof t5.addQueryPrefix ? t5.addQueryPrefix : v.addQueryPrefix, allowDots: void 0 === t5.allowDots ? v.allowDots : !!t5.allowDots, charset: e4, charsetSentinel: "boolean" == typeof t5.charsetSentinel ? t5.charsetSentinel : v.charsetSentinel, delimiter: void 0 === t5.delimiter ? v.delimiter : t5.delimiter, encode: "boolean" == typeof t5.encode ? t5.encode : v.encode, encoder: "function" == typeof t5.encoder ? t5.encoder : v.encoder, encodeValuesOnly: "boolean" == typeof t5.encodeValuesOnly ? t5.encodeValuesOnly : v.encodeValuesOnly, filter: i3, format: r3, formatter: n3, serializeDate: "function" == typeof t5.serializeDate ? t5.serializeDate : v.serializeDate, skipNulls: "boolean" == typeof t5.skipNulls ? t5.skipNulls : v.skipNulls, sort: "function" == typeof t5.sort ? t5.sort : null, strictNullHandling: "boolean" == typeof t5.strictNullHandling ? t5.strictNullHandling : v.strictNullHandling };
+      }(e3);
+      "function" == typeof i2.filter ? n2 = (0, i2.filter)("", n2) : p(i2.filter) && (r2 = i2.filter);
+      var u2 = [];
+      if ("object" != typeof n2 || null === n2)
         return "";
-      var u3 = h[r3 && r3.arrayFormat in h ? r3.arrayFormat : r3 && "indices" in r3 ? r3.indices ? "indices" : "repeat" : "indices"];
-      n2 || (n2 = Object.keys(e3)), o2.sort && n2.sort(o2.sort);
-      for (var f3 = 0; f3 < n2.length; ++f3) {
-        var a2 = n2[f3];
-        o2.skipNulls && null === e3[a2] || w(i3, S(e3[a2], a2, u3, o2.strictNullHandling, o2.skipNulls, o2.encode ? o2.encoder : null, o2.filter, o2.sort, o2.allowDots, o2.serializeDate, o2.format, o2.formatter, o2.encodeValuesOnly, o2.charset));
+      var a2 = l[e3 && e3.arrayFormat in l ? e3.arrayFormat : e3 && "indices" in e3 ? e3.indices ? "indices" : "repeat" : "indices"];
+      r2 || (r2 = Object.keys(n2)), i2.sort && r2.sort(i2.sort);
+      for (var s2 = 0; s2 < r2.length; ++s2) {
+        var f2 = r2[s2];
+        i2.skipNulls && null === n2[f2] || d(u2, m(n2[f2], f2, a2, i2.strictNullHandling, i2.skipNulls, i2.encode ? i2.encoder : null, i2.filter, i2.sort, i2.allowDots, i2.serializeDate, i2.format, i2.formatter, i2.encodeValuesOnly, i2.charset));
       }
-      var c2 = i3.join(o2.delimiter), s2 = true === o2.addQueryPrefix ? "?" : "";
-      return o2.charsetSentinel && (s2 += "iso-8859-1" === o2.charset ? "utf8=%26%2310003%3B&" : "utf8=%E2%9C%93&"), c2.length > 0 ? s2 + c2 : "";
-    }(n({}, r2, this.u._query), { addQueryPrefix: true, arrayFormat: "indices", encodeValuesOnly: true, skipNulls: true, encoder: function(t6, r3) {
-      return "boolean" == typeof t6 ? Number(t6) : r3(t6);
-    } });
-  }, f2.v = function(t5) {
-    var r2 = this;
-    t5 ? this.t.absolute && t5.startsWith("/") && (t5 = this.p().host + t5) : t5 = this.h();
-    var e3 = {}, o2 = Object.entries(this.t.routes).find(function(n2) {
-      return e3 = new F(n2[0], n2[1], r2.t).matchesUrl(t5);
-    }) || [void 0, void 0];
-    return n({ name: o2[0] }, e3, { route: o2[1] });
-  }, f2.h = function() {
-    var t5 = this.p(), r2 = t5.pathname, n2 = t5.search;
-    return (this.t.absolute ? t5.host + r2 : r2.replace(this.t.url.replace(/^\w*:\/\/[^/]+/, ""), "").replace(/^\/+/, "/")) + n2;
-  }, f2.current = function(t5, r2) {
-    var e3 = this.v(), o2 = e3.name, i3 = e3.params, u3 = e3.query, f3 = e3.route;
-    if (!t5)
-      return o2;
-    var a2 = new RegExp("^" + t5.replace(/\./g, "\\.").replace(/\*/g, ".*") + "$").test(o2);
+      var h2 = u2.join(i2.delimiter), y2 = true === i2.addQueryPrefix ? "?" : "";
+      return i2.charsetSentinel && (y2 += "iso-8859-1" === i2.charset ? "utf8=%26%2310003%3B&" : "utf8=%E2%9C%93&"), h2.length > 0 ? y2 + h2 : "";
+    }(t({}, e2, this.u._query), { addQueryPrefix: true, arrayFormat: "indices", encodeValuesOnly: true, skipNulls: true, encoder: (t4, e3) => "boolean" == typeof t4 ? Number(t4) : e3(t4) });
+  }
+  p(e2) {
+    e2 ? this.t.absolute && e2.startsWith("/") && (e2 = this.h().host + e2) : e2 = this.v();
+    let r2 = {};
+    const [n2, o2] = Object.entries(this.t.routes).find(([t4, n3]) => r2 = new x(t4, n3, this.t).matchesUrl(e2)) || [void 0, void 0];
+    return t({ name: n2 }, r2, { route: o2 });
+  }
+  v() {
+    const { host: t4, pathname: e2, search: r2 } = this.h();
+    return (this.t.absolute ? t4 + e2 : e2.replace(this.t.url.replace(/^\w*:\/\/[^/]+/, ""), "").replace(/^\/+/, "/")) + r2;
+  }
+  current(e2, r2) {
+    const { name: n2, params: o2, query: i2, route: u2 } = this.p();
+    if (!e2)
+      return n2;
+    const a2 = new RegExp(`^${e2.replace(/\./g, "\\.").replace(/\*/g, ".*")}$`).test(n2);
     if ([null, void 0].includes(r2) || !a2)
       return a2;
-    var c2 = new F(o2, f3, this.t);
-    r2 = this.l(r2, c2);
-    var l2 = n({}, i3, u3);
-    return !(!Object.values(r2).every(function(t6) {
-      return !t6;
-    }) || Object.values(l2).some(function(t6) {
-      return void 0 !== t6;
-    })) || Object.entries(r2).every(function(t6) {
-      return l2[t6[0]] == t6[1];
-    });
-  }, f2.p = function() {
-    var t5, r2, n2, e3, o2, i3, u3 = "undefined" != typeof window ? window.location : {}, f3 = u3.host, a2 = u3.pathname, c2 = u3.search;
-    return { host: null != (t5 = null == (r2 = this.t.location) ? void 0 : r2.host) ? t5 : void 0 === f3 ? "" : f3, pathname: null != (n2 = null == (e3 = this.t.location) ? void 0 : e3.pathname) ? n2 : void 0 === a2 ? "" : a2, search: null != (o2 = null == (i3 = this.t.location) ? void 0 : i3.search) ? o2 : void 0 === c2 ? "" : c2 };
-  }, f2.has = function(t5) {
-    return Object.keys(this.t.routes).includes(t5);
-  }, f2.l = function(t5, r2) {
-    var e3 = this;
-    void 0 === t5 && (t5 = {}), void 0 === r2 && (r2 = this.i), null != t5 || (t5 = {}), t5 = ["string", "number"].includes(typeof t5) ? [t5] : t5;
-    var o2 = r2.parameterSegments.filter(function(t6) {
-      return !e3.t.defaults[t6.name];
-    });
-    if (Array.isArray(t5))
-      t5 = t5.reduce(function(t6, r3, e4) {
-        var i4, u3;
-        return n({}, t6, o2[e4] ? ((i4 = {})[o2[e4].name] = r3, i4) : "object" == typeof r3 ? r3 : ((u3 = {})[r3] = "", u3));
-      }, {});
-    else if (1 === o2.length && !t5[o2[0].name] && (t5.hasOwnProperty(Object.values(r2.bindings)[0]) || t5.hasOwnProperty("id"))) {
-      var i3;
-      (i3 = {})[o2[0].name] = t5, t5 = i3;
-    }
-    return n({}, this.g(r2), this.m(t5, r2));
-  }, f2.g = function(t5) {
-    var r2 = this;
-    return t5.parameterSegments.filter(function(t6) {
-      return r2.t.defaults[t6.name];
-    }).reduce(function(t6, e3, o2) {
-      var i3, u3 = e3.name;
-      return n({}, t6, ((i3 = {})[u3] = r2.t.defaults[u3], i3));
-    }, {});
-  }, f2.m = function(t5, r2) {
-    var e3 = r2.bindings, o2 = r2.parameterSegments;
-    return Object.entries(t5).reduce(function(t6, r3) {
-      var i3, u3, f3 = r3[0], a2 = r3[1];
-      if (!a2 || "object" != typeof a2 || Array.isArray(a2) || !o2.some(function(t7) {
-        return t7.name === f3;
-      }))
-        return n({}, t6, ((u3 = {})[f3] = a2, u3));
-      if (!a2.hasOwnProperty(e3[f3])) {
-        if (!a2.hasOwnProperty("id"))
-          throw new Error("Ziggy error: object passed as '" + f3 + "' parameter is missing route model binding key '" + e3[f3] + "'.");
-        e3[f3] = "id";
+    const s2 = new x(n2, u2, this.t);
+    r2 = this.l(r2, s2);
+    const f2 = t({}, o2, i2);
+    if (Object.values(r2).every((t4) => !t4) && !Object.values(f2).some((t4) => void 0 !== t4))
+      return true;
+    const c2 = (t4, e3) => Object.entries(t4).every(([t5, r3]) => Array.isArray(r3) && Array.isArray(e3[t5]) ? r3.every((r4) => e3[t5].includes(r4)) : "object" == typeof r3 && "object" == typeof e3[t5] && null !== r3 && null !== e3[t5] ? c2(r3, e3[t5]) : e3[t5] == r3);
+    return c2(r2, f2);
+  }
+  h() {
+    var t4, e2, r2, n2, o2, i2;
+    const { host: u2 = "", pathname: a2 = "", search: s2 = "" } = "undefined" != typeof window ? window.location : {};
+    return { host: null != (t4 = null == (e2 = this.t.location) ? void 0 : e2.host) ? t4 : u2, pathname: null != (r2 = null == (n2 = this.t.location) ? void 0 : n2.pathname) ? r2 : a2, search: null != (o2 = null == (i2 = this.t.location) ? void 0 : i2.search) ? o2 : s2 };
+  }
+  get params() {
+    const { params: e2, query: r2 } = this.p();
+    return t({}, e2, r2);
+  }
+  has(t4) {
+    return Object.keys(this.t.routes).includes(t4);
+  }
+  l(e2 = {}, r2 = this.i) {
+    null != e2 || (e2 = {}), e2 = ["string", "number"].includes(typeof e2) ? [e2] : e2;
+    const n2 = r2.parameterSegments.filter(({ name: t4 }) => !this.t.defaults[t4]);
+    return Array.isArray(e2) ? e2 = e2.reduce((e3, r3, o2) => t({}, e3, n2[o2] ? { [n2[o2].name]: r3 } : "object" == typeof r3 ? r3 : { [r3]: "" }), {}) : 1 !== n2.length || e2[n2[0].name] || !e2.hasOwnProperty(Object.values(r2.bindings)[0]) && !e2.hasOwnProperty("id") || (e2 = { [n2[0].name]: e2 }), t({}, this.m(r2), this.j(e2, r2));
+  }
+  m(e2) {
+    return e2.parameterSegments.filter(({ name: t4 }) => this.t.defaults[t4]).reduce((e3, { name: r2 }, n2) => t({}, e3, { [r2]: this.t.defaults[r2] }), {});
+  }
+  j(e2, { bindings: r2, parameterSegments: n2 }) {
+    return Object.entries(e2).reduce((e3, [o2, i2]) => {
+      if (!i2 || "object" != typeof i2 || Array.isArray(i2) || !n2.some(({ name: t4 }) => t4 === o2))
+        return t({}, e3, { [o2]: i2 });
+      if (!i2.hasOwnProperty(r2[o2])) {
+        if (!i2.hasOwnProperty("id"))
+          throw new Error(`Ziggy error: object passed as '${o2}' parameter is missing route model binding key '${r2[o2]}'.`);
+        r2[o2] = "id";
       }
-      return n({}, t6, ((i3 = {})[f3] = a2[e3[f3]], i3));
+      return t({}, e3, { [o2]: i2[r2[o2]] });
     }, {});
-  }, f2.valueOf = function() {
+  }
+  valueOf() {
     return this.toString();
-  }, f2.check = function(t5) {
-    return this.has(t5);
-  }, r(u2, [{ key: "params", get: function() {
-    var t5 = this.v();
-    return n({}, t5.params, t5.query);
-  } }]), u2;
-}(/* @__PURE__ */ u(String)), P = { install: function(t4, r2) {
-  var n2 = function(t5, n3, e2, o2) {
-    return void 0 === o2 && (o2 = r2), function(t6, r3, n4, e3) {
-      var o3 = new I(t6, r3, n4, e3);
-      return t6 ? o3.toString() : o3;
-    }(t5, n3, e2, o2);
-  };
-  t4.mixin({ methods: { route: n2 } }), parseInt(t4.version) > 2 && t4.provide("route", n2);
+  }
+}
+function T(t4, e2, r2, n2) {
+  const o2 = new N(t4, e2, r2, n2);
+  return t4 ? o2.toString() : o2;
+}
+const k = { install(t4, e2) {
+  const r2 = (t5, r3, n2, o2 = e2) => T(t5, r3, n2, o2);
+  t4.config.globalProperties.route = r2, parseInt(t4.version) > 2 && t4.provide("route", r2);
 } };
 const makeTagProps = propsFactory({
   tag: {
@@ -4078,12 +3990,14 @@ const makeRoundedProps = propsFactory({
   rounded: {
     type: [Boolean, Number, String],
     default: void 0
-  }
+  },
+  tile: Boolean
 }, "rounded");
 function useRounded(props) {
   let name2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : getCurrentInstanceName();
   const roundedClasses = computed(() => {
     const rounded = isRef(props) ? props.value : props.rounded;
+    const tile = isRef(props) ? props.value : props.tile;
     const classes = [];
     if (rounded === true || rounded === "") {
       classes.push(`${name2}--rounded`);
@@ -4091,6 +4005,8 @@ function useRounded(props) {
       for (const value of String(rounded).split(" ")) {
         classes.push(`rounded-${value}`);
       }
+    } else if (tile) {
+      classes.push("rounded-0");
     }
     return classes;
   });
@@ -4304,6 +4220,8 @@ function useGroupItem(props, injectKey) {
     vm.emit("group:selected", {
       value: value2
     });
+  }, {
+    flush: "sync"
   });
   return {
     id,
@@ -5651,9 +5569,9 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-B-Zr8BWb.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-D_kBlbWO.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-CyJMindd.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-Dvr5uCbv.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-G51YOIAq.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-C7LQaEUk.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-BvQEBRvd.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-YE2A90DI.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-kMB-Synj.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-BV_gXXpy.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-BADKIv7K.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-CpzgaLnL.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-CUER3Aax.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-DaQXcc02.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-leEfYVhz.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-BcRvJJ1j.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-BXFPhalI.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-coSCYUxo.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-CbRj8QiI.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-BcjtZf9o.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-B0hPpgFS.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-jRQMOlD6.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-qPZe9vt_.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-B63olQXA.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-DGtGG-zz.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-CVX0SE_R.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-CZvzRIfA.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-ClQAwFVp.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-CvXhI33B.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-DaQXcc02.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-leEfYVhz.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-BcRvJJ1j.js") })),
     setup({ App, props, plugin }) {
-      return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(i18n).use(link).use(pinia).use(vuetify).use(P, {
+      return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(i18n).use(link).use(pinia).use(vuetify).use(k, {
         // @ts-expect-error
         ...page.props.ziggy,
         // @ts-expect-error
@@ -5663,7 +5581,7 @@ createServer(
   })
 );
 export {
-  useLink as $,
+  useRounded as $,
   useBackgroundColor as A,
   provideDefaults as B,
   isObject as C,
@@ -5683,64 +5601,66 @@ export {
   makeRouterProps as Q,
   makeVariantProps as R,
   Ripple as S,
-  useBorder as T,
-  useVariant as U,
+  T,
+  useBorder as U,
   VBtn as V,
-  useDimension as W,
-  useElevation as X,
-  useLocation as Y,
-  usePosition as Z,
-  useRounded as _,
+  useVariant as W,
+  useDimension as X,
+  useElevation as Y,
+  useLocation as Z,
+  usePosition as _,
   makeTagProps as a,
-  genOverlays as a0,
-  callEvent as a1,
-  clamp as a2,
-  ensureValidVNode as a3,
-  noop as a4,
-  matchesSelector as a5,
-  wrapInArray as a6,
-  isOn as a7,
-  getObjectValueByPath as a8,
-  getCurrentInstance as a9,
-  getNextElement as aA,
-  focusChild as aB,
-  debounce as aC,
-  getCurrentInstanceName as aD,
-  consoleWarn as aE,
-  pick as aF,
-  breakpoints as aG,
-  findChildrenWithProvide as aH,
-  CircularBuffer as aI,
-  toPhysical as aJ,
-  SUPPORTS_INTERSECTION as aK,
-  defineComponent as aL,
-  deprecate as aM,
-  deepEqual as aa,
-  isEmpty as ab,
-  makeSizeProps as ac,
-  useDisplay as ad,
-  useResizeObserver as ae,
-  createRange as af,
-  keyValues as ag,
-  defineFunctionalComponent as ah,
-  consoleError as ai,
-  EventProp as aj,
-  getPropertyFromItem as ak,
-  eventName as al,
-  makeDisplayProps as am,
-  makeGroupProps as an,
-  useSize as ao,
-  useToggleScope as ap,
-  destructComputed as aq,
-  parseAnchor as ar,
-  flipSide as as,
-  flipAlign as at,
-  flipCorner as au,
-  getAxis as av,
-  defer as aw,
-  refElement as ax,
-  useRouter as ay,
-  useBackButton as az,
+  useLink as a0,
+  genOverlays as a1,
+  callEvent as a2,
+  clamp as a3,
+  ensureValidVNode as a4,
+  noop as a5,
+  matchesSelector as a6,
+  wrapInArray as a7,
+  isOn as a8,
+  getObjectValueByPath as a9,
+  useBackButton as aA,
+  isClickInsideElement as aB,
+  getNextElement as aC,
+  focusChild as aD,
+  debounce as aE,
+  getCurrentInstanceName as aF,
+  consoleWarn as aG,
+  pick as aH,
+  breakpoints as aI,
+  findChildrenWithProvide as aJ,
+  CircularBuffer as aK,
+  toPhysical as aL,
+  SUPPORTS_INTERSECTION as aM,
+  defineComponent as aN,
+  deprecate as aO,
+  getCurrentInstance as aa,
+  deepEqual as ab,
+  isEmpty as ac,
+  makeSizeProps as ad,
+  useDisplay as ae,
+  useResizeObserver as af,
+  createRange as ag,
+  keyValues as ah,
+  defineFunctionalComponent as ai,
+  consoleError as aj,
+  EventProp as ak,
+  getPropertyFromItem as al,
+  eventName as am,
+  makeDisplayProps as an,
+  makeGroupProps as ao,
+  useSize as ap,
+  useToggleScope as aq,
+  destructComputed as ar,
+  parseAnchor as as,
+  flipSide as at,
+  flipAlign as au,
+  flipCorner as av,
+  getAxis as aw,
+  defer as ax,
+  refElement as ay,
+  useRouter as az,
   makeThemeProps as b,
   provideTheme as c,
   useLocale as d,

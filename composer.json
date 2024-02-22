@@ -23,7 +23,7 @@
         "inertiajs/inertia-laravel": "^0.6.9",
         "laravel/framework": "^9.48 || ^10.0 || ^11.0",
         "spatie/laravel-event-sourcing": "^7.3.4",
-        "tightenco/ziggy": "^1.8",
+        "tightenco/ziggy": "^2.0",
         "ttbooking/vite-manager": "^1.2"
     },
     "require-dev": {
