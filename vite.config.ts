@@ -15,7 +15,6 @@ export default defineConfig({
         }),
         laravel({
             input: "resources/js/app.ts",
-            ssr: "resources/js/ssr.ts",
             refresh: true,
         }),
         vue({
@@ -34,8 +33,5 @@ export default defineConfig({
             "@": "/resources/js",
             "ziggy-js": path.resolve("vendor/tightenco/ziggy"),
         },
-    },
-    ssr: {
-        noExternal: ["vuetify"],
     },
 });

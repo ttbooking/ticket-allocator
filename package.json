@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vue-tsc && vite build && vite build --ssr",
+        "build": "vue-tsc && vite build",
         "build-dev": "vue-tsc && vite build -m development",
         "serve": "vite preview",
         "lint": "eslint \"resources/**/*.{ts,vue}\"",
@@ -38,7 +38,6 @@
         "@types/node": "^20.11.21",
         "@types/webfontloader": "^1.6.38",
         "@vitejs/plugin-vue": "^5.0.4",
-        "@vue/server-renderer": "^3.4.20",
         "autoprefixer": "^10.4.17",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",

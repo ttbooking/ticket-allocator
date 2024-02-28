@@ -124,7 +124,6 @@ class TicketAllocatorServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../public' => $this->app->publicPath('vendor/ticket-allocator'),
-            __DIR__.'/../bootstrap' => $this->app->basePath('bootstrap/vendor/ticket-allocator'),
         ], ['ticket-allocator', 'assets', 'ticket-allocator-assets']);
 
         $this->publishes([
