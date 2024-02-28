@@ -3354,7 +3354,7 @@ function createVuetify() {
     goTo
   };
 }
-const version = "3.5.5";
+const version = "3.5.6";
 createVuetify.version = version;
 function inject(key) {
   var _a, _b;
@@ -5569,7 +5569,7 @@ createServer(
     page,
     render: renderToString,
     title: (title) => `${title} - ${name}`,
-    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-BXFPhalI.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-coSCYUxo.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-CbRj8QiI.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-BcjtZf9o.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-B0hPpgFS.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-jRQMOlD6.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-qPZe9vt_.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-B63olQXA.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-DGtGG-zz.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-CVX0SE_R.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-CZvzRIfA.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-ClQAwFVp.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-CvXhI33B.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-DaQXcc02.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-leEfYVhz.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-BcRvJJ1j.js") })),
+    resolve: (name2) => resolvePageComponent(`./pages/${name2}.vue`, /* @__PURE__ */ Object.assign({ "./pages/Dashboard.vue": () => import("./assets/Dashboard-5L0PcWUJ.js"), "./pages/Factor/CreateEdit.vue": () => import("./assets/CreateEdit-coSCYUxo.js"), "./pages/Factor/Index.vue": () => import("./assets/Index-ars8-12v.js"), "./pages/Factor/Partials/AssociationForm.vue": () => import("./assets/AssociationForm-Do0alQ78.js"), "./pages/Factor/Partials/ExpressionForm.vue": () => import("./assets/ExpressionForm-B0hPpgFS.js"), "./pages/Factor/Partials/FixedForm.vue": () => import("./assets/FixedForm-jRQMOlD6.js"), "./pages/Operator/CreateEdit.vue": () => import("./assets/CreateEdit-QAK3p--B.js"), "./pages/Operator/Index.vue": () => import("./assets/Index-BEhsS-DZ.js"), "./pages/OperatorTeam/CreateEdit.vue": () => import("./assets/CreateEdit-DyC8CTLc.js"), "./pages/OperatorTeam/Index.vue": () => import("./assets/Index-BN2dXEtc.js"), "./pages/TicketCategory/CreateEdit.vue": () => import("./assets/CreateEdit-CZvzRIfA.js"), "./pages/TicketCategory/Index.vue": () => import("./assets/Index-DY5kFdnR.js"), "./pages/Trans/Index.vue": () => import("./assets/Index-CvXhI33B.js"), "./pages/Trans/Operator.vue": () => import("./assets/Operator-DaQXcc02.js"), "./pages/Trans/Pool.vue": () => import("./assets/Pool-leEfYVhz.js"), "./pages/Trans/Ticket.vue": () => import("./assets/Ticket-BcRvJJ1j.js") })),
     setup({ App, props, plugin }) {
       return createSSRApp({ name, render: () => h$1(App, props) }).use(plugin).use(dayjs).use(i18n).use(link).use(pinia).use(vuetify).use(k, {
         // @ts-expect-error
