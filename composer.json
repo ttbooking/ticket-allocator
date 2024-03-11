@@ -20,7 +20,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "inertiajs/inertia-laravel": "^0.6.9",
+        "inertiajs/inertia-laravel": "^1.0",
         "laravel/framework": "^9.48 || ^10.0 || ^11.0",
         "spatie/laravel-event-sourcing": "^7.3.4",
         "tightenco/ziggy": "^2.0",
