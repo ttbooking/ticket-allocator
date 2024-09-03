@@ -3260,6 +3260,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qs@npm:~6.9.7":
+  version: 6.9.7
+  resolution: "qs@npm:6.9.7"
+  checksum: 10c0/d0274b3c2daa9e7b350fb695fc4b5f7a1e65e266d5798a07936975f0848bdca6d7ad41cded19ad4af6a6253b97e43b497e988e728eab7a286f277b6dddfbade4
+  languageName: node
+  linkType: hard
+
 "queue-microtask@npm:^1.2.2":
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
@@ -3446,6 +3453,7 @@ __metadata:
     vue-tsc: "npm:^2.1.4"
     vuetify: "npm:^3.7.1"
     webfontloader: "npm:^1.6.28"
+    ziggy-js: "npm:^2.3.0"
   languageName: unknown
   linkType: soft
 
@@ -4210,5 +4218,14 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: 10c0/dceb44c28578b31641e13695d200d34ec4ab3966a5729814d5445b194933c096b7ced71494ce53a0e8820685d1d010df8b2422e5bf2cdea7e469d97ffbea306f
+  languageName: node
+  linkType: hard
+
+"ziggy-js@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "ziggy-js@npm:2.3.0"
+  dependencies:
+    qs: "npm:~6.9.7"
+  checksum: 10c0/9e8e4aeecdbd55b68231cde797ff0f3e92ce56aff55384dc9ac63570d69665b60cddab017b1805585f7dc6ee3fd6568fead71a2fed662a4d733ed9aea74fb55d
   languageName: node
   linkType: hard
