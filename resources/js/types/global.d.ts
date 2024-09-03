@@ -16,7 +16,7 @@ declare global {
     const Ziggy: ZiggyConfig;
 }
 
-declare module "@vue/runtime-core" {
+declare module "vue" {
     interface ComponentCustomProperties {
         $dayjs: typeof dayjs;
         route: typeof routeFn;
