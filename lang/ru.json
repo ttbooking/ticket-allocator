@@ -28,7 +28,7 @@
     "factor_type": "Тип фактора",
     "factors": "Факторы",
     "increment": "приращение",
-    "increment_per_second": "приращение :units ед./сек.",
+    "increment_per_second": "приращение {units} ед./сек.",
     "initial_weight": "Начальный вес",
     "initial_weight_expression": "Выражение для вычисления начального веса тикета",
     "issued_on": "Время подачи",

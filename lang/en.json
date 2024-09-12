@@ -28,7 +28,7 @@
     "factor_type": "Factor type",
     "factors": "Factors",
     "increment": "increment",
-    "increment_per_second": ":units units/sec. increment",
+    "increment_per_second": "{units} units/sec. increment",
     "initial_weight": "Initial weight",
     "initial_weight_expression": "Initial weight expression",
     "issued_on": "Issued on",
