@@ -14,6 +14,5 @@ class JoinOperatorTeam
     public function __construct(
         #[AggregateUuid] public string $uuid,
         public string $operatorTeamUuid,
-    ) {
-    }
+    ) {}
 }

@@ -12,6 +12,5 @@ class TicketCategoryChanged extends Event
         public string $uuid,
         public string $categoryUuid,
         public array $meta,
-    ) {
-    }
+    ) {}
 }

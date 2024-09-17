@@ -11,9 +11,7 @@ use Spatie\EventSourcing\Commands\CommandBus;
 
 abstract class Action
 {
-    public function __construct(protected CommandBus $bus)
-    {
-    }
+    public function __construct(protected CommandBus $bus) {}
 
     public function dispatch(object $command): mixed
     {

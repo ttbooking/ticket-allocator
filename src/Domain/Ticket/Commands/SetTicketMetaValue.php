@@ -15,6 +15,5 @@ class SetTicketMetaValue
         #[AggregateUuid] public string $uuid,
         public string $key,
         public mixed $value,
-    ) {
-    }
+    ) {}
 }

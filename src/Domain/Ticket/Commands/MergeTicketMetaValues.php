@@ -14,6 +14,5 @@ class MergeTicketMetaValues
     public function __construct(
         #[AggregateUuid] public string $uuid,
         public array $meta,
-    ) {
-    }
+    ) {}
 }

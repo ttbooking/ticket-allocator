@@ -13,6 +13,5 @@ class ResignOperator
 {
     public function __construct(
         #[AggregateUuid] public string $uuid,
-    ) {
-    }
+    ) {}
 }

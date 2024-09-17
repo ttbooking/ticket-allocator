@@ -13,6 +13,5 @@ class AcceptTicket
 {
     public function __construct(
         #[AggregateUuid] public string $uuid,
-    ) {
-    }
+    ) {}
 }

@@ -7,6 +7,4 @@ namespace TTBooking\TicketAllocator\Factors\Attributes;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-class Singular
-{
-}
+class Singular {}

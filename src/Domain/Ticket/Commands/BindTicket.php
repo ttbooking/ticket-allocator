@@ -15,6 +15,5 @@ class BindTicket
         #[AggregateUuid] public string $uuid,
         public string $operatorUuid,
         public array $meta,
-    ) {
-    }
+    ) {}
 }

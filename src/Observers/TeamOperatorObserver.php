@@ -13,8 +13,7 @@ class TeamOperatorObserver
     public function __construct(
         protected JoinOperatorTeamAction $joinOperatorTeam,
         protected LeaveOperatorTeamAction $leaveOperatorTeam,
-    ) {
-    }
+    ) {}
 
     /**
      * Handle the TeamOperator "created" event.

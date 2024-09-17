@@ -57,7 +57,7 @@ class TicketAllocator
         static::$propsChanged = true;
     }
 
-    public static function actualizeProps(CommandFinished $event = null): void
+    public static function actualizeProps(?CommandFinished $event = null): void
     {
         if (static::$propsChanged) {
             broadcast(new PropsInvalidated);

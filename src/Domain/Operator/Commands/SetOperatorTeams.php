@@ -18,6 +18,5 @@ class SetOperatorTeams
     public function __construct(
         #[AggregateUuid] public string $uuid,
         public array $operatorTeamUuids,
-    ) {
-    }
+    ) {}
 }

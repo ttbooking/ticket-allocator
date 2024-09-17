@@ -23,9 +23,7 @@ use TTBooking\TicketAllocator\DTO\TicketMetrics;
 #[Attributes\Component('Factor/Partials/ExpressionForm')]
 class Expression extends Factor
 {
-    public function __construct(protected ExpressionLanguage $expression)
-    {
-    }
+    public function __construct(protected ExpressionLanguage $expression) {}
 
     public static function isExcluded(): bool
     {

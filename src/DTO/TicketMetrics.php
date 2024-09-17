@@ -12,8 +12,7 @@ class TicketMetrics
         public int $complexity = 0,
         public int $delay = 0,
         public int $reservation = 0,
-    ) {
-    }
+    ) {}
 
     public static function from(array $metrics): static
     {

@@ -18,6 +18,4 @@ namespace TTBooking\TicketAllocator\Factors;
  */
 #[Attributes\Singular]
 #[Attributes\Component('Factor/Partials/AssociationForm')]
-abstract class AssociationFactor extends Factor
-{
-}
+abstract class AssociationFactor extends Factor {}

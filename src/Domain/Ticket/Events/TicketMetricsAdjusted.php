@@ -13,6 +13,5 @@ class TicketMetricsAdjusted extends Event
         public string $uuid,
         public string $factorUuid,
         public TicketMetrics $adjustments,
-    ) {
-    }
+    ) {}
 }

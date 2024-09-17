@@ -15,7 +15,7 @@ class CreateTicketAction extends Action
 {
     public function __invoke(
         TicketCategory|string $category,
-        Operator|string $operator = null,
+        Operator|string|null $operator = null,
         array $meta = [],
     ): ?Ticket {
         $uuid = (string) Str::orderedUuid();

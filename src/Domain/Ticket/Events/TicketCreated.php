@@ -13,6 +13,5 @@ class TicketCreated extends Event
         public string $categoryUuid,
         public ?string $operatorUuid = null,
         public array $meta = [],
-    ) {
-    }
+    ) {}
 }

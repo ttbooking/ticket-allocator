@@ -16,6 +16,5 @@ class OperatorEnrolled extends Event
         public bool $ready = false,
         public ?int $ticketLimit = null,
         public ?int $complexityLimit = null,
-    ) {
-    }
+    ) {}
 }

@@ -11,6 +11,5 @@ class TicketMetaValuesMerged extends Event
     public function __construct(
         public string $uuid,
         public array $meta,
-    ) {
-    }
+    ) {}
 }

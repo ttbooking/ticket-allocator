@@ -16,6 +16,5 @@ class CreateTicket
         public string $categoryUuid,
         public ?string $operatorUuid = null,
         public array $meta = [],
-    ) {
-    }
+    ) {}
 }

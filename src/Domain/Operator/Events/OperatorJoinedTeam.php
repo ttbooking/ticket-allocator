@@ -11,6 +11,5 @@ class OperatorJoinedTeam extends Event
     public function __construct(
         public string $uuid,
         public string $operatorTeamUuid,
-    ) {
-    }
+    ) {}
 }

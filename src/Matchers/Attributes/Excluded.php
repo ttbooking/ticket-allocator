@@ -7,6 +7,4 @@ namespace TTBooking\TicketAllocator\Matchers\Attributes;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-class Excluded
-{
-}
+class Excluded {}

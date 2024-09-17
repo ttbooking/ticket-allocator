@@ -8,7 +8,5 @@ use TTBooking\TicketAllocator\Domain\Support\Event;
 
 class TicketClosed extends Event
 {
-    public function __construct(public string $uuid)
-    {
-    }
+    public function __construct(public string $uuid) {}
 }

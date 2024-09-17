@@ -13,9 +13,7 @@ use TTBooking\TicketAllocator\Models\Factor;
 
 class ApplyFactors extends Reactor
 {
-    public function __construct(protected AdjustTicketMetricsAction $adjustTicketMetrics)
-    {
-    }
+    public function __construct(protected AdjustTicketMetricsAction $adjustTicketMetrics) {}
 
     public function onTicketCreated(TicketCreated $event): void
     {

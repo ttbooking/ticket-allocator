@@ -10,9 +10,7 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class TicketCategoryObserver
 {
-    public function __construct(protected MergeTicketMetaValuesAction $mergeTicketMetaValues)
-    {
-    }
+    public function __construct(protected MergeTicketMetaValuesAction $mergeTicketMetaValues) {}
 
     /**
      * Handle the TicketCategory "updated" event.

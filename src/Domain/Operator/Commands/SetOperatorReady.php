@@ -13,6 +13,5 @@ class SetOperatorReady
 {
     public function __construct(
         #[AggregateUuid] public string $uuid,
-    ) {
-    }
+    ) {}
 }

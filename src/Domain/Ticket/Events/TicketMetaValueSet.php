@@ -12,6 +12,5 @@ class TicketMetaValueSet extends Event
         public string $uuid,
         public string $key,
         public mixed $value,
-    ) {
-    }
+    ) {}
 }

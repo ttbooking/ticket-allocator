@@ -14,6 +14,5 @@ class OperatorSetTeams extends Event
     public function __construct(
         public string $uuid,
         public array $operatorTeamUuids,
-    ) {
-    }
+    ) {}
 }

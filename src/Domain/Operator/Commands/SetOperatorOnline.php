@@ -13,6 +13,5 @@ class SetOperatorOnline
 {
     public function __construct(
         #[AggregateUuid] public string $uuid,
-    ) {
-    }
+    ) {}
 }

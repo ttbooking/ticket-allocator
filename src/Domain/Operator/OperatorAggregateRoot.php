@@ -50,9 +50,7 @@ class OperatorAggregateRoot extends AggregateRoot
         ));
     }
 
-    protected function applyOperatorResigned(Events\OperatorResigned $event): void
-    {
-    }
+    protected function applyOperatorResigned(Events\OperatorResigned $event): void {}
 
     public function changeName(Commands\ChangeOperatorName $command): static
     {
@@ -149,9 +147,7 @@ class OperatorAggregateRoot extends AggregateRoot
         ));
     }
 
-    protected function applyOperatorJoinedTeam(Events\OperatorJoinedTeam $event): void
-    {
-    }
+    protected function applyOperatorJoinedTeam(Events\OperatorJoinedTeam $event): void {}
 
     public function leaveOperatorTeam(Commands\LeaveOperatorTeam $command): static
     {
@@ -161,9 +157,7 @@ class OperatorAggregateRoot extends AggregateRoot
         ));
     }
 
-    protected function applyOperatorLeftTeam(Events\OperatorLeftTeam $event): void
-    {
-    }
+    protected function applyOperatorLeftTeam(Events\OperatorLeftTeam $event): void {}
 
     public function setOperatorTeams(Commands\SetOperatorTeams $command): static
     {
@@ -173,7 +167,5 @@ class OperatorAggregateRoot extends AggregateRoot
         ));
     }
 
-    protected function applyOperatorSetTeams(Events\OperatorSetTeams $event): void
-    {
-    }
+    protected function applyOperatorSetTeams(Events\OperatorSetTeams $event): void {}
 }

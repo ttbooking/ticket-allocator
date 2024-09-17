@@ -22,7 +22,7 @@ class MatcherDictionary extends Collection
     /**
      * @template TFirstDefault of TDefault
      */
-    public function first(callable $callback = null, $default = null): string
+    public function first(?callable $callback = null, $default = null): string
     {
         return parent::first($callback, static::default($default));
     }
@@ -38,7 +38,7 @@ class MatcherDictionary extends Collection
     /**
      * @template TLastDefault of TDefault
      */
-    public function last(callable $callback = null, $default = null): string
+    public function last(?callable $callback = null, $default = null): string
     {
         return parent::last($callback, static::default($default));
     }

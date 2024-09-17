@@ -13,6 +13,5 @@ class SetOperatorOffline
 {
     public function __construct(
         #[AggregateUuid] public string $uuid,
-    ) {
-    }
+    ) {}
 }

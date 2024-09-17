@@ -66,9 +66,7 @@ class TicketAggregateRoot extends AggregateRoot
         ));
     }
 
-    protected function applyTicketClosed(Events\TicketClosed $event): void
-    {
-    }
+    protected function applyTicketClosed(Events\TicketClosed $event): void {}
 
     public function changeCategory(Commands\ChangeTicketCategory $command): static
     {

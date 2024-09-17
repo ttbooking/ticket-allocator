@@ -16,6 +16,5 @@ class AdjustTicketMetrics
         #[AggregateUuid] public string $uuid,
         public string $factorUuid,
         public TicketMetrics $adjustments,
-    ) {
-    }
+    ) {}
 }

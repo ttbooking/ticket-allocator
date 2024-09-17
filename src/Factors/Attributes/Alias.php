@@ -9,7 +9,5 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS)]
 class Alias
 {
-    public function __construct(public string $alias)
-    {
-    }
+    public function __construct(public string $alias) {}
 }

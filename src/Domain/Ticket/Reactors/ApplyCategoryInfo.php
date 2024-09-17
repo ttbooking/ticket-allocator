@@ -13,9 +13,7 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
 
 class ApplyCategoryInfo extends Reactor
 {
-    public function __construct(protected MergeTicketMetaValuesAction $mergeTicketMetaValues)
-    {
-    }
+    public function __construct(protected MergeTicketMetaValuesAction $mergeTicketMetaValues) {}
 
     public function onTicketCreated(TicketCreated $event): void
     {

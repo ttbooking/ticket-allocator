@@ -23,7 +23,7 @@ class Builder implements Arrayable, Jsonable, JsonSerializable
 
     public function where(
         Closure|string $type,
-        string $operator = null,
+        ?string $operator = null,
         mixed $value = null,
         string $boolean = 'and',
         bool $not = false,

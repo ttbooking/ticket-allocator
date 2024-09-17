@@ -14,6 +14,5 @@ class ChangeTicketCategory
     public function __construct(
         #[AggregateUuid] public string $uuid,
         public string $categoryUuid,
-    ) {
-    }
+    ) {}
 }

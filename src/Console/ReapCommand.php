@@ -127,7 +127,7 @@ class ReapCommand extends Command
     /**
      * @param  Collection<array-key, Operator>|null  $operators
      */
-    protected function reapOperators(Collection $operators = null, int $sort = 0, int $sortTickets = null): void
+    protected function reapOperators(?Collection $operators = null, int $sort = 0, ?int $sortTickets = null): void
     {
         $operators ??= Operator::all();
 
@@ -165,7 +165,7 @@ class ReapCommand extends Command
     /**
      * @param  Collection<array-key, Ticket>|null  $tickets
      */
-    protected function reapTickets(Collection $tickets = null, int $sort = 0): void
+    protected function reapTickets(?Collection $tickets = null, int $sort = 0): void
     {
         $tickets ??= Ticket::all();
 

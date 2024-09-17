@@ -14,6 +14,5 @@ class AdjustOperatorComplexityLimit
     public function __construct(
         #[AggregateUuid] public string $uuid,
         public ?int $complexityLimit,
-    ) {
-    }
+    ) {}
 }

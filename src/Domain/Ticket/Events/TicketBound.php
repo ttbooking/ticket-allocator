@@ -12,6 +12,5 @@ class TicketBound extends Event
         public string $uuid,
         public string $operatorUuid,
         public array $meta,
-    ) {
-    }
+    ) {}
 }

@@ -14,11 +14,11 @@ class EnrollOperatorAction extends Action
 {
     public function __invoke(
         Model|int|string $user,
-        string $name = null,
+        ?string $name = null,
         bool $online = false,
         bool $ready = false,
-        int $ticketLimit = null,
-        int $complexityLimit = null,
+        ?int $ticketLimit = null,
+        ?int $complexityLimit = null,
     ): ?Operator {
         $uuid = (string) Str::orderedUuid();
 
