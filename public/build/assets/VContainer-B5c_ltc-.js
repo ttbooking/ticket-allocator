@@ -1,2 +1,0 @@
-import"./VGrid-CJ5rW6iL.js";import{p as o,m as i,aF as r,a as l,g as m,u,aQ as c,j as p,i as d}from"./app-D_g1cNYY.js";const C=o({fluid:{type:Boolean,default:!1},...i(),...r(),...l()},"VContainer"),y=m()({name:"VContainer",props:C(),setup(e,a){let{slots:s}=a;const{rtlClasses:n}=u(),{dimensionStyles:t}=c(e);return p(()=>d(e.tag,{class:["v-container",{"v-container--fluid":e.fluid},n.value,e.class],style:[t.value,e.style]},s)),{}}});export{y as V};
-//# sourceMappingURL=VContainer-B5c_ltc-.js.map
