@@ -46,15 +46,17 @@ import { Head, router } from "@inertiajs/vue3";
 import { computed, onMounted, onUnmounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { usePusherChannel } from "@/composables";
-import type { Ticket, TicketCategory } from "@/types";
+import type { Operator, Ticket, TicketCategory } from "@/types";
 import { useSharedOptions, useSharedDisplayMode } from "@/shared";
 import * as Events from "@/types/events.d";
 
 import { useRepo } from "pinia-orm";
+import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
 import TicketCategoryRepository from "@/models/TicketCategory";
 
 const props = defineProps<{
+    operator: Operator;
     tickets: Ticket[];
     ticketCategories: TicketCategory[];
 }>();
@@ -62,6 +64,7 @@ const props = defineProps<{
 const options = useSharedOptions();
 const mode = useSharedDisplayMode();
 
+const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
 const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 const channel = usePusherChannel(Events.Channel);
@@ -75,7 +78,9 @@ const headers = computed(() => [
     { title: t("actions"), key: "actions", sortable: false },
 ]);
 
-const sortedTickets = computed(() => ticketRepo.value.unbound().with("category").orderBy(mode.value, "desc").get());
+const sortedTickets = computed(() =>
+    ticketRepo.value.bound(props.operator.uuid).with("category").orderBy(mode.value, "desc").get(),
+);
 
 onMounted(() => {
     channel
@@ -92,6 +97,7 @@ onMounted(() => {
 });
 
 function refreshRepositories() {
+    operatorRepo.value.fresh(props.operator);
     ticketRepo.value.fresh(props.tickets);
     ticketCategoryRepo.value.fresh(props.ticketCategories);
 }

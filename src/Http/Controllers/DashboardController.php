@@ -35,10 +35,11 @@ class DashboardController extends Controller
         $userClass = config('ticket-allocator.operator_source');
         $user = $userClass::query()->findOrFail(Auth::id());
 
-        $tickets = $user->operator->tickets->toArray();
+        $operator = $user->operator()->with('tickets')->firstOrFail();
+        $tickets = $operator->tickets->toArray();
         $ticketCategories = TicketCategory::all()->toArray();
 
-        return Inertia::render('Personal', compact('tickets', 'ticketCategories'));
+        return Inertia::render('Personal', compact('operator', 'tickets', 'ticketCategories'));
     }
 
     /**
