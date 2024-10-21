@@ -6,9 +6,11 @@ namespace TTBooking\TicketAllocator\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+use TTBooking\TicketAllocator\Concerns\MayHaveOperatorPrivileges;
 use TTBooking\TicketAllocator\Contracts\Matcher as MatcherContract;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
@@ -22,6 +24,21 @@ class DashboardController extends Controller
     public function index(): RedirectResponse
     {
         return to_route('ticket-allocator.dashboard.supervisor');
+    }
+
+    /**
+     * Display personal dashboard.
+     */
+    public function personal(): Response
+    {
+        /** @var class-string<MayHaveOperatorPrivileges> $userClass */
+        $userClass = config('ticket-allocator.operator_source');
+        $user = $userClass::query()->findOrFail(Auth::id());
+
+        $tickets = $user->operator->tickets->toArray();
+        $ticketCategories = TicketCategory::all()->toArray();
+
+        return Inertia::render('Personal', compact('tickets', 'ticketCategories'));
     }
 
     /**

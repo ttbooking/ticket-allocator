@@ -29,11 +29,12 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-data-table density="compact" class="personal-monitor" :headers="headers" :items="sortedTickets">
+            <v-data-table density="compact" class="personal-monitor" :headers="headers" :items="sortedTickets" />
+            <!--<v-data-table density="compact" class="personal-monitor" :headers="headers" :items="sortedTickets">
                 <TransitionGroup name="ticket-pool">
                     <PersonalTicket v-for="ticket in sortedTickets" :key="ticket.uuid" :ticket="ticket" />
                 </TransitionGroup>
-            </v-data-table>
+            </v-data-table>-->
         </div>
     </DefaultLayout>
 </template>
@@ -47,7 +48,7 @@ import { useI18n } from "vue-i18n";
 import { usePusherChannel } from "@/composables";
 import type { Ticket, TicketCategory } from "@/types";
 import { useSharedOptions, useSharedDisplayMode } from "@/shared";
-import * as Events from "@/types/events";
+import * as Events from "@/types/events.d";
 
 import { useRepo } from "pinia-orm";
 import TicketRepository from "@/repositories/TicketRepository";

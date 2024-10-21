@@ -9,6 +9,13 @@ export default defineConfig({
     build: {
         sourcemap: true,
     },
+    css: {
+        preprocessorOptions: {
+            sass: {
+                api: "modern",
+            },
+        },
+    },
     plugins: [
         i18n({
             include: [path.resolve(__dirname, "./lang/**")],
