@@ -89,7 +89,7 @@ class Ticket extends Projection
     protected function duration(): Attribute
     {
         return Attribute::get(static function ($value, $attributes = []): int {
-            return now()->diffInSeconds($attributes[static::CREATED_AT]);
+            return (int) now()->diffInSeconds($attributes[static::CREATED_AT], true);
         });
     }
 
