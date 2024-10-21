@@ -106,7 +106,7 @@ class Ticket extends Projection
     }
 
     /**
-     * @return BelongsTo<TicketCategory, self>
+     * @return BelongsTo<TicketCategory, $this>
      */
     public function category(): BelongsTo
     {
@@ -114,7 +114,7 @@ class Ticket extends Projection
     }
 
     /**
-     * @return BelongsTo<Operator, self>
+     * @return BelongsTo<Operator, $this>
      */
     public function operator(): BelongsTo
     {

@@ -17,7 +17,7 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 class TeamOperator extends Pivot
 {
     /**
-     * @return BelongsTo<OperatorTeam, self>
+     * @return BelongsTo<OperatorTeam, $this>
      */
     public function team(): BelongsTo
     {
@@ -25,7 +25,7 @@ class TeamOperator extends Pivot
     }
 
     /**
-     * @return BelongsTo<Operator, self>
+     * @return BelongsTo<Operator, $this>
      */
     public function operator(): BelongsTo
     {

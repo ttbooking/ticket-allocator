@@ -44,7 +44,7 @@ class TicketCategory extends Model
     }
 
     /**
-     * @return HasMany<Ticket>
+     * @return HasMany<Ticket, $this>
      */
     public function tickets(): HasMany
     {

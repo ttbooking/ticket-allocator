@@ -53,7 +53,7 @@ class OperatorTeam extends Model
     }
 
     /**
-     * @return BelongsToMany<Operator>
+     * @return BelongsToMany<Operator, $this>
      */
     public function operators(): BelongsToMany
     {

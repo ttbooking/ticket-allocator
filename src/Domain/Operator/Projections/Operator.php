@@ -83,7 +83,7 @@ class Operator extends Projection
     }
 
     /**
-     * @return BelongsTo<Model, self>
+     * @return BelongsTo<Model, $this>
      */
     public function user(): BelongsTo
     {
@@ -91,7 +91,7 @@ class Operator extends Projection
     }
 
     /**
-     * @return BelongsToMany<OperatorTeam>
+     * @return BelongsToMany<OperatorTeam, $this>
      */
     protected function operatorTeams(): BelongsToMany
     {
@@ -100,7 +100,7 @@ class Operator extends Projection
     }
 
     /**
-     * @return BelongsToMany<OperatorTeam>
+     * @return BelongsToMany<OperatorTeam, $this>
      */
     public function teams(): BelongsToMany
     {
@@ -108,7 +108,7 @@ class Operator extends Projection
     }
 
     /**
-     * @return HasMany<Ticket>
+     * @return HasMany<Ticket, $this>
      */
     public function tickets(): HasMany
     {
