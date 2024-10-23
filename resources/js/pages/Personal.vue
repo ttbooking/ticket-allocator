@@ -38,8 +38,8 @@
                 :items="operator.tickets"
             >
                 <template v-for="{ key } in headers" :key="key" #[`item.${key}`]="{ value }">
-                    <v-icon v-if="key === 'meta.icon'" :icon="value" />
-                    <span v-else v-html="md.renderInline(value)"></span>
+                    <v-icon v-if="key === 'meta.icon'" :icon="value ?? 'mdi-help'" />
+                    <span v-else v-html="md.renderInline(value ?? '-')"></span>
                 </template>
             </v-data-table>
         </div>
