@@ -29,24 +29,32 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-data-table density="compact" class="personal-monitor" :headers="headers" :items="sortedTickets" />
-            <!--<v-data-table density="compact" class="personal-monitor" :headers="headers" :items="sortedTickets">
-                <TransitionGroup name="ticket-pool">
-                    <PersonalTicket v-for="ticket in sortedTickets" :key="ticket.uuid" :ticket="ticket" />
-                </TransitionGroup>
-            </v-data-table>-->
+            <v-data-table
+                v-if="operator"
+                density="comfortable"
+                hide-default-footer
+                class="personal-monitor"
+                :headers="headers"
+                :items="operator.tickets"
+            >
+                <template v-for="{ key } in headers" :key="key" #[`item.${key}`]="{ value }">
+                    <v-icon v-if="key === 'meta.icon'" :icon="value" />
+                    <span v-else v-html="md.renderInline(value)"></span>
+                </template>
+            </v-data-table>
         </div>
     </DefaultLayout>
 </template>
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
-import PersonalTicket from "@/components/PersonalTicket.vue";
 import { Head, router } from "@inertiajs/vue3";
 import { computed, onMounted, onUnmounted } from "vue";
 import { useI18n } from "vue-i18n";
+import MarkdownIt from "markdown-it";
+import MarkdownItAttrs from "markdown-it-attrs";
 import { usePusherChannel } from "@/composables";
-import type { Operator, Ticket, TicketCategory } from "@/types";
+import type { Operator, TicketCategory } from "@/types";
 import { useSharedOptions, useSharedDisplayMode } from "@/shared";
 import * as Events from "@/types/events.d";
 
@@ -57,8 +65,8 @@ import TicketCategoryRepository from "@/models/TicketCategory";
 
 const props = defineProps<{
     operator: Operator;
-    tickets: Ticket[];
     ticketCategories: TicketCategory[];
+    ticketColumns: Record<string, any>[];
 }>();
 
 const options = useSharedOptions();
@@ -71,15 +79,12 @@ const channel = usePusherChannel(Events.Channel);
 
 const { t } = useI18n();
 
-const headers = computed(() => [
-    { title: t("active"), key: "active", sortable: false },
-    { title: t("name"), key: "name" },
-    { title: t("description"), key: "description" },
-    { title: t("actions"), key: "actions", sortable: false },
-]);
+const md = new MarkdownIt({ linkify: true }).use(MarkdownItAttrs);
 
-const sortedTickets = computed(() =>
-    ticketRepo.value.bound(props.operator.uuid).with("category").orderBy(mode.value, "desc").get(),
+const headers = computed(() => props.ticketColumns.map(({ key, ...props }) => ({ key, ...props, sortable: false })));
+
+const operator = computed(
+    () => operatorRepo.value.with("tickets", (query) => query.with("category").orderBy(mode.value, "desc")).first()!,
 );
 
 onMounted(() => {
@@ -97,8 +102,7 @@ onMounted(() => {
 });
 
 function refreshRepositories() {
-    operatorRepo.value.fresh(props.operator);
-    ticketRepo.value.fresh(props.tickets);
+    operatorRepo.value.save(props.operator);
     ticketCategoryRepo.value.fresh(props.ticketCategories);
 }
 

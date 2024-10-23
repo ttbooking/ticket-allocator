@@ -104,4 +104,16 @@ return [
         'weight_threshold' => env('TA_WEIGHT_THRESHOLD', 360_000),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Ticket Allocator Personal Ticket Columns
+    |--------------------------------------------------------------------------
+    */
+
+    'ticket_columns' => [
+        ['title' => '', 'key' => 'meta.icon', 'width' => 48],
+        ['title' => 'Title', 'key' => 'meta.title'],
+        ['title' => 'Category', 'key' => 'meta.category_name'],
+    ],
+
 ];
