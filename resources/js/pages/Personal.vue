@@ -9,15 +9,7 @@
         <div>
             <v-container fluid>
                 <v-row>
-                    <v-col>
-                        <v-btn-toggle v-model="options.all" variant="plain" multiple>
-                            <v-btn
-                                value="alt-info"
-                                :icon="options.altInfo ? 'mdi-magnify-plus-outline' : 'mdi-magnify'"
-                            />
-                        </v-btn-toggle>
-                    </v-col>
-                    <v-col cols="2">
+                    <v-col offset="10" cols="2">
                         <v-switch
                             v-model="mode"
                             false-value="weight"
@@ -29,33 +21,37 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-data-table
-                v-if="operator"
-                density="comfortable"
-                hide-default-footer
-                class="personal-monitor"
-                :headers="headers"
-                :items="operator.tickets"
-            >
-                <template v-for="{ key } in headers" :key="key" #[`item.${key}`]="{ value }">
-                    <v-icon v-if="key === 'meta.icon'" :icon="value ?? 'mdi-help'" />
-                    <span v-else v-html="md.renderInline(value ?? '-')"></span>
-                </template>
-            </v-data-table>
+            <v-table v-if="operator" fixed-header density="comfortable" class="personal-monitor">
+                <thead>
+                    <tr>
+                        <th v-for="{ title } in ticketColumns">{{ title }}</th>
+                    </tr>
+                </thead>
+                <TransGroup tag="tbody" name="ticket-pool">
+                    <tr v-for="ticket in operator.tickets" :key="ticket.uuid">
+                        <td v-for="{ key } in ticketColumns" :key="key">
+                            <v-icon v-if="key === 'meta.icon'" :icon="getObjectValueByPath(ticket, key, 'mdi-help')" />
+                            <span v-else v-html="md.renderInline(getObjectValueByPath(ticket, key, '-'))"></span>
+                        </td>
+                    </tr>
+                </TransGroup>
+            </v-table>
         </div>
     </DefaultLayout>
 </template>
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
+import { TransitionGroup as TransGroup } from "@/components/TransitionGroup";
 import { Head, router } from "@inertiajs/vue3";
 import { computed, onMounted, onUnmounted } from "vue";
+import { getObjectValueByPath } from "vuetify/lib/util/helpers";
 import { useI18n } from "vue-i18n";
 import MarkdownIt from "markdown-it";
 import MarkdownItAttrs from "markdown-it-attrs";
 import { usePusherChannel } from "@/composables";
 import type { Operator, TicketCategory } from "@/types";
-import { useSharedOptions, useSharedDisplayMode } from "@/shared";
+import { useSharedDisplayMode } from "@/shared";
 import * as Events from "@/types/events.d";
 
 import { useRepo } from "pinia-orm";
@@ -69,7 +65,6 @@ const props = defineProps<{
     ticketColumns: Record<string, any>[];
 }>();
 
-const options = useSharedOptions();
 const mode = useSharedDisplayMode();
 
 const operatorRepo = computed(() => useRepo(OperatorRepository));
@@ -80,8 +75,6 @@ const channel = usePusherChannel(Events.Channel);
 const { t } = useI18n();
 
 const md = new MarkdownIt({ linkify: true }).use(MarkdownItAttrs);
-
-const headers = computed(() => props.ticketColumns.map(({ key, ...props }) => ({ key, ...props, sortable: false })));
 
 const operator = computed(
     () => operatorRepo.value.with("tickets", (query) => query.with("category").orderBy(mode.value, "desc")).first()!,
@@ -117,6 +110,23 @@ onUnmounted(() => {
 
 <style scoped>
 .ticket-pool-move {
-    transition: all 0.5s ease;
+    transition: transform 0.5s ease-in-out;
+}
+
+.ticket-pool-enter-active {
+    transition: transform 1s ease-out;
+}
+
+.ticket-pool-enter-from {
+    transform: translateX(100cqw);
+}
+
+.ticket-pool-leave-active {
+    transition: opacity 0.5s;
+    position: absolute;
+}
+
+.ticket-pool-leave-to {
+    opacity: 0;
 }
 </style>
