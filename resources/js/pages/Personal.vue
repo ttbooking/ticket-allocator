@@ -21,19 +21,19 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-table v-if="operator" fixed-header density="comfortable" class="personal-monitor">
+            <v-table v-if="computedOperator" fixed-header density="comfortable" class="personal-monitor">
                 <thead>
                     <tr>
-                        <th v-for="{ title } in ticketColumns">{{ title }}</th>
+                        <th v-for="[title, key] in columns" :key="key">{{ title }}</th>
                     </tr>
                 </thead>
                 <TransGroup tag="tbody" name="ticket-pool">
-                    <tr v-for="ticket in operator.tickets" :key="ticket.uuid">
-                        <td v-for="{ key } in ticketColumns" :key="key">
-                            <v-icon v-if="key === 'meta.icon'" :icon="getObjectValueByPath(ticket, key, 'mdi-help')" />
-                            <span v-else v-html="md.renderInline(getObjectValueByPath(ticket, key, '-'))"></span>
-                        </td>
-                    </tr>
+                    <PersonalTicket
+                        v-for="ticket in computedOperator.tickets"
+                        :key="ticket.uuid"
+                        :ticket="ticket"
+                        :columns="columns"
+                    />
                 </TransGroup>
             </v-table>
         </div>
@@ -42,13 +42,10 @@
 
 <script setup lang="ts">
 import DefaultLayout from "@/layouts/Default.vue";
+import PersonalTicket from "@/components/PersonalTicket.vue";
 import { TransitionGroup as TransGroup } from "@/components/TransitionGroup";
 import { Head, router } from "@inertiajs/vue3";
 import { computed, onMounted, onUnmounted } from "vue";
-import { getObjectValueByPath } from "vuetify/lib/util/helpers";
-import { useI18n } from "vue-i18n";
-import MarkdownIt from "markdown-it";
-import MarkdownItAttrs from "markdown-it-attrs";
 import { usePusherChannel } from "@/composables";
 import type { Operator, TicketCategory } from "@/types";
 import { useSharedDisplayMode } from "@/shared";
@@ -57,26 +54,22 @@ import * as Events from "@/types/events.d";
 import { useRepo } from "pinia-orm";
 import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
-import TicketCategoryRepository from "@/models/TicketCategory";
+//import TicketCategoryRepository from "@/models/TicketCategory";
 
 const props = defineProps<{
     operator: Operator;
-    ticketCategories: TicketCategory[];
-    ticketColumns: Record<string, any>[];
+    //ticketCategories: TicketCategory[];
+    columns: [string, string][];
 }>();
 
 const mode = useSharedDisplayMode();
 
 const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
-const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
+//const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 const channel = usePusherChannel(Events.Channel);
 
-const { t } = useI18n();
-
-const md = new MarkdownIt({ linkify: true }).use(MarkdownItAttrs);
-
-const operator = computed(
+const computedOperator = computed(
     () => operatorRepo.value.with("tickets", (query) => query.with("category").orderBy(mode.value, "desc")).first()!,
 );
 
@@ -96,7 +89,7 @@ onMounted(() => {
 
 function refreshRepositories() {
     operatorRepo.value.save(props.operator);
-    ticketCategoryRepo.value.fresh(props.ticketCategories);
+    //ticketCategoryRepo.value.fresh(props.ticketCategories);
 }
 
 const removeNavigateEventListener = router.on("navigate", refreshRepositories);

@@ -111,9 +111,9 @@ return [
     */
 
     'ticket_columns' => [
-        ['title' => '', 'key' => 'meta.icon', 'width' => 48],
-        ['title' => 'Title', 'key' => 'meta.title'],
-        ['title' => 'Category', 'key' => 'meta.category_name'],
+        ['', 'meta.icon'],
+        ['Title', 'meta.title'],
+        ['Category', 'meta.category_name'],
     ],
 
 ];
