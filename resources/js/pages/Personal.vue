@@ -108,7 +108,6 @@ onUnmounted(() => {
 
 .ticket-pool-enter-active {
     transition: opacity 0.5s;
-    position: absolute;
 }
 
 .ticket-pool-enter-from {
