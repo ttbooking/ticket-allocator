@@ -105,21 +105,4 @@ onUnmounted(() => {
 .ticket-pool-move {
     transition: transform 0.5s ease-in-out;
 }
-
-.ticket-pool-enter-active {
-    transition: opacity 0.5s;
-}
-
-.ticket-pool-enter-from {
-    opacity: 0;
-}
-
-.ticket-pool-leave-active {
-    transition: opacity 0.5s;
-    position: absolute;
-}
-
-.ticket-pool-leave-to {
-    opacity: 0;
-}
 </style>
