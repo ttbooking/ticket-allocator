@@ -107,11 +107,12 @@ onUnmounted(() => {
 }
 
 .ticket-pool-enter-active {
-    transition: transform 1s ease-out;
+    transition: opacity 0.5s;
+    position: absolute;
 }
 
 .ticket-pool-enter-from {
-    transform: translateY(100cqw);
+    opacity: 0;
 }
 
 .ticket-pool-leave-active {
