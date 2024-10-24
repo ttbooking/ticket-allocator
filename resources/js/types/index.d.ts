@@ -2,6 +2,8 @@ export type ToggleOptions = "hide-empty" | "alt-info" | "unlocked";
 
 export type TicketSortBy = "weight" | "duration";
 
+export type CardContent = string | [string, string][];
+
 export interface User {
     id: number;
     name: string;

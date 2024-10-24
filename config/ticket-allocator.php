@@ -114,6 +114,8 @@ return [
         ['', 'meta.icon'],
         ['Title', 'meta.title'],
         ['Category', 'meta.category_name'],
+        ['Created', 'created_at|timestamp'],
+        ['Bound', 'bound_at|timestamp'],
     ],
 
 ];

@@ -111,7 +111,7 @@ onUnmounted(() => {
 }
 
 .ticket-pool-enter-from {
-    transform: translateX(100cqw);
+    transform: translateY(100cqw);
 }
 
 .ticket-pool-leave-active {

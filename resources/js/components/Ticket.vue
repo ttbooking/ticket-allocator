@@ -125,7 +125,7 @@ import MarkdownIt from "markdown-it";
 import MarkdownItAttrs from "markdown-it-attrs";
 import { usePage } from "@inertiajs/vue3";
 import Ticket from "@/models/Ticket";
-import { Factor, DisplayOptions } from "@/types";
+import { CardContent, Factor, DisplayOptions } from "@/types";
 import { useSharedOptions, useSharedDisplayMode } from "@/shared";
 
 const props = defineProps<{
@@ -198,13 +198,13 @@ const categoryName = () => props.ticket.meta?.category_name ?? props.ticket.cate
 
 const categoryShort = () => props.ticket.meta?.category_short ?? props.ticket.category?.short ?? "";
 
-const title = () => (options.altInfo ? props.ticket.meta?.title ?? categoryShort() : categoryShort());
+const title = () => (options.altInfo ? (props.ticket.meta?.title ?? categoryShort()) : categoryShort());
 
 const cardTitle = computed(() => props.ticket.meta?.card_title ?? "Title");
 
 const cardSubtitle = computed(() => props.ticket.meta?.card_subtitle ?? categoryName());
 
-const cardContent = computed(() => <Array<[string, string]>>(props.ticket.meta?.card_content as unknown) ?? []);
+const cardContent = computed(() => (props.ticket.meta?.card_content as CardContent) ?? []);
 
 const overflow = computed(() => position.value > threshold.value);
 
