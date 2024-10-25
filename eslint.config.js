@@ -22,7 +22,7 @@ export default [
             "vue/multi-word-component-names": [
                 "error",
                 {
-                    ignores: ["Dashboard", "Default", "Index", "Personal", "Ticket"],
+                    ignores: ["Dashboard", "Default", "Empty", "Index", "Personal", "Ticket"],
                 },
             ],
             "vue/no-v-html": 0,

@@ -11,6 +11,8 @@ import { createApp, h, DefineComponent } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 //import { ZiggyVue } from "ziggy-js";
+import DefaultLayout from "@/layouts/Default.vue";
+import EmptyLayout from "@/layouts/Empty.vue";
 import VBtnEx from "@/components/VBtnEx.vue";
 
 import.meta.glob("../images/**");
@@ -32,6 +34,8 @@ createInertiaApp({
             .use(pinia)
             .use(vuetify)
             //.use(ZiggyVue, window.Ziggy ?? {})
+            .component("DefaultLayout", DefaultLayout)
+            .component("EmptyLayout", EmptyLayout)
             .component("v-btn-ex", VBtnEx)
             .provide("resolveComponent", props.resolveComponent)
             .mount(el);

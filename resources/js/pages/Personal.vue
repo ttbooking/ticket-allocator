@@ -1,7 +1,7 @@
 <template>
     <Head :title="$t('personal')" />
 
-    <DefaultLayout>
+    <component :is="`${layout}-layout`">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t("personal") }}</h2>
         </template>
@@ -37,11 +37,10 @@
                 </TransGroup>
             </v-table>
         </div>
-    </DefaultLayout>
+    </component>
 </template>
 
 <script setup lang="ts">
-import DefaultLayout from "@/layouts/Default.vue";
 import PersonalTicket from "@/components/PersonalTicket.vue";
 import { TransitionGroup as TransGroup } from "@/components/TransitionGroup";
 import { Head, router } from "@inertiajs/vue3";
@@ -56,11 +55,17 @@ import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
 //import TicketCategoryRepository from "@/models/TicketCategory";
 
-const props = defineProps<{
-    operator: Operator;
-    //ticketCategories: TicketCategory[];
-    columns: [string, string][];
-}>();
+const props = withDefaults(
+    defineProps<{
+        layout: string;
+        operator: Operator;
+        //ticketCategories: TicketCategory[];
+        columns: [string, string][];
+    }>(),
+    {
+        layout: "default",
+    },
+);
 
 const mode = useSharedDisplayMode();
 
