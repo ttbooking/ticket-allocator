@@ -1,8 +1,8 @@
 <template>
-    <tr class="ticket" :class="{ overflow }">
+    <tr class="personal-ticket" :class="{ overflow }">
         <td v-for="[, key] in columns" :key="key">
             <v-icon v-if="key === 'meta.icon'" :icon="retrieve(ticket, key, 'mdi-help')" color="white" />
-            <span v-else class="text-white" v-html="md.renderInline(retrieve(ticket, key, '-'))"></span>
+            <span v-else v-html="md.renderInline(retrieve(ticket, key, '-'))"></span>
         </td>
     </tr>
 </template>
@@ -51,11 +51,15 @@ function retrieve(obj: object, key: string, fallback: string = ""): string {
 </script>
 
 <style scoped>
-.ticket:deep(a) {
+.personal-ticket:deep(a) {
     text-decoration: underline;
 }
 
-.ticket {
+.personal-ticket td:nth-child(-n + 2):deep(a) {
+    color: white;
+}
+
+.personal-ticket td:nth-child(-n + 2) {
     animation-delay: v-bind("animation.delay");
     animation-duration: v-bind("animation.duration");
 }
