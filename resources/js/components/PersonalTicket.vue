@@ -51,7 +51,7 @@ function retrieve(obj: object, key: string, fallback: string = ""): string {
 </script>
 
 <style scoped>
-.personal-ticket:deep(a) {
+.personal-ticket:deep(a:hover) {
     text-decoration: underline;
 }
 
