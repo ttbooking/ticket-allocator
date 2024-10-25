@@ -20,5 +20,9 @@ export default <Partial<Config>>{
         },
     },
 
+    corePlugins: {
+        preflight: false,
+    },
+
     plugins: [containerQueries, typography],
 };
