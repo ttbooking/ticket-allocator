@@ -21,7 +21,7 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-table v-if="computedOperator" fixed-header density="comfortable" class="personal-monitor">
+            <v-table v-if="computedOperator" fixed-header density="compact" class="personal-monitor">
                 <thead>
                     <tr>
                         <th v-for="[title, key] in columns" :key="key">{{ title }}</th>
