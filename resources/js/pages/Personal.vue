@@ -46,20 +46,19 @@ import { TransitionGroup as TransGroup } from "@/components/TransitionGroup";
 import { Head, router } from "@inertiajs/vue3";
 import { computed, onMounted, onUnmounted } from "vue";
 import { usePusherChannel } from "@/composables";
-import type { Operator, TicketCategory } from "@/types";
+import type { Operator, Ticket } from "@/types";
 import { useSharedDisplayMode } from "@/shared";
 import * as Events from "@/types/events.d";
 
 import { useRepo } from "pinia-orm";
 import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
-//import TicketCategoryRepository from "@/models/TicketCategory";
 
 const props = withDefaults(
     defineProps<{
         layout: string;
         operator: Operator;
-        //ticketCategories: TicketCategory[];
+        tickets: Ticket[];
         columns: [string, string][];
     }>(),
     {
@@ -71,7 +70,6 @@ const mode = useSharedDisplayMode();
 
 const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
-//const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 const channel = usePusherChannel(Events.Channel);
 
 const computedOperator = computed(
@@ -93,8 +91,8 @@ onMounted(() => {
 });
 
 function refreshRepositories() {
-    operatorRepo.value.save(props.operator);
-    //ticketCategoryRepo.value.fresh(props.ticketCategories);
+    operatorRepo.value.fresh(props.operator);
+    ticketRepo.value.fresh(props.tickets);
 }
 
 const removeNavigateEventListener = router.on("navigate", refreshRepositories);
