@@ -56,7 +56,7 @@
     "ticket_limit": "Ограничение по числу тикетов",
     "ticket_pool": "Пул тикетов",
     "tickets": "Тикеты",
-    "time_left": "ост. :time",
+    "time_left": "ост. {time}",
     "title": "Распределитель Заявок",
     "total": "Итого",
     "type": "Тип",

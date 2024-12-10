@@ -56,7 +56,7 @@
     "ticket_limit": "Ticket limit",
     "ticket_pool": "Ticket pool",
     "tickets": "Tickets",
-    "time_left": ":time left",
+    "time_left": "{time} left",
     "title": "Ticket Allocator",
     "total": "Total",
     "type": "Type",
