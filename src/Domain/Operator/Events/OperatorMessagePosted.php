@@ -6,10 +6,11 @@ namespace TTBooking\TicketAllocator\Domain\Operator\Events;
 
 use TTBooking\TicketAllocator\Domain\Support\Event;
 
-class OperatorCommented extends Event
+class OperatorMessagePosted extends Event
 {
     public function __construct(
         public string $uuid,
-        public int $orderId,
+        public string $ticketUuid,
+        public array $meta = [],
     ) {}
 }

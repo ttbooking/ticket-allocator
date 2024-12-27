@@ -7,7 +7,9 @@ namespace TTBooking\TicketAllocator\Domain\Ticket\Projections;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EventSourcing\Projections\Projection;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
@@ -36,6 +38,7 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
  * @property-read int $weight
  * @property TicketCategory $category
  * @property Operator|null $operator
+ * @property Collection<int, Operator> $exes
  *
  * @method static Builder<self> unbound()
  * @method static Builder<self> bound()
@@ -119,6 +122,17 @@ class Ticket extends Projection
     public function operator(): BelongsTo
     {
         return $this->belongsTo(Operator::class, 'handler_uuid');
+    }
+
+    /**
+     * @return BelongsToMany<Operator, $this>
+     */
+    public function exes(): BelongsToMany
+    {
+        return $this->belongsToMany(Operator::class, 'ticket_allocator_matches', 'ticket_uuid', 'operator_uuid')
+            ->as('match')
+            ->using(TicketMatch::class)
+            ->withTimestamps();
     }
 
     /**

@@ -7,7 +7,7 @@ export enum Common {
 }
 
 export enum Operator {
-    Commented = ".operator.commented",
+    MessagePosted = ".operator.message-posted",
     ComplexityLimitAdjusted = ".operator.complexity-limit-adjusted",
     Enrolled = ".operator.enrolled",
     JoinedTeam = ".operator.joined-team",
@@ -29,15 +29,16 @@ export enum Ticket {
     MetaValueSet = ".ticket.meta-value-set",
     MetaValuesMerged = ".ticket.meta-values-merged",
     MetricsAdjusted = ".ticket.metrics-adjusted",
+    MatchMetricsAdjusted = ".ticket.match-metrics-adjusted",
     Closed = ".ticket.closed",
     Created = ".ticket.created",
     Unbound = ".ticket.unbound",
 }
 
 declare namespace Operator {
-    export interface CommentedPayload {
+    export interface MessagePostedPayload {
         uuid: string;
-        orderId: number;
+        ticketUuid: string;
     }
 
     export interface ComplexityLimitAdjustedPayload {
@@ -132,6 +133,12 @@ declare namespace Ticket {
     export interface MetricsAdjustedPayload {
         uuid: string;
         factorUuid: string;
+        adjustments: TicketMetrics;
+    }
+
+    export interface MatchMetricsAdjustedPayload {
+        uuid: string;
+        operatorUuid: string;
         adjustments: TicketMetrics;
     }
 

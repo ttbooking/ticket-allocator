@@ -35,7 +35,7 @@ class OperatorProjector extends Projector
         Operator::find($event->uuid)?->writeable()->update(['name' => $event->name]);
     }
 
-    public function onOperatorCommented(Events\OperatorCommented $event): void
+    public function onOperatorMessagePosted(Events\OperatorMessagePosted $event): void
     {
         //Operator::find($event->uuid)?->writeable()->...;
     }

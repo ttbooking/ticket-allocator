@@ -168,4 +168,15 @@ class OperatorAggregateRoot extends AggregateRoot
     }
 
     protected function applyOperatorSetTeams(Events\OperatorSetTeams $event): void {}
+
+    public function postOperatorMessage(Commands\PostOperatorMessage $command): static
+    {
+        return $this->recordThat(new Events\OperatorMessagePosted(
+            uuid: $this->uuid(),
+            ticketUuid: $command->ticketUuid,
+            meta: $command->meta,
+        ));
+    }
+
+    protected function applyOperatorMessagePosted(Events\OperatorMessagePosted $event): void {}
 }

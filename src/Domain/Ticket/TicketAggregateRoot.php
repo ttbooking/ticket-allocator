@@ -31,6 +31,9 @@ class TicketAggregateRoot extends AggregateRoot
     /** @var array<string, TicketMetrics> */
     public array $perFactorMetrics = [];
 
+    /** @var array<string, TicketMetrics> */
+    public array $perOperatorMetrics = [];
+
     public TicketMetrics $metrics;
 
     public ?string $operatorUuid;
@@ -124,6 +127,22 @@ class TicketAggregateRoot extends AggregateRoot
         $this->perFactorMetrics[$event->factorUuid] = $event->adjustments;
 
         $this->metrics->adjust($event->adjustments);
+    }
+
+    public function adjustMatchMetrics(Commands\AdjustTicketMatchMetrics $command): static
+    {
+        return $this->recordThat(new Events\TicketMatchMetricsAdjusted(
+            uuid: $this->uuid(),
+            operatorUuid: $command->operatorUuid,
+            adjustments: $command->adjustments,
+        ));
+    }
+
+    protected function applyTicketMatchMetricsAdjusted(Events\TicketMatchMetricsAdjusted $event): void
+    {
+        $this->perOperatorMetrics[$event->operatorUuid] = $event->adjustments;
+
+        //$this->metrics->adjust($event->adjustments);
     }
 
     public function bind(Commands\BindTicket $command): static

@@ -67,10 +67,10 @@ class MatchQuery
                 // с условием, что...
                 static fn (JoinClause $join) => $join->on(static fn (Builder $query) => $query
                     // свободных единиц сложности достаточно для тикета
-                    ->where(static fn (Builder $query) => $query
+                    /*->where(static fn (Builder $query) => $query
                         ->whereNull('o.free_complexity')
                         ->orWhereColumn('t.complexity', '<=', 'o.free_complexity')
-                    )
+                    )*/
                     // тикет не закреплён либо закреплён за другим оператором
                     ->where(static fn (Builder $query) => $query
                         ->whereNull('t.handler_uuid')
@@ -84,6 +84,16 @@ class MatchQuery
                     ))
                 )
 
+            // и учётом персональных поправок
+            )->leftJoin(
+                'ticket_allocator_matches as m',
+                static fn (JoinClause $join) => $join->on('m.ticket_uuid', 't.uuid')->on('m.operator_uuid', 'o.uuid')
+            )
+
+            // свободных единиц сложности достаточно для тикета
+            ->where(static fn (Builder $query) => $query
+                ->whereNull('o.free_complexity')
+                ->orWhereColumn(DB::raw('t.complexity + IFNULL(m.complexity, 0)'), '<=', 'o.free_complexity')
             )
 
             // в порядке убывания веса заявки
