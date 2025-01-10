@@ -1,7 +1,7 @@
 <template>
     <Head :title="$t('dashboard')" />
 
-    <DefaultLayout>
+    <component :is="`${layout}-layout`">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t("dashboard") }}</h2>
         </template>
@@ -67,11 +67,10 @@
                 </TransGroup>
             </v-table>
         </div>
-    </DefaultLayout>
+    </component>
 </template>
 
 <script setup lang="ts">
-import DefaultLayout from "@/layouts/Default.vue";
 import { TransitionGroup as TransGroup } from "@/components/TransitionGroup";
 import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
@@ -90,13 +89,19 @@ import OperatorRepository from "@/repositories/OperatorRepository";
 import TicketRepository from "@/repositories/TicketRepository";
 import TicketCategoryRepository from "@/models/TicketCategory";
 
-const props = defineProps<{
-    operators: Operator[];
-    tickets: Ticket[];
-    ticketCategories: TicketCategory[];
-    factors: Record<string, Factor>;
-    matchers: Record<string, Record<string, string | number>>;
-}>();
+const props = withDefaults(
+    defineProps<{
+        layout: string;
+        operators: Operator[];
+        tickets: Ticket[];
+        ticketCategories: TicketCategory[];
+        factors: Record<string, Factor>;
+        matchers: Record<string, Record<string, string | number>>;
+    }>(),
+    {
+        layout: "default",
+    },
+);
 
 const options = useSharedOptions();
 const mode = useSharedDisplayMode();
