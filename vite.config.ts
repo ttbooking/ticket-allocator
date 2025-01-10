@@ -7,6 +7,7 @@ import path from "path";
 
 export default defineConfig({
     build: {
+        chunkSizeWarningLimit: 600,
         sourcemap: true,
     },
     css: {
