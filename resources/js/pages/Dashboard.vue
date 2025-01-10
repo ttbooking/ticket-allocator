@@ -108,11 +108,11 @@ const channel = usePusherChannel(Events.Channel);
 
 const filters = reactive<Record<string, string[]>>({});
 const metaFilter = (meta: Record<string, string> | null) => {
-    return Object.entries(filters).reduce<boolean>((passes, x) => {
-        const [filter, entries] = x;
+    return Object.entries(filters).reduce<boolean>((passes, [filter, entries]) => {
+        //const [filter, entries] = x;
         const prop = meta?.[filter];
         //console.log(filters);
-        const pass = prop === undefined || !entries.length || entries.includes(prop.toString());
+        const pass = prop === undefined || !entries.length || entries.map(String).includes(prop.toString());
         //console.log(`${filter} ${pass ? "pass" : "nopass"} ${prop}`);
         return passes && pass;
     }, true);
