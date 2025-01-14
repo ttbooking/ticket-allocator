@@ -1,2 +1,0 @@
-import{O as r,P as o,U as a,_ as t,$ as s,i as p,T as n,a4 as i}from"./app-FrL-psV7.js";import c from"./Pool-SKa4V-8V.js";import"./TransitionGroup-CeSE_2AU.js";import"./Ticket-C-lTIeLN.js";const l=r({__name:"Operator",props:{operator:{}},setup(m){return o(e=>({bc734de2:e.operator.priority})),(e,_)=>(n(),a("tr",{key:e.operator.id,class:"operator relative"},[t("th",null,s(e.operator.name),1),p(c,{tickets:e.operator.tickets},null,8,["tickets"])]))}}),y=i(l,[["__scopeId","data-v-bfa4e535"]]);export{y as default};
-//# sourceMappingURL=Operator-B8wLBMBb.js.map
