@@ -5,12 +5,14 @@ import { computed, reactive } from "vue";
 export const useSharedOptions = createSharedComposable(() => {
     const options = useLocalStorage<Array<ToggleOptions>>("ticket-allocator.options", []);
 
+    const showFilters = computed(() => options.value.includes("show-filters"));
     const hideEmpty = computed(() => options.value.includes("hide-empty"));
     const altInfo = computed(() => options.value.includes("alt-info"));
     const unlocked = computed(() => options.value.includes("unlocked"));
 
     return reactive({
         all: options,
+        showFilters,
         hideEmpty,
         altInfo,
         unlocked,

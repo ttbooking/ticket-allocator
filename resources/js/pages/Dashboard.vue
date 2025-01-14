@@ -12,6 +12,10 @@
                     <v-col>
                         <v-btn-toggle v-model="options.all" variant="plain" multiple>
                             <v-btn
+                                value="show-filters"
+                                :icon="options.showFilters ? 'mdi-filter-outline' : 'mdi-filter-off-outline'"
+                            />
+                            <v-btn
                                 value="hide-empty"
                                 :icon="options.hideEmpty ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
                             />
@@ -42,7 +46,7 @@
                         />
                     </v-col>
                 </v-row>
-                <v-row>
+                <v-row v-if="options.showFilters">
                     <v-col v-for="(items, matcher) in matchers" :key="matcher" cols="2">
                         <v-autocomplete
                             v-model="filters[matcher]"

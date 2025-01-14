@@ -1,4 +1,4 @@
-export type ToggleOptions = "hide-empty" | "alt-info" | "unlocked";
+export type ToggleOptions = "show-filters" | "hide-empty" | "alt-info" | "unlocked";
 
 export type TicketSortBy = "weight" | "duration";
 
