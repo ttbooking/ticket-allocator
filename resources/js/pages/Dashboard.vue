@@ -79,11 +79,11 @@ import { TransitionGroup as TransGroup } from "@/components/TransitionGroup";
 import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
 import { Head, router } from "@inertiajs/vue3";
-import { computed, ref, reactive, onMounted, onUnmounted } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useSupervisorApi } from "@/api";
 import { useDropZone, usePusherChannel } from "@/composables";
 import type { Operator, Ticket, TicketCategory, Factor } from "@/types";
-import { useSharedOptions, useSharedDisplayMode } from "@/shared";
+import { useSharedOptions, useSharedDisplayMode, useSharedFilters } from "@/shared";
 import * as Events from "@/types/events.d";
 
 import { useRepo } from "pinia-orm";
@@ -109,13 +109,13 @@ const props = withDefaults(
 
 const options = useSharedOptions();
 const mode = useSharedDisplayMode();
+const filters = useSharedFilters();
 
 const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
 const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 const channel = usePusherChannel(Events.Channel);
 
-const filters = reactive<Record<string, string[]>>({});
 const metaFilter = (meta: Record<string, string> | null) => {
     return Object.entries(filters).reduce<boolean>((passes, [filter, entries]) => {
         //const [filter, entries] = x;
