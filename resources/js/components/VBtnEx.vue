@@ -1,6 +1,6 @@
 <template>
     <v-btn v-bind="attrs" @click="visitLink">
-        <template v-for="(_, slot) of $slots as VBtn['v-slots']" #[slot]="scope: unknown">
+        <template v-for="(_, slot) of slots" #[slot]="scope: unknown">
             <slot :name="slot" v-bind="scope || {}" />
         </template>
     </v-btn>
@@ -13,6 +13,7 @@ import { router } from "@inertiajs/vue3";
 import { VBtn } from "vuetify/components";
 
 const props = defineProps<{ method?: Method }>();
+const slots = defineSlots<VBtn["$slots"]>();
 defineOptions({ inheritAttrs: false });
 
 const attrs = computed(() => {

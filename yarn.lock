@@ -339,27 +339,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inertiajs/core@npm:2.0.0":
-  version: 2.0.0
-  resolution: "@inertiajs/core@npm:2.0.0"
+"@inertiajs/core@npm:2.0.1":
+  version: 2.0.1
+  resolution: "@inertiajs/core@npm:2.0.1"
   dependencies:
     axios: "npm:^1.6.0"
     deepmerge: "npm:^4.0.0"
     qs: "npm:^6.9.0"
-  checksum: 10c0/c69e677483c8c1c1fa66a065c1113c1a46f28291660507505ab2665132ddbc7e304adf98d4fa98b5ab3bdc342dfdd80a5cec1f46018af51ee5640555ca6dc12c
+  checksum: 10c0/966d4b76ce23bfa57502776d4cbdd8e84b0935d7bf867326cdd4b534086071b42c007024fd14b4e0011d81fdf34a22215143f8ea9d37307065d95a201bef3664
   languageName: node
   linkType: hard
 
-"@inertiajs/vue3@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@inertiajs/vue3@npm:2.0.0"
+"@inertiajs/vue3@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@inertiajs/vue3@npm:2.0.1"
   dependencies:
-    "@inertiajs/core": "npm:2.0.0"
+    "@inertiajs/core": "npm:2.0.1"
     lodash.clonedeep: "npm:^4.5.0"
     lodash.isequal: "npm:^4.5.0"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10c0/dfea658eafd28d86575ac3e25bc07b3fcb2e73bfc92a6b560dc503e6faf09c01d7a709f88fb7c376cc91545938d9c1330a3791c28e7c909c8bc55ea768597df5
+  checksum: 10c0/6a38666dd2f14ffe3e1407754ad1852a3522b4df2fbb0dd54dffc48cf9076cfd88ebcbab6be14a3da30222827eb6ebe6adb38a90c967b548ebb37d7c591b365c
   languageName: node
   linkType: hard
 
@@ -1856,9 +1856,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.73":
-  version: 1.5.80
-  resolution: "electron-to-chromium@npm:1.5.80"
-  checksum: 10c0/6aaf1891e1b05251efac6f4a63c0ddccf567f0f76506cf0cb284f11413762423fddd7786558066f74c3a95e2a533dad7a97bebe38779b46b7a799d8dd20cea53
+  version: 1.5.82
+  resolution: "electron-to-chromium@npm:1.5.82"
+  checksum: 10c0/0d495077406adf4701c2b14d63a10e03128fbff0ca960c3c4132ef9b3ef36378f90618d8ca9f9f909270414b5e90b3912b65d10ea7f33418ea2e429d83593196
   languageName: node
   linkType: hard
 
@@ -1921,11 +1921,11 @@ __metadata:
   linkType: hard
 
 "es-object-atoms@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "es-object-atoms@npm:1.0.1"
+  version: 1.1.1
+  resolution: "es-object-atoms@npm:1.1.1"
   dependencies:
     es-errors: "npm:^1.3.0"
-  checksum: 10c0/dde63dd195f96e12f583a14eacf99452e2d95abb4a689f68e37a06c1a8a1c988a230c6dfc16601b36da8d0002465320a1135e559350589085052dc4dc1c936f3
+  checksum: 10c0/65364812ca4daf48eb76e2a3b7a89b3f6a2e62a1c420766ce9f692665a29d94fe41fe88b65f24106f449859549711e4b40d9fb8002d862dfd7eb1c512d10be0c
   languageName: node
   linkType: hard
 
@@ -2759,10 +2759,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"laravel-echo@npm:^1.17.1":
-  version: 1.17.1
-  resolution: "laravel-echo@npm:1.17.1"
-  checksum: 10c0/f49c9767111f6d4525bdf8e3fb1ac195b54a07e613b56c6215bfe91f6ad323f14d3c1d4f28210bd88516d3b504289bd3a9a7d24ad4ceb4f1307c0f4ca5d41a3e
+"laravel-echo@npm:^1.18.0":
+  version: 1.18.0
+  resolution: "laravel-echo@npm:1.18.0"
+  checksum: 10c0/4eb2f1c0f64fd986c3fd5a661b3030c6757763e76ddf27de346746bb6bb60f9291da70dcaf15b43ea1b527bdca06c39ab84d94eafff32d13b788a304c2e8f38e
   languageName: node
   linkType: hard
 
@@ -3075,7 +3075,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mlly@npm:^1.2.0, mlly@npm:^1.7.3":
+"mlly@npm:^1.2.0, mlly@npm:^1.7.4":
   version: 1.7.4
   resolution: "mlly@npm:1.7.4"
   dependencies:
@@ -3319,7 +3319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pathe@npm:^1.0.0, pathe@npm:^1.1.2":
+"pathe@npm:^1.0.0":
   version: 1.1.2
   resolution: "pathe@npm:1.1.2"
   checksum: 10c0/64ee0a4e587fb0f208d9777a6c56e4f9050039268faaaaecd50e959ef01bf847b7872785c36483fa5cdcdbdfdb31fef2ff222684d4fc21c330ab60395c681897
@@ -3397,13 +3397,13 @@ __metadata:
   linkType: hard
 
 "pkg-types@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "pkg-types@npm:1.3.0"
+  version: 1.3.1
+  resolution: "pkg-types@npm:1.3.1"
   dependencies:
     confbox: "npm:^0.1.8"
-    mlly: "npm:^1.7.3"
-    pathe: "npm:^1.1.2"
-  checksum: 10c0/76c3a49f9106f648b7fad4b5aa18ce84e27c4eafc297e41cbd00e252a9ac1d2625907a05319b0fbcce3c43438d59a677f8306b88daa61c15c6d837a236ce7e2c
+    mlly: "npm:^1.7.4"
+    pathe: "npm:^2.0.1"
+  checksum: 10c0/19e6cb8b66dcc66c89f2344aecfa47f2431c988cfa3366bdfdcfb1dd6695f87dcce37fbd90fe9d1605e2f4440b77f391e83c23255347c35cf84e7fd774d7fcea
   languageName: node
   linkType: hard
 
@@ -3487,18 +3487,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.47, postcss@npm:^8.4.48, postcss@npm:^8.4.49":
-  version: 8.5.0
-  resolution: "postcss@npm:8.5.0"
-  dependencies:
-    nanoid: "npm:^3.3.8"
-    picocolors: "npm:^1.1.1"
-    source-map-js: "npm:^1.2.1"
-  checksum: 10c0/ce4fb520808a932566a0fd97be905b43e219b55a3752fc8daa944082a35848fa8aff300b89b77dc52c8c3bb5cd53e77182ddb37addc6cacf586f1ef42a34ef45
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.5.1":
+"postcss@npm:^8.4.47, postcss@npm:^8.4.48, postcss@npm:^8.4.49, postcss@npm:^8.5.1":
   version: 8.5.1
   resolution: "postcss@npm:8.5.1"
   dependencies:
@@ -3564,11 +3553,11 @@ __metadata:
   linkType: hard
 
 "qs@npm:^6.9.0":
-  version: 6.13.1
-  resolution: "qs@npm:6.13.1"
+  version: 6.14.0
+  resolution: "qs@npm:6.14.0"
   dependencies:
-    side-channel: "npm:^1.0.6"
-  checksum: 10c0/5ef527c0d62ffca5501322f0832d800ddc78eeb00da3b906f1b260ca0492721f8cdc13ee4b8fd8ac314a6ec37b948798c7b603ccc167e954088df392092f160c
+    side-channel: "npm:^1.1.0"
+  checksum: 10c0/8ea5d91bf34f440598ee389d4a7d95820e3b837d3fd9f433871f7924801becaa0cd3b3b4628d49a7784d06a8aea9bc4554d2b6d8d584e2d221dc06238a42909c
   languageName: node
   linkType: hard
 
@@ -3752,7 +3741,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@inertiajs/vue3": "npm:^2.0.0"
+    "@inertiajs/vue3": "npm:^2.0.1"
     "@intlify/unplugin-vue-i18n": "npm:^6.0.3"
     "@mdi/font": "npm:7.4.47"
     "@tailwindcss/container-queries": "npm:^0.1.1"
@@ -3770,7 +3759,7 @@ __metadata:
     eslint: "npm:^9.18.0"
     eslint-config-prettier: "npm:^10.0.1"
     eslint-plugin-vue: "npm:^9.32.0"
-    laravel-echo: "npm:^1.17.1"
+    laravel-echo: "npm:^1.18.0"
     laravel-vite-plugin: "npm:^1.1.1"
     lodash: "npm:^4.17.21"
     markdown-it: "npm:^14.1.0"
@@ -3889,7 +3878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"side-channel@npm:^1.0.6":
+"side-channel@npm:^1.1.0":
   version: 1.1.0
   resolution: "side-channel@npm:1.1.0"
   dependencies:

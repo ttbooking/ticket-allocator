@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+// @ts-expect-error Helper function not exported
 import { getObjectValueByPath } from "vuetify/lib/util/helpers";
 import MarkdownIt from "markdown-it";
 import MarkdownItAttrs from "markdown-it-attrs";
