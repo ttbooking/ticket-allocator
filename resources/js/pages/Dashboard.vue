@@ -117,7 +117,7 @@ const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 const channel = usePusherChannel(Events.Channel);
 
 const metaFilter = (meta: Record<string, string> | null) => {
-    return Object.entries(filters).reduce<boolean>((passes, [filter, entries]) => {
+    return Object.entries(filters.value).reduce<boolean>((passes, [filter, entries]) => {
         //const [filter, entries] = x;
         const prop = meta?.[filter];
         //console.log(filters);
