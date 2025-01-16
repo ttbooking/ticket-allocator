@@ -27,4 +27,8 @@ export const useSharedFilters = createSharedComposable(() =>
     useLocalStorage<Record<string, string[]>>("ticket-allocator.filters", {}),
 );
 
+export const useSharedTeamFilter = createSharedComposable(() =>
+    useLocalStorage<string[]>("ticket-allocator.team-filter", []),
+);
+
 export const useSharedTimestamp = createSharedComposable(() => useTimestamp({ interval: 1000 }));

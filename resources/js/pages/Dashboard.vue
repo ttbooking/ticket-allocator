@@ -47,6 +47,19 @@
                     </v-col>
                 </v-row>
                 <v-row v-if="options.showFilters">
+                    <v-col cols="2">
+                        <v-autocomplete
+                            v-model="teamFilter"
+                            multiple
+                            clearable
+                            chips
+                            closable-chips
+                            :label="$t('teams')"
+                            :items="operatorTeams"
+                            item-title="name"
+                            item-value="uuid"
+                        />
+                    </v-col>
                     <v-col v-for="(items, matcher) in matchers" :key="matcher" cols="2">
                         <v-autocomplete
                             v-model="filters[matcher]"
@@ -82,14 +95,14 @@ import { Head, router } from "@inertiajs/vue3";
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useSupervisorApi } from "@/api";
 import { useDropZone, usePusherChannel } from "@/composables";
-import type { Operator, Ticket, TicketCategory, Factor } from "@/types";
-import { useSharedOptions, useSharedDisplayMode, useSharedFilters } from "@/shared";
+import type { Operator, OperatorTeam, Ticket, TicketCategory, Factor } from "@/types";
+import { useSharedOptions, useSharedDisplayMode, useSharedFilters, useSharedTeamFilter } from "@/shared";
 import * as Events from "@/types/events.d";
 
 import { useRepo } from "pinia-orm";
 import { useCollect } from "pinia-orm/helpers";
-import OperatorModel from "@/models/Operator";
 import OperatorRepository from "@/repositories/OperatorRepository";
+import OperatorTeamRepository from "@/models/OperatorTeam";
 import TicketRepository from "@/repositories/TicketRepository";
 import TicketCategoryRepository from "@/models/TicketCategory";
 
@@ -97,6 +110,7 @@ const props = withDefaults(
     defineProps<{
         layout: string;
         operators: Operator[];
+        operatorTeams: OperatorTeam[];
         tickets: Ticket[];
         ticketCategories: TicketCategory[];
         factors: Record<string, Factor>;
@@ -110,8 +124,10 @@ const props = withDefaults(
 const options = useSharedOptions();
 const mode = useSharedDisplayMode();
 const filters = useSharedFilters();
+const teamFilter = useSharedTeamFilter();
 
 const operatorRepo = computed(() => useRepo(OperatorRepository));
+const operatorTeamRepo = computed(() => useRepo(OperatorTeamRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
 const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 const channel = usePusherChannel(Events.Channel);
@@ -130,12 +146,17 @@ const metaFilter = (meta: Record<string, string> | null) => {
 const sortedOperators = computed(() =>
     useCollect(
         operatorRepo.value
+            .with("teams")
             .with("tickets", (query) => {
                 query.with("category").where("meta", metaFilter).orderBy(mode.value, "desc");
             })
             .whereHas("tickets")
-            .orWhere((operator: OperatorModel) => !options.hideEmpty && operator.online)
-            .get(),
+            .orWhere((operator) => !options.hideEmpty && operator.online)
+            .get()
+            .filter(
+                (operator) =>
+                    !teamFilter.value.length || operator.teams.some((team) => teamFilter.value.includes(team.uuid)),
+            ),
     ).sortBy([
         ["online", "desc"],
         ["ready", "desc"],
@@ -186,7 +207,8 @@ onMounted(() => {
 });
 
 function refreshRepositories() {
-    operatorRepo.value.fresh(props.operators);
+    operatorRepo.value.save(props.operators);
+    operatorTeamRepo.value.fresh(props.operatorTeams);
     ticketRepo.value.fresh(props.tickets);
     ticketCategoryRepo.value.fresh(props.ticketCategories);
 }

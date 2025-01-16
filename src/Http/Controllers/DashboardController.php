@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use TTBooking\TicketAllocator\Concerns\MayHaveOperatorPrivileges;
@@ -15,7 +15,10 @@ use TTBooking\TicketAllocator\Contracts\Matcher as MatcherContract;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 use TTBooking\TicketAllocator\Http\Resources\FactorResource;
+use TTBooking\TicketAllocator\Http\Resources\OperatorResource;
+use TTBooking\TicketAllocator\Http\Resources\OperatorTeamResource;
 use TTBooking\TicketAllocator\Models\Factor;
+use TTBooking\TicketAllocator\Models\OperatorTeam;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 use TTBooking\TicketAllocator\TicketAllocator;
 
@@ -47,18 +50,23 @@ class DashboardController extends Controller
      */
     public function supervisor(): Response
     {
-        $operators = Operator::all()->toArray();
+        AnonymousResourceCollection::withoutWrapping();
+
+        $operators = OperatorResource::collection(Operator::all()->load('teams'));
+        $operatorTeams = OperatorTeamResource::collection(OperatorTeam::withTrashed()->get());
         $tickets = Ticket::all()->toArray();
         $ticketCategories = TicketCategory::all()->toArray();
         $factors = FactorResource::collection(
             Factor::withTrashed()->orderBy('priority')->get()->keyBy('uuid')
-        )->resolve();
+        );
         $matchers = TicketAllocator::matchers()->mapWithKeys(
             /** @param  class-string<MatcherContract>  $matcher */
             static fn (string $matcher, string $alias) => [$alias => app($matcher)->getProps()]
         );
 
-        return Inertia::render('Dashboard', compact('operators', 'tickets', 'ticketCategories', 'factors', 'matchers'));
+        return Inertia::render('Dashboard',
+            compact('operators', 'operatorTeams', 'tickets', 'ticketCategories', 'factors', 'matchers')
+        );
     }
 
     public function trans(): Response
