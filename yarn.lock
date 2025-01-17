@@ -339,27 +339,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inertiajs/core@npm:2.0.1":
-  version: 2.0.1
-  resolution: "@inertiajs/core@npm:2.0.1"
+"@inertiajs/core@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@inertiajs/core@npm:2.0.2"
   dependencies:
     axios: "npm:^1.6.0"
     deepmerge: "npm:^4.0.0"
     qs: "npm:^6.9.0"
-  checksum: 10c0/966d4b76ce23bfa57502776d4cbdd8e84b0935d7bf867326cdd4b534086071b42c007024fd14b4e0011d81fdf34a22215143f8ea9d37307065d95a201bef3664
+  checksum: 10c0/0817b89cbf8d6337b97ccbca034d5b03b2b418b7869f474ddca25efafd3e95b73ac3518931279ed0f873cd6cd677b319562f6eabd137f347705434097ef07767
   languageName: node
   linkType: hard
 
-"@inertiajs/vue3@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@inertiajs/vue3@npm:2.0.1"
+"@inertiajs/vue3@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@inertiajs/vue3@npm:2.0.2"
   dependencies:
-    "@inertiajs/core": "npm:2.0.1"
+    "@inertiajs/core": "npm:2.0.2"
     lodash.clonedeep: "npm:^4.5.0"
     lodash.isequal: "npm:^4.5.0"
   peerDependencies:
     vue: ^3.0.0
-  checksum: 10c0/6a38666dd2f14ffe3e1407754ad1852a3522b4df2fbb0dd54dffc48cf9076cfd88ebcbab6be14a3da30222827eb6ebe6adb38a90c967b548ebb37d7c591b365c
+  checksum: 10c0/b3918b0a45ba25f382317de8bfe95176eca9cabe957a187e56c090b095d2759ccdb0bac833b2917bb7aa040beb4690abf088c93bdd8cc01c201b15a97cca00b1
   languageName: node
   linkType: hard
 
@@ -1020,12 +1020,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.10.6":
-  version: 22.10.6
-  resolution: "@types/node@npm:22.10.6"
+"@types/node@npm:^22.10.7":
+  version: 22.10.7
+  resolution: "@types/node@npm:22.10.7"
   dependencies:
     undici-types: "npm:~6.20.0"
-  checksum: 10c0/8b67affc211e5f9c74f7949cda04ca669721e50b83d71b8772a7bed7a4a3c41d663b3a794413f618e763ca6c5da8c234c25ffebcb0737983fc3e7415818ab9a7
+  checksum: 10c0/c941b4689dfc4044b64a5f601306cbcb0c7210be853ba378a5dd44137898c45accedd796ee002ad9407024cac7ecaf5049304951cb1d80ce3d7cebbbae56f20e
   languageName: node
   linkType: hard
 
@@ -1856,9 +1856,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.73":
-  version: 1.5.82
-  resolution: "electron-to-chromium@npm:1.5.82"
-  checksum: 10c0/0d495077406adf4701c2b14d63a10e03128fbff0ca960c3c4132ef9b3ef36378f90618d8ca9f9f909270414b5e90b3912b65d10ea7f33418ea2e429d83593196
+  version: 1.5.83
+  resolution: "electron-to-chromium@npm:1.5.83"
+  checksum: 10c0/12380962d057c4679add1047cdddb18b909904614272da0527e505a3859eaffde2022dd0688ce7f230582de96405c3d33b667680614475cdafd3f629caa2fee1
   languageName: node
   linkType: hard
 
@@ -3741,7 +3741,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
-    "@inertiajs/vue3": "npm:^2.0.1"
+    "@inertiajs/vue3": "npm:^2.0.2"
     "@intlify/unplugin-vue-i18n": "npm:^6.0.3"
     "@mdi/font": "npm:7.4.47"
     "@tailwindcss/container-queries": "npm:^0.1.1"
@@ -3749,7 +3749,7 @@ __metadata:
     "@types/lodash": "npm:^4.17.14"
     "@types/markdown-it": "npm:^14.1.2"
     "@types/markdown-it-attrs": "npm:^4.1.3"
-    "@types/node": "npm:^22.10.6"
+    "@types/node": "npm:^22.10.7"
     "@types/webfontloader": "npm:^1.6.38"
     "@vitejs/plugin-vue": "npm:^5.2.1"
     "@vueuse/core": "npm:^12.4.0"
