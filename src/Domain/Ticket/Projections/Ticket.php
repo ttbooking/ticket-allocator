@@ -57,8 +57,8 @@ class Ticket extends Projection
 
     /** @var array<string, mixed> */
     protected $attributes = [
-        //'meta' => [],
-        //'metrics' => [],
+        // 'meta' => [],
+        // 'metrics' => [],
         'initial_weight' => 0,
         'weight_increment' => 0,
         'complexity' => 0,
@@ -81,8 +81,18 @@ class Ticket extends Projection
         'accepted_at' => 'datetime',
     ];
 
-    /** @var list<string> */
-    //protected $appends = ['duration', 'weight'];
+    // @var list<string>
+    // protected $appends = ['duration', 'weight'];
+
+    /**
+     * Perform any actions required after the model boots.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope('weighted', static function (Builder $query) {
+            $query->orderByRaw('initial_weight + timestampdiff(second, created_at, now()) * weight_increment desc');
+        });
+    }
 
     /**
      * Retrieve ticket duration in seconds.
