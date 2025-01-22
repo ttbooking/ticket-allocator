@@ -1,5 +1,7 @@
 <template>
-    <slot />
+    <div class="font-sans antialiased">
+        <slot />
+    </div>
 </template>
 
 <script setup lang="ts">
