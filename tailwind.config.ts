@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
-import containerQueries from "@tailwindcss/container-queries";
 import typography from "@tailwindcss/typography";
 
 export default <Partial<Config>>{
@@ -24,5 +23,5 @@ export default <Partial<Config>>{
         preflight: false,
     },
 
-    plugins: [containerQueries, typography],
+    plugins: [typography],
 };

@@ -215,6 +215,8 @@ const animation = computed(() => ({
 </script>
 
 <style scoped>
+@import "tailwindcss/theme" theme(reference);
+
 .ticket {
     animation-delay: v-bind("animation.delay");
     animation-duration: v-bind("animation.duration");
