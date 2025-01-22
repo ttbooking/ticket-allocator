@@ -1,6 +1,16 @@
 @import "tailwindcss";
 
-@config "../../tailwind.config.ts";
+@plugin "@tailwindcss/typography";
+
+@source "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "./storage/framework/views/*.php";
+@source "./resources/views/**/*.blade.php";
+@source "./resources/js/**/*.vue";
+
+@theme {
+    --font-sans: "Nunito", "sans-serif";
+    --font-title: "Lobster", "sans-serif";
+}
 
 @keyframes ticketWeight {
     0% {

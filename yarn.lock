@@ -1136,13 +1136,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webfontloader@npm:^1.6.38":
-  version: 1.6.38
-  resolution: "@types/webfontloader@npm:1.6.38"
-  checksum: 10c0/1239fc17e6705b7dcea5f8013a711bb2f9cb2f4dd637b414448949efdc97c8cc859e47bf44f31a24e8b9495ebaefa7086e35ea0b7072cde6410d5c36f81a460d
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/eslint-plugin@npm:8.21.0":
   version: 8.21.0
   resolution: "@typescript-eslint/eslint-plugin@npm:8.21.0"
@@ -3530,13 +3523,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"roboto-fontface@npm:*":
-  version: 0.10.0
-  resolution: "roboto-fontface@npm:0.10.0"
-  checksum: 10c0/175b3190d67f87b062e63d5fabe5aac10aaf8bc143854a2afd6beeac942302c62846de2de617dd202f76fb55a31e89e062e72be8c7ca7316caa9ba87cbafc9e1
-  languageName: node
-  linkType: hard
-
 "rollup@npm:^4.23.0":
   version: 4.31.0
   resolution: "rollup@npm:4.31.0"
@@ -3622,7 +3608,6 @@ __metadata:
     "@types/markdown-it": "npm:^14.1.2"
     "@types/markdown-it-attrs": "npm:^4.1.3"
     "@types/node": "npm:^22.10.7"
-    "@types/webfontloader": "npm:^1.6.38"
     "@vitejs/plugin-vue": "npm:^5.2.1"
     "@vueuse/core": "npm:^12.5.0"
     axios: "npm:^1.7.9"
@@ -3638,7 +3623,6 @@ __metadata:
     pinia: "npm:^2.3.1"
     pinia-orm: "npm:^1.10.1"
     prettier: "npm:^3.4.2"
-    roboto-fontface: "npm:*"
     sass: "npm:^1.83.4"
     tailwindcss: "npm:^4.0.0"
     typescript: "npm:^5.7.3"
@@ -3650,7 +3634,6 @@ __metadata:
     vue-router: "npm:^4.5.0"
     vue-tsc: "npm:^2.2.0"
     vuetify: "npm:^3.7.7"
-    webfontloader: "npm:^1.6.28"
     ziggy-js: "npm:^2.4.2"
   languageName: unknown
   linkType: soft
@@ -4252,13 +4235,6 @@ __metadata:
     webpack-plugin-vuetify:
       optional: true
   checksum: 10c0/c8fc2c9a08d247b8d1f8d6b60060d893167fae69654bcdf8c71360d6dc3845ce107072fab710ddb1ba4ecd40a5725d49781f6a5caf93a3ca0b4c1548b4525ccc
-  languageName: node
-  linkType: hard
-
-"webfontloader@npm:^1.6.28":
-  version: 1.6.28
-  resolution: "webfontloader@npm:1.6.28"
-  checksum: 10c0/ed2db7ed8bf7b2c932d59e717875fe05c2b6c1dde06133c67e6878cf21d80f52d01b76b790533a0d346a3a90e03d951eeb8aab70d818b96b81fd6629d3af25c8
   languageName: node
   linkType: hard
 

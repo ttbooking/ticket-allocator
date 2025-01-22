@@ -5,7 +5,6 @@ import i18n from "./plugins/i18n";
 import link from "./plugins/link";
 import pinia from "./plugins/pinia";
 import vuetify from "./plugins/vuetify";
-import { loadFonts } from "./plugins/webfontloader";
 
 import { createApp, h, DefineComponent } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
@@ -16,8 +15,6 @@ import EmptyLayout from "@/layouts/Empty.vue";
 import VBtnEx from "@/components/VBtnEx.vue";
 
 import.meta.glob("../images/**");
-
-loadFonts();
 
 const name = window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
 
