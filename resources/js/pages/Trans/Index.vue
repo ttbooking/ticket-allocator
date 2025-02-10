@@ -3,11 +3,11 @@
 
     <DefaultLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Trans</h2>
+            <h2 class="text-xl leading-tight font-semibold text-gray-800">Trans</h2>
         </template>
 
         <div>
-            <v-table density="compact" class="monitor bg-transparent overflow-hidden">
+            <v-table density="compact" class="monitor overflow-hidden bg-transparent">
                 <TransGroup tag="tbody" name="operators">
                     <TransOperator v-for="operator in operators" :key="operator.id" :operator="operator" />
                 </TransGroup>

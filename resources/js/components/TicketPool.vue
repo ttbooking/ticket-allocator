@@ -2,7 +2,7 @@
     <TransGroup
         ref="ticketPool"
         name="ticket-pool"
-        class="@container tickets leading-8 !pt-[1px] !pb-[3px]"
+        class="tickets @container !pt-[1px] !pb-[3px] leading-8"
         :css="animationEnabled"
         @mouseup="unlock"
     >

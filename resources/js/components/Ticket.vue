@@ -2,8 +2,8 @@
     <div class="d-inline-block">
         <v-btn size="small" class="ticket justify-start px-2" :class="{ overflow }" :ripple="false" flat width="100">
             <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon ?? ''" color="white" />
-            <span class="text-white overflow-hidden">
-                <span class="title inline-block relative">{{ title() }}</span>
+            <span class="overflow-hidden text-white">
+                <span class="title relative inline-block">{{ title() }}</span>
             </span>
             <v-overlay
                 open-on-click
@@ -244,6 +244,6 @@ const animation = computed(() => ({
 }
 
 .metric {
-    @apply border-b-[1px] border-dotted border-black cursor-help;
+    @apply cursor-help border-b-[1px] border-dotted border-black;
 }
 </style>

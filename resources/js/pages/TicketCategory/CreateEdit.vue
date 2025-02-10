@@ -3,7 +3,7 @@
 
     <DefaultLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="text-xl leading-tight font-semibold text-gray-800">
                 {{ $t(ticketCategory ? "edit_category" : "new_category") }}
             </h2>
         </template>

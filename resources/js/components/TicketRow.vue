@@ -4,7 +4,7 @@
             <slot name="status" />
         </component>
 
-        <component :is="cell" class="name !pt-[6px] font-weight-bold">
+        <component :is="cell" class="name font-weight-bold !pt-[6px]">
             <slot name="name" />
         </component>
 

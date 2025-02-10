@@ -3,7 +3,7 @@
 
     <DefaultLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="text-xl leading-tight font-semibold text-gray-800">
                 {{ $t(operator ? "edit_operator" : "new_operator") }}
             </h2>
         </template>

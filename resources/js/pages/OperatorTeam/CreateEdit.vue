@@ -3,7 +3,7 @@
 
     <DefaultLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="text-xl leading-tight font-semibold text-gray-800">
                 {{ $t(team ? "edit_team" : "new_team") }}
             </h2>
         </template>
@@ -111,7 +111,7 @@ const form = useForm({
     description: props.team?.description ?? "",
     weight: props.team?.weight ?? 100,
     operators: props.team?.operators.map((operator) => operator.uuid) ?? [],
-    matching: Array.isArray(props.team?.matching) ? {} : props.team?.matching ?? {},
+    matching: Array.isArray(props.team?.matching) ? {} : (props.team?.matching ?? {}),
 });
 
 const itemify = (items: object) => Object.entries(items).map(([title, value]) => ({ title, value }));

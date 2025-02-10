@@ -42,10 +42,12 @@
     }
 }
 
-.ticket, .personal-ticket td:nth-child(-n + 2) {
+.ticket,
+.personal-ticket td:nth-child(-n + 2) {
     animation: ticketWeight 1s linear forwards paused;
 }
 
-.ticket.overflow, .personal-ticket.overflow td:nth-child(-n + 2) {
+.ticket.overflow,
+.personal-ticket.overflow td:nth-child(-n + 2) {
     animation: ticketWeightOverflow 0.5s ease-in infinite alternate running !important;
 }

@@ -3,7 +3,7 @@
 
     <DefaultLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $t("operators") }}</h2>
+            <h2 class="text-xl leading-tight font-semibold text-gray-800">{{ $t("operators") }}</h2>
         </template>
 
         <div>

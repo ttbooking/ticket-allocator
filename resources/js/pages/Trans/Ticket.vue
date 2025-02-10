@@ -1,5 +1,5 @@
 <template>
-    <div class="ticket-wrapper relative d-inline-block">
+    <div class="ticket-wrapper d-inline-block relative">
         <v-btn size="small" width="100" class="ticket text-white">{{ ticket.name }}</v-btn>
     </div>
 </template>
