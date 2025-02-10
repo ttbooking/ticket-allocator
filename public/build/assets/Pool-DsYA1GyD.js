@@ -1,2 +1,0 @@
-import{T as r}from"./TransitionGroup-C0gBevjN.js";import o from"./Ticket-B4Rca8H8.js";import{O as n,Y as a,U as e,X as c,T as i,F as p,a3 as l,a2 as m,a4 as _}from"./app-Dwjgz7ko.js";const u=n({__name:"Pool",props:{tickets:{}},setup(d){return(s,f)=>(e(),a(m(r),{tag:"td",name:"tickets",class:"@container pt-1"},{default:c(()=>[(e(!0),i(p,null,l(s.tickets,t=>(e(),a(o,{key:t.id,ticket:t,class:"mr-1 mb-1"},null,8,["ticket"]))),128))]),_:1}))}}),B=_(u,[["__scopeId","data-v-e05ee0d4"]]);export{B as default};
-//# sourceMappingURL=Pool-DsYA1GyD.js.map
