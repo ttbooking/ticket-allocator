@@ -9,7 +9,7 @@ import en from "../../../lang/en.json";
 declare global {
     interface Window {
         axios: AxiosInstance;
-        Echo: Echo;
+        Echo: Echo<"pusher">;
     }
 
     const route: typeof routeFn;
