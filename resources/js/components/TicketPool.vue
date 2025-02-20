@@ -45,7 +45,7 @@ const ticketRepo = computed(() => useRepo(TicketRepository));
 watch([element, x], ([element, x]) => {
     if (!element || !triggerElement.value) return;
 
-    const uuid = triggerElement.value.dataset.uuid as string;
+    const uuid = (triggerElement.value as HTMLElement).dataset.uuid as string;
     //multiplier.value = Math.round(Math.min(Math.max(multiplier.value - y / 10, 1), 100));
     //correction.value = Math.max(correction.value - x * multiplier.value, correction.value - props.ticket.weight);
     /*if (x < 0) {
