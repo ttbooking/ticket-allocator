@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ticket_allocator_matches', function (Blueprint $table) {
+            $table->id();
             $table->foreignUuid('ticket_uuid')->constrained('ticket_allocator_tickets', 'uuid')->cascadeOnDelete();
             $table->foreignUuid('operator_uuid')->constrained('ticket_allocator_operators', 'uuid')->cascadeOnDelete();
             $table->integer('initial_weight')->default(0);
@@ -19,10 +20,11 @@ return new class extends Migration
             $table->integer('complexity')->default(0);
             $table->integer('delay')->default(0);
             $table->integer('reservation')->default(0);
+            $table->integer('ticket_limit')->default(0);
+            $table->integer('complexity_limit')->default(0);
+            $table->json('meta')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
-
-            $table->primary(['ticket_uuid', 'operator_uuid']);
         });
     }
 

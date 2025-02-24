@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace TTBooking\TicketAllocator\Domain\Ticket\Projectors;
 
 use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
-use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Events;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
+use TTBooking\TicketAllocator\Domain\Ticket\Projections\TicketMatch;
 
 class TicketProjector extends Projector
 {
@@ -73,21 +73,16 @@ class TicketProjector extends Projector
 
     public function onTicketMatchMetricAdjusted(Events\TicketMatchMetricsAdjusted $event): void
     {
-        if (! $ticket = Ticket::find($event->uuid)?->writeable()) {
-            return;
-        }
-
-        if (! $operator = Operator::find($event->operatorUuid)?->writeable()) {
-            return;
-        }
-
-        $ticket->exes()->syncWithPivotValues($operator, [
+        (new TicketMatch)->writeable()->create([
+            'ticket_uuid' => $event->uuid,
+            'operator_uuid' => $event->operatorUuid,
             'initial_weight' => $event->adjustments->initial_weight,
             'weight_increment' => $event->adjustments->weight_increment,
             'complexity' => $event->adjustments->complexity,
             'delay' => $event->adjustments->delay,
             'reservation' => $event->adjustments->reservation,
-        ], false);
+            'meta' => $event->meta,
+        ]);
     }
 
     public function onTicketBound(Events\TicketBound $event): void

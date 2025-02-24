@@ -16,5 +16,8 @@ class AdjustTicketMatchMetrics
         #[AggregateUuid] public string $uuid,
         public string $operatorUuid,
         public TicketMetrics $adjustments,
+        public int $ticketLimit,
+        public int $complexityLimit,
+        public array $meta = [],
     ) {}
 }

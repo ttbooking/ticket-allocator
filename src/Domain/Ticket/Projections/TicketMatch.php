@@ -6,7 +6,7 @@ namespace TTBooking\TicketAllocator\Domain\Ticket\Projections;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Spatie\EventSourcing\Projections\Projection;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 
 /**
@@ -17,12 +17,15 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
  * @property int $complexity
  * @property int $delay
  * @property int $reservation
+ * @property int $ticket_limit
+ * @property int $complexity_limit
+ * @property array $meta
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Ticket $ticket
  * @property Operator $operator
  */
-class TicketMatch extends Pivot
+class TicketMatch extends Projection
 {
     protected $table = 'ticket_allocator_matches';
 
@@ -35,6 +38,9 @@ class TicketMatch extends Pivot
         'complexity' => 0,
         'delay' => 0,
         'reservation' => 0,
+        'ticket_limit' => 0,
+        'complexity_limit' => 0,
+        'meta' => [],
     ];
 
     /** @var array<string, string> */
@@ -44,6 +50,9 @@ class TicketMatch extends Pivot
         'complexity' => 'integer',
         'delay' => 'integer',
         'reservation' => 'integer',
+        'ticket_limit' => 'integer',
+        'complexity_limit' => 'integer',
+        'meta' => 'array',
     ];
 
     /**

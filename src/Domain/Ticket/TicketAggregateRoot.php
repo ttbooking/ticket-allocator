@@ -135,6 +135,9 @@ class TicketAggregateRoot extends AggregateRoot
             uuid: $this->uuid(),
             operatorUuid: $command->operatorUuid,
             adjustments: $command->adjustments,
+            ticketLimit: $command->ticketLimit,
+            complexityLimit: $command->complexityLimit,
+            meta: $command->meta,
         ));
     }
 

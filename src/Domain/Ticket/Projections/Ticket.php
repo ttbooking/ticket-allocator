@@ -38,7 +38,6 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
  * @property-read int $weight
  * @property TicketCategory $category
  * @property Operator|null $operator
- * @property Collection<int, Operator> $exes
  *
  * @method static Builder<self> unbound()
  * @method static Builder<self> bound()
@@ -132,17 +131,6 @@ class Ticket extends Projection
     public function operator(): BelongsTo
     {
         return $this->belongsTo(Operator::class, 'handler_uuid');
-    }
-
-    /**
-     * @return BelongsToMany<Operator, $this>
-     */
-    public function exes(): BelongsToMany
-    {
-        return $this->belongsToMany(Operator::class, 'ticket_allocator_matches', 'ticket_uuid', 'operator_uuid')
-            ->as('match')
-            ->using(TicketMatch::class)
-            ->withTimestamps();
     }
 
     /**

@@ -12,12 +12,21 @@ use TTBooking\TicketAllocator\DTO\TicketMetrics;
 
 class AdjustTicketMatchMetricsAction extends Action
 {
-    public function __invoke(Ticket|string $ticket, Operator|string $operator, TicketMetrics $adjustments): void
-    {
+    public function __invoke(
+        Ticket|string $ticket,
+        Operator|string $operator,
+        TicketMetrics $adjustments,
+        int $ticketLimit = 0,
+        int $complexityLimit = 0,
+        array $meta = [],
+    ): void {
         $this->dispatch(new AdjustTicketMatchMetrics(
             uuid: is_string($ticket) ? $ticket : $ticket->getKey(),
             operatorUuid: is_string($operator) ? $operator : $operator->getKey(),
             adjustments: $adjustments,
+            ticketLimit: $ticketLimit,
+            complexityLimit: $complexityLimit,
+            meta: $meta,
         ));
     }
 }

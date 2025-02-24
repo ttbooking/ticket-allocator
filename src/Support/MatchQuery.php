@@ -10,12 +10,19 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\DB;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
+use TTBooking\TicketAllocator\Domain\Ticket\Projections\TicketMatch;
 use TTBooking\TicketAllocator\TicketAllocator;
 
 class MatchQuery
 {
     public static function make(): Builder
     {
+        [
+            'ticket_aggregate' => $tagg,
+            'operator_aggregate' => $oagg,
+            'pivot' => $pivot,
+        ] = config('ticket-allocator.adjustments');
+
         return DB::query()
 
             // выборка пар оператор/тикет
@@ -52,12 +59,7 @@ class MatchQuery
                     )
                     // оператор онлайн и готов к работе
                     ->where('online', true)
-                    ->where('ready', true)
-                    // у оператора есть свободные слоты
-                    ->where(static fn (EloquentBuilder $query) => $query
-                        ->whereNull('free_slots')
-                        ->orWhere('free_slots', '>', 0)
-                    ),
+                    ->where('ready', true),
                     // в порядке убывания числа свободных слотов и единиц сложности
                     //->orderByDesc('free_slots')
                     //->orderByDesc('free_complexity'),
@@ -66,11 +68,6 @@ class MatchQuery
 
                 // с условием, что...
                 static fn (JoinClause $join) => $join->on(static fn (Builder $query) => $query
-                    // свободных единиц сложности достаточно для тикета
-                    /*->where(static fn (Builder $query) => $query
-                        ->whereNull('o.free_complexity')
-                        ->orWhereColumn('t.complexity', '<=', 'o.free_complexity')
-                    )*/
                     // тикет не закреплён либо закреплён за другим оператором
                     ->where(static fn (Builder $query) => $query
                         ->whereNull('t.handler_uuid')
@@ -85,15 +82,34 @@ class MatchQuery
                 )
 
             // и учётом персональных поправок
-            )->leftJoin(
-                'ticket_allocator_matches as m',
-                static fn (JoinClause $join) => $join->on('m.ticket_uuid', 't.uuid')->on('m.operator_uuid', 'o.uuid')
+            )->leftJoinSub(
+
+                TicketMatch::query()
+                    ->select(
+                        "meta->$pivot",
+                        "$oagg(ticket_limit) as ticket_limit",
+                        "$oagg(complexity_limit) as complexity_limit",
+                    )
+                    ->groupBy("meta->$pivot"),
+
+                'm',
+
+                static fn (JoinClause $join) => $join
+                    ->on('m.operator_uuid', 'o.uuid')
+                    ->on("m.meta->$pivot", "t.meta->$pivot")
+
+            )
+
+            // у оператора есть свободные слоты
+            ->where(static fn (Builder $query) => $query
+                ->whereNull('o.free_slots')
+                ->orWhere(DB::raw('o.free_slots + IFNULL(m.ticket_limit, 0)'), '>', 0)
             )
 
             // свободных единиц сложности достаточно для тикета
             ->where(static fn (Builder $query) => $query
                 ->whereNull('o.free_complexity')
-                ->orWhereColumn(DB::raw('t.complexity + IFNULL(m.complexity, 0)'), '<=', 'o.free_complexity')
+                ->orWhereColumn('t.complexity', '<=', DB::raw('o.free_complexity + IFNULL(m.complexity_limit, 0)'))
             )
 
             // в порядке убывания веса заявки
