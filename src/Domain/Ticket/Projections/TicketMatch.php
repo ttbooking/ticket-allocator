@@ -40,7 +40,7 @@ class TicketMatch extends Projection
         'reservation' => 0,
         'ticket_limit' => 0,
         'complexity_limit' => 0,
-        'meta' => [],
+        'meta' => '[]',
     ];
 
     /** @var array<string, string> */
