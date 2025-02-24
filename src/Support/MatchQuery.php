@@ -86,6 +86,7 @@ class MatchQuery
 
                 TicketMatch::query()
                     ->select(
+                        'operator_uuid',
                         "meta->$pivot",
                         DB::raw("$oagg(ticket_limit) as ticket_limit"),
                         DB::raw("$oagg(complexity_limit) as complexity_limit"),
