@@ -81,6 +81,8 @@ class TicketProjector extends Projector
             'complexity' => $event->adjustments->complexity,
             'delay' => $event->adjustments->delay,
             'reservation' => $event->adjustments->reservation,
+            'ticket_limit' => $event->ticketLimit,
+            'complexity_limit' => $event->complexityLimit,
             'meta' => $event->meta,
         ]);
     }
