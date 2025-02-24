@@ -87,7 +87,7 @@ class MatchQuery
                 TicketMatch::query()
                     ->select(
                         'operator_uuid',
-                        "meta->$pivot",
+                        "meta->$pivot as pivot",
                         DB::raw("$oagg(ticket_limit) as ticket_limit"),
                         DB::raw("$oagg(complexity_limit) as complexity_limit"),
                     )
@@ -97,7 +97,7 @@ class MatchQuery
 
                 static fn (JoinClause $join) => $join
                     ->on('m.operator_uuid', 'o.uuid')
-                    ->on("m.meta->$pivot", "t.meta->$pivot")
+                    ->on('pivot', "t.meta->$pivot")
 
             )
 
