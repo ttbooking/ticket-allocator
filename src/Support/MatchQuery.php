@@ -87,8 +87,8 @@ class MatchQuery
                 TicketMatch::query()
                     ->select(
                         "meta->$pivot",
-                        "$oagg(ticket_limit) as ticket_limit",
-                        "$oagg(complexity_limit) as complexity_limit",
+                        DB::raw("$oagg(ticket_limit) as ticket_limit"),
+                        DB::raw("$oagg(complexity_limit) as complexity_limit"),
                     )
                     ->groupBy("meta->$pivot"),
 
