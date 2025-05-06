@@ -31,7 +31,7 @@ return new class extends Migration
             $table->unsignedInteger('reservation')->default(0);
 
             // virtual fields
-            //$table->unsignedInteger('weight')->virtualAs('initial_weight + TIMESTAMPDIFF(SECOND, created_at, NOW()) * weight_increment')->index();
+            // $table->unsignedInteger('weight')->virtualAs('initial_weight + TIMESTAMPDIFF(SECOND, created_at, NOW()) * weight_increment')->index();
             $table->timestamp('delayed_until')->virtualAs('DATE_ADD(created_at, INTERVAL delay SECOND)');
             $table->timestamp('reserved_until')->virtualAs('IF(reservation, DATE_ADD(bound_at, INTERVAL reservation SECOND), NULL)');
 

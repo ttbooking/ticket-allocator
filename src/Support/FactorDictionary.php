@@ -17,7 +17,7 @@ use TTBooking\TicketAllocator\Models\Factor;
  *
  * @template TDefault of TValue|null
  *
- * @implements Collection<TKey, TValue>
+ * @extends Collection<TKey, TValue>
  */
 class FactorDictionary extends Collection
 {

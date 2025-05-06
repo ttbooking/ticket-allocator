@@ -7,9 +7,7 @@ namespace TTBooking\TicketAllocator\Domain\Ticket\Projections;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EventSourcing\Projections\Projection;
 use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
@@ -39,10 +37,10 @@ use TTBooking\TicketAllocator\Models\TicketCategory;
  * @property TicketCategory $category
  * @property Operator|null $operator
  *
- * @method static Builder<self> unbound()
- * @method static Builder<self> bound()
- * @method static Builder<self> notAccepted()
- * @method static Builder<self> accepted()
+ * @method static Builder<$this> unbound()
+ * @method static Builder<$this> bound()
+ * @method static Builder<$this> notAccepted()
+ * @method static Builder<$this> accepted()
  * @method int increment(string $column, float|int $amount = 1, array $extra = [])
  * @method int decrement(string $column, float|int $amount = 1, array $extra = [])
  */
@@ -136,8 +134,8 @@ class Ticket extends Projection
     /**
      * Scope a query to only include unbound tickets.
      *
-     * @param  Builder<self>  $query
-     * @return Builder<self>
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
      */
     public function scopeUnbound(Builder $query): Builder
     {
@@ -147,8 +145,8 @@ class Ticket extends Projection
     /**
      * Scope a query to only include bound tickets.
      *
-     * @param  Builder<self>  $query
-     * @return Builder<self>
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
      */
     public function scopeBound(Builder $query): Builder
     {
@@ -158,8 +156,8 @@ class Ticket extends Projection
     /**
      * Scope a query to only include not accepted tickets.
      *
-     * @param  Builder<self>  $query
-     * @return Builder<self>
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
      */
     public function scopeNotAccepted(Builder $query): Builder
     {
@@ -169,8 +167,8 @@ class Ticket extends Projection
     /**
      * Scope a query to only include accepted tickets.
      *
-     * @param  Builder<self>  $query
-     * @return Builder<self>
+     * @param  Builder<$this>  $query
+     * @return Builder<$this>
      */
     public function scopeAccepted(Builder $query): Builder
     {

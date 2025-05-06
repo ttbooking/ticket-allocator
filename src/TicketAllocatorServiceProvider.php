@@ -13,7 +13,7 @@ use Illuminate\Support\ServiceProvider;
 use Spatie\EventSourcing\Facades\Projectionist;
 use TTBooking\TicketAllocator\Domain\Operator\Projectors\OperatorProjector;
 use TTBooking\TicketAllocator\Domain\Ticket\Projectors\TicketProjector;
-//use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
+// use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyCategoryInfo;
 use TTBooking\TicketAllocator\Domain\Ticket\Reactors\ApplyFactors;
 use TTBooking\TicketAllocator\Jobs\Triage;
 use TTBooking\ViteManager\Facades\Vite;
@@ -104,7 +104,7 @@ class TicketAllocatorServiceProvider extends ServiceProvider
             OperatorProjector::class,
             TicketProjector::class,
             ApplyFactors::class,
-            //ApplyCategoryInfo::class,
+            // ApplyCategoryInfo::class,
         ]);
     }
 

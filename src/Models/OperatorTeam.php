@@ -30,6 +30,7 @@ use TTBooking\TicketAllocator\Domain\Operator\Projections\Operator;
  */
 class OperatorTeam extends Model
 {
+    /** @use HasFactory<OperatorTeamFactory> */
     use HasFactory, HasUuids, SoftDeletes;
 
     protected $table = 'ticket_allocator_operator_teams';
@@ -53,7 +54,7 @@ class OperatorTeam extends Model
     }
 
     /**
-     * @return BelongsToMany<Operator, $this>
+     * @return BelongsToMany<Operator, $this, TeamOperator>
      */
     public function operators(): BelongsToMany
     {

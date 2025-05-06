@@ -1,3 +1,6 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
 parameters:
     paths:
         - config
@@ -9,5 +12,14 @@ parameters:
 
     level: 9
 
-includes:
-    - vendor/larastan/larastan/extension.neon
+    ignoreErrors:
+        -
+            identifier: larastan.noEnvCallsOutsideOfConfig
+            path: config/*.php
+        -
+            identifier: trait.unused
+            path: src/Concerns/*.php
+        -
+            identifier: offsetAccess.nonOffsetAccessible
+            message: '#^Cannot access offset ''config'' on Illuminate\\Contracts\\Foundation\\Application\.$#'
+            path: src/*ServiceProvider.php

@@ -37,7 +37,7 @@ class OperatorProjector extends Projector
 
     public function onOperatorMessagePosted(Events\OperatorMessagePosted $event): void
     {
-        //Operator::find($event->uuid)?->writeable()->...;
+        // Operator::find($event->uuid)?->writeable()->...;
     }
 
     public function onOperatorTicketLimitAdjusted(Events\OperatorTicketLimitAdjusted $event): void
@@ -72,17 +72,17 @@ class OperatorProjector extends Projector
 
     public function onOperatorJoinedTeam(Events\OperatorJoinedTeam $event): void
     {
-        //Operator::find($event->uuid)?->writeable()->teams()->attach($event->operatorTeamUuid);
+        // Operator::find($event->uuid)?->writeable()->teams()->attach($event->operatorTeamUuid);
     }
 
     public function onOperatorLeftTeam(Events\OperatorLeftTeam $event): void
     {
-        //Operator::find($event->uuid)?->writeable()->teams()->detach($event->operatorTeamUuid);
+        // Operator::find($event->uuid)?->writeable()->teams()->detach($event->operatorTeamUuid);
     }
 
     public function onOperatorSetTeams(Events\OperatorSetTeams $event): void
     {
-        //Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
+        // Operator::find($event->uuid)?->writeable()->teams()->sync($event->operatorTeamUuids);
     }
 
     public function onTicketCreated(TicketEvents\TicketCreated $event): void

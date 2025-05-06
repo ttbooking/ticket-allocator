@@ -145,7 +145,7 @@ class TicketAggregateRoot extends AggregateRoot
     {
         $this->perOperatorMetrics[$event->operatorUuid] = $event->adjustments;
 
-        //$this->metrics->adjust($event->adjustments);
+        // $this->metrics->adjust($event->adjustments);
     }
 
     public function bind(Commands\BindTicket $command): static

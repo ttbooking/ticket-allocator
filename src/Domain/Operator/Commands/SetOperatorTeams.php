@@ -12,7 +12,6 @@ use TTBooking\TicketAllocator\Domain\Operator\OperatorAggregateRoot;
 class SetOperatorTeams
 {
     /**
-     * @param  string  $uuid
      * @param  string[]  $operatorTeamUuids
      */
     public function __construct(

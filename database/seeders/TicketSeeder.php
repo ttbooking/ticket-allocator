@@ -21,8 +21,8 @@ class TicketSeeder extends Seeder
             return;
         }
 
-        $ticketCategories = TicketCategory::all(['uuid'])->modelKeys();
-        $operators = Operator::all(['uuid'])->modelKeys();
+        $ticketCategories = TicketCategory::query()->pluck('uuid')->all();
+        $operators = Operator::query()->pluck('uuid')->all();
 
         $bar = $this->command->getOutput()->createProgressBar($count);
         $bar->start();

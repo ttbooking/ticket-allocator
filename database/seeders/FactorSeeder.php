@@ -19,7 +19,7 @@ class FactorSeeder extends Seeder
         $this->command->callSilent('factor:install');
 
         $config = [];
-        $ticketCategories = TicketCategory::all(['uuid'])->modelKeys();
+        $ticketCategories = TicketCategory::query()->pluck('uuid')->all();
         foreach ($ticketCategories as $uuid) {
             $config[] = [
                 'value' => $uuid,

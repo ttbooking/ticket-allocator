@@ -40,8 +40,8 @@ class MatchQuery
                     )
                     // тикет не задержан либо время задержки вышло
                     ->where('delayed_until', '<=', DB::raw('NOW()')),
-                    // в порядке убывания веса
-                    //->orderByRaw('initial_weight + TIMESTAMPDIFF(SECOND, created_at, NOW()) * weight_increment DESC'),
+                // в порядке убывания веса
+                // ->orderByRaw('initial_weight + TIMESTAMPDIFF(SECOND, created_at, NOW()) * weight_increment DESC'),
 
                 't'
 
@@ -60,9 +60,9 @@ class MatchQuery
                     // оператор онлайн и готов к работе
                     ->where('online', true)
                     ->where('ready', true),
-                    // в порядке убывания числа свободных слотов и единиц сложности
-                    //->orderByDesc('free_slots')
-                    //->orderByDesc('free_complexity'),
+                // в порядке убывания числа свободных слотов и единиц сложности
+                // ->orderByDesc('free_slots')
+                // ->orderByDesc('free_complexity'),
 
                 'o',
 
@@ -81,7 +81,7 @@ class MatchQuery
                     ))
                 )
 
-            // и учётом персональных поправок
+                // и учётом персональных поправок
             )->leftJoinSub(
 
                 TicketMatch::query()
@@ -117,8 +117,8 @@ class MatchQuery
             ->orderByRaw('t.initial_weight + TIMESTAMPDIFF(SECOND, t.created_at, NOW()) * t.weight_increment DESC')
 
             // в порядке убывания числа свободных слотов и единиц сложности оператора
-            //->orderByDesc('o.free_slots')
-            //->orderByDesc('o.free_complexity')
+            // ->orderByDesc('o.free_slots')
+            // ->orderByDesc('o.free_complexity')
 
             // учитывая вес команды, в которую входит оператор
             ->orderByDesc('o.weight')

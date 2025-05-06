@@ -26,6 +26,7 @@ use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
  */
 class TicketCategory extends Model
 {
+    /** @use HasFactory<TicketCategoryFactory> */
     use HasFactory, HasUuids;
 
     protected $table = 'ticket_allocator_ticket_categories';

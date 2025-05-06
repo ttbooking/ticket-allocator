@@ -53,8 +53,8 @@ class Operator extends Projection
         'complexity_limit' => null,
         'bound_tickets' => 0,
         'total_complexity' => 0,
-        //'free_slots' => null,
-        //'free_complexity' => null,
+        // 'free_slots' => null,
+        // 'free_complexity' => null,
         'last_bound_at' => null,
     ];
 
@@ -72,7 +72,7 @@ class Operator extends Projection
     ];
 
     // @var string[]
-    //protected $touches = ['operatorTeams'];
+    // protected $touches = ['operatorTeams'];
 
     /**
      * @return Attribute<string, never>
@@ -91,7 +91,7 @@ class Operator extends Projection
     }
 
     /**
-     * @return BelongsToMany<OperatorTeam, $this>
+     * @return BelongsToMany<OperatorTeam, $this, TeamOperator>
      */
     protected function operatorTeams(): BelongsToMany
     {
@@ -100,7 +100,7 @@ class Operator extends Projection
     }
 
     /**
-     * @return BelongsToMany<OperatorTeam, $this>
+     * @return BelongsToMany<OperatorTeam, $this, TeamOperator>
      */
     public function teams(): BelongsToMany
     {
