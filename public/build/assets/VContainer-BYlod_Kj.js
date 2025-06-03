@@ -1,0 +1,2 @@
+/* empty css              */import{g as t,p as l,u as i,aA as r,i as m,f as u,n as c,l as p,o as C,aR as d,q as f}from"./app-DNFecrm8.js";const y=l({fluid:{type:Boolean,default:!1},...f(),...d(),...C()},"VContainer"),k=t()({name:"VContainer",props:y(),setup(e,a){let{slots:s}=a;const{rtlClasses:n}=i(),{dimensionStyles:o}=r(e);return m(()=>u(e.tag,{class:p(["v-container",{"v-container--fluid":e.fluid},n.value,e.class]),style:c([o.value,e.style])},s)),{}}});export{k as V};
+//# sourceMappingURL=VContainer-BYlod_Kj.js.map
