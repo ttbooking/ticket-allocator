@@ -16,6 +16,8 @@ class TicketMetrics
 
     public static function from(array $metrics): static
     {
+        $metrics = array_map(static fn ($value) => is_int($value) ? $value : 0, $metrics);
+
         return new static(...$metrics);
     }
 
