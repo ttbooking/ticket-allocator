@@ -11,13 +11,6 @@ export default defineConfig({
         chunkSizeWarningLimit: 600,
         sourcemap: true,
     },
-    css: {
-        preprocessorOptions: {
-            sass: {
-                api: "modern",
-            },
-        },
-    },
     plugins: [
         i18n({
             include: [path.resolve(__dirname, "./lang/**")],

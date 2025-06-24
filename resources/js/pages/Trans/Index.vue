@@ -75,11 +75,13 @@ async function removeTicket() {
         operator = <Operator | undefined>sample(operators.value);
         counter++;
     } while (operator && operator.tickets.length === 0 && counter < 10);
+    // @ts-ignore
     operator && remove(operator.tickets, (ticket, index) => index === random(0, operator!.tickets.length - 1));
 }
 
 async function flipOperators() {
     await nextTick();
+    // @ts-ignore
     operators.value = reverse(operators.value);
 }
 
