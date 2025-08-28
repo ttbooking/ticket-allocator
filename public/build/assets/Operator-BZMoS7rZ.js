@@ -1,2 +1,0 @@
-import{R as r,S as o,X as a,Y as t,d as s,b as p,a1 as n,a5 as c}from"./app-UttmXqmU.js";import i from"./Pool-Dp6ZM-aO.js";import"./TransitionGroup-CwbR9_Rv.js";import"./Ticket-DlUN-hdW.js";const l=r({__name:"Operator",props:{operator:{}},setup(m){return o(e=>({bc734de2:e.operator.priority})),(e,d)=>(t(),a("tr",{key:e.operator.id,class:"operator relative"},[s("th",null,n(e.operator.name),1),p(i,{tickets:e.operator.tickets},null,8,["tickets"])]))}}),b=c(l,[["__scopeId","data-v-bfa4e535"]]);export{b as default};
-//# sourceMappingURL=Operator-BZMoS7rZ.js.map
