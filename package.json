@@ -10,12 +10,12 @@
         "prettify": "prettier --write resources"
     },
     "dependencies": {
-        "@inertiajs/vue3": "^2.1.2",
+        "@inertiajs/vue3": "^2.1.3",
         "@mdi/font": "7.4.47",
         "@tailwindcss/typography": "^0.5.16",
-        "@vueuse/core": "^13.7.0",
+        "@vueuse/core": "^13.8.0",
         "axios": "^1.11.0",
-        "dayjs": "^1.11.13",
+        "dayjs": "^1.11.15",
         "laravel-echo": "^2.2.0",
         "lodash": "^4.17.21",
         "markdown-it": "^14.1.0",
@@ -23,9 +23,9 @@
         "pinia": "^3.0.3",
         "pinia-orm": "^1.10.2",
         "tailwindcss": "^4.1.12",
-        "vue": "^3.5.18",
+        "vue": "^3.5.20",
         "vue-i18n": "^11.1.11",
-        "vuetify": "^3.9.5",
+        "vuetify": "^3.9.6",
         "ziggy-js": "^2.5.3"
     },
     "devDependencies": {
@@ -36,19 +36,19 @@
         "@types/markdown-it-attrs": "^4.1.3",
         "@types/node": "^24.3.0",
         "@vitejs/plugin-vue": "^6.0.1",
-        "eslint": "^9.33.0",
+        "eslint": "^9.34.0",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-vue": "^10.4.0",
-        "laravel-vite-plugin": "^2.0.0",
+        "laravel-vite-plugin": "^2.0.1",
         "prettier": "^3.6.2",
         "prettier-plugin-tailwindcss": "^0.6.14",
-        "sass": "^1.90.0",
+        "sass": "^1.91.0",
         "typescript": "^5.9.2",
-        "typescript-eslint": "^8.39.1",
-        "vite": "^7.1.2",
+        "typescript-eslint": "^8.41.0",
+        "vite": "^7.1.3",
         "vite-plugin-vuetify": "^2.1.2",
         "vue-router": "^4.5.1",
-        "vue-tsc": "^3.0.5"
+        "vue-tsc": "^3.0.6"
     },
-    "packageManager": "yarn@4.9.2"
+    "packageManager": "yarn@4.9.4"
 }
