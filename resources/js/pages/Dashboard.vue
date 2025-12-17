@@ -139,6 +139,12 @@ const ticketRepo = computed(() => useRepo(TicketRepository));
 const ticketCategoryRepo = computed(() => useRepo(TicketCategoryRepository));
 const channel = usePusherChannel(Events.Channel);
 
+const categoryFilter = (category: string) => {
+    if (!Array.isArray(filters.value.category) || !filters.value.category.length) return true;
+
+    return filters.value.category.includes(category);
+};
+
 const metaFilter = (meta: Record<string, string> | null) => {
     return Object.entries(filters.value).reduce<boolean>((passes, [filter, entries]) => {
         //const [filter, entries] = x;
@@ -177,7 +183,13 @@ const sortedOperators = computed(() =>
 );
 
 const sortedTickets = computed(() =>
-    ticketRepo.value.unbound().with("category").where("meta", metaFilter).orderBy(mode.value, "desc").get(),
+    ticketRepo.value
+        .unbound()
+        .with("category")
+        .where("category_uuid", categoryFilter)
+        .where("meta", metaFilter)
+        .orderBy(mode.value, "desc")
+        .get(),
 );
 
 const api = useSupervisorApi();

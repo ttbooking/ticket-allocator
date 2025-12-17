@@ -6,10 +6,8 @@ namespace TTBooking\TicketAllocator\Matchers;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
-use TTBooking\TicketAllocator\Matchers\Attributes\Alias;
 use TTBooking\TicketAllocator\Models\TicketCategory;
 
-#[Alias('category_uuid')]
 class Category extends Matcher
 {
     public function getProps(): array
