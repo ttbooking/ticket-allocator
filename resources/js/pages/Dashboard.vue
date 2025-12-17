@@ -158,7 +158,7 @@ const sortedOperators = computed(() =>
         operatorRepo.value
             .with("teams")
             .with("tickets", (query) => {
-                query.with("category").where("meta", metaFilter).orderBy(mode.value, "desc");
+                query.with("category").orderBy(mode.value, "desc");
             })
             .whereHas("tickets")
             .orWhere((operator) => !options.hideEmpty && operator.online)
