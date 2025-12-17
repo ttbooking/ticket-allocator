@@ -190,16 +190,15 @@ class TicketAggregateRoot extends AggregateRoot
     }
 
     /**
-     * @return array{category_name: string, category_short: string}
+     * @return array{category_uuid: string, category_name: string, category_short: string}
      */
     protected static function getCategoryData(string $categoryUuid): array
     {
         static $categoryDataCache;
 
-        $categoryDataCache ??= TicketCategory::all(['uuid', 'name', 'short'])
-            ->keyBy('uuid')->map->only(['name', 'short'])->all();
+        $categoryDataCache ??= TicketCategory::all(['uuid', 'name', 'short'])->keyBy('uuid')->all();
 
-        /** @var array{category_name: string, category_short: string} */
+        /** @var array{category_uuid: string, category_name: string, category_short: string} */
         return Arr::prependKeysWith($categoryDataCache[$categoryUuid], 'category_');
     }
 }
