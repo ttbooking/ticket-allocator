@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import type { MaybeRefOrGetter } from "@vueuse/core";
+import type { MaybeRefOrGetter } from "vue";
 import { isClient, useEventListener } from "@vueuse/core";
 
 // export type DropHandler = <T extends DataTransfer | File[] = DataTransfer>(arg: T | null) => void

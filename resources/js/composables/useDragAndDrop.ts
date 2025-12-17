@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import type { MaybeRefOrGetter } from "@vueuse/core";
+import type { MaybeRefOrGetter } from "vue";
 import { useEventListener } from "@vueuse/core";
 
 export type DragStartHandler = (element: HTMLElement, dataTransfer: DataTransfer | null) => void;
