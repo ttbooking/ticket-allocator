@@ -8,6 +8,7 @@ export const useSharedOptions = createSharedComposable(() => {
     const showFilters = computed(() => options.value.includes("show-filters"));
     const hideEmpty = computed(() => options.value.includes("hide-empty"));
     const altInfo = computed(() => options.value.includes("alt-info"));
+    const pinHeader = computed(() => options.value.includes("pin-header"));
     const unlocked = computed(() => options.value.includes("unlocked"));
 
     return reactive({
@@ -15,6 +16,7 @@ export const useSharedOptions = createSharedComposable(() => {
         showFilters,
         hideEmpty,
         altInfo,
+        pinHeader,
         unlocked,
     });
 });
@@ -24,7 +26,7 @@ export const useSharedDisplayMode = createSharedComposable(() =>
 );
 
 export const useSharedFilters = createSharedComposable(() =>
-    useLocalStorage<Record<string, string[]>>("ticket-allocator.filters", {}),
+    useLocalStorage<Record<string, string | string[]>>("ticket-allocator.filters", {}),
 );
 
 export const useSharedTeamFilter = createSharedComposable(() =>

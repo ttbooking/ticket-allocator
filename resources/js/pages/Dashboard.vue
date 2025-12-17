@@ -24,6 +24,10 @@
                                 :icon="options.altInfo ? 'mdi-magnify-plus-outline' : 'mdi-magnify'"
                             />
                             <v-btn
+                                value="pin-header"
+                                :icon="options.pinHeader ? 'mdi-pin-outline' : 'mdi-pin-off-outline'"
+                            />
+                            <v-btn
                                 value="unlocked"
                                 :icon="options.unlocked ? 'mdi-lock-open-variant' : 'mdi-lock'"
                                 color="red"
@@ -60,6 +64,9 @@
                             item-value="uuid"
                         />
                     </v-col>
+                    <v-col cols="2">
+                        <v-text-field v-model="filters['title']" :label="$t('filter_title')" />
+                    </v-col>
                     <v-col v-for="(items, matcher) in matchers" :key="matcher" cols="2">
                         <v-autocomplete
                             v-model="filters[matcher]"
@@ -73,7 +80,7 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-table fixed-header height="600px" density="compact" class="ticket-monitor">
+            <v-table :fixed-header="options.pinHeader" height="600px" density="compact" class="ticket-monitor">
                 <thead class="align-top">
                     <TicketRow pool :tickets="sortedTickets">
                         <template #name>{{ $t("ticket_pool") }}</template>
@@ -108,7 +115,7 @@ import TicketCategoryRepository from "@/models/TicketCategory";
 
 const props = withDefaults(
     defineProps<{
-        layout: string;
+        layout?: string;
         operators: Operator[];
         operatorTeams: OperatorTeam[];
         tickets: Ticket[];
@@ -137,7 +144,10 @@ const metaFilter = (meta: Record<string, string> | null) => {
         //const [filter, entries] = x;
         const prop = meta?.[filter];
         //console.log(filters);
-        const pass = prop === undefined || !entries.length || entries.map(String).includes(prop.toString());
+        const pass =
+            prop === undefined ||
+            !entries.length ||
+            (typeof entries === "string" ? entries === prop.toString() : entries.map(String).includes(prop.toString()));
         //console.log(`${filter} ${pass ? "pass" : "nopass"} ${prop}`);
         return passes && pass;
     }, true);

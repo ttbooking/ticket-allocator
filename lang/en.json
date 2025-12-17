@@ -27,6 +27,7 @@
     "factor": "Factor",
     "factor_type": "Factor type",
     "factors": "Factors",
+    "filter_title": "Title",
     "increment": "increment",
     "increment_per_second": "{units} units/sec. increment",
     "initial_weight": "Initial weight",

@@ -27,6 +27,7 @@
     "factor": "Фактор",
     "factor_type": "Тип фактора",
     "factors": "Факторы",
+    "filter_title": "Заголовок",
     "increment": "приращение",
     "increment_per_second": "приращение {units} ед./сек.",
     "initial_weight": "Начальный вес",
