@@ -147,14 +147,11 @@ const categoryFilter = (category: string) => {
 
 const metaFilter = (meta: Record<string, string> | null) => {
     return Object.entries(filters.value).reduce<boolean>((passes, [filter, entries]) => {
-        //const [filter, entries] = x;
+        if (!entries.length) return true;
         const prop = meta?.[filter];
-        //console.log(filters);
+        if (prop === undefined) return false;
         const pass =
-            prop === undefined ||
-            !entries.length ||
-            (typeof entries === "string" ? entries === prop.toString() : entries.map(String).includes(prop.toString()));
-        //console.log(`${filter} ${pass ? "pass" : "nopass"} ${prop}`);
+            typeof entries === "string" ? entries === prop.toString() : entries.map(String).includes(prop.toString());
         return passes && pass;
     }, true);
 };
