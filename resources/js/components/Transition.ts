@@ -241,11 +241,11 @@ export function resolveTransitionProps(rawProps: TransitionProps): BaseTransitio
             // the css will not get the final state (#10677)
             if (!el._enterCancelled) {
                 // force reflow so *-leave-from classes immediately take effect (#2593)
-                forceReflow();
+                forceReflow(el);
                 addTransitionClass(el, leaveActiveClass);
             } else {
                 addTransitionClass(el, leaveActiveClass);
-                forceReflow();
+                forceReflow(el);
             }
             nextFrame(() => {
                 if (!el._isLeaving) {
@@ -404,7 +404,8 @@ export function getTransitionInfo(el: Element, expectedType?: TransitionProps["t
         propCount = type ? (type === TRANSITION ? transitionDurations.length : animationDurations.length) : 0;
     }
     const hasTransform =
-        type === TRANSITION && /\b(transform|all)(,|$)/.test(getStyleProperties(`${TRANSITION}Property`).toString());
+        type === TRANSITION &&
+        /\b(?:transform|all)(?:,|$)/.test(getStyleProperties(`${TRANSITION}Property`).toString());
     return {
         type,
         timeout,
@@ -431,6 +432,7 @@ function toMs(s: string): number {
 }
 
 // synchronously force layout to put elements into a certain state
-export function forceReflow(): number {
-    return document.body.offsetHeight;
+export function forceReflow(el?: Node): number {
+    const targetDocument = el ? el.ownerDocument! : document;
+    return targetDocument.body.offsetHeight;
 }
