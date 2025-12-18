@@ -136,7 +136,7 @@ const TransitionGroupImpl: ComponentOptions = /*@__PURE__*/ decorate({
                     if (child.el && child.el instanceof Element) {
                         prevChildren.push(child);
                         setTransitionHooks(child, resolveTransitionHooks(child, cssTransitionProps, state, instance));
-                        positionMap.set(child, getRelativePosition(child.el as HTMLElement));
+                        positionMap.set(child, getRelativePosition(child.el as Element));
                     }
                 }
             }
@@ -173,22 +173,24 @@ function callPendingCbs(c: VNode) {
     }
 }
 
-function getRelativePosition(el: HTMLElement): Position {
+function getRelativePosition(el: Element): Position {
+    const elRect = el.getBoundingClientRect();
     if (!el.parentElement) {
         return {
-            left: el.offsetLeft,
-            top: el.offsetTop,
+            left: elRect.left,
+            top: elRect.top,
         };
     }
 
+    const parentRect = el.parentElement.getBoundingClientRect();
     return {
-        left: el.offsetLeft - el.parentElement.offsetLeft,
-        top: el.offsetTop - el.parentElement.offsetTop,
+        left: elRect.left - parentRect.left,
+        top: elRect.top - parentRect.top,
     };
 }
 
 function recordPosition(c: VNode) {
-    newPositionMap.set(c, getRelativePosition(c.el as HTMLElement));
+    newPositionMap.set(c, getRelativePosition(c.el as Element));
 }
 
 function applyTranslation(c: VNode): VNode | undefined {
