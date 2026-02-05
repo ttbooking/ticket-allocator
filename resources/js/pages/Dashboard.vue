@@ -147,7 +147,7 @@ const categoryFilter = (category: string) => {
 
 const metaFilter = (meta: Record<string, string> | null) => {
     return Object.entries(filters.value).reduce<boolean>((passes, [filter, entries]) => {
-        if (!entries.length) return passes;
+        if (filter === "category" || !entries.length) return passes;
         const prop = meta?.[filter];
         if (prop === undefined) return false;
         const pass =
@@ -184,7 +184,7 @@ const sortedTickets = computed(() =>
         .unbound()
         .with("category")
         .where("category_uuid", categoryFilter)
-        //.where("meta", metaFilter)
+        .where("meta", metaFilter)
         .orderBy(mode.value, "desc")
         .get(),
 );
