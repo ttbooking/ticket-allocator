@@ -1,0 +1,2 @@
+/* empty css              */import{g as t,j as l,b as r,c as i,n as m,e as c,aJ as u,p as C,B as p,aS as d,C as f}from"./app-CbAAu-5u.js";const y=C({fluid:{type:Boolean,default:!1},...f(),...d(),...p()},"VContainer"),k=t()({name:"VContainer",props:y(),setup(e,a){let{slots:s}=a;const{rtlClasses:n}=l(),{dimensionStyles:o}=u(e);return r(()=>i(e.tag,{class:c(["v-container",{"v-container--fluid":e.fluid},n.value,e.class]),style:m([o.value,e.style])},s)),{}}});export{k as V};
+//# sourceMappingURL=VContainer-Cgw5azsu.js.map
