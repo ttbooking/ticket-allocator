@@ -184,7 +184,7 @@ const sortedTickets = computed(() =>
         .unbound()
         .with("category")
         .where("category_uuid", categoryFilter)
-        .where("meta", metaFilter)
+        //.where("meta", metaFilter)
         .orderBy(mode.value, "desc")
         .get(),
 );
