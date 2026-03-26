@@ -1,2 +1,0 @@
-import{A as e,J as t,R as n,V as r,br as i,d as a,f as o,gn as s,q as c,vr as l,y as u}from"./loader-CQ7aw8Xj.js";var d=t({fluid:{type:Boolean,default:!1},...c(),...a(),...u()},`VContainer`),f=r()({name:`VContainer`,props:d(),setup(t,{slots:r}){let{rtlClasses:a}=e(),{dimensionStyles:c}=o(t);return n(()=>s(t.tag,{class:l([`v-container`,{"v-container--fluid":t.fluid},a.value,t.class]),style:i([c.value,t.style])},r)),{}}});export{f as t};
-//# sourceMappingURL=VContainer-cimL-xJ3.js.map
