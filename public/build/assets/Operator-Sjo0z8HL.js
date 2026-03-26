@@ -1,0 +1,2 @@
+import{$t as e,Pn as t,_n as n,fn as r,gn as i,ln as a,xr as o}from"./loader-CQ7aw8Xj.js";import{t as s}from"./_plugin-vue_export-helper-C5rSe2mV.js";import{t as c}from"./Pool-Dy-6PeJG.js";var l=s(n({__name:`Operator`,props:{operator:{}},setup(n){return e(e=>({bc734de2:e.operator.priority})),(e,s)=>(t(),r(`tr`,{key:n.operator.id,class:`operator relative`},[a(`th`,null,o(n.operator.name),1),i(c,{tickets:n.operator.tickets},null,8,[`tickets`])]))}}),[[`__scopeId`,`data-v-bfa4e535`]]);export{l as t};
+//# sourceMappingURL=Operator-Sjo0z8HL.js.map
