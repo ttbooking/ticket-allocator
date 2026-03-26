@@ -20,7 +20,7 @@ export default defineConfig({
         laravel({
             input: "resources/js/app.ts",
             refresh: true,
-            assets: "../images/**",
+            assets: "resources/images/**",
         }),
         tailwindcss(),
         vue({
