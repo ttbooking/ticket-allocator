@@ -9,6 +9,7 @@
                 "trait_import": "none",
                 "case": "none"
             }
-        }
+        },
+        "fully_qualified_strict_types": false
     }
 }
