@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="shortcut icon" href="{{ Vite::app('ticket-allocator')->asset('resources/images/favicon.png') }}" />
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title data-inertia>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net" />
