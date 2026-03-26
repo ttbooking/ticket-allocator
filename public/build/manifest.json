@@ -389,6 +389,10 @@
     "file": "assets/materialdesignicons-webfont-Dp5v-WZN.woff2",
     "src": "node_modules/@mdi/font/fonts/materialdesignicons-webfont.woff2"
   },
+  "resources/images/favicon.png": {
+    "file": "assets/favicon-Dj1ARtKD.png",
+    "src": "resources/images/favicon.png"
+  },
   "resources/js/app.ts": {
     "file": "assets/app-DbTvAHwM.js",
     "name": "app",
