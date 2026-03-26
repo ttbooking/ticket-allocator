@@ -112,23 +112,23 @@ class TicketAllocatorServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../config/ticket-allocator.php' => $this->app->configPath('ticket-allocator.php'),
-        ], ['ticket-allocator', 'config', 'ticket-allocator-config']);
+        ], ['ttbooking-config', 'ticket-allocator-config', 'ticket-allocator', 'config']);
 
         $this->publishes([
             __DIR__.'/../database/migrations' => $this->app->databasePath('migrations'),
-        ], ['ticket-allocator', 'migrations', 'ticket-allocator-migrations']);
+        ], ['ttbooking-migrations', 'ticket-allocator-migrations', 'ticket-allocator', 'migrations']);
 
         $this->publishes([
             __DIR__.'/../resources/views' => $this->app->resourcePath('views/vendor/ticket-allocator'),
-        ], ['ticket-allocator', 'views', 'ticket-allocator-views']);
+        ], ['ttbooking-views', 'ticket-allocator-views', 'ticket-allocator', 'views']);
 
         $this->publishes([
             __DIR__.'/../public' => $this->app->publicPath('vendor/ticket-allocator'),
-        ], ['ticket-allocator', 'assets', 'ticket-allocator-assets']);
+        ], ['ttbooking-assets', 'ticket-allocator-assets', 'ticket-allocator', 'assets']);
 
         $this->publishes([
             __DIR__.'/../stubs' => $this->app->basePath('stubs'),
-        ], ['ticket-allocator', 'stubs', 'ticket-allocator-stubs']);
+        ], ['ttbooking-stubs', 'ticket-allocator-stubs', 'ticket-allocator', 'stubs']);
 
         Event::listen(PublishingStubs::class, static fn (PublishingStubs $stubs) => $stubs
             ->add(__DIR__.'/../stubs/factor.stub', 'factor.stub')
