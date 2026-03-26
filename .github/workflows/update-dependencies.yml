@@ -1,14 +1,12 @@
-name: compile assets
+name: update dependencies
 
 on:
-  push:
-  pull_request:
-  workflow_run:
-    workflows: [update dependencies]
-    types: [completed]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1'
 
 jobs:
-  compile:
+  update:
     runs-on: ubuntu-latest
 
     permissions:
@@ -24,16 +22,18 @@ jobs:
           node-version-file: .nvmrc
           package-manager-cache: false
 
-      - name: Install dependencies
+      - name: Update dependencies
+        env:
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
         run: |
           corepack enable
+          yarn set version stable
+          npx npm-check-updates -u --target semver
+          rm yarn.lock
           yarn install
 
-      - name: Compile assets
-        run: yarn build
-
-      - name: Commit compiled files
+      - name: Commit updated files
         uses: stefanzweifel/git-auto-commit-action@v6
         with:
-          commit_message: Compile assets
-          file_pattern: public/
+          commit_message: Update dependencies
+          file_pattern: 'package.json yarn.lock'
