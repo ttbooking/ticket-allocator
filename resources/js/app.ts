@@ -14,8 +14,6 @@ import DefaultLayout from "@/layouts/Default.vue";
 import EmptyLayout from "@/layouts/Empty.vue";
 import VBtnEx from "@/components/VBtnEx.vue";
 
-import.meta.glob("../images/**");
-
 const name = window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
 
 createInertiaApp({

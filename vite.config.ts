@@ -18,6 +18,7 @@ export default defineConfig({
         laravel({
             input: "resources/js/app.ts",
             refresh: true,
+            assets: "../images/**",
         }),
         tailwindcss(),
         vue({
@@ -26,9 +27,9 @@ export default defineConfig({
         // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
         vuetify({
             autoImport: true,
-            styles: {
+            /*styles: {
                 configFile: "resources/css/settings.scss",
-            },
+            },*/
         }),
     ],
     resolve: {
