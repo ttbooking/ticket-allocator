@@ -14,7 +14,7 @@
         "@mdi/font": "7.4.47",
         "@tailwindcss/typography": "^0.5.19",
         "@vueuse/core": "^14.2.1",
-        "axios": "^1.13.6",
+        "axios": "^1.14.0",
         "dayjs": "^1.11.20",
         "laravel-echo": "^2.3.1",
         "lodash": "^4.17.23",
