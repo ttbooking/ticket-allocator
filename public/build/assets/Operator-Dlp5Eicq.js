@@ -1,2 +1,0 @@
-import{Mn as e,Zt as t,hn as n,mn as r,sn as i,un as a,yr as o}from"./loader-M7QHZjl4.js";import{t as s}from"./_plugin-vue_export-helper--7nCXc1l.js";import{t as c}from"./Pool-BAMljmKd.js";var l=s(n({__name:`Operator`,props:{operator:{}},setup(n){return t(e=>({bc734de2:e.operator.priority})),(t,s)=>(e(),a(`tr`,{key:n.operator.id,class:`operator relative`},[i(`th`,null,o(n.operator.name),1),r(c,{tickets:n.operator.tickets},null,8,[`tickets`])]))}}),[[`__scopeId`,`data-v-bfa4e535`]]);export{l as t};
-//# sourceMappingURL=Operator-Dlp5Eicq.js.map
