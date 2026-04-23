@@ -1,0 +1,2 @@
+import{A as e,J as t,R as n,Sr as r,V as i,bn as a,d as o,f as s,q as c,wr as l,y as u}from"./loader-CHjQdrbS.js";var d=t({fluid:{type:Boolean,default:!1},...c(),...o(),...u()},`VContainer`),f=i()({name:`VContainer`,props:d(),setup(t,{slots:i}){let{rtlClasses:o}=e(),{dimensionStyles:c}=s(t);return n(()=>a(t.tag,{class:r([`v-container`,{"v-container--fluid":t.fluid},o.value,t.class]),style:l([c.value,t.style])},i)),{}}});export{f as t};
+//# sourceMappingURL=VContainer-C836t0S_.js.map
