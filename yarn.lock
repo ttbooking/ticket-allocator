@@ -508,7 +508,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/unplugin-vue-i18n@npm:^11.1.1":
+"@intlify/unplugin-vue-i18n@npm:^11.1.2":
   version: 11.1.2
   resolution: "@intlify/unplugin-vue-i18n@npm:11.1.2"
   dependencies:
@@ -3527,7 +3527,7 @@ __metadata:
     "@eslint/js": "npm:^10.0.1"
     "@inertiajs/vite": "npm:^3.0.3"
     "@inertiajs/vue3": "npm:^3.0.3"
-    "@intlify/unplugin-vue-i18n": "npm:^11.1.1"
+    "@intlify/unplugin-vue-i18n": "npm:^11.1.2"
     "@mdi/font": "npm:7.4.47"
     "@tailwindcss/typography": "npm:^0.5.19"
     "@tailwindcss/vite": "npm:^4.2.4"
