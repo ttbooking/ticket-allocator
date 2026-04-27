@@ -24,7 +24,7 @@
         "pinia-orm": "^1.10.2",
         "tailwindcss": "^4.2.4",
         "vue": "^3.5.33",
-        "vue-i18n": "^11.3.2",
+        "vue-i18n": "^11.4.0",
         "vuetify": "^4.0.6",
         "ziggy-js": "^2.6.2"
     },
@@ -45,7 +45,7 @@
         "globals": "^17.5.0",
         "laravel-vite-plugin": "^3.0.1",
         "prettier": "^3.8.3",
-        "prettier-plugin-tailwindcss": "^0.7.2",
+        "prettier-plugin-tailwindcss": "^0.7.3",
         "pusher-js": "^8.5.0",
         "sass": "^1.99.0",
         "typescript": "^6.0.3",
