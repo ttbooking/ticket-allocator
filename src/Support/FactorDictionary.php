@@ -61,7 +61,7 @@ class FactorDictionary extends Collection
     /**
      * @template TFirstDefault of TDefault
      */
-    public function first(?callable $callback = null, $default = null): string
+    public function first(?callable $callback = null, $default = null)
     {
         return parent::first($callback, static::default($default));
     }
@@ -69,7 +69,7 @@ class FactorDictionary extends Collection
     /**
      * @template TGetDefault of TDefault
      */
-    public function get($key, $default = null): string
+    public function get($key, $default = null)
     {
         return parent::get($key, static::default($default));
     }
@@ -77,7 +77,7 @@ class FactorDictionary extends Collection
     /**
      * @template TLastDefault of TDefault
      */
-    public function last(?callable $callback = null, $default = null): string
+    public function last(?callable $callback = null, $default = null)
     {
         return parent::last($callback, static::default($default));
     }
@@ -85,7 +85,7 @@ class FactorDictionary extends Collection
     /**
      * @template TPullDefault of TDefault
      */
-    public function pull($key, $default = null): string
+    public function pull($key, $default = null)
     {
         return parent::pull($key, static::default($default));
     }
@@ -99,7 +99,7 @@ class FactorDictionary extends Collection
      * @param  TDefault|(\Closure(): TDefault)  $default
      * @return TValue
      */
-    protected static function default(mixed $default = null): string
+    protected static function default(mixed $default = null)
     {
         return is_subclass_of($value = value($default), FactorContract::class)
             ? $value : config('ticket-allocator.null_factor', Unknown::class);
