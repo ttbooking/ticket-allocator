@@ -1,2 +1,0 @@
-import{Et as e,Ft as t,It as n,J as r,St as i,Y as a,ar as o,jt as s,ni as c,rt as l,ti as u}from"./app-CrkcRdhu.js";var d=n({fluid:{type:Boolean,default:!1},...t(),...r(),...l()},`VContainer`),f=s()({name:`VContainer`,props:d(),setup(t,{slots:n}){let{rtlClasses:r}=i(),{dimensionStyles:s}=a(t);return e(()=>o(t.tag,{class:u([`v-container`,{"v-container--fluid":t.fluid},r.value,t.class]),style:c([s.value,t.style])},n)),{}}});export{f as t};
-//# sourceMappingURL=VContainer-DY96n9At.js.map
