@@ -1,2 +1,0 @@
-import{Gn as e,ar as t,br as n,er as r,or as i,pt as a,ri as o,rr as s,si as c}from"./app-C0bTq-Uj.js";import{t as l}from"./Pool-BFJJV5M4.js";var u=i({__name:`Operator`,props:{operator:{}},setup(i){return e(e=>({bc734de2:e.operator.priority})),(e,a)=>(n(),s(`tr`,{key:i.operator.id,class:`operator relative`},[r(`th`,null,o(i.operator.name),1),t(l,{tickets:i.operator.tickets},null,8,[`tickets`])]))}}),d=c({default:()=>f}),f=a(u,[[`__scopeId`,`data-v-bfa4e535`]]);export{d as n,f as t};
-//# sourceMappingURL=Operator-6h1fiJvl.js.map
