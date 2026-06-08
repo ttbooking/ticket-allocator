@@ -1,0 +1,2 @@
+import{Or as e,Rn as t,Tr as n,bn as r,gn as i,pn as a,rn as o,xn as s}from"./loader-C2Ka9hh-.js";import{q as c}from"./app-Cwsex1Zk.js";import{t as l}from"./Pool-J0lQUN7K.js";var u=s({__name:`Operator`,props:{operator:{}},setup(e){return o(e=>({bc734de2:e.operator.priority})),(o,s)=>(t(),i(`tr`,{key:e.operator.id,class:`operator relative`},[a(`th`,null,n(e.operator.name),1),r(l,{tickets:e.operator.tickets},null,8,[`tickets`])]))}}),d=e({default:()=>f}),f=c(u,[[`__scopeId`,`data-v-bfa4e535`]]);export{d as n,f as t};
+//# sourceMappingURL=Operator-JWjoC-R1.js.map
