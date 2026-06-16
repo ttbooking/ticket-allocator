@@ -1,0 +1,2 @@
+import{Rn as e,Tr as t,bn as n,gn as r,kr as i,pn as a,rn as o,xn as s}from"./loader-DbBVYKAP.js";import{q as c}from"./app-BDveiYL4.js";import{t as l}from"./Pool-D2klagNr.js";var u=s({__name:`Operator`,props:{operator:{}},setup(i){return o(e=>({bc734de2:e.operator.priority})),(o,s)=>(e(),r(`tr`,{key:i.operator.id,class:`operator relative`},[a(`th`,null,t(i.operator.name),1),n(l,{tickets:i.operator.tickets},null,8,[`tickets`])]))}}),d=i({default:()=>f}),f=c(u,[[`__scopeId`,`data-v-bfa4e535`]]);export{d as n,f as t};
+//# sourceMappingURL=Operator-081bpnYi.js.map
