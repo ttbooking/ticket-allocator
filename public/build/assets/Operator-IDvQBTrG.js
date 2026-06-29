@@ -1,2 +1,0 @@
-import{Rn as e,Tr as t,bn as n,gn as r,kr as i,pn as a,rn as o,xn as s}from"./loader-DOSzCH_N.js";import{q as c}from"./app-VJ25EtFO.js";import{t as l}from"./Pool-BInqAEqB.js";var u=s({__name:`Operator`,props:{operator:{}},setup(i){return o(e=>({bc734de2:e.operator.priority})),(o,s)=>(e(),r(`tr`,{key:i.operator.id,class:`operator relative`},[a(`th`,null,t(i.operator.name),1),n(l,{tickets:i.operator.tickets},null,8,[`tickets`])]))}}),d=i({default:()=>f}),f=c(u,[[`__scopeId`,`data-v-bfa4e535`]]);export{d as n,f as t};
-//# sourceMappingURL=Operator-IDvQBTrG.js.map
