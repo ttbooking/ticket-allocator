@@ -9,16 +9,16 @@ export default class Operator extends Model {
 
     static primaryKey = "uuid";
 
-    @Uid() declare uuid: string;
-    @Attr() declare user_id: number | string;
-    @Str("") declare name: string;
-    @Bool(false) declare online: boolean;
-    @Bool(false) declare ready: boolean;
-    @Num(null) declare ticket_limit: number | null;
-    @Num(null) declare complexity_limit: number | null;
+    @Uid() uuid!: string;
+    @Attr() user_id!: number | string;
+    @Str("") name!: string;
+    @Bool(false) online!: boolean;
+    @Bool(false) ready!: boolean;
+    @Num(null) ticket_limit!: number | null;
+    @Num(null) complexity_limit!: number | null;
 
-    @BelongsToMany(() => OperatorTeam, () => TeamOperator, "operator_uuid", "team_uuid") declare teams: OperatorTeam[];
-    @HasMany(() => Ticket, "handler_uuid") @OnDelete("set null") declare tickets: Ticket[];
+    @BelongsToMany(() => OperatorTeam, () => TeamOperator, "operator_uuid", "team_uuid") teams!: OperatorTeam[];
+    @HasMany(() => Ticket, "handler_uuid") @OnDelete("set null") tickets!: Ticket[];
 
     get ticket_count() {
         return this.tickets.length;

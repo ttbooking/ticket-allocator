@@ -6,6 +6,6 @@ export default class TeamCategory extends Model {
 
     static primaryKey = ["team_uuid", "category_uuid"];
 
-    @Uid() declare team_uuid: string;
-    @Uid() declare category_uuid: string;
+    @Uid() team_uuid!: string;
+    @Uid() category_uuid!: string;
 }

@@ -6,6 +6,6 @@ export default class TeamOperator extends Model {
 
     static primaryKey = ["team_uuid", "operator_uuid"];
 
-    @Uid() declare team_uuid: string;
-    @Uid() declare operator_uuid: string;
+    @Uid() team_uuid!: string;
+    @Uid() operator_uuid!: string;
 }

@@ -9,13 +9,13 @@ export default class TicketCategory extends Model {
 
     static primaryKey = "uuid";
 
-    @Uid() declare uuid: string;
-    @Str("") declare name: string;
-    @Str("") declare short: string;
-    @Attr() declare created_at: string;
-    @Attr() declare updated_at: string;
+    @Uid() uuid!: string;
+    @Str("") name!: string;
+    @Str("") short!: string;
+    @Attr() created_at!: string;
+    @Attr() updated_at!: string;
 
-    @BelongsToMany(() => OperatorTeam, () => TeamCategory, "category_uuid", "team_uuid") declare teams: OperatorTeam[];
+    @BelongsToMany(() => OperatorTeam, () => TeamCategory, "category_uuid", "team_uuid") teams!: OperatorTeam[];
 
-    @HasMany(() => Ticket, "category_uuid") declare tickets: Ticket[];
+    @HasMany(() => Ticket, "category_uuid") tickets!: Ticket[];
 }

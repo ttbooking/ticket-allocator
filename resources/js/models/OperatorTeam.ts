@@ -8,13 +8,13 @@ export default class OperatorTeam extends Model {
 
     static primaryKey = "uuid";
 
-    @Uid() declare uuid: string;
-    @Str("") declare name: string;
-    @Str("") declare description: string;
-    @Attr() declare matching: Record<string, Array<string | number>> | null;
-    @Attr() declare created_at: string;
-    @Attr() declare updated_at: string;
-    @Attr() declare deleted_at: string | null;
+    @Uid() uuid!: string;
+    @Str("") name!: string;
+    @Str("") description!: string;
+    @Attr() matching!: Record<string, Array<string | number>> | null;
+    @Attr() created_at!: string;
+    @Attr() updated_at!: string;
+    @Attr() deleted_at!: string | null;
 
-    @BelongsToMany(() => Operator, () => TeamOperator, "team_uuid", "operator_uuid") declare operators: Operator[];
+    @BelongsToMany(() => Operator, () => TeamOperator, "team_uuid", "operator_uuid") operators!: Operator[];
 }
