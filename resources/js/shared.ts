@@ -26,7 +26,7 @@ export const useSharedDisplayMode = createSharedComposable(() =>
 );
 
 export const useSharedFilters = createSharedComposable(() =>
-    useLocalStorage<Record<string, string | string[]>>("ticket-allocator.filters", {}),
+    useLocalStorage<Record<string, string[]>>("ticket-allocator.filters", {}),
 );
 
 export const useSharedTeamFilter = createSharedComposable(() =>
