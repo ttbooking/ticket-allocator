@@ -1,2 +1,0 @@
-import{A as e,J as t,R as n,V as r,Yn as i,d as a,f as o,ia as s,na as c,q as l,y as u}from"./loader-TF0p4Uav.js";var d=t({fluid:{type:Boolean,default:!1},...l(),...a(),...u()},`VContainer`),f=r()({name:`VContainer`,props:d(),setup(t,{slots:r}){let{rtlClasses:a}=e(),{dimensionStyles:l}=o(t);return n(()=>i(t.tag,{class:c([`v-container`,{"v-container--fluid":t.fluid},a.value,t.class]),style:s([l.value,t.style])},r)),{}}});export{f as t};
-//# sourceMappingURL=VContainer-DptdhU2K.js.map
