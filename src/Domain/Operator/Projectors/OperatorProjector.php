@@ -104,8 +104,8 @@ class OperatorProjector extends Projector
         }
 
         $operator = $ticket->operator?->writeable();
-        $operator?->decrement('bound_tickets');
-        $operator?->decrement('total_complexity', $ticket->complexity);
+        $operator?->decrementToZero('bound_tickets');
+        $operator?->decrementToZero('total_complexity', $ticket->complexity);
 
         $newOperator->increment('bound_tickets');
         $newOperator->increment('total_complexity', $ticket->complexity);
@@ -130,8 +130,8 @@ class OperatorProjector extends Projector
             return;
         }
 
-        $operator->decrement('bound_tickets');
-        $operator->decrement('total_complexity', $ticket->complexity);
+        $operator->decrementToZero('bound_tickets');
+        $operator->decrementToZero('total_complexity', $ticket->complexity);
     }
 
     public function onTicketClosed(TicketEvents\TicketClosed $event): void
@@ -141,7 +141,7 @@ class OperatorProjector extends Projector
             return;
         }
 
-        $operator->decrement('bound_tickets');
-        $operator->decrement('total_complexity', $ticket->complexity);
+        $operator->decrementToZero('bound_tickets');
+        $operator->decrementToZero('total_complexity', $ticket->complexity);
     }
 }
