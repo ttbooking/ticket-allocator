@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Expression;
 use Spatie\EventSourcing\Projections\Projection;
 use TTBooking\TicketAllocator\Domain\Ticket\Projections\Ticket;
 use TTBooking\TicketAllocator\Models\OperatorTeam;
@@ -80,6 +81,28 @@ class Operator extends Projection
     protected function name(): Attribute
     {
         return Attribute::get(fn ($value) => $value ?? $this->user->name);
+    }
+
+    /**
+     * Not decrement(): `col - n` on an unsigned zero fails before any GREATEST() around it.
+     */
+    public function decrementToZero(string $column, int $amount = 1): int|false
+    {
+        $this->{$column} = max(0, $this->{$column} - $amount);
+
+        if ($this->fireModelEvent('updating') === false) {
+            return false;
+        }
+
+        $wrapped = $this->getConnection()->getQueryGrammar()->wrap($column);
+
+        return tap($this->setKeysForSaveQuery($this->newQueryWithoutScopes())->update([
+            $column => new Expression("GREATEST($wrapped, $amount) - $amount"),
+        ]), function () use ($column) {
+            $this->syncChanges();
+            $this->fireModelEvent('updated', false);
+            $this->syncOriginalAttributes($column);
+        });
     }
 
     /**
