@@ -1,4 +1,4 @@
-import { createSharedComposable, useLocalStorage, useTimestamp } from "@vueuse/core";
+import { createSharedComposable, useLocalStorage, useTimestamp, useIntervalFn } from "@vueuse/core";
 import type { TicketSortBy, ToggleOptions } from "./types";
 import { computed, reactive } from "vue";
 
@@ -33,4 +33,6 @@ export const useSharedTeamFilter = createSharedComposable(() =>
     useLocalStorage<string[]>("ticket-allocator.team-filter", []),
 );
 
-export const useSharedTimestamp = createSharedComposable(() => useTimestamp({ interval: 1000 }));
+export const useSharedTimestamp = createSharedComposable(() =>
+    useTimestamp({ scheduler: (cb) => useIntervalFn(cb, 1000) }),
+);
