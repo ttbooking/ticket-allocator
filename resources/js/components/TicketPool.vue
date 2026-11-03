@@ -1,5 +1,5 @@
 <template>
-    <TransGroup
+    <TransitionGroup
         ref="ticketPool"
         name="ticket-pool"
         class="tickets @container !pt-[1px] !pb-[3px] leading-8"
@@ -15,14 +15,13 @@
             class="mr-1"
             @mousedown.ctrl="lock"
         />
-    </TransGroup>
+    </TransitionGroup>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from "vue";
 import { useMouse, usePointerLock } from "@vueuse/core";
 import { useDragAndDrop } from "@/composables";
-import { TransitionGroup as TransGroup } from "@/components/TransitionGroup";
 import { default as TicketComponent } from "@/components/Ticket.vue";
 import type { Collection } from "pinia-orm";
 import Ticket from "@/models/Ticket";

@@ -27,14 +27,14 @@
                         <th v-for="[title, key] in columns" :key="key">{{ title }}</th>
                     </tr>
                 </thead>
-                <TransGroup tag="tbody" name="ticket-pool">
+                <TransitionGroup tag="tbody" name="ticket-pool">
                     <PersonalTicket
                         v-for="ticket in computedOperator.tickets"
                         :key="ticket.uuid"
                         :ticket="ticket"
                         :columns="columns"
                     />
-                </TransGroup>
+                </TransitionGroup>
             </v-table>
         </div>
     </component>
@@ -42,7 +42,6 @@
 
 <script setup lang="ts">
 import PersonalTicket from "@/components/PersonalTicket.vue";
-import { TransitionGroup as TransGroup } from "@/components/TransitionGroup";
 import { Head, router } from "@inertiajs/vue3";
 import { computed, onMounted, onUnmounted } from "vue";
 import { usePusherChannel } from "@/composables";
@@ -72,8 +71,8 @@ const operatorRepo = computed(() => useRepo(OperatorRepository));
 const ticketRepo = computed(() => useRepo(TicketRepository));
 const channel = usePusherChannel(Events.Channel);
 
-const computedOperator = computed(
-    () => operatorRepo.value.with("tickets", (query) => query.with("category").orderBy(mode.value, "desc")).first()!,
+const computedOperator = computed(() =>
+    operatorRepo.value.with("tickets", (query) => query.with("category").orderBy(mode.value, "desc")).first()!,
 );
 
 onMounted(() => {

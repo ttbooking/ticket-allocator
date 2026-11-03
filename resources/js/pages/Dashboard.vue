@@ -86,16 +86,15 @@
                         <template #name>{{ $t("ticket_pool") }}</template>
                     </TicketRow>
                 </thead>
-                <TransGroup tag="tbody" class="align-top" name="operator-pool">
+                <TransitionGroup tag="tbody" class="align-top" name="operator-pool">
                     <OperatorRow v-for="operator in sortedOperators" :key="operator.uuid" :operator="operator" />
-                </TransGroup>
+                </TransitionGroup>
             </v-table>
         </div>
     </component>
 </template>
 
 <script setup lang="ts">
-import { TransitionGroup as TransGroup } from "@/components/TransitionGroup";
 import TicketRow from "@/components/TicketRow.vue";
 import OperatorRow from "@/components/OperatorRow.vue";
 import { Head, router } from "@inertiajs/vue3";

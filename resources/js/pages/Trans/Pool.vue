@@ -1,11 +1,10 @@
 <template>
-    <TransGroup tag="td" name="tickets" class="@container pt-1">
+    <TransitionGroup tag="td" name="tickets" class="@container pt-1">
         <TransTicket v-for="ticket in tickets" :key="ticket.id" :ticket="ticket" class="mr-1 mb-1" />
-    </TransGroup>
+    </TransitionGroup>
 </template>
 
 <script setup lang="ts">
-import { TransitionGroup as TransGroup } from "@/components/TransitionGroup";
 import TransTicket from "./Ticket.vue";
 import type { Ticket } from "@/types/trans";
 
