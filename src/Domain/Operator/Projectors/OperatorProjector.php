@@ -119,8 +119,15 @@ class OperatorProjector extends Projector
             return;
         }
 
-        $totalComplexity = max(0, $operator->total_complexity + $event->adjustments->complexity);
-        $operator->update(['total_complexity' => $totalComplexity]);
+        // Runs before TicketProjector (weight 5), so $ticket->complexity is still the old value.
+        // Apply the ticket's actual change: it is clamped at zero, the raw adjustment is not.
+        $delta = max(0, $ticket->complexity + $event->adjustments->complexity) - $ticket->complexity;
+
+        if ($delta > 0) {
+            $operator->increment('total_complexity', $delta);
+        } elseif ($delta < 0) {
+            $operator->decrementToZero('total_complexity', -$delta);
+        }
     }
 
     public function onTicketUnbound(TicketEvents\TicketUnbound $event): void
