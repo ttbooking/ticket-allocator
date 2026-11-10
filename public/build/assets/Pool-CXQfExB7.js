@@ -1,0 +1,2 @@
+import{Y as r,$ as t,a2 as e,a1 as n,a0 as o,F as c,a8 as i,ad as l,ab as m}from"./app-By3rGUa2.js";import p from"./Ticket-CTq51WM8.js";const _=r({__name:"Pool",props:{tickets:{}},setup(s){return(u,d)=>(t(),e(l,{tag:"td",name:"tickets",class:"@container pt-1"},{default:n(()=>[(t(!0),o(c,null,i(s.tickets,a=>(t(),e(p,{key:a.id,ticket:a,class:"mr-1 mb-1"},null,8,["ticket"]))),128))]),_:1}))}}),x=m(_,[["__scopeId","data-v-2f0ef157"]]);export{x as default};
+//# sourceMappingURL=Pool-CXQfExB7.js.map
