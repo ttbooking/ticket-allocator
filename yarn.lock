@@ -97,6 +97,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@capsizecss/unpack@npm:^4.0.0":
+  version: 4.0.1
+  resolution: "@capsizecss/unpack@npm:4.0.1"
+  dependencies:
+    fontkitten: "npm:^1.0.3"
+  checksum: 10c0/72ce03871e137bae1c4925f9dc916a6250cf9b9630a8bb28d2ef7575d20fd7ef0e8966b361aaa3a54c0e8d5ff40b133490bd97a9beb6dc209529102947d392b1
+  languageName: node
+  linkType: hard
+
 "@emnapi/core@npm:^1.11.3":
   version: 1.11.3
   resolution: "@emnapi/core@npm:1.11.3"
@@ -562,6 +571,20 @@ __metadata:
     "@eslint/core": "npm:^1.2.1"
     levn: "npm:^0.4.1"
   checksum: 10c0/2daebaedcfbd261478e8b87dfb46d3118f48277c19eb298483ebc6f3b438e9688b86ddca13b3aeb08dfb06be00fb6073506852386aa124645c1170e7e33d140c
+  languageName: node
+  linkType: hard
+
+"@fontsource/roboto-mono@npm:^5.2.8":
+  version: 5.3.0
+  resolution: "@fontsource/roboto-mono@npm:5.3.0"
+  checksum: 10c0/f76e6273b1019a6420fcb8ed284d14ebc8b307469d98dbcf8497d1d4eec03f5786414064176cc018a67089dc5e9e85b68770ddb5e56d71ecb8b8b1dfd92cd4e9
+  languageName: node
+  linkType: hard
+
+"@fontsource/roboto@npm:^5.2.10":
+  version: 5.3.0
+  resolution: "@fontsource/roboto@npm:5.3.0"
+  checksum: 10c0/68420d2c669ba05f0ea466343151c6d2efff85b05cedbf0f990c58635d86035cae5e7c4904db9abc7b9fd21c5ad179788243ec9dff0c30dfab90679ae2d226f9
   languageName: node
   linkType: hard
 
@@ -2129,6 +2152,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"css-tree@npm:^3.1.0, css-tree@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "css-tree@npm:3.2.1"
+  dependencies:
+    mdn-data: "npm:2.27.1"
+    source-map-js: "npm:^1.2.1"
+  checksum: 10c0/1f65e9ccaa56112a4706d6f003dd43d777f0dbcf848e66fd320f823192533581f8dd58daa906cb80622658332d50284d6be13b87a6ab4556cbbfe9ef535bbf7e
+  languageName: node
+  linkType: hard
+
 "cssesc@npm:^3.0.0":
   version: 3.0.0
   resolution: "cssesc@npm:3.0.0"
@@ -2727,6 +2760,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fontaine@npm:^1.0.1":
+  version: 1.0.3
+  resolution: "fontaine@npm:1.0.3"
+  dependencies:
+    "@capsizecss/unpack": "npm:^4.0.0"
+    css-tree: "npm:^3.1.0"
+    magic-string: "npm:^1.0.0"
+    unplugin: "npm:^3.0.0"
+  peerDependencies:
+    postcss: ^8.4.31
+  peerDependenciesMeta:
+    postcss:
+      optional: true
+  checksum: 10c0/5c4062e146fa39ba2b5c9b9e99f26d8ae89f16cf439a53e8ba685c274ffb53130b7f35219db45b7afe2d83b43675e5664e59c566a5a371c296bbc84ceee11b5e
+  languageName: node
+  linkType: hard
+
+"fontkitten@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "fontkitten@npm:1.0.3"
+  dependencies:
+    tiny-inflate: "npm:^1.0.3"
+  checksum: 10c0/edee7bde2f824a778cf401a2019ada63376fc8bcc5303d09a11e8a9245f35bd945934abea04aef1ca52e8dbb6ce3a17fe9ecdfa52cc0c92f56b25709fb865a76
+  languageName: node
+  linkType: hard
+
 "form-data@npm:^4.0.6":
   version: 4.0.6
   resolution: "form-data@npm:4.0.6"
@@ -3228,7 +3287,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^1.1.0, magic-string@npm:^1.4.3":
+"magic-string@npm:^1.0.0, magic-string@npm:^1.1.0, magic-string@npm:^1.4.3":
   version: 1.4.5
   resolution: "magic-string@npm:1.4.5"
   dependencies:
@@ -3266,6 +3325,13 @@ __metadata:
   version: 1.1.0
   resolution: "math-intrinsics@npm:1.1.0"
   checksum: 10c0/7579ff94e899e2f76ab64491d76cf606274c874d8f2af4a442c016bd85688927fcfca157ba6bf74b08e9439dc010b248ce05b96cc7c126a354c3bae7fcb48b7f
+  languageName: node
+  linkType: hard
+
+"mdn-data@npm:2.27.1":
+  version: 2.27.1
+  resolution: "mdn-data@npm:2.27.1"
+  checksum: 10c0/eb8abf5d22e4d1e090346f5e81b67d23cef14c83940e445da5c44541ad874dc8fb9f6ca236e8258c3a489d9fb5884188a4d7d58773adb9089ac2c0b966796393
   languageName: node
   linkType: hard
 
@@ -3824,6 +3890,8 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@eslint/js": "npm:^10.0.1"
+    "@fontsource/roboto": "npm:^5.2.10"
+    "@fontsource/roboto-mono": "npm:^5.2.8"
     "@inertiajs/vite": "npm:^3.11.0"
     "@inertiajs/vue3": "npm:^3.11.0"
     "@intlify/unplugin-vue-i18n": "npm:^11.2.8"
@@ -3856,6 +3924,7 @@ __metadata:
     tailwindcss: "npm:^4.3.5"
     typescript: "npm:^6.0.3"
     typescript-eslint: "npm:^8.72.1"
+    unplugin-fonts: "npm:^2.0.0"
     vite: "npm:^7.3.7"
     vite-plugin-vuetify: "npm:^2.1.3"
     vue: "npm:^3.5.45"
@@ -3948,6 +4017,13 @@ __metadata:
     minizlib: "npm:^3.1.0"
     yallist: "npm:^5.0.0"
   checksum: 10c0/1311f6be85a8157ac4c9147bae43e13923d2a1aae15e4aa1bd5239e4e03d2cf53cfe103dde7f35832fbb4c938b042856bc8e9a0afd29abd05e2d1608788c4fea
+  languageName: node
+  linkType: hard
+
+"tiny-inflate@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "tiny-inflate@npm:1.0.3"
+  checksum: 10c0/fab687537254f6ec44c9a2e880048fe70da3542aba28f73cda3e74c95cabf342a339372f2a6c032e322324f01accc03ca26c04ba2bad9b3eb8cf3ee99bba7f9b
   languageName: node
   linkType: hard
 
@@ -4056,6 +4132,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"unplugin-fonts@npm:^2.0.0":
+  version: 2.1.0
+  resolution: "unplugin-fonts@npm:2.1.0"
+  dependencies:
+    css-tree: "npm:^3.2.1"
+    fontaine: "npm:^1.0.1"
+    magic-string: "npm:^1.4.3"
+    pathe: "npm:^2.0.3"
+    tinyglobby: "npm:^0.2.17"
+    unplugin: "npm:^3.4.0"
+  peerDependencies:
+    "@nuxt/kit": ^3.0.0 || ^4.0.0
+    vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    "@nuxt/kit":
+      optional: true
+  checksum: 10c0/c47715dc702a2a8c267cecfa06b73f794694d13c1a8d29ff565455f5dad43555b0aee00a3b67dc73b8b74368fc4a040642c46f707f8cdcdfae2cc37a6aa229ba
+  languageName: node
+  linkType: hard
+
 "unplugin-utils@npm:^0.3.0, unplugin-utils@npm:^0.3.2":
   version: 0.3.2
   resolution: "unplugin-utils@npm:0.3.2"
@@ -4078,7 +4174,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unplugin@npm:^3.4.0":
+"unplugin@npm:^3.0.0, unplugin@npm:^3.4.0":
   version: 3.7.0
   resolution: "unplugin@npm:3.7.0"
   dependencies:

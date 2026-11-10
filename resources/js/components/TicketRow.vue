@@ -1,27 +1,27 @@
 <template>
     <tr ref="ticketRow" class="ticket-row" :class="{ dragover: isOverDropZone }">
-        <component :is="cell" class="status py-1">
+        <component :is="cell" class="status tw:py-1!">
             <slot name="status" />
         </component>
 
-        <component :is="cell" class="name font-weight-bold !pt-[6px]">
+        <component :is="cell" class="name tw:font-weight-bold tw:pt-[6px]!">
             <slot name="name" />
         </component>
 
-        <component :is="cell" class="load !pt-[6px] text-center">
+        <component :is="cell" class="load tw:pt-[6px]! tw:text-center">
             <slot name="load">{{ tickets.length }}</slot
             >/<slot name="load-max">&infin;</slot>
         </component>
 
-        <component :is="cell" class="complexity !pt-[6px] text-center">
+        <component :is="cell" class="complexity tw:pt-[6px]! tw:text-center">
             <slot name="complexity">{{ complexity }}</slot
             >/<slot name="complexity-max">&infin;</slot>
         </component>
 
         <TicketPool :tag="cell" :tickets="tickets" :class="{ collapsed }" />
 
-        <component :is="cell" class="more !pt-[2px] text-center">
-            <v-btn size="x-small" variant="tonal" :icon="moreIcon" @click="collapsed = !collapsed" />
+        <component :is="cell" class="more tw:pt-[2px]! tw:text-center">
+            <v-btn size="x-small" variant="tonal" rounded="xl" :icon="moreIcon" @click="collapsed = !collapsed" />
         </component>
     </tr>
 </template>

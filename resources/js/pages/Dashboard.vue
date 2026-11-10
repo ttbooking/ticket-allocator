@@ -3,11 +3,11 @@
 
     <component :is="`${layout}-layout`">
         <template #header>
-            <h2 class="text-xl leading-tight font-semibold text-gray-800">{{ $t("dashboard") }}</h2>
+            <h2 class="tw:text-xl tw:leading-tight tw:font-semibold tw:text-gray-800">{{ $t("dashboard") }}</h2>
         </template>
 
         <div>
-            <v-container fluid>
+            <v-container class="tw:text-[14px]" fluid>
                 <v-row>
                     <v-col>
                         <v-btn-toggle v-model="options.all" variant="plain" multiple>
@@ -46,7 +46,7 @@
                             true-value="duration"
                             prepend-icon="mdi-weight"
                             append-icon="mdi-clock"
-                            class="d-flex justify-end"
+                            class="tw:flex tw:justify-end"
                         />
                     </v-col>
                 </v-row>
@@ -80,13 +80,18 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-table :fixed-header="options.pinHeader" height="600px" density="compact" class="ticket-monitor">
+            <v-table
+                :fixed-header="options.pinHeader"
+                height="600px"
+                density="compact"
+                class="ticket-monitor tw:text-[14px]"
+            >
                 <thead class="align-top">
                     <TicketRow pool :tickets="sortedTickets">
                         <template #name>{{ $t("ticket_pool") }}</template>
                     </TicketRow>
                 </thead>
-                <TransitionGroup tag="tbody" class="align-top" name="operator-pool">
+                <TransitionGroup tag="tbody" class="tw:align-top" name="operator-pool">
                     <OperatorRow v-for="operator in sortedOperators" :key="operator.uuid" :operator="operator" />
                 </TransitionGroup>
             </v-table>

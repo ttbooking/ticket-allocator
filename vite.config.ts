@@ -4,6 +4,7 @@ import inertia from "@inertiajs/vite";
 import laravel from "laravel-vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
+import fonts from "unplugin-fonts/vite";
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import path from "path";
 
@@ -29,9 +30,24 @@ export default defineConfig({
         // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
         vuetify({
             autoImport: true,
-            /*styles: {
+            styles: {
                 configFile: "resources/css/settings.scss",
-            },*/
+            },
+        }),
+        fonts({
+            fontsource: {
+                families: [
+                    {
+                        name: "Roboto Mono",
+                        weights: [400, 700],
+                    },
+                    {
+                        name: "Roboto",
+                        weights: [100, 300, 400, 500, 700, 900],
+                        styles: ["normal", "italic"],
+                    },
+                ],
+            },
         }),
     ],
     resolve: {

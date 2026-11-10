@@ -2,7 +2,7 @@
     <TransitionGroup
         ref="ticketPool"
         name="ticket-pool"
-        class="tickets @container !pt-[1px] !pb-[3px] leading-8"
+        class="tickets tw:pt-[1px]! tw:pb-[3px]! tw:leading-8 @container"
         :css="animationEnabled"
         @mouseup="unlock"
     >
@@ -12,7 +12,7 @@
             :data-uuid="ticket.uuid"
             :ticket="ticket"
             draggable="true"
-            class="mr-1"
+            class="tw:mr-1"
             @mousedown.ctrl="lock"
         />
     </TransitionGroup>

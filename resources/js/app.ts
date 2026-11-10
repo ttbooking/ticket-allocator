@@ -1,3 +1,5 @@
+import "../css/tailwind.css";
+import "../css/main.scss";
 import "../css/app.css";
 
 import dayjs from "./plugins/dayjs";

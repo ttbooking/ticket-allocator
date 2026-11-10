@@ -1,9 +1,16 @@
 <template>
-    <div class="d-inline-block">
-        <v-btn size="small" class="ticket justify-start px-2" :class="{ overflow }" :ripple="false" flat width="100">
+    <div class="tw:inline-block">
+        <v-btn
+            size="small"
+            class="ticket tw:justify-start tw:px-2"
+            :class="{ overflow }"
+            :ripple="false"
+            flat
+            width="100"
+        >
             <v-icon v-if="ticket.meta?.icon" :icon="ticket.meta?.icon ?? ''" color="white" />
-            <span class="overflow-hidden text-white">
-                <span class="title relative inline-block uppercase">{{ title() }}</span>
+            <span class="tw:overflow-hidden tw:text-white">
+                <span class="title tw:relative tw:inline-block tw:uppercase">{{ title() }}</span>
             </span>
             <v-overlay
                 open-on-click
@@ -12,7 +19,13 @@
                 location="bottom center"
                 origin="auto"
             >
-                <v-card width="500" :prepend-icon="ticket.meta?.icon ?? ''" :title="cardTitle" :subtitle="cardSubtitle">
+                <v-card
+                    width="500"
+                    class="tw:text-[14px]!"
+                    :prepend-icon="ticket.meta?.icon ?? ''"
+                    :title="cardTitle"
+                    :subtitle="cardSubtitle"
+                >
                     <v-tabs v-model="tab">
                         <v-tab value="properties">{{ $t("properties") }}</v-tab>
                         <v-tab value="metrics">{{ $t("metrics") }}</v-tab>
@@ -20,7 +33,7 @@
                     </v-tabs>
                     <v-card-text>
                         <v-window v-model="tab">
-                            <v-window-item value="properties" class="prose">
+                            <v-window-item value="properties" class="tw:prose tw:text-[14px]!">
                                 <div v-if="typeof cardContent === 'string'" v-html="md.render(cardContent)"></div>
                                 <table v-else>
                                     <tbody>
@@ -31,7 +44,7 @@
                                     </tbody>
                                 </table>
                             </v-window-item>
-                            <v-window-item value="metrics" class="prose">
+                            <v-window-item value="metrics" class="tw:prose tw:text-[14px]!">
                                 <table>
                                     <tbody>
                                         <tr>
@@ -65,24 +78,24 @@
                                     </tbody>
                                 </table>
                             </v-window-item>
-                            <v-window-item value="details" class="prose">
-                                <table class="table-fixed">
+                            <v-window-item value="details" class="tw:prose tw:text-[14px]!">
+                                <table class="tw:table-fixed">
                                     <thead>
                                         <tr>
-                                            <th class="w-1/3">{{ $t("factor") }}</th>
-                                            <th class="text-center">
+                                            <th class="tw:w-1/3">{{ $t("factor") }}</th>
+                                            <th class="tw:text-center">
                                                 <em class="metric" :title="$t('initial_weight')">W<sub>0</sub></em>
                                             </th>
-                                            <th class="text-center">
+                                            <th class="tw:text-center">
                                                 <em class="metric" :title="$t('weight_increment')">W<sub>i</sub></em>
                                             </th>
-                                            <th class="text-center">
+                                            <th class="tw:text-center">
                                                 <em class="metric" :title="$t('complexity')">C</em>
                                             </th>
-                                            <th class="text-center">
+                                            <th class="tw:text-center">
                                                 <em class="metric" :title="$t('delay_sec')">D</em>
                                             </th>
-                                            <th class="text-center">
+                                            <th class="tw:text-center">
                                                 <em class="metric" :title="$t('reservation_sec')">R</em>
                                             </th>
                                         </tr>
@@ -90,21 +103,21 @@
                                     <tbody>
                                         <tr v-for="(adjustments, factorUuid) in ticket.metrics ?? {}" :key="factorUuid">
                                             <th>{{ factors[factorUuid]?.name ?? $t("unknown") }}</th>
-                                            <td class="text-right">{{ adjustments.initial_weight ?? 0 }}</td>
-                                            <td class="text-right">{{ adjustments.weight_increment ?? 0 }}</td>
-                                            <td class="text-right">{{ adjustments.complexity ?? 0 }}</td>
-                                            <td class="text-right">{{ adjustments.delay ?? 0 }}</td>
-                                            <td class="text-right">{{ adjustments.reservation ?? 0 }}</td>
+                                            <td class="tw:text-right">{{ adjustments.initial_weight ?? 0 }}</td>
+                                            <td class="tw:text-right">{{ adjustments.weight_increment ?? 0 }}</td>
+                                            <td class="tw:text-right">{{ adjustments.complexity ?? 0 }}</td>
+                                            <td class="tw:text-right">{{ adjustments.delay ?? 0 }}</td>
+                                            <td class="tw:text-right">{{ adjustments.reservation ?? 0 }}</td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <th>{{ $t("total") }}</th>
-                                            <td class="text-right">{{ ticket.initial_weight }}</td>
-                                            <td class="text-right">{{ ticket.weight_increment }}</td>
-                                            <td class="text-right">{{ ticket.complexity }}</td>
-                                            <td class="text-right">{{ ticket.delay }}</td>
-                                            <td class="text-right">{{ ticket.reservation }}</td>
+                                            <td class="tw:text-right">{{ ticket.initial_weight }}</td>
+                                            <td class="tw:text-right">{{ ticket.weight_increment }}</td>
+                                            <td class="tw:text-right">{{ ticket.complexity }}</td>
+                                            <td class="tw:text-right">{{ ticket.delay }}</td>
+                                            <td class="tw:text-right">{{ ticket.reservation }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>

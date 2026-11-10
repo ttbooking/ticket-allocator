@@ -35,15 +35,19 @@
             </v-list>
         </v-navigation-drawer>
         <v-main>
-            <div class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">
-                <div class="w-1/4">
-                    <Link :href="route('ticket-allocator.index')" class="align-center flex">
-                        <ApplicationLogo class="h-20 w-20 shrink-0" />
-                        <span class="font-title text-4xl text-gray-600">{{ $t("title") }}</span>
+            <div
+                class="tw:flex tw:min-h-screen tw:flex-col tw:items-center tw:bg-gray-100 tw:pt-6 tw:sm:justify-center tw:sm:pt-0"
+            >
+                <div class="tw:w-1/4">
+                    <Link :href="route('ticket-allocator.index')" class="tw:align-center tw:flex">
+                        <ApplicationLogo class="tw:h-20 tw:w-20 tw:shrink-0" />
+                        <span class="tw:font-title tw:text-4xl tw:text-gray-600">{{ $t("title") }}</span>
                     </Link>
                 </div>
 
-                <div class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:rounded-lg">
+                <div
+                    class="tw:mt-6 tw:w-full tw:overflow-hidden tw:bg-white tw:px-6 tw:py-4 tw:shadow-md tw:sm:rounded-lg"
+                >
                     <slot />
                 </div>
             </div>

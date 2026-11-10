@@ -1,5 +1,5 @@
 <template>
-    <div class="font-sans antialiased">
+    <div class="tw:font-sans tw:antialiased">
         <slot />
     </div>
 </template>
