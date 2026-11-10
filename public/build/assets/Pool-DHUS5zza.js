@@ -1,0 +1,2 @@
+import{U as r,Y as t,$ as a,_ as n,Z as o,F as c,a5 as i,aa as l,a8 as m}from"./app-A3mxdrkM.js";import p from"./Ticket-Ce63nw36.js";const _=r({__name:"Pool",props:{tickets:{}},setup(s){return(u,f)=>(t(),a(l,{tag:"td",name:"tickets",class:"@container pt-1"},{default:n(()=>[(t(!0),o(c,null,i(s.tickets,e=>(t(),a(p,{key:e.id,ticket:e,class:"mr-1 mb-1"},null,8,["ticket"]))),128))]),_:1}))}}),x=m(_,[["__scopeId","data-v-2f0ef157"]]);export{x as default};
+//# sourceMappingURL=Pool-DHUS5zza.js.map
